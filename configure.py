@@ -286,7 +286,13 @@ config.libs = [
         "cflags": cflags_common,
         "host": False,
         "objects": [
+            Object(Matching, "sora/sr/sr_common.cpp"),
+            Object(Matching, "sora/sr/sr_revision.cpp"),
+            Object(Matching, "sora/gf/gf_archive_load_thread.cpp"),
+            Object(Matching, "sora/gf/gf_camera_controller.cpp"),
+            Object(Matching, "sora/gf/gf_memory_util.cpp"),
             Object(Matching, "sora/mt/mt_prng.cpp", extra_cflags=["-RTTI off"]),
+            Object(Matching, "sora/cm/cm_controller_default.cpp", extra_cflags=["-RTTI off"]),
             Object(NonMatching, "sora/ty/ty_fig_listmng.cpp"),
             Object(NonMatching, "sora/ac/ac_cmd_interpreter.cpp"),
             Object(Matching, "sora/ac/ac_anim_cmd_impl.cpp"),

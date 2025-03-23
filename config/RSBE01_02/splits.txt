@@ -13,12 +13,36 @@ Sections:
 	.sdata2     type:rodata align:16
 	.sbss2      type:bss align:32
 
+sora/sr/sr_common.cpp:
+	.text       start:0x8000C8A4 end:0x8000C8E0
+	.sdata      start:0x8059C420 end:0x8059C428
+
+sora/sr/sr_revision.cpp:
+	.text       start:0x8000C8E0 end:0x8000C8E8
+
+sora/gf/gf_archive_load_thread.cpp:
+	.text       start:0x800134C0 end:0x800134C4
+	.data       start:0x804208B0 end:0x804208F0
+	.sdata      start:0x8059C468 end:0x8059C478
+
+sora/gf/gf_camera_controller.cpp:
+	.text       start:0x8001A3A4 end:0x8001A3AC
+	.data       start:0x80420B88 end:0x80420BA0
+	.sdata      start:0x8059C4F8 end:0x8059C500
+
+sora/gf/gf_memory_util.cpp:
+	.text       start:0x80026474 end:0x80026478
+
 sora/mt/mt_prng.cpp:
 	.text       start:0x8003FABC end:0x8003FD5C
 	.ctors      start:0x80406510 end:0x80406514
 	.data       start:0x8042AE50 end:0x8042AE6C
 	.sbss       start:0x805A00B8 end:0x805A00C0
 	.sdata2     start:0x805A1748 end:0x805A176C
+
+sora/cm/cm_controller_default.cpp:
+	.text       start:0x8009F560 end:0x8009F564
+	.data       start:0x80454CC0 end:0x80454CD0
 
 sora/ty/ty_fig_listmng.cpp:
 	.text       start:0x800AC9DC end:0x800AD808
