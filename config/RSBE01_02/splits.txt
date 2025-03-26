@@ -13,6 +13,10 @@ Sections:
 	.sdata2     type:rodata align:16
 	.sbss2      type:bss align:32
 
+sora/sr/sr_getappname.cpp:
+	.text       start:0x8000C860 end:0x8000C8A4
+	.data       start:0x80420680 end:0x80420690
+
 sora/sr/sr_common.cpp:
 	.text       start:0x8000C8A4 end:0x8000C8E0
 	.sdata      start:0x8059C420 end:0x8059C428
@@ -43,9 +47,16 @@ sora/mt/mt_prng.cpp:
 	.sbss       start:0x805A00B8 end:0x805A00C0
 	.sdata2     start:0x805A1748 end:0x805A176C
 
+sora/ef/ef_screen_handle.cpp:
+	.text       start:0x8005E5C8 end:0x8005E5E8
+
 sora/cm/cm_controller_default.cpp:
 	.text       start:0x8009F560 end:0x8009F564
 	.data       start:0x80454CC0 end:0x80454CD0
+
+sora/cm/cm_stage_param.cpp:
+	.text       start:0x800AC9B8 end:0x800AC9DC
+	.sdata2     start:0x805A21D8 end:0x805A21E8
 
 sora/ty/ty_fig_listmng.cpp:
 	.text       start:0x800AC9DC end:0x800AD808

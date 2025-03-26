@@ -327,7 +327,7 @@ emInfo::emInfo() { }
 
 emInfo::~emInfo() { }
 
-u32 emInfo::isInvalidKind(EnemyKind kind) {
+bool emInfo::isInvalidKind(int kind) {
     if (kind <= Enemy_Invalid || kind >= NumEnemies) {
         return 1;
     }
@@ -344,7 +344,7 @@ u32 emInfo::isPrimKind(EnemyKind kind) {
     return 0;
 }
 
-EnemyKind emInfo::getInvalidKind() {
+int emInfo::getInvalidKind() {
     return Enemy_Invalid;
 }
 
@@ -355,14 +355,14 @@ u32 emInfo::getNodeNum(EnemyKind kind) {
     return NodeNumTable[kind];
 }
 
-u32 emInfo::getMotionNum(EnemyKind kind) {
+u32 emInfo::getMotionNum(int kind) {
     if (isInvalidKind(kind) == 1) {
         return 0;
     }
     return MotionNumTable[kind];
 }
 
-u32 emInfo::getStatusNum(EnemyKind kind) {
+u32 emInfo::getStatusNum(int kind) {
     if (isInvalidKind(kind) == 1) {
         return 0;
     }
@@ -453,6 +453,6 @@ u32 emInfo::StandByStatusKind(EnemyKind kind) {
     return StandByStatusKindTable[kind];
 }
 
-const char* emInfo::getNamePtr() {
+const char* emInfo::getNamePtr(int kind) {
     return 0;
 }
