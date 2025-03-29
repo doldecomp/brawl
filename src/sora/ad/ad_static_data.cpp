@@ -262,9 +262,9 @@ adventureStaticData adventureStaticData::s_adventureStaticData[0x101] = {
 };
 
 s32 adventureStaticData::getStepIndex(u32 p1) {
-    for (u32 i = 0; i < getAllStepNum(); i++) {
+    for (s32 i = 0, stepIndex = 0; i < getAllStepNum(); i++, stepIndex++) {
         if (p1 == s_adventureStaticData[i].unk0) {
-            return i;
+            return stepIndex;
         }
     }
     return -1;

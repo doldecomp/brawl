@@ -57,6 +57,11 @@ sora/cm/cm_controller_default.cpp:
 	.text       start:0x8009F560 end:0x8009F564
 	.data       start:0x80454CC0 end:0x80454CD0
 
+sora/cm/cm_controller_melee_fixed.cpp:
+	.text       start:0x800AA998 end:0x800AA9F8
+	.data       start:0x80455000 end:0x80455038
+	.sdata      start:0x8059DEE8 end:0x8059DEF0
+
 sora/cm/cm_stage_param.cpp:
 	.text       start:0x800AC9B8 end:0x800AC9DC
 	.sdata2     start:0x805A21D8 end:0x805A21E8
@@ -88,6 +93,12 @@ sora/ac/ac_null.cpp:
 	.bss        start:0x8049EA10 end:0x8049EA20
 	.sdata      start:0x8059E718 end:0x8059E720
 	.sbss       start:0x805A0370 end:0x805A0380
+
+sora/ft_system.cpp:
+	.text       start:0x8013D004 end:0x8013D078
+	.ctors      start:0x80406558 end:0x8040655C
+	.bss        start:0x8049EA20 end:0x8049EA30
+	.sbss       start:0x805A0380 end:0x805A0390
 
 sora/ad/ad_static_data.cpp:
 	.text       start:0x8015B09C end:0x8015B0E0
