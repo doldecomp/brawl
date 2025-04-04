@@ -77,6 +77,9 @@ sora/ty/ty_fig_listmng.cpp:
 sora/gr/collision/gr_collision_data.cpp:
 	.text       start:0x80110720 end:0x80110748
 
+sora/gr/collision/gr_collision_handle.cpp:
+	.text       start:0x801122E4 end:0x8011234C
+
 sora/ac/ac_cmd_interpreter.cpp:
 	.text       start:0x80139658 end:0x8013CA1C
 	.rodata     start:0x80409520 end:0x8040964C
