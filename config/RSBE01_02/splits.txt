@@ -24,6 +24,9 @@ sora/sr/sr_common.cpp:
 sora/sr/sr_revision.cpp:
 	.text       start:0x8000C8E0 end:0x8000C8E8
 
+sora/gf/gf_3d_scene_event.cpp:
+	.text       start:0x80010C9C end:0x80010D38
+
 sora/gf/gf_3d_scene_light_resource.cpp:
 	.text       start:0x80010D38 end:0x80010D5C
 
@@ -39,6 +42,9 @@ sora/gf/gf_camera_controller.cpp:
 	.text       start:0x8001A3A4 end:0x8001A3AC
 	.data       start:0x80420B88 end:0x80420BA0
 	.sdata      start:0x8059C4F8 end:0x8059C500
+
+sora/gf/gf_keep_fb.cpp:
+	.text       start:0x80024D6C end:0x80024E50
 
 sora/gf/gf_memory_util.cpp:
 	.text       start:0x80026474 end:0x80026478
