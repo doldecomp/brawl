@@ -43,6 +43,9 @@ sora/gf/gf_camera_controller.cpp:
 	.data       start:0x80420B88 end:0x80420BA0
 	.sdata      start:0x8059C4F8 end:0x8059C500
 
+sora/gf/gf_callback.cpp:
+	.text       start:0x8001A3AC end:0x8001A48C
+
 sora/gf/gf_keep_fb.cpp:
 	.text       start:0x80024D6C end:0x80024E50
 

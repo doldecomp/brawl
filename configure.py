@@ -294,6 +294,7 @@ config.libs = [
             Object(Matching, "sora/gf/gf_archive_load_thread.cpp"),
             Object(Matching, "sora/gf/gf_archive_file.cpp"),
             Object(Matching, "sora/gf/gf_camera_controller.cpp"),
+            Object(Matching, "sora/gf/gf_callback.cpp"),
             Object(Matching, "sora/gf/gf_keep_fb.cpp"),
             Object(Matching, "sora/gf/gf_memory_util.cpp"),
             Object(Matching, "sora/mt/mt_prng.cpp", extra_cflags=["-RTTI off"]),
