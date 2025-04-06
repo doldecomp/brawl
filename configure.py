@@ -311,6 +311,7 @@ config.libs = [
             Object(Matching, "sora/ac/ac_null.cpp"),
             Object(Matching, "sora/ft/ft_system.cpp"),
             Object(Matching, "sora/ad/ad_static_data.cpp"),
+            Object(Matching, "sora/st/st_data_container.cpp"),
         ],
     },
     # Common REL units

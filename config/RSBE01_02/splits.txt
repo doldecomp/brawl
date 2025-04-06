@@ -120,6 +120,11 @@ sora/ad/ad_static_data.cpp:
 	.text       start:0x8015B09C end:0x8015B0E0
 	.data       start:0x804621C0 end:0x804629C8
 
+sora/st/st_data_container.cpp:
+	.text       start:0x8015BAB0 end:0x8015BBF4
+	.data       start:0x80462C08 end:0x80462C78
+	.sdata      start:0x8059E848 end:0x8059E858
+
 Runtime.PPCEABI.H/__init_cpp_exceptions.cpp:
 	.text       start:0x803F1A08 end:0x803F1A78
 	.ctors      start:0x804064E0 end:0x804064E4 rename:.ctors$10
