@@ -289,6 +289,7 @@ config.libs = [
             Object(Matching, "sora/sr/sr_getappname.cpp"),
             Object(Matching, "sora/sr/sr_common.cpp"),
             Object(Matching, "sora/sr/sr_revision.cpp"),
+            Object(Matching, "sora/main.cpp"),
             Object(Matching, "sora/gf/gf_3d_scene_event.cpp"),
             Object(Matching, "sora/gf/gf_3d_scene_light_resource.cpp"),
             Object(Matching, "sora/gf/gf_archive_load_thread.cpp"),
