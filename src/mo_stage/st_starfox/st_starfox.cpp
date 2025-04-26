@@ -23,8 +23,8 @@ stStarfox* stStarfox::create() {
 stStarfox::stStarfox() : stMelee("stStarfox", Stages::StarFox) {
     m_smash_taunt_task = 0;
     m_smash_taunt_kind = 0;
-    m_smash_taunt_timing = 0;
-    m_smash_taunt_activated = 0;
+    m_smash_taunt_timing = false;
+    m_smash_taunt_activated = false;
     m_corneria_phase = 0;
     m_scene_num = SCENE_ASTEROID;
 }
@@ -92,12 +92,12 @@ void stStarfox::createObj() {
     m_scene_lifecycle.start();
     resetChangeScene();
     m_unused = 0;
-    m_not_first_scene = 0;
+    m_not_first_scene = false;
     loadStageAttrParam(m_fileData, 0x1E);
     initPosPokeTrainer(1, 0);
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", m_pokeTrainerPos, 0);
     m_prev_scene_num = -1;
-    m_show_dogfight = 0;
+    m_show_dogfight = false;
     m_se_player.registId(data_loc_11A0, SndIDTableSize);
     m_se_player.registSeq(0, data_loc_0, SndSeqTable1Size, Heaps::StageInstance);
     m_se_player.registSeq(1, data_loc_190, SndSeqTable2Size, Heaps::StageInstance);
@@ -195,7 +195,7 @@ void stStarfox::updateScene(float deltaFrame) {
                     }
                 }
                 startScene();
-                if (m_not_first_scene == 1) {
+                if (m_not_first_scene == true) {
                     scn = (nw4r::g3d::ResFileData*)
                         m_secondaryFileData->getData(Data_Type_Scene, m_scene_num*3 + 2, 0xFFFE);
                     registScnAnim(scn, 0);
@@ -228,7 +228,7 @@ void stStarfox::updateScene(float deltaFrame) {
                 m_curr_scene.end();
                 static_cast<grMadein*>(getGround(0))->startEntity();
                 m_scene_lifecycle.setPhase(m_scene_lifecycle.getPhase() + 1);
-                m_not_first_scene = 1;
+                m_not_first_scene = true;
                 m_prev_scene_num = m_scene_num;
                 g_gfSceneRoot->removeResAnmScn();
                 scn = (nw4r::g3d::ResFileData*)
@@ -289,10 +289,10 @@ void stStarfox::updateScene(float deltaFrame) {
             m_change_scene = true;
             m_scene_lifecycle.end();
             m_scene_lifecycle.start();
-            if (m_show_dogfight == 1) {
-                m_show_dogfight = 0;
+            if (m_show_dogfight == true) {
+                m_show_dogfight = false;
             } else {
-                m_show_dogfight = 1;
+                m_show_dogfight = true;
             }
             break;
         default:
@@ -543,13 +543,13 @@ void stStarfox::startAppearCore() {
         if (m_smash_taunt_task) {
             m_smash_taunt_task->start(id);
         }
-        m_smash_taunt_activated = 0;
+        m_smash_taunt_activated = false;
     }
 }
 
 bool stStarfox::startAppear() {
-    m_smash_taunt_activated = 1;
-    m_smash_taunt_timing = 1;
+    m_smash_taunt_activated = true;
+    m_smash_taunt_timing = true;
     return true;
 }
 
@@ -559,8 +559,8 @@ void stStarfox::endAppear() {
     }
 }
 
-s32 stStarfox::isStartAppearTimming() {
-    return m_smash_taunt_timing ^ 1;
+bool stStarfox::isStartAppearTimming() {
+    return m_smash_taunt_timing == false;
 }
 
 bool stStarfox::isAppear() {

@@ -1,9 +1,9 @@
-#include <em/enemy.h>
+#include <em/em_all.h>
 #include <em/em_create.h>
-#include <em/em_resource_module_impl.h>
-#include <types.h>
-
 #include <em/em_info.h>
+#include <em/enemy.h>
+#include <em/resource/em_resource_module_impl.h>
+#include <types.h>
 
 emInfo g_emInfo;
 

@@ -23,15 +23,15 @@ class stStarfox : public stMelee {
     s32 m_scene_ground_num[0x4];
     grMadein* m_scene_grounds[0x4];
     bool m_change_scene;
-    u8 m_smash_taunt_activated;
+    bool m_smash_taunt_activated;
     IfFoxSmashAppearTask* m_smash_taunt_task;
     u8 m_smash_taunt_kind;
     s32 m_scene_num;
     s32 m_prev_scene_num;
     u32 m_unused;
-    u8 m_not_first_scene: 1;
-    u8 m_show_dogfight: 1;
-    u8 m_smash_taunt_timing: 1;
+    bool m_not_first_scene: 1;
+    bool m_show_dogfight: 1;
+    bool m_smash_taunt_timing: 1;
     StSeUtil::SeSeqInstance<4, 40> m_se_player;
     s32 m_great_fox_engine_se;
     snd3DGenerator m_great_fox_sndgen;
@@ -62,13 +62,13 @@ public:
     virtual void endAppear();
     virtual void forceStopAppear();
     virtual bool isAppear();
-    virtual s32 isStartAppearTimming();
+    virtual bool isStartAppearTimming();
     virtual void update(float deltaFrame);
     virtual bool checkChangeScene();
     virtual void resetChangeScene();
     virtual void setChangeSceneNumber(s32 n);
 
-    virtual int getFinalTechniqColor() { return 0x14000496; }
+    virtual u32 getFinalTechniqColor() { return 0x14000496; }
     virtual IfSmashAppearTask* getAppearTask() { return m_smash_taunt_task; }
     virtual bool isBamperVector() { return true; }
     virtual int getPokeTrainerDrawLayer() { return 1; }

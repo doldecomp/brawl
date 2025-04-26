@@ -1,6 +1,12 @@
 #include <gf/gf_application.h>
 
-void main(int argc, const char* argv[]) {
+#ifdef MATCHING
+#define RTYPE void
+#else
+#define RTYPE int
+#endif
+
+RTYPE main(int argc, const char* argv[]) {
     gfApplication app;
     app.init();
     if (argc == 2) {
