@@ -1,5 +1,6 @@
 #pragma once
 
+#include <GX/GXTypes.h>
 #include <memory.h>
 #include <types.h>
 #include <gf/gf_archive.h>
@@ -7,6 +8,7 @@
 #include <gr/gr_madein.h>
 #include <gr/gr_tengan_event.h>
 #include <mt/mt_vector.h>
+#include <nw4r/ut/ut_Color.h>
 #include <snd/snd_id.h>
 #include <st/se_util.h>
 #include <st/stage.h>
@@ -68,7 +70,7 @@ public:
     virtual void resetChangeScene();
     virtual void setChangeSceneNumber(s32 n);
 
-    virtual u32 getFinalTechniqColor() { return 0x14000496; }
+    virtual GXColor getFinalTechniqColor() { return nw4r::ut::Color(0x14000496); }
     virtual IfSmashAppearTask* getAppearTask() { return m_smash_taunt_task; }
     virtual bool isBamperVector() { return true; }
     virtual int getPokeTrainerDrawLayer() { return 1; }

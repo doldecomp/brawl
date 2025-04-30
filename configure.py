@@ -292,6 +292,7 @@ config.libs = [
             Object(Matching, "sora/main.cpp"),
             Object(Matching, "sora/gf/gf_3d_scene_event.cpp"),
             Object(Matching, "sora/gf/gf_3d_scene_light_resource.cpp"),
+            Object(Matching, "sora/gf/gf_system_callback.cpp"),
             Object(Matching, "sora/gf/gf_archive_load_thread.cpp"),
             Object(Matching, "sora/gf/gf_archive_file.cpp"),
             Object(Matching, "sora/gf/gf_camera_controller.cpp"),
