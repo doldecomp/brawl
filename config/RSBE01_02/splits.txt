@@ -99,6 +99,11 @@ sora/if/if_wifipr_task.cpp:
 	.data       start:0x8045C678 end:0x8045C708
 	.sdata      start:0x8059E4E8 end:0x8059E4F0
 
+sora/if/if_adv_task.cpp:
+	.text       start:0x80107EC4 end:0x80108014
+	.data       start:0x8045D070 end:0x8045D0F8
+	.sdata      start:0x8059E5F0 end:0x8059E5F8
+
 sora/gr/collision/gr_collision_data.cpp:
 	.text       start:0x80110720 end:0x80110748
 
