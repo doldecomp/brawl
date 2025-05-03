@@ -58,6 +58,9 @@ sora/gf/gf_keep_fb.cpp:
 sora/gf/gf_memory_util.cpp:
 	.text       start:0x80026474 end:0x80026478
 
+sora/gf/gf_thread.cpp:
+	.text       start:0x8002F5B8 end:0x8002F6F4
+
 sora/gf/gf_system_callback.cpp:
 	.text       start:0x80038684 end:0x800387AC
 	.ctors      start:0x80406508 end:0x8040650C

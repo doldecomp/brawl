@@ -300,6 +300,7 @@ config.libs = [
             Object(Matching, "sora/gf/gf_gameframe_counter.cpp"),
             Object(Matching, "sora/gf/gf_keep_fb.cpp"),
             Object(Matching, "sora/gf/gf_memory_util.cpp"),
+            Object(Matching, "sora/gf/gf_thread.cpp"),
             Object(Matching, "sora/mt/mt_prng.cpp", extra_cflags=["-RTTI off"]),
             Object(Matching, "sora/st/module.cpp"),
             Object(Matching, "sora/ef/ef_screen_handle.cpp"),
