@@ -303,6 +303,7 @@ config.libs = [
             Object(Matching, "sora/gf/gf_thread.cpp"),
             Object(Matching, "sora/mt/mt_prng.cpp", extra_cflags=["-RTTI off"]),
             Object(Matching, "sora/st/module.cpp"),
+            Object(Matching, "sora/ut/ut_list.cpp"),
             Object(Matching, "sora/ef/ef_screen_handle.cpp"),
             Object(Matching, "sora/cm/cm_controller_default.cpp", extra_cflags=["-RTTI off"]),
             Object(Matching, "sora/cm/cm_controller_melee_fixed.cpp"),
