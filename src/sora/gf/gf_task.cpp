@@ -1,3 +1,4 @@
+#include <gf/gf_callback.h>
 #include <gf/gf_task_scheduler.h>
 #include <sr/sr_common.h>
 #include <gf/gf_task.h>
@@ -7,7 +8,7 @@ static u32 TaskIdCounter = 1;
 static u32 gUnk8059c66c = 0x80000000;
 
 gfTask::gfTask(const char* name, Category category, int unk2, int unk3, bool unk4) {
-    unk2C_b6 = true;
+    m_alive = true;
     unk2C_b5 = false;
     unk2C_b3 = false;
     unk2C_b2 = true;
@@ -23,9 +24,9 @@ gfTask::gfTask(const char* name, Category category, int unk2, int unk3, bool unk
     m_attachedTask = nullptr;
     m_nextTask = nullptr;
     m_status = 4;
-    unk32 = 0xFFFF;
+    unk32 = ~0;
     unk34 = 0;
-    unk38 = 0;
+    unk38.m_head = nullptr;
     if (srSystemGetDebugLevel() <= 3) {
         unk2C_b3 = true;
     }
@@ -35,7 +36,7 @@ gfTask::gfTask(const char* name, Category category, int unk2, int unk3, bool unk
     m_taskName = name;
     unk30 = unk2;
     unk31 = unk3;
-    unk2C_b6 = true;
+    m_alive = true;
     gfTaskScheduler::getInstance()->registTask(this);
     if (unk4) {
         m_status = 2;
@@ -49,11 +50,11 @@ gfTask::gfTask(const char* name, Category category, int unk2, int unk3, bool unk
 }
 
 gfTask::~gfTask() {
-    if (UnkClass* curr = unk38) {
-        curr->func();
+    if (gfCallBack* curr = unk38.m_head) {
+        curr->userProc();
         curr = curr->m_next;
         while (curr) {
-            curr->func();
+            curr->userProc();
             curr = curr->m_next;
         }
     }
@@ -106,31 +107,31 @@ gfTask* gfTask::getTask(int taskId) {
     return gfTaskScheduler::getInstance()->getTask(taskId);
 }
 
-void gfTask::process(TaskType taskType) {
+void gfTask::process(ProcessType taskType) {
     if (taskType < 8) {
         switch (taskType) {
-            case Task_Default:
+            case Process_Default:
                 processDefault();
                 break;
-            case Task_Begin:
+            case Process_Begin:
                 processBegin();
                 break;
-            case Task_Anim:
+            case Process_Anim:
                 processAnim();
                 break;
-            case Task_Update:
+            case Process_Update:
                 processUpdate();
                 break;
-            case Task_PreMapCorrection:
+            case Process_PreMapCorrection:
                 processPreMapCorrection();
                 break;
-            case Task_MapCorrection:
+            case Process_MapCorrection:
                 processMapCorrection();
                 break;
-            case Task_FixPosition:
+            case Process_FixPosition:
                 processFixPosition();
                 break;
-            case Task_PreCollision:
+            case Process_PreCollision:
                 processPreCollision();
                 break;
             default:
@@ -138,28 +139,28 @@ void gfTask::process(TaskType taskType) {
         }
     } else {
         switch (taskType) {
-            case Task_Collision:
+            case Process_Collision:
                 processCollision();
                 break;
-            case Task_Catch:
+            case Process_Catch:
                 processCatch();
                 break;
-            case Task_Hit:
+            case Process_Hit:
                 processHit();
                 break;
-            case Task_Camera:
+            case Process_Camera:
                 processCamera();
                 break;
-            case Task_FixCamera:
+            case Process_FixCamera:
                 processFixCamera();
                 break;
-            case Task_Effect:
+            case Process_Effect:
                 processEffect();
                 break;
-            case Task_GameProc:
+            case Process_GameProc:
                 processGameProc();
                 break;
-            case Task_End:
+            case Process_End:
                 processEnd();
                 break;
             default:
@@ -171,67 +172,67 @@ void gfTask::process(TaskType taskType) {
 void gfTask::init() { }
 
 void gfTask::processDefault() {
-    unk32 &= ~(1 << Task_Default);
+    unk32 &= ~(1 << Process_Default);
 }
 
 void gfTask::processBegin() {
-    unk32 &= ~(1 << Task_Begin);
+    unk32 &= ~(1 << Process_Begin);
 }
 
 void gfTask::processAnim() {
-    unk32 &= ~(1 << Task_Anim);
+    unk32 &= ~(1 << Process_Anim);
 }
 
 void gfTask::processUpdate() {
-    unk32 &= ~(1 << Task_Update);
+    unk32 &= ~(1 << Process_Update);
 }
 
 void gfTask::processPreMapCorrection() {
-    unk32 &= ~(1 << Task_PreMapCorrection);
+    unk32 &= ~(1 << Process_PreMapCorrection);
 }
 
 void gfTask::processMapCorrection() {
-    unk32 &= ~(1 << Task_MapCorrection);
+    unk32 &= ~(1 << Process_MapCorrection);
 }
 
 void gfTask::processFixPosition() {
-    unk32 &= ~(1 << Task_FixPosition);
+    unk32 &= ~(1 << Process_FixPosition);
 }
 
 void gfTask::processPreCollision() {
-    unk32 &= ~(1 << Task_PreCollision);
+    unk32 &= ~(1 << Process_PreCollision);
 }
 
 void gfTask::processCollision() {
-    unk32 &= ~(1 << Task_Collision);
+    unk32 &= ~(1 << Process_Collision);
 }
 
 void gfTask::processCatch() {
-    unk32 &= ~(1 << Task_Catch);
+    unk32 &= ~(1 << Process_Catch);
 }
 
 void gfTask::processHit() {
-    unk32 &= ~(1 << Task_Hit);
+    unk32 &= ~(1 << Process_Hit);
 }
 
 void gfTask::processCamera() {
-    unk32 &= ~(1 << Task_Camera);
+    unk32 &= ~(1 << Process_Camera);
 }
 
 void gfTask::processFixCamera() {
-    unk32 &= ~(1 << Task_FixCamera);
+    unk32 &= ~(1 << Process_FixCamera);
 }
 
 void gfTask::processEffect() {
-    unk32 &= ~(1 << Task_Effect);
+    unk32 &= ~(1 << Process_Effect);
 }
 
 void gfTask::processGameProc() {
-    unk32 &= ~(1 << Task_GameProc);
+    unk32 &= ~(1 << Process_GameProc);
 }
 
 void gfTask::processEnd() {
-    unk32 &= ~(1 << Task_End);
+    unk32 &= ~(1 << Process_End);
 }
 
 void gfTask::renderPre() { }
@@ -261,35 +262,9 @@ void gfTask::render(Render kind) {
 void gfTask::exit() {
     if (m_status != 3) {
         m_status = 3;
-        unk2C_b6 = false;
-        gfTask* r31 = m_attachedTask;
-        while (r31) {
-            if (r31->m_status != 3) {
-                r31->m_status = 3;
-                r31->unk2C_b6 = false;
-
-                gfTask* r29 = r31->m_attachedTask;
-                while (r29) {
-                    if (r29->m_status != 3) {
-                        r29->m_status = 3;
-                        r29->unk2C_b6 = false;
-
-                        gfTask* r28 = r29->m_attachedTask;
-                        while (r28) {
-                            r28->exit();
-                            r28 = r28->m_nextTask;
-                        }
-                        if (gfTaskScheduler::getInstance()->getUnk0_1() == 4) {
-                            gfTaskScheduler::getInstance()->setUnk2_7();
-                        }
-                    }
-                    r29 = r29->m_nextTask;
-                }
-                if (gfTaskScheduler::getInstance()->getUnk0_1() == 4) {
-                    gfTaskScheduler::getInstance()->setUnk2_7();
-                }
-            }
-            r31 = r31->m_nextTask;
+        m_alive = false;
+        for (gfTask* c = m_attachedTask; c; c = c->m_nextTask) {
+            c->exit();
         }
         if (gfTaskScheduler::getInstance()->getUnk0_1() == 4) {
             gfTaskScheduler::getInstance()->setUnk2_7();

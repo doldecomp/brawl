@@ -101,7 +101,7 @@ void gfTaskScheduler::process(bool p1) {
     s32 i;
     updateStatusPre();
     unk0_1 = 1;
-    // loop over TaskTypes?
+    // loop over ProcessTypes?
     for (i = 0; i < 0x10; i++) {
         unk0_2 = i;
         // UBFIX: logic depends on shift overflow?
@@ -117,12 +117,12 @@ void gfTaskScheduler::process(bool p1) {
                     unkC = curr;
                     unk10 = next;
                     if (p1) {
-                        if (curr->unk2C_b6 && !curr->unk2C_b5) {
-                            curr->process(static_cast<gfTask::TaskType>(i));
+                        if (curr->m_alive && !curr->unk2C_b5) {
+                            curr->process(static_cast<gfTask::ProcessType>(i));
                         }
                     } else {
-                        if (curr->unk2C_b6 && !curr->getFlag1()) {
-                             curr->process(static_cast<gfTask::TaskType>(i));
+                        if (curr->m_alive && !curr->getFlag1()) {
+                             curr->process(static_cast<gfTask::ProcessType>(i));
                         }
                     }
                     if (!curr->unk2C_b0) {
@@ -173,7 +173,7 @@ void gfTaskScheduler::renderPre() {
         unk6 = i;
         for (gfTask* task = r3; task; task = next) {
             next = task->m_0x18;
-            if (task->unk2C_b6 && task->unk2C_b2) {
+            if (task->m_alive && task->unk2C_b2) {
                 task->renderPre();
             }
         }
@@ -190,7 +190,7 @@ void gfTaskScheduler::render() {
         unk6 = i;
         for (gfTask* task = r3; task; task = r31) {
             r31 = task->m_0x18;
-            if (task->unk2C_b6 && task->unk2C_b2) {
+            if (task->m_alive && task->unk2C_b2) {
                 task->render(gfTask::Render_Opa);
             }
         }
@@ -200,7 +200,7 @@ void gfTaskScheduler::render() {
         unk6 = i;
         for (gfTask* task = r3; task; task = r31) {
             r31 = task->m_0x18;
-            if (task->unk2C_b6 && task->unk2C_b2) {
+            if (task->m_alive && task->unk2C_b2) {
                 task->render(gfTask::Render_Xlu);
             }
         }
@@ -217,7 +217,7 @@ void gfTaskScheduler::updateStatus() {
         for (s32 i = 0; i < unk14Size; i++) {
             for (gfTask* curr = unk14[i]; curr; curr = next) {
                 next = curr->m_next;
-                if (curr->unk2C_b6 && curr->getStatus() == 2) {
+                if (curr->m_alive && curr->getStatus() == 2) {
                     curr->setStatus(1);
                 }
                 if (curr->getStatus() == 3) {

@@ -152,6 +152,12 @@ sora/ft/ft_system.cpp:
 	.bss        start:0x8049EA20 end:0x8049EA30
 	.sbss       start:0x805A0380 end:0x805A0388
 
+sora/nt/nt_etc_dwc.cpp:
+	.text       start:0x80150614 end:0x80150CE4
+	.data       start:0x80461070 end:0x804610F8
+	.bss        start:0x8049ECE0 end:0x8049ECF8
+	.sdata      start:0x8059E7E8 end:0x8059E7F0
+
 sora/ad/ad_static_data.cpp:
 	.text       start:0x8015B09C end:0x8015B0E0
 	.data       start:0x804621C0 end:0x804629C8

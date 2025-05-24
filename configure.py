@@ -319,6 +319,7 @@ config.libs = [
             Object(Matching, "sora/ac/ac_anim_cmd_impl.cpp"),
             Object(Matching, "sora/ac/ac_null.cpp"),
             Object(Matching, "sora/ft/ft_system.cpp"),
+            Object(Matching, "sora/nt/nt_etc_dwc.cpp", extra_cflags=["-RTTI off"]),
             Object(Matching, "sora/ad/ad_static_data.cpp"),
             Object(Matching, "sora/st/st_data_container.cpp"),
         ],
