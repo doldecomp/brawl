@@ -92,6 +92,11 @@ sora/ut/ut_list.cpp:
 sora/ef/ef_screen_handle.cpp:
 	.text       start:0x8005E5C8 end:0x8005E5E8
 
+sora/snd/snd_init_thread.cpp:
+	.text       start:0x800797AC end:0x800798E8
+	.data       start:0x80454550 end:0x80454580
+	.sdata      start:0x8059DB80 end:0x8059DB88
+
 sora/cm/cm_controller_default.cpp:
 	.text       start:0x8009F560 end:0x8009F564
 	.data       start:0x80454CC0 end:0x80454CD0
