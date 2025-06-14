@@ -22,6 +22,23 @@ mo_enemy/sora_enemy/resource/em_resource_module_impl.cpp:
 	.text       start:0x0001F57C end:0x0001F82C
 	.data       start:0x00002C18 end:0x00002CF8
 
+mo_enemy/sora_enemy/stop/em_stop_module_impl.cpp:
+	.text       start:0x00022C88 end:0x00022D94
+	.data       start:0x00003190 end:0x00003200
+
+mo_enemy/sora_enemy/wnem/wn_em_resource_module_impl.cpp:
+	.text       start:0x0002CF98 end:0x0002D038
+	.data       start:0x00003EA8 end:0x00003F20
+
+mo_enemy/sora_enemy/wnem/wn_em_heap_module_impl.cpp:
+	.text       start:0x000349D0 end:0x00034AE8
+	.ctors      start:0x00000020 end:0x00000024
+	.data       start:0x00006CD8 end:0x00006D50
+	.bss        start:0x00000260 end:0x00000280
+
+mo_enemy/sora_enemy/wnem/wn_em_report.cpp:
+	.text       start:0x0004833C end:0x0004838C
+
 mo_enemy/mo_enemy.cpp:
 	.text       start:0x0006B760 end:0x0006B7FC
 	.data       start:0x0001FE78 end:0x0001FE85
