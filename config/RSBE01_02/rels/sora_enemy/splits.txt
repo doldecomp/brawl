@@ -26,6 +26,11 @@ mo_enemy/sora_enemy/stop/em_stop_module_impl.cpp:
 	.text       start:0x00022C88 end:0x00022D94
 	.data       start:0x00003190 end:0x00003200
 
+mo_enemy/sora_enemy/em_extend_param_accesser.cpp:
+	.text       start:0x00022D94 end:0x00022EE8
+	.data       start:0x00003200 end:0x00003280
+	.bss        start:0x000000B8 end:0x000001B0
+
 mo_enemy/sora_enemy/wnem/wn_em_resource_module_impl.cpp:
 	.text       start:0x0002CF98 end:0x0002D038
 	.data       start:0x00003EA8 end:0x00003F20
