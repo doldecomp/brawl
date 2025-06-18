@@ -48,6 +48,13 @@ mo_enemy/sora_enemy/boobas/em_boobas_param_accesser.cpp:
 	.data       start:0x00007170 end:0x000071D0
 	.bss        start:0x000002A8 end:0x000002C0
 
+mo_enemy/sora_enemy/roada/em_roada_param_accesser.cpp:
+	.text       start:0x00036FCC end:0x00037258
+	.ctors      start:0x00000034 end:0x00000038
+	.rodata     start:0x00000E98 end:0x00000EA0
+	.data       start:0x000081E8 end:0x00008268
+	.bss        start:0x000002D8 end:0x000002F0
+
 mo_enemy/sora_enemy/killer/em_killer_param_accesser.cpp:
 	.text       start:0x00037464 end:0x000376F4
 	.ctors      start:0x00000038 end:0x0000003C
@@ -71,6 +78,13 @@ mo_enemy/sora_enemy/faulong/em_faulong_param_accesser.cpp:
 	.rodata     start:0x000010A8 end:0x000010B0
 	.data       start:0x00012DC0 end:0x00012E20
 	.bss        start:0x00000628 end:0x00000640
+
+mo_enemy/sora_enemy/ghamgha/em_ghamgha_param_accesser.cpp:
+	.text       start:0x00052A70 end:0x00052CF0
+	.ctors      start:0x000000C0 end:0x000000C4
+	.rodata     start:0x000010D8 end:0x000010E0
+	.data       start:0x00014098 end:0x00014118
+	.bss        start:0x00000698 end:0x000006B0
 
 mo_enemy/sora_enemy/robobeam/em_robobeam_param_accesser.cpp:
 	.text       start:0x00053F00 end:0x0005416C
