@@ -62,8 +62,22 @@ mo_enemy/sora_enemy/killer/em_killer_param_accesser.cpp:
 	.data       start:0x000084B8 end:0x00008518
 	.bss        start:0x000002F0 end:0x00000308
 
+mo_enemy/sora_enemy/cymal/em_cymal_param_accesser.cpp:
+	.text       start:0x0003A3E0 end:0x0003A618
+	.ctors      start:0x00000054 end:0x00000058
+	.rodata     start:0x00000ED8 end:0x00000EE0
+	.data       start:0x00009A18 end:0x00009A78
+	.bss        start:0x00000388 end:0x000003A0
+
 mo_enemy/sora_enemy/wnem/wn_em_report.cpp:
 	.text       start:0x0004833C end:0x0004838C
+
+mo_enemy/sora_enemy/teckin/em_teckin_param_accesser.cpp:
+	.text       start:0x000499C8 end:0x00049C24
+	.ctors      start:0x00000094 end:0x00000098
+	.rodata     start:0x00001060 end:0x00001068
+	.data       start:0x0000FA88 end:0x0000FAE8
+	.bss        start:0x00000598 end:0x000005B0
 
 mo_enemy/sora_enemy/hammerbros/em_hammerbros_param_accesser.cpp:
 	.text       start:0x0004C6B8 end:0x0004C934
@@ -72,12 +86,26 @@ mo_enemy/sora_enemy/hammerbros/em_hammerbros_param_accesser.cpp:
 	.data       start:0x00011100 end:0x00011180
 	.bss        start:0x000005C8 end:0x000005E0
 
+mo_enemy/sora_enemy/bombhead/em_bombhead_param_accesser.cpp:
+	.text       start:0x0004F538 end:0x0004F7DC
+	.ctors      start:0x000000A4 end:0x000000A8
+	.rodata     start:0x00001098 end:0x000010A0
+	.data       start:0x000127F8 end:0x00012878
+	.bss        start:0x000005F8 end:0x00000610
+
 mo_enemy/sora_enemy/faulong/em_faulong_param_accesser.cpp:
 	.text       start:0x0004FEA0 end:0x00050108
 	.ctors      start:0x000000AC end:0x000000B0
 	.rodata     start:0x000010A8 end:0x000010B0
 	.data       start:0x00012DC0 end:0x00012E20
 	.bss        start:0x00000628 end:0x00000640
+
+mo_enemy/sora_enemy/patapata/em_patapata_param_accesser.cpp:
+	.text       start:0x00051038 end:0x000512D0
+	.ctors      start:0x000000B8 end:0x000000BC
+	.rodata     start:0x000010C0 end:0x000010C8
+	.data       start:0x00013350 end:0x000133D0
+	.bss        start:0x00000668 end:0x00000680
 
 mo_enemy/sora_enemy/ghamgha/em_ghamgha_param_accesser.cpp:
 	.text       start:0x00052A70 end:0x00052CF0
