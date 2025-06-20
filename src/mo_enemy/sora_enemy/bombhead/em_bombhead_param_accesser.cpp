@@ -28,7 +28,7 @@ s32 emBombheadParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
         acc->getResourceModule()).unk2C;
     switch (p2) {
         case 24000:
-            return ptr->unk398;
+            return ptr->unk398.i;
         default:
             return 0;
     }
