@@ -32,9 +32,9 @@ s32 emGalfireParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
         acc->getResourceModule()).unk2C;
     switch (p2) {
         case 24000:
-            return ptr->unk294;
+            return ptr->unk294.u8a[0];
         case 24001:
-            return ptr->unk295;
+            return ptr->unk294.u8a[1];
         default:
             return 0;
     }

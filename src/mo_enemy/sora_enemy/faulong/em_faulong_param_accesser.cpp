@@ -12,7 +12,7 @@ float emFaulongParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
         acc->getResourceModule()).unk2C;
     switch (p2) {
         case 4000:
-            return ptr->unk330;
+            return ptr->unk330.f;
         default:
             return 0.0f;
     }
