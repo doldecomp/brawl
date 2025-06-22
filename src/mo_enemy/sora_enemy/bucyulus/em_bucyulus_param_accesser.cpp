@@ -17,7 +17,7 @@ float emBucyulusParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
         case 4001:
             return ptr->unk348;
         case 4002:
-            return ptr->unk34C;
+            return ptr->unk34C.f;
         case 4003:
             return ptr->unk350;
         case 4004:

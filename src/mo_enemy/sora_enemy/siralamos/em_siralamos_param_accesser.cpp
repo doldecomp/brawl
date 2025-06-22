@@ -19,11 +19,11 @@ s32 emSiralamosParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
         acc->getResourceModule()).unk2C;
     switch (p2) {
         case 24000:
-            return ptr->unk4C4;
+            return ptr->unk4C4.i;
         case 24001:
-            return ptr->unk4C8;
+            return ptr->unk4C8.i;
         case 24002:
-            return ptr->unk4CC;
+            return ptr->unk4CC.i;
         default:
             return 0;
     }

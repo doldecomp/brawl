@@ -38,7 +38,7 @@ s32 emNgagogParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
         acc->getResourceModule()).unk2C;
     switch (p2) {
         case 24000:
-            return ptr->unk9E0;
+            return ptr->unk9E0.i;
         default:
             return 0;
     }
