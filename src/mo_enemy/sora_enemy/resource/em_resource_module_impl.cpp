@@ -1,3 +1,4 @@
+#include <em/em_create.h>
 #include <em/em_info.h>
 #include <em/enemy.h>
 #include <em/resource/em_resource_module_impl.h>
@@ -63,7 +64,7 @@ emResourceModuleImpl::emResourceModuleImpl(
     unk20 = addr;
     unk24 = ((void**)addr)[6];
     unk30 = ((void**)addr)[7];
-    unk34 = ((void**)addr)[8];
+    unk34 = ((UnkParamAccesser**)addr)[8];
 
     ModifyParam(create);
     emInfo::getInstance()->getExParamModifyFuncPtr(m_kind)(this, create);

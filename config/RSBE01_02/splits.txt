@@ -92,6 +92,11 @@ sora/ut/ut_list.cpp:
 sora/ef/ef_screen_handle.cpp:
 	.text       start:0x8005E5C8 end:0x8005E5E8
 
+sora/snd/snd_init_thread.cpp:
+	.text       start:0x800797AC end:0x800798E8
+	.data       start:0x80454550 end:0x80454580
+	.sdata      start:0x8059DB80 end:0x8059DB88
+
 sora/cm/cm_controller_default.cpp:
 	.text       start:0x8009F560 end:0x8009F564
 	.data       start:0x80454CC0 end:0x80454CD0
@@ -151,6 +156,12 @@ sora/ft/ft_system.cpp:
 	.ctors      start:0x80406558 end:0x8040655C
 	.bss        start:0x8049EA20 end:0x8049EA30
 	.sbss       start:0x805A0380 end:0x805A0388
+
+sora/nt/nt_etc_dwc.cpp:
+	.text       start:0x80150614 end:0x80150CE4
+	.data       start:0x80461070 end:0x804610F8
+	.bss        start:0x8049ECE0 end:0x8049ECF8
+	.sdata      start:0x8059E7E8 end:0x8059E7F0
 
 sora/ad/ad_static_data.cpp:
 	.text       start:0x8015B09C end:0x8015B0E0
