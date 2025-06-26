@@ -146,6 +146,13 @@ mo_enemy/sora_enemy/mite/em_mite_param_accesser.cpp:
 	.data       start:0x0000BFF0 end:0x0000C088
 	.bss        start:0x00000428 end:0x00000440
 
+mo_enemy/sora_enemy/prim/em_prim_param_accesser.cpp:
+	.text       start:0x00041598 end:0x0004198C
+	.ctors      start:0x00000074 end:0x00000078
+	.rodata     start:0x00000F30 end:0x00000F38
+	.data       start:0x0000CFD8 end:0x0000D0E0
+	.bss        start:0x00000440 end:0x00000458
+
 mo_enemy/sora_enemy/cataguard/em_cataguard_param_accesser.cpp:
 	.text       start:0x00043C6C end:0x00043F68
 	.ctors      start:0x00000078 end:0x0000007C
@@ -338,6 +345,20 @@ mo_enemy/sora_enemy/rayquaza/em_rayquaza_param_accesser.cpp:
 	.data       start:0x00019740 end:0x00019810
 	.bss        start:0x000007A0 end:0x000007B8
 
+mo_enemy/sora_enemy/duon/em_duon_param_accesser.cpp:
+	.text       start:0x0005FFF4 end:0x00060434
+	.ctors      start:0x000000F0 end:0x000000F4
+	.rodata     start:0x00001160 end:0x00001168
+	.data       start:0x0001A788 end:0x0001A838
+	.bss        start:0x000007B8 end:0x000007D0
+
+mo_enemy/sora_enemy/porky/em_porky_param_accesser.cpp:
+	.text       start:0x00061C04 end:0x000620C4
+	.ctors      start:0x000000F4 end:0x000000F8
+	.rodata     start:0x00001178 end:0x00001180
+	.data       start:0x0001B340 end:0x0001B430
+	.bss        start:0x000007D0 end:0x000007E8
+
 mo_enemy/sora_enemy/metaridley/em_metaridley_param_accesser.cpp:
 	.text       start:0x00063F34 end:0x0006427C
 	.ctors      start:0x000000F8 end:0x000000FC
@@ -351,6 +372,13 @@ mo_enemy/sora_enemy/falconflyer/em_falconflyer_param_accesser.cpp:
 	.rodata     start:0x00001190 end:0x00001198
 	.data       start:0x0001CA78 end:0x0001CAE0
 	.bss        start:0x00000800 end:0x00000818
+
+mo_enemy/sora_enemy/taboo/em_taboo_param_accesser.cpp:
+	.text       start:0x00066D44 end:0x0006721C
+	.ctors      start:0x00000100 end:0x00000104
+	.rodata     start:0x000011A0 end:0x000011A8
+	.data       start:0x0001DD40 end:0x0001DED8
+	.bss        start:0x00000818 end:0x00000830
 
 mo_enemy/sora_enemy/masterhand/em_masterhand_param_accesser.cpp:
 	.text       start:0x00068C74 end:0x00068FF0

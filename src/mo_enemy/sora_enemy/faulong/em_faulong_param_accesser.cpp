@@ -23,7 +23,7 @@ s32 emFaulongParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
         acc->getResourceModule()).unk2C;
     switch (p2) {
         case 24000:
-            return ptr->unk32C;
+            return ptr->unk32C.i;
         default:
             return 0;
     }
