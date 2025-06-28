@@ -696,6 +696,7 @@ config.libs = [
             Object(Matching, "mo_enemy/sora_enemy/resource/em_resource_module_impl.cpp"),
             Object(Matching, "mo_enemy/sora_enemy/stop/em_stop_module_impl.cpp"),
             Object(Matching, "mo_enemy/sora_enemy/em_extend_param_accesser.cpp"),
+            Object(Matching, "mo_enemy/sora_enemy/em_target_search_unit.cpp"),
             Object(Matching, "mo_enemy/sora_enemy/wnem/wn_em_resource_module_impl.cpp"),
             Object(Matching, "mo_enemy/sora_enemy/wnem/wn_em_heap_module_impl.cpp"),
             Object(Matching, "mo_enemy/sora_enemy/boobas/em_boobas_param_accesser.cpp"),

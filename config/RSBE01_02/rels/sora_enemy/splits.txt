@@ -31,6 +31,11 @@ mo_enemy/sora_enemy/em_extend_param_accesser.cpp:
 	.data       start:0x00003200 end:0x00003280
 	.bss        start:0x000000B8 end:0x000001B0
 
+mo_enemy/sora_enemy/em_target_search_unit.cpp:
+	.text       start:0x0002893C end:0x00028B30
+	.rodata     start:0x00000D88 end:0x00000D98
+	.data       start:0x000036B0 end:0x00003710
+
 mo_enemy/sora_enemy/wnem/wn_em_resource_module_impl.cpp:
 	.text       start:0x0002CF98 end:0x0002D038
 	.data       start:0x00003EA8 end:0x00003F20
