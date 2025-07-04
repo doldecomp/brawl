@@ -18,6 +18,11 @@ mo_enemy/sora_enemy/em_info.cpp:
 	.data       start:0x00001658 end:0x00001980
 	.bss        start:0x00000038 end:0x00000048
 
+mo_enemy/sora_enemy/em_create.cpp:
+	.text       start:0x0000F8B8 end:0x0000F9AC
+	.rodata     start:0x00000BD8 end:0x00000BE0
+	.data       start:0x00001980 end:0x000019A0
+
 mo_enemy/sora_enemy/resource/em_resource_module_impl.cpp:
 	.text       start:0x0001F57C end:0x0001F82C
 	.data       start:0x00002C18 end:0x00002CF8
@@ -30,6 +35,9 @@ mo_enemy/sora_enemy/em_extend_param_accesser.cpp:
 	.text       start:0x00022D94 end:0x00022EE8
 	.data       start:0x00003200 end:0x00003280
 	.bss        start:0x000000B8 end:0x000001B0
+
+mo_enemy/sora_enemy/em_external_value_accesser.cpp:
+	.text       start:0x000285A8 end:0x0002893C
 
 mo_enemy/sora_enemy/em_target_search_unit.cpp:
 	.text       start:0x0002893C end:0x00028B30
@@ -308,6 +316,10 @@ mo_enemy/sora_enemy/arman/em_arman_param_accesser.cpp:
 	.data       start:0x00016FA0 end:0x00017030
 	.bss        start:0x00000710 end:0x00000728
 
+mo_enemy/sora_enemy/arman/wnem_proc_arman.cpp:
+	.text       start:0x00058878 end:0x00058B0C
+	.data       start:0x00017030 end:0x000170B8
+
 mo_enemy/sora_enemy/galfire/em_galfire_param_accesser.cpp:
 	.text       start:0x00058DB0 end:0x00059078
 	.ctors      start:0x000000D8 end:0x000000DC
@@ -350,6 +362,11 @@ mo_enemy/sora_enemy/rayquaza/em_rayquaza_param_accesser.cpp:
 	.data       start:0x00019740 end:0x00019810
 	.bss        start:0x000007A0 end:0x000007B8
 
+mo_enemy/sora_enemy/rayquaza/wnem_proc_rayquaza.cpp:
+	.text       start:0x0005E3A4 end:0x0005E588
+	.rodata     start:0x00001150 end:0x00001158
+	.data       start:0x00019810 end:0x00019890
+
 mo_enemy/sora_enemy/duon/em_duon_param_accesser.cpp:
 	.text       start:0x0005FFF4 end:0x00060434
 	.ctors      start:0x000000F0 end:0x000000F4
@@ -384,6 +401,11 @@ mo_enemy/sora_enemy/taboo/em_taboo_param_accesser.cpp:
 	.rodata     start:0x000011A0 end:0x000011A8
 	.data       start:0x0001DD40 end:0x0001DED8
 	.bss        start:0x00000818 end:0x00000830
+
+mo_enemy/sora_enemy/taboo/wnem_proc_taboo.cpp:
+	.text       start:0x0006721C end:0x000674AC
+	.rodata     start:0x000011A8 end:0x000011B0
+	.data       start:0x0001DED8 end:0x0001DF88
 
 mo_enemy/sora_enemy/masterhand/em_masterhand_param_accesser.cpp:
 	.text       start:0x00068C74 end:0x00068FF0
