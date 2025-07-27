@@ -82,6 +82,11 @@ sora/gf/gf_system_callback.cpp:
 	.ctors      start:0x80406508 end:0x8040650C
 	.sbss       start:0x805A00A0 end:0x805A00A8
 
+sora/gf/gf_monitor.cpp:
+	.text       start:0x8003D794 end:0x8003D864
+	.data       start:0x8042ADD0 end:0x8042AE08
+	.sdata      start:0x8059C780 end:0x8059C788
+
 sora/mt/mt_prng.cpp:
 	.text       start:0x8003FABC end:0x8003FD5C
 	.ctors      start:0x80406510 end:0x80406514
