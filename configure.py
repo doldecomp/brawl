@@ -305,6 +305,7 @@ config.libs = [
             Object(Matching, "sora/gf/gf_thread.cpp"),
             Object(Matching, "sora/gf/gf_system_callback.cpp"),
             Object(Matching, "sora/gf/gf_monitor.cpp"),
+            Object(Matching, "sora/gf/gf_resource_loader.cpp"),
             Object(Matching, "sora/mt/mt_prng.cpp", extra_cflags=["-RTTI off"]),
             Object(Matching, "sora/st/module.cpp"),
             Object(Matching, "sora/ut/ut_list.cpp"),

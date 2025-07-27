@@ -87,6 +87,9 @@ sora/gf/gf_monitor.cpp:
 	.data       start:0x8042ADD0 end:0x8042AE08
 	.sdata      start:0x8059C780 end:0x8059C788
 
+sora/gf/gf_resource_loader.cpp:
+	.text       start:0x8003D864 end:0x8003DB08
+
 sora/mt/mt_prng.cpp:
 	.text       start:0x8003FABC end:0x8003FD5C
 	.ctors      start:0x80406510 end:0x80406514
