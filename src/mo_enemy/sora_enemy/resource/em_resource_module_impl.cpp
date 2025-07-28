@@ -85,5 +85,5 @@ nw4r::g3d::ResFileData* emResourceModuleImpl::getInfoTexFile(u32 p1, u32 p2) {
         utArchiveManager* arcManager = soArchiveDb::getManager(1);
         return arcManager->getResFileFromId(r30, Data_Type_Tex, r31, 1, -1);
     }
-    return 0;
+    return nullptr;
 }
