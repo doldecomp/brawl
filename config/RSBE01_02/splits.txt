@@ -82,6 +82,11 @@ sora/gf/gf_system_callback.cpp:
 	.ctors      start:0x80406508 end:0x8040650C
 	.sbss       start:0x805A00A0 end:0x805A00A8
 
+sora/gf/gf_capture_util.cpp:
+	.text       start:0x800387AC end:0x80038890
+	.data       start:0x80423518 end:0x80423550
+	.sdata      start:0x8059C6B0 end:0x8059C6B8
+
 sora/gf/gf_monitor.cpp:
 	.text       start:0x8003D794 end:0x8003D864
 	.data       start:0x8042ADD0 end:0x8042AE08
@@ -115,6 +120,12 @@ sora/snd/snd_init_thread.cpp:
 sora/cm/cm_controller_default.cpp:
 	.text       start:0x8009F560 end:0x8009F564
 	.data       start:0x80454CC0 end:0x80454CD0
+
+sora/cm/cm_controller_menu_fixed.cpp:
+	.text       start:0x800A68C0 end:0x800A6A78
+	.data       start:0x80454ED8 end:0x80454F10
+	.sdata      start:0x8059DEB8 end:0x8059DEC0
+	.sdata2     start:0x805A2048 end:0x805A2058
 
 sora/cm/cm_controller_melee_fixed.cpp:
 	.text       start:0x800AA998 end:0x800AA9F8
