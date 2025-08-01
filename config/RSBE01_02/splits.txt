@@ -156,6 +156,9 @@ sora/gr/collision/gr_collision_data.cpp:
 sora/gr/collision/gr_collision_handle.cpp:
 	.text       start:0x801122E4 end:0x8011234C
 
+sora/gr/gr_path.cpp:
+	.text       start:0x80139570 end:0x80139658
+
 sora/ac/ac_cmd_interpreter.cpp:
 	.text       start:0x80139658 end:0x8013CA1C
 	.rodata     start:0x80409520 end:0x8040964C
@@ -182,6 +185,10 @@ sora/ft/ft_system.cpp:
 	.ctors      start:0x80406558 end:0x8040655C
 	.bss        start:0x8049EA20 end:0x8049EA30
 	.sbss       start:0x805A0380 end:0x805A0388
+
+sora/nt/d_net_connect.cpp:
+	.text       start:0x8014CC40 end:0x8014CD5C
+	.data       start:0x80460DC8 end:0x80460E00
 
 sora/nt/nt_etc_dwc.cpp:
 	.text       start:0x80150614 end:0x80150CE4
