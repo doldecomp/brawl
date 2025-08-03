@@ -386,7 +386,7 @@ modules:
   hash: d19a1281ccc2b68b0e7f5c1df7c79c13aa50c4c6
   splits: config/RSBE01_02/rels/st_dxshrine/splits.txt
   symbols: config/RSBE01_02/rels/st_dxshrine/symbols.txt
-  force_active: [HomeBtnIcon]
+  force_active: [create__10stDxShrineFv, HomeBtnIcon]
 - object: files/module/st_dxyorster.rel
   hash: 8cfb4ca5c1c7a0eb83237eb0edb893cbd3b83532
   splits: config/RSBE01_02/rels/st_dxyorster/splits.txt

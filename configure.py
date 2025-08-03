@@ -1076,7 +1076,10 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+			Object(Matching, "mo_stage/st_dxshrine/st_dxshrine.cpp"),
+			Object(Matching, "mo_stage/st_dxshrine/gr_dxshrine.cpp"),
+			],
     },
     {
         "lib": "st_dxyorster",
