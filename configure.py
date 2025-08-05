@@ -312,6 +312,7 @@ config.libs = [
             Object(Matching, "sora/ut/ut_list.cpp"),
             Object(Matching, "sora/ef/ef_screen_handle.cpp"),
             Object(Matching, "sora/snd/snd_init_thread.cpp"),
+            Object(Matching, "sora/mv/mv_THPAudioDecode.cpp"),
             Object(Matching, "sora/cm/cm_controller_default.cpp", extra_cflags=["-RTTI off"]),
             Object(NonMatching, "sora/cm/cm_controller_menu_fixed.cpp"),
             Object(Matching, "sora/cm/cm_controller_melee_fixed.cpp"),

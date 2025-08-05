@@ -117,6 +117,10 @@ sora/snd/snd_init_thread.cpp:
 	.data       start:0x80454550 end:0x80454580
 	.sdata      start:0x8059DB80 end:0x8059DB88
 
+sora/mv/mv_THPAudioDecode.cpp:
+	.text       start:0x8007B0B4 end:0x8007B4A4
+	.sbss       start:0x805A01E0 end:0x805A01E8
+
 sora/cm/cm_controller_default.cpp:
 	.text       start:0x8009F560 end:0x8009F564
 	.data       start:0x80454CC0 end:0x80454CD0
