@@ -11,11 +11,11 @@ gfThread::~gfThread() {
 }
 
 void gfThread::createThread(gfRunnable* startRoutine, u32 priority, u32 stackSize, Heaps::HeapType heap) {
-    unk32C = 0;
+    m_name = nullptr;
     m_stackSize = stackSize;
     m_priority = priority;
     m_stackHi = nullptr;
-    m_attach = 0;
+    m_flags = 0;
     if (startRoutine) {
         m_startRoutine = startRoutine;
     } else {
@@ -24,7 +24,7 @@ void gfThread::createThread(gfRunnable* startRoutine, u32 priority, u32 stackSiz
     void* stack = gfHeapManager::alloc(heap, stackSize);
     m_stackLow = stack;
     m_stackHi = static_cast<char*>(stack) + stackSize;
-    OSCreateThread(&m_thread, startThread, this, m_stackHi, m_stackSize, m_priority, m_attach);
+    OSCreateThread(&m_thread, startThread, this, m_stackHi, m_stackSize, m_priority, m_flags);
 }
 
 void* gfThread::startThread(void* arg) {

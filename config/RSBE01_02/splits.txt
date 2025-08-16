@@ -65,6 +65,11 @@ sora/gf/gf_keep_fb.cpp:
 sora/gf/gf_memory_util.cpp:
 	.text       start:0x80026474 end:0x80026478
 
+sora/gf/gf_pad_thread.cpp:
+	.text       start:0x8002B9C4 end:0x8002BAB0
+	.data       start:0x80422E88 end:0x80422EA8
+	.sdata2     start:0x805A1550 end:0x805A1560
+
 sora/gf/gf_task.cpp:
 	.text       start:0x8002D8B8 end:0x8002E09C
 	.data       start:0x80422EC8 end:0x80422F6C
