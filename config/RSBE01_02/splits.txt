@@ -49,6 +49,9 @@ sora/gf/gf_camera_controller.cpp:
 sora/gf/gf_callback.cpp:
 	.text       start:0x8001A3AC end:0x8001A48C
 
+sora/gf/gf_decomp.cpp:
+	.text       start:0x8001A48C end:0x8001A5C0
+
 sora/gf/gf_error_check.cpp:
 	.text       start:0x8001B574 end:0x8001B784
 	.ctors      start:0x804064EC end:0x804064F0
@@ -99,6 +102,9 @@ sora/gf/gf_monitor.cpp:
 
 sora/gf/gf_resource_loader.cpp:
 	.text       start:0x8003D864 end:0x8003DB08
+
+sora/mt/mt_vector_old.cpp:
+	.text       start:0x8003E244 end:0x8003E35C
 
 sora/mt/mt_prng.cpp:
 	.text       start:0x8003FABC end:0x8003FD5C
