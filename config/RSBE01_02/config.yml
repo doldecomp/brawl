@@ -231,12 +231,12 @@ modules:
   hash: 06c4022b10b50735dfd29f768f19b9a8d122c85e
   splits: config/RSBE01_02/rels/st_config/splits.txt
   symbols: config/RSBE01_02/rels/st_config/symbols.txt
-  force_active: [HomeBtnIcon]
+  force_active: [create__8stConfigFv, HomeBtnIcon]
 - object: files/module/st_final.rel
   hash: 06ddc8f1c6e28cec63304ab53c4da979a1f362cc
   splits: config/RSBE01_02/rels/st_final/splits.txt
   symbols: config/RSBE01_02/rels/st_final/symbols.txt
-  force_active: [HomeBtnIcon]
+  force_active: [create__7stFinalFv, HomeBtnIcon]
 - object: files/module/st_dolpic.rel
   hash: b1ac03ca812bf92ae4ff1cefdbce698ffd7e6bce
   splits: config/RSBE01_02/rels/st_dolpic/splits.txt

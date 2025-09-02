@@ -993,7 +993,10 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_stage/st_config/st_config.cpp"),
+            Object(Matching, "mo_stage/st_config/gr_config.cpp"),
+			],
     },
     {
         "lib": "st_crayon",
@@ -1127,7 +1130,10 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_stage/st_final/st_final.cpp"),
+            Object(Matching, "mo_stage/st_final/gr_final.cpp"),
+			],
     },
     {
         "lib": "st_fzero",
