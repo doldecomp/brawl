@@ -126,6 +126,10 @@ sora/ip/ip_human.cpp:
 	.sdata      start:0x8059C7E0 end:0x8059C800
 	.sdata2     start:0x805A17F8 end:0x805A1818
 
+sora/ip/ip_network_producer.cpp:
+	.text       start:0x8004AE14 end:0x8004AFB4
+	.sbss       start:0x805A00D8 end:0x805A00E0
+
 sora/ef/ef_screen_handle.cpp:
 	.text       start:0x8005E5C8 end:0x8005E5E8
 
