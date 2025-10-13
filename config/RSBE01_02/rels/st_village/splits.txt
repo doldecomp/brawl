@@ -11,6 +11,16 @@ global_destructor_chain.c:
 	.dtors      start:0x00000000 end:0x00000008
 	.bss        start:0x00000000 end:0x00000004
 
+mo_stage/st_village/gr_village.cpp:
+	.text       start:0x00001F98 end:0x000022DC
+	.rodata     start:0x00000028 end:0x00000030
+	.data       start:0x00000A68 end:0x00000CF0
+
+mo_stage/st_village/gr_village_ashiba.cpp:
+	.text       start:0x00002568 end:0x00002B80
+	.rodata     start:0x00000030 end:0x00000048
+	.data       start:0x00001068 end:0x00001298
+
 mo_stage/mo_stage.cpp:
 	.text       start:0x0000DA54 end:0x0000DAF0
 	.data       start:0x00004500 end:0x0000450D

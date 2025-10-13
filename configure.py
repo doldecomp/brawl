@@ -1333,7 +1333,10 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_stage/st_village/gr_village.cpp"),
+            Object(NonMatching, "mo_stage/st_village/gr_village_ashiba.cpp"),
+            ],
     },
 ]
 
