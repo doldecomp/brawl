@@ -8,19 +8,18 @@ const float EFF_FRAME_MAX2 = 6100.0f;
 class grFinal : public grYakumono {
 protected:
     char unk1;
-    float unk_float;
-    u8 type;
-    u8 step;
-    u16 padding;
+    float unk4;
+    u8 m_type;
+    u8 m_step;
+    u16 m_padding;
 
 public:
-    grFinal(const char* taskName) : grYakumono(taskName)
-    {
+    grFinal(const char* taskName) : grYakumono(taskName) {
         unk1 = 0;
-        unk_float = EFF_SOMETHING;
-        type = 0;
-        step = 0;
-		setupMelee();
+        unk4 = EFF_SOMETHING;
+        m_type = 0;
+        m_step = 0;
+        setupMelee();
     };
     virtual void update(float deltaFrame);
     virtual ~grFinal();

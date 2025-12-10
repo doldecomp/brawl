@@ -36,8 +36,8 @@ void stDxShrine::createObj() {
     grDxShrine *ground = grDxShrine::create(0,"", "grDxShrineMainBg");
     if (ground) {
         addGround(ground);
-        ground->startup(this->m_fileData, 0, gfSceneRoot::Layer_Ground);
-        ground->setStageData(&this->m_shrineStageData);
+        ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
+        ground->setStageData(&m_shrineStageData);
     }
     createCollision(m_fileData, 2, 0);
     testStageParamInit(m_fileData, 0xA);
@@ -56,9 +56,8 @@ void stDxShrine::createObj() {
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", m_pokeTrainerPos, 0);
 }
 
-void stDxShrine::update(float deltaFrame) {
-}
+void stDxShrine::update(float deltaFrame) { }
 
 void stDxShrine::initStageData() {
-    memset(&this->m_shrineStageData,0,1);
+    memset(&m_shrineStageData,0,1);
 }

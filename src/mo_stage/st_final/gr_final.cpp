@@ -2,69 +2,54 @@
 #include <ec/ec_mgr.h>
 #include <memory.h>
 
-grFinal* grFinal::create(int mdlIndex, const char* tgtNodeName, const char* taskName)
-{
+grFinal* grFinal::create(int mdlIndex, const char* tgtNodeName, const char* taskName) {
     grFinal* ground = new (Heaps::StageInstance) grFinal(taskName);
-	if (ground) {	
-//	    ground->setupMelee();
-	    ground->setMdlIndex(mdlIndex);
-	    ground->setTgtNode(tgtNodeName);
-	}
-
+    if (ground) {
+        ground->setMdlIndex(mdlIndex);
+        ground->setTgtNode(tgtNodeName);
+    }
     return ground;
 }
 
-grFinal::~grFinal() {
-	
+grFinal::~grFinal() { }
+
+void grFinal::update(float deltaFrame) {
+    updateEff();
 }
 
-void grFinal::update(float deltaFrame)
-{
-    this->updateEff();
-}
-
-void grFinal::updateEff()
-{
-    if (this->type == 0)
-    {
-        switch (this->step)
-        {
+void grFinal::updateEff() {
+    if (m_type == 0) {
+        switch (m_step) {
         case 0:
             g_ecMgr->setDrawPrio(1);
             g_ecMgr->setEffect(ef_ptc_stg_final_zenpan);
             g_ecMgr->setDrawPrio(0xffffffff);
-            unk_float = EFF_SOMETHING;
-            step++;
+            unk4 = EFF_SOMETHING;
+            m_step++;
             break;
         case 1:
-            if (!(this->getMotionFrame(0) < 2540.0f))
-            {
+            if (!(getMotionFrame(0) < 2540.0f)) {
                 g_ecMgr->setDrawPrio(1);
                 u32 unk = g_ecMgr->setEffect(ef_ptc_stg_final_star);
                 g_ecMgr->setDrawPrio(0xffffffff);
-                g_ecMgr->setParent(unk, this->m_sceneModels[0], "spaceB", 0); // sceneModel is actually supposed to be a wrapper of some kind
-                step++;
+                g_ecMgr->setParent(unk, m_sceneModels[0], "spaceB", 0); // sceneModel is actually supposed to be a wrapper of some kind
+                m_step++;
             }
             break;
         case 2:
-			if (!(this->getMotionFrame(0) < 6100.0f))
-//            if (this->getMotionFrame(0) > 6100.0f)
-            {
+            if (!(getMotionFrame(0) < 6100.0f)) {
                 g_ecMgr->setDrawPrio(1);
                 u32 unk = g_ecMgr->setEffect(ef_ptc_stg_final_kirakira);
                 g_ecMgr->setDrawPrio(0xffffffff);
-                g_ecMgr->setParent(unk, this->m_sceneModels[0], "spaceF", 0); // sceneModel is actually supposed to be a wrapper of some kind
-                step++;
+                g_ecMgr->setParent(unk, m_sceneModels[0], "spaceF", 0); // sceneModel is actually supposed to be a wrapper of some kind
+                m_step++;
             }
             break;
         case 3:
-            if (this->getMotionFrame(0) < this->unk_float)
-            {
-                step = 0;
-            }
-            else
-            {	
-				this->unk_float = this->getMotionFrame(0);
+            if (getMotionFrame(0) < unk4) {
+                m_step = 0;
+            } else {
+                unk4 = getMotionFrame(0);
             }
             break;
         }

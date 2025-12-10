@@ -65,11 +65,11 @@ void stFinal::createObj()
     nw4r::g3d::ResFileData* scnData = static_cast<nw4r::g3d::ResFileData*>(m_fileData->getData(Data_Type_Scene, 0, 0xfffe));
     registScnAnim(scnData, 0);
     initPosPokeTrainer(1, 0);
-    createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_pokeTrainerPos, 0x0);
+    createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", m_pokeTrainerPos, 0x0);
 }
 
 void grFinal::setType(int type) {
-    this->type = type;
+    m_type = type;
 }
 
 void stFinal::update(float deltaFrame) { }

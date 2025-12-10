@@ -327,7 +327,7 @@ config.libs = [
             Object(Matching, "sora/if/if_adv_task.cpp"),
             Object(Matching, "sora/gr/collision/gr_collision_data.cpp"),
             Object(Matching, "sora/gr/collision/gr_collision_handle.cpp"),
-            Object(NonMatching, "sora/gr/gr_path.cpp"),
+            Object(Matching, "sora/gr/gr_path.cpp"),
             Object(NonMatching, "sora/ac/ac_cmd_interpreter.cpp"),
             Object(Matching, "sora/ac/ac_anim_cmd_impl.cpp"),
             Object(Matching, "sora/ac/ac_null.cpp"),

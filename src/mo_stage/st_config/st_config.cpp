@@ -36,7 +36,7 @@ void stConfig::createObj() {
     grConfig *ground = grConfig::create(1,"", "grConfigMainBg");
     if (ground) {
         addGround(ground);
-        ground->startup(this->m_fileData, 0, gfSceneRoot::Layer_Ground);
+        ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
         createCollision(m_fileData, 2, 0);
         initCameraParam();
         nw4r::g3d::ResFile posData(m_fileData->getData(Data_Type_Model, 0x64, 0xFFFE));
