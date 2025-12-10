@@ -311,6 +311,7 @@ config.libs = [
             Object(Matching, "sora/gf/gf_resource_loader.cpp"),
             Object(NonMatching, "sora/mt/mt_vector_old.cpp"),
             Object(Matching, "sora/mt/mt_prng.cpp", extra_cflags=["-RTTI off"]),
+            Object(Matching, "sora/mt/mt_prng_log.cpp"),
             Object(Matching, "sora/st/module.cpp"),
             Object(Matching, "sora/ut/ut_list.cpp"),
             Object(Matching, "sora/ip/ip_human.cpp"),

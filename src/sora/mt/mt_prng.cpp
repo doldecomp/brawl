@@ -3,11 +3,11 @@
 #include <types.h>
 
 void mtRand::init(s32 p1) {
-    this->seed = p1;
+    m_seed = p1;
 }
 
 s32 mtRand::generate() {
-    return this->seed = (this->seed * MultVal + AddVal) & mtRand::getMax();
+    return m_seed = (m_seed * MultVal + AddVal) & mtRand::getMax();
 }
 
 s32 mtRand::randi() {
@@ -15,7 +15,6 @@ s32 mtRand::randi() {
 }
 
 static mtRand g_mtRand(0);
-extern mtPrngLogManager g_mtPrngLogManager;
 
 // [0, 1] random float
 float mtRand::randf() {

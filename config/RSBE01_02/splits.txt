@@ -113,6 +113,11 @@ sora/mt/mt_prng.cpp:
 	.sbss       start:0x805A00B8 end:0x805A00C0
 	.sdata2     start:0x805A1748 end:0x805A176C
 
+sora/mt/mt_prng_log.cpp:
+	.text       start:0x8004392C end:0x80043B18
+	.ctors      start:0x80406514 end:0x80406518
+	.bss        start:0x804977A8 end:0x804977C0
+
 sora/st/module.cpp:
 	.text       start:0x80043B18 end:0x80043B6C
 	.data       start:0x8042AEB0 end:0x8042B598
