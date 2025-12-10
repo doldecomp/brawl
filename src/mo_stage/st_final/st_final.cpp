@@ -16,9 +16,7 @@
 
 stClassInfoImpl<Stages::Final, stFinal> stFinal::bss_loc_14;
 
-stFinal::stFinal() : stMelee("stFinal", Stages::Final) {
-
-}
+stFinal::stFinal() : stMelee("stFinal", Stages::Final) { }
 
 stFinal* stFinal::create() {
     return new (Heaps::StageInstance) stFinal;
@@ -37,19 +35,17 @@ void stFinal::createObj()
     testStageParamInit(m_fileData, 0xA);
     testStageDataInit(m_fileData, 0x14, 1);
     grFinal* ground = grFinal::create(1, "", "grFinalMainBg");
-    if (ground != NULL)
-    {
+    if (ground != nullptr) {
         addGround(ground);
-        ground->startup(m_fileData, 0, 0);
+        ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
         ground->setStageData(m_stageData);
         ground->setType(0);
         ground->setDontMoveGround();
     }
     ground = grFinal::create(2, "", "grFinalStage");
-    if (ground != NULL)
-    {
+    if (ground != nullptr) {
         addGround(ground);
-        ground->startup(m_fileData, 0, 0);
+        ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
         ground->setStageData(m_stageData);
         ground->setType(1);
         ground->setDontMoveGround();
@@ -57,13 +53,10 @@ void stFinal::createObj()
     createCollision(m_fileData, 2, NULL);
     initCameraParam();
     nw4r::g3d::ResFile posData(m_fileData->getData(Data_Type_Model, 0x64, 0xfffe));
-    if (posData.ptr())
-    {
+    if (posData.ptr()) {
         nw4r::g3d::ResFile copyPosData = posData;
         createStagePositions(&copyPosData);
-    }
-    else
-    {
+    } else {
         // if no stgPos model in pac, use defaults
         createStagePositions();
     }
@@ -75,11 +68,8 @@ void stFinal::createObj()
     createObjPokeTrainer(m_fileData, 0x65, "PokeTrainer00", this->m_pokeTrainerPos, 0x0);
 }
 
-void grFinal::setType(int type)
-{
+void grFinal::setType(int type) {
     this->type = type;
 }
 
-void stFinal::update(float deltaFrame) {
-    
-}
+void stFinal::update(float deltaFrame) { }

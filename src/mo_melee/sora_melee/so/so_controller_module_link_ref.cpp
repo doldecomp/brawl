@@ -1,5 +1,6 @@
 #include <so/controller/so_controller_impl.h>
 #include <so/controller/so_controller_module_link_ref.h>
+#include <so/link/so_link_connection_server.h>
 #include <so/link/so_link_module_impl.h>
 #include <so/so_external_value_accesser.h>
 #include <so/so_module_accesser.h>
@@ -22,35 +23,40 @@ void soControllerModuleLinkRef::resetTrigger() {
 }
 
 void soControllerModuleLinkRef::setRumble(s32 p1, s32 p2, bool p3, s32 p4) {
-    StageObject* r3 = m_moAccessor->m_enumerationStart->m_linkModule->searchParentAttr(4);
+    StageObject* r3 = m_moAccessor->m_enumerationStart->m_linkModule
+        ->searchParentAttr(soLinkConnection::Attribute_Reference_Parent_Unknown_4);
     if (r3) {
         soExternalValueAccesser::getControllerModule(r3)->setRumble(p1, p2, p3, p4);
     }
 }
 
 void soControllerModuleLinkRef::stopRumbleKind(s32 p1, s32 p2) {
-    StageObject* r3 = m_moAccessor->m_enumerationStart->m_linkModule->searchParentAttr(4);
+    StageObject* r3 = m_moAccessor->m_enumerationStart->m_linkModule
+        ->searchParentAttr(soLinkConnection::Attribute_Reference_Parent_Unknown_4);
     if (r3) {
         soExternalValueAccesser::getControllerModule(r3)->stopRumbleKind(p1, p2);
     }
 }
 
 void soControllerModuleLinkRef::stopRumble(bool p1) {
-    StageObject* r3 = m_moAccessor->m_enumerationStart->m_linkModule->searchParentAttr(4);
+    StageObject* r3 = m_moAccessor->m_enumerationStart->m_linkModule
+        ->searchParentAttr(soLinkConnection::Attribute_Reference_Parent_Unknown_4);
     if (r3) {
         soExternalValueAccesser::getControllerModule(r3)->stopRumble(p1);
     }
 }
 
 void soControllerModuleLinkRef::setRumbleAll(s32 p1, s32 p2, s32 p3) {
-    StageObject* r3 = m_moAccessor->m_enumerationStart->m_linkModule->searchParentAttr(4);
+    StageObject* r3 = m_moAccessor->m_enumerationStart->m_linkModule
+        ->searchParentAttr(soLinkConnection::Attribute_Reference_Parent_Unknown_4);
     if (r3) {
         soExternalValueAccesser::getControllerModule(r3)->setRumbleAll(p1, p2, p3);
     }
 }
 
 void soControllerModuleLinkRef::stopRumbleAll(s32 p1, s32 p2) {
-    StageObject* r3 = m_moAccessor->m_enumerationStart->m_linkModule->searchParentAttr(4);
+    StageObject* r3 = m_moAccessor->m_enumerationStart->m_linkModule
+        ->searchParentAttr(soLinkConnection::Attribute_Reference_Parent_Unknown_4);
     if (r3) {
         soExternalValueAccesser::getControllerModule(r3)->stopRumbleAll(p1, p2);
     }

@@ -16,9 +16,7 @@
 
 stClassInfoImpl<Stages::Config, stConfig> stConfig::bss_loc_14;
 
-stConfig::stConfig() : stMelee("stConfig", Stages::Config) {
-//	initStageData();
-}
+stConfig::stConfig() : stMelee("stConfig", Stages::Config) { }
 
 stConfig* stConfig::create() {
     return new (Heaps::StageInstance) stConfig;
@@ -38,7 +36,7 @@ void stConfig::createObj() {
     grConfig *ground = grConfig::create(1,"", "grConfigMainBg");
     if (ground) {
         addGround(ground);
-        ground->startup(this->m_fileData,0,0);
+        ground->startup(this->m_fileData, 0, gfSceneRoot::Layer_Ground);
         createCollision(m_fileData, 2, 0);
         initCameraParam();
         nw4r::g3d::ResFile posData(m_fileData->getData(Data_Type_Model, 0x64, 0xFFFE));
@@ -53,4 +51,3 @@ void stConfig::createObj() {
         registScnAnim(static_cast<nw4r::g3d::ResFileData*>(m_fileData->getData(Data_Type_Scene, 0, 0xFFFE)), 0);
     }
 }
-

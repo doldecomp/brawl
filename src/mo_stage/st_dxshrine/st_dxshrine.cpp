@@ -17,7 +17,7 @@
 stClassInfoImpl<Stages::DxShrine, stDxShrine> stDxShrine::bss_loc_14;
 
 stDxShrine::stDxShrine() : stMelee("stDxShrine", Stages::DxShrine) {
-	initStageData();
+    initStageData();
 }
 
 stDxShrine* stDxShrine::create() {
@@ -33,12 +33,12 @@ bool stDxShrine::loading() {
 }
 
 void stDxShrine::createObj() {
-	grDxShrine *ground = grDxShrine::create(0,"", "grDxShrineMainBg");
-	if (ground) {
-		addGround(ground);
-		ground->startup(this->m_fileData,0,0);
-		ground->setStageData(&this->m_shrineStageData);
-	}
+    grDxShrine *ground = grDxShrine::create(0,"", "grDxShrineMainBg");
+    if (ground) {
+        addGround(ground);
+        ground->startup(this->m_fileData, 0, gfSceneRoot::Layer_Ground);
+        ground->setStageData(&this->m_shrineStageData);
+    }
     createCollision(m_fileData, 2, 0);
     testStageParamInit(m_fileData, 0xA);
     initCameraParam();
@@ -60,5 +60,5 @@ void stDxShrine::update(float deltaFrame) {
 }
 
 void stDxShrine::initStageData() {
-	memset(&this->m_shrineStageData,0,1);
+    memset(&this->m_shrineStageData,0,1);
 }

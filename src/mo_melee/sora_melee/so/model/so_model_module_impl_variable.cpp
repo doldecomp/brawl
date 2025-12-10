@@ -11,7 +11,7 @@ soModelModuleImplVariable::~soModelModuleImplVariable() { }
 
 static inline u32 minus400(u32 p1) { return p1 - 400; }
 
-u32 soModelModuleImplVariable::getRealNodeId(u32 p1) {
+int soModelModuleImplVariable::getRealNodeId(u32 p1) {
     if (p1 < 400 || p1 == 0xFFFFFFFF) {
         return p1;
     }
@@ -71,12 +71,12 @@ void soModelModuleImplVariable::setNodeTranslate(u32 p1, Vec3f* xlate) {
     return soModelModuleImpl::setNodeTranslate(getRealNodeId(p1), xlate);
 }
 
-u32 soModelModuleImplVariable::getNodeId(const char* nodeName) {
+int soModelModuleImplVariable::getNodeId(const char* nodeName) {
     u32 id = soModelModuleImpl::getNodeId(nodeName);
     return (!unkCC) ? id : unkCC[1][id];
 }
 
-u32 soModelModuleImplVariable::getCorrectNodeId(u32 p1) {
+int soModelModuleImplVariable::getCorrectNodeId(u32 p1) {
     return (p1 >= 400) ? p1 : soModelModuleImpl::getCorrectNodeId(p1);
 }
 
@@ -88,7 +88,7 @@ Vec3f soModelModuleImplVariable::getNodeGlobalPosition(u32 p1, bool p2) {
     return soModelModuleImpl::getNodeGlobalPosition(getRealNodeId(p1), p2);
 }
 
-Vec3f soModelModuleImplVariable::getNodeGlobalPosition(u32 p1, Vec3f* p2, u32 p3, bool p4) {
+Vec3f soModelModuleImplVariable::getNodeGlobalPosition(u32 p1, Vec3f* p2, bool p3, bool p4) {
     return soModelModuleImpl::getNodeGlobalPosition(getRealNodeId(p1), p2, p3, p4);
 }
 
@@ -112,7 +112,7 @@ Vec3f soModelModuleImplVariable::getNodeGlobalRotation(u32 p1, bool p2) {
     return soModelModuleImpl::getNodeGlobalRotation(getRealNodeId(p1), p2);
 }
 
-bool soModelModuleImplVariable::isNode(u32 p1) {
+bool soModelModuleImplVariable::isNode(int p1) {
     return soModelModuleImpl::isNode(getRealNodeId(p1));
 }
 
@@ -143,7 +143,7 @@ void soModelModuleImplVariable::setNodeVisibility(u32 p1, bool p2, bool p3) {
     }
 }
 
-void soModelModuleImplVariable::setNodeVisibility(s32 p1, u32* p2, bool p3, bool p4) {
+void soModelModuleImplVariable::setNodeVisibility(int p1, u32* p2, bool p3, bool p4) {
     if (getScnMdl(p4)) {
         for (s32 i = 0; i < p1; i++) {
             u32 realId = getRealNodeId(p2[i]);

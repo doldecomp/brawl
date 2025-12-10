@@ -55,7 +55,7 @@ void stCrayon::createObj() {
         Ground* gr = getGround(i);
         if (gr) {
             gr->setStageData(m_stageData);
-            gr->startup(m_fileData, false, 0);
+            gr->startup(m_fileData, false, gfSceneRoot::Layer_Ground);
             static_cast<grCrayon*>(gr)->unk150 = &unk1E4;
         }
     }
@@ -72,7 +72,7 @@ void stCrayon::createObj() {
         Ground* gr = getGround(j);
         if (gr) {
             gr->setStageData(m_stageData);
-            gr->startup(m_fileData, false, 0);
+            gr->startup(m_fileData, false, gfSceneRoot::Layer_Ground);
             static_cast<grCrayonYakumonoH*>(gr)->setPosLimitWork(&unk1E8);
         }
     }
