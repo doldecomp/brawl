@@ -326,6 +326,7 @@ config.libs = [
             Object(NonMatching, "sora/ty/ty_fig_listmng.cpp"),
             Object(Matching, "sora/if/if_wifipr_task.cpp"),
             Object(Matching, "sora/if/if_adv_task.cpp"),
+            Object(Matching, "sora/if/if_stgedit.cpp"),
             Object(Matching, "sora/gr/collision/gr_collision_data.cpp"),
             Object(Matching, "sora/gr/collision/gr_collision_handle.cpp"),
             Object(Matching, "sora/gr/gr_path.cpp"),

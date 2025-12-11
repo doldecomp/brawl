@@ -180,6 +180,12 @@ sora/if/if_adv_task.cpp:
 	.data       start:0x8045D070 end:0x8045D0F8
 	.sdata      start:0x8059E5F0 end:0x8059E5F8
 
+sora/if/if_stgedit.cpp:
+	.text       start:0x8010EFD4 end:0x8010F310
+	.data       start:0x8045D810 end:0x8045D840
+	.sdata      start:0x8059E690 end:0x8059E6A0
+	.sdata2     start:0x805A28C8 end:0x805A28E8
+
 sora/gr/collision/gr_collision_data.cpp:
 	.text       start:0x80110720 end:0x80110748
 
