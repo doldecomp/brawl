@@ -59,6 +59,9 @@ sora/gf/gf_error_check.cpp:
 	.bss        start:0x804948E8 end:0x80494900
 	.sdata      start:0x8059C508 end:0x8059C520
 
+sora/gf/gf_file_io_handle.cpp:
+	.text       start:0x80020B38 end:0x80022054
+
 sora/gf/gf_gameframe_counter.cpp:
 	.text       start:0x800241B4 end:0x800242DC
 

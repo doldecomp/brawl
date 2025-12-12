@@ -5,10 +5,8 @@
 #include <ty/ty_fig_listmng.h>
 #include <ut/ut_relocate.h>
 
-tyFigListDataManager::tyFigListDataManager(bool loadFile) {
-    m_isLoaded = false;
-    m_fileHandle.fileToLoad = 0;
-    m_isUnloaded = true;
+tyFigListDataManager::tyFigListDataManager(bool loadFile) :
+        m_isLoaded(false), m_isUnloaded(true) {
     if (loadFile) {
         loadRequest();
     }
