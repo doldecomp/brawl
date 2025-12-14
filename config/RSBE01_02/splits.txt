@@ -62,6 +62,9 @@ sora/gf/gf_error_check.cpp:
 sora/gf/gf_file_io_handle.cpp:
 	.text       start:0x80020B38 end:0x80022054
 
+sora/gf/gf_file_io_request.cpp:
+	.text       start:0x80022054 end:0x80022490
+
 sora/gf/gf_gameframe_counter.cpp:
 	.text       start:0x800241B4 end:0x800242DC
 

@@ -1,4 +1,4 @@
-#include <OS/OSInterrupt.h>
+#include <revolution/OS/OSInterrupt.h>
 #include <gf/gf_heap_manager.h>
 #include <gf/gf_file_io_handle.h>
 #include <gf/gf_file_io_manager.h>
@@ -24,7 +24,7 @@ bool gfFileIOHandle::createDirRequest(const char* filepath) {
     if (m_request) {
         m_request->setParam(filepath);
         m_request->m_kind = gfFileIORequest::CreateDir;
-        m_request->unk17_2 = false;
+        m_request->unk17_b1 = false;
         g_gfFileIOManager->push(m_request);
         return true;
     }
@@ -72,7 +72,7 @@ bool gfFileIOHandle::checkDirRequest(const char* filepath) {
     if (m_request) {
         m_request->setParam(filepath);
         m_request->m_kind = gfFileIORequest::CheckDir;
-        m_request->unk17_2 = false;
+        m_request->unk17_b1 = false;
         g_gfFileIOManager->push(m_request);
         return true;
     }
@@ -133,7 +133,7 @@ bool gfFileIOHandle::mountSD() {
         m_request->setParam(nullptr);
         m_request->m_kind = gfFileIORequest::MountSD;
         m_request->m_vfUnk = 0;
-        m_request->unk17_2 = false;
+        m_request->unk17_b1 = false;
         g_gfFileIOManager->push(m_request);
         return true;
     }
@@ -146,7 +146,7 @@ bool gfFileIOHandle::unmountSD() {
         m_request->setParam(nullptr);
         m_request->m_kind = gfFileIORequest::UnmountSD;
         m_request->m_vfUnk = 0;
-        m_request->unk17_2 = false;
+        m_request->unk17_b1 = false;
         g_gfFileIOManager->push(m_request);
         return true;
     }
@@ -194,7 +194,7 @@ bool gfFileIOHandle::readRequest(const char* filepath, HeapType heap, int length
     ensureLoaded();
     if (m_request) {
         m_request->setReadParam(filepath, heapPtr, length, offset);
-        m_request->unk18_1 = true;
+        m_request->unk18_b5 = true;
         g_gfFileIOManager->push(m_request);
         return true;
     }
@@ -205,7 +205,7 @@ bool gfFileIOHandle::readRequest(const char* filepath, const void* heapPtr, int 
     ensureLoaded();
     if (m_request) {
         m_request->setReadParam(filepath, heapPtr, length, offset);
-        m_request->unk18_1 = true;
+        m_request->unk18_b5 = true;
         g_gfFileIOManager->push(m_request);
         return true;
     }
@@ -216,7 +216,7 @@ bool gfFileIOHandle::readRequest(const char* filepath, void* heapPtr, int length
     ensureLoaded();
     if (m_request) {
         m_request->setReadParam(filepath, heapPtr, length, offset);
-        m_request->unk18_1 = true;
+        m_request->unk18_b5 = true;
         g_gfFileIOManager->push(m_request);
         return true;
     }
@@ -229,7 +229,7 @@ bool gfFileIOHandle::readRequestCached(const char* filepath, HeapType heap, int 
     if (m_request) {
         m_request->setReadParam(filepath, heapPtr, length, offset);
         m_request->m_isCached = true;
-        m_request->unk18_1 = true;
+        m_request->unk18_b5 = true;
         g_gfFileIOManager->push(m_request);
         return true;
     }
@@ -241,7 +241,7 @@ bool gfFileIOHandle::readRequestCached(const char* filepath, const void* heapPtr
     if (m_request) {
         m_request->setReadParam(filepath, heapPtr, length, offset);
         m_request->m_isCached = true;
-        m_request->unk18_1 = true;
+        m_request->unk18_b5 = true;
         g_gfFileIOManager->push(m_request);
         return true;
     }
@@ -253,7 +253,7 @@ bool gfFileIOHandle::readRequestCached(const char* filepath, void* heapPtr, int 
     if (m_request) {
         m_request->setReadParam(filepath, heapPtr, length, offset);
         m_request->m_isCached = true;
-        m_request->unk18_1 = true;
+        m_request->unk18_b5 = true;
         g_gfFileIOManager->push(m_request);
         return true;
     }
@@ -265,7 +265,7 @@ bool gfFileIOHandle::readRequestNoSync(const char* filepath, HeapType heap, int 
     ensureLoaded();
     if (m_request) {
         m_request->setReadParam(filepath, heapPtr, length, offset);
-        m_request->unk17_2 = false;
+        m_request->unk17_b1 = false;
         g_gfFileIOManager->push(m_request);
         return true;
     }
@@ -276,7 +276,7 @@ bool gfFileIOHandle::readRequestNoSync(const char* filepath, void* heapPtr, int 
     ensureLoaded();
     if (m_request) {
         m_request->setReadParam(filepath, heapPtr, length, offset);
-        m_request->unk17_2 = false;
+        m_request->unk17_b1 = false;
         g_gfFileIOManager->push(m_request);
         return true;
     }
@@ -287,8 +287,8 @@ bool gfFileIOHandle::read(const char* filepath, HeapType heap, int offset) {
     const void* heapPtr = gfHeapManager::getHeap(heap);
     ensureLoaded();
     m_request->setReadParam(filepath, heapPtr, 0, offset);
-    m_request->unk17_2 = false;
-    m_request->unk18_0 = true;
+    m_request->unk17_b1 = false;
+    m_request->unk18_b7 = true;
     g_gfFileIOManager->push(m_request);
 
     goto loop;
@@ -306,8 +306,8 @@ end:
 bool gfFileIOHandle::read(const char* filepath, const void* heapPtr, int offset) {
     ensureLoaded();
     m_request->setReadParam(filepath, heapPtr, 0, offset);
-    m_request->unk17_2 = false;
-    m_request->unk18_0 = true;
+    m_request->unk17_b1 = false;
+    m_request->unk18_b7 = true;
     g_gfFileIOManager->push(m_request);
 
     goto loop;
@@ -325,8 +325,8 @@ end:
 bool gfFileIOHandle::read(const char* filepath, void* heapPtr, int offset) {
     ensureLoaded();
     m_request->setReadParam(filepath, heapPtr, 0, offset);
-    m_request->unk17_2 = false;
-    m_request->unk18_0 = true;
+    m_request->unk17_b1 = false;
+    m_request->unk18_b7 = true;
     g_gfFileIOManager->push(m_request);
 
     goto loop;
@@ -344,7 +344,7 @@ end:
 bool gfFileIOHandle::writeRequest(const char* filepath, void* heapPtr, int length, int offset) {
     ensureLoaded();
     m_request->setWriteParam(filepath, heapPtr, length, offset);
-    m_request->unk17_2 = false;
+    m_request->unk17_b1 = false;
     g_gfFileIOManager->push(m_request);
     return true;
 }
@@ -354,7 +354,7 @@ bool gfFileIOHandle::cancelRequest() {
     if (m_request) {
         if (!m_request->m_isCancelRequested) {
             int status = OSDisableInterrupts();
-            bool r30 = m_request->unk17_0;
+            bool r30 = m_request->unk17_b5;
             if (!r30) {
                 m_request->m_isCancelRequested = true;
             }
@@ -406,7 +406,7 @@ void* gfFileIOHandle::getBuffer() const {
     return m_request->m_dest;
 }
 
-void* gfFileIOHandle::getPool() const {
+const void* gfFileIOHandle::getPool() const {
     return m_request->m_heap;
 }
 
@@ -416,7 +416,7 @@ void gfFileIOHandle::release() {
         if (m_request->m_isCancelRequested && !m_request->m_isCanceled) {
             int status = OSDisableInterrupts();
             if (!m_request->m_isCanceled) {
-                m_request->unk17_11 = true;
+                m_request->unk17_b2 = true;
                 m_request->m_notifyCallback = nullptr;
                 r31 = false;
             }

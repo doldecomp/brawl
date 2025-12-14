@@ -299,6 +299,7 @@ config.libs = [
             Object(Matching, "sora/gf/gf_decomp.cpp"),
             Object(Matching, "sora/gf/gf_error_check.cpp"),
             Object(Matching, "sora/gf/gf_file_io_handle.cpp"),
+            Object(Matching, "sora/gf/gf_file_io_request.cpp"),
             Object(Matching, "sora/gf/gf_gameframe_counter.cpp"),
             Object(Matching, "sora/gf/gf_keep_fb.cpp"),
             Object(Matching, "sora/gf/gf_memory_util.cpp"),
