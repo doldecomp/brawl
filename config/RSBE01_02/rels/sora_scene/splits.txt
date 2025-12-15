@@ -11,6 +11,26 @@ global_destructor_chain.c:
 	.dtors      start:0x00000000 end:0x00000008
 	.bss        start:0x00000000 end:0x00000004
 
+mo_scene/sora_scene/sc_demo.cpp:
+	.text       start:0x0000068C end:0x00000768
+	.data       start:0x000000A0 end:0x000000E0
+
+mo_scene/sora_scene/sc_tutorial.cpp:
+	.text       start:0x00000768 end:0x00000810
+	.data       start:0x000000E0 end:0x00000128
+
+mo_scene/sora_scene/sc_staffroll.cpp:
+	.text       start:0x000061A4 end:0x0000624C
+	.data       start:0x00001400 end:0x00001448
+
+mo_scene/sora_scene/sc_net_time_result.cpp:
+	.text       start:0x0000C824 end:0x0000C9C4
+	.data       start:0x000040D0 end:0x00004140
+
+mo_scene/sora_scene/sc_adv_selchar.cpp:
+	.text       start:0x0001BFDC end:0x0001C084
+	.data       start:0x00005D50 end:0x00005DA0
+
 mo_scene/mo_scene.cpp:
 	.text       start:0x0003D4B8 end:0x0003D588
 	.data       start:0x00009C30 end:0x00009C3D
