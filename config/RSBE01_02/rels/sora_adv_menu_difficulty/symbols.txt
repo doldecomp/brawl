@@ -1,4 +1,4 @@
-fn_32_0 = .text:0x00000000; // type:function size:0x94
+create__19muAdvDifficultyTaskFPC24muAdvDifficultyTaskParam = .text:0x00000000; // type:function size:0x94
 fn_32_94 = .text:0x00000094; // type:function size:0x19C
 fn_32_230 = .text:0x00000230; // type:function size:0x34
 fn_32_264 = .text:0x00000264; // type:function size:0x40
