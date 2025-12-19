@@ -27,6 +27,11 @@ mo_scene/sora_scene/sc_seal_list.cpp:
 	.text       start:0x00007070 end:0x00007230
 	.data       start:0x000017F0 end:0x000018D8
 
+mo_scene/sora_scene/sc_seal_disp.cpp:
+	.text       start:0x00007230 end:0x000074B4
+	.rodata     start:0x00000018 end:0x00000020
+	.data       start:0x000018D8 end:0x00001920
+
 mo_scene/sora_scene/sc_net_time_result.cpp:
 	.text       start:0x0000C824 end:0x0000C9C4
 	.data       start:0x000040D0 end:0x00004140

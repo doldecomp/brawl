@@ -12,9 +12,9 @@ void* gfResourceLoader::load(HeapType heapTy, const char* path, gfArchive* archi
     m_rsrcPtr = gfHeapManager::alloc(heapTy, m_allocSize);
     m_compressedRsrcPtr = static_cast<char*>(m_rsrcPtr) + m_allocSize - gfFileIO::getFileSize(path);
     if (m_doCachedRead) {
-        readRequestCached(path, m_compressedRsrcPtr, 0, 0);
+        m_handle.readRequestCached(path, m_compressedRsrcPtr, 0, 0);
     } else {
-        readRequest(path, m_compressedRsrcPtr, 0, 0);
+        m_handle.readRequest(path, m_compressedRsrcPtr, 0, 0);
     }
     m_heapTy = heapTy;
     m_isLoaded = false;
@@ -34,7 +34,7 @@ bool gfResourceLoader::isLoaded() {
     if (m_isLoaded == true) {
         return true;
     }
-    if (!isReady()) {
+    if (!m_handle.isReady()) {
         return false;
     }
     m_rsrcSize = CXGetUncompressedSize(m_compressedRsrcPtr);

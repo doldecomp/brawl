@@ -979,6 +979,7 @@ config.libs = [
             Object(Matching, "mo_scene/sora_scene/sc_tutorial.cpp"),
             Object(Matching, "mo_scene/sora_scene/sc_staffroll.cpp"),
             Object(Matching, "mo_scene/sora_scene/sc_seal_list.cpp"),
+            Object(Matching, "mo_scene/sora_scene/sc_seal_disp.cpp"),
             Object(Matching, "mo_scene/sora_scene/sc_net_time_result.cpp"),
             Object(Matching, "mo_scene/sora_scene/sc_adv_selchar.cpp"),
             Object(Matching, "mo_scene/sora_scene/sc_adv_diff.cpp"),
