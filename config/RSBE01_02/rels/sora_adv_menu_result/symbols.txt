@@ -1,4 +1,4 @@
-fn_34_0 = .text:0x00000000; // type:function size:0xD8
+create__15muAdvResultTaskFPC20muAdvResultTaskParam = .text:0x00000000; // type:function size:0xD8
 fn_34_D8 = .text:0x000000D8; // type:function size:0x1E8
 fn_34_2C0 = .text:0x000002C0; // type:function size:0x180
 fn_34_440 = .text:0x00000440; // type:function size:0x2F4

@@ -983,6 +983,7 @@ config.libs = [
             Object(Matching, "mo_scene/sora_scene/sc_net_time_result.cpp"),
             Object(Matching, "mo_scene/sora_scene/sc_adv_selchar.cpp"),
             Object(Matching, "mo_scene/sora_scene/sc_adv_diff.cpp"),
+            Object(Matching, "mo_scene/sora_scene/sc_adv_result.cpp"),
             Object(Matching, "mo_scene/mo_scene.cpp"),
         ],
     },

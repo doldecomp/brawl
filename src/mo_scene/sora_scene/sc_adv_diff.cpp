@@ -14,10 +14,7 @@ void scAdvDiff::setModule() {
     setLoadModule("sora_adv_menu_difficulty.rel", false);
 }
 
-#pragma push
-#pragma section ".rodata" ".rodata"
 __declspec(section ".rodata") static muAdvDifficultyTaskParam g_TaskParam = { 2, 0, 1 };
-#pragma pop
 
 void scAdvDiff::start() {
     muAdvDifficultyTaskParam param = g_TaskParam;
