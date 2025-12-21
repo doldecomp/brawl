@@ -2,6 +2,7 @@
 #include <gf/gf_scene.h>
 #include <gf/gf_task.h>
 #include <gm/gm_global.h>
+#include <revolution/OS/OSError.h>
 #include <sc/sc_adv_diff.h>
 #include <sr/sr_common.h>
 #include <types.h>

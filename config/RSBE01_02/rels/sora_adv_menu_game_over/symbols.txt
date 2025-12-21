@@ -1,4 +1,4 @@
-fn_33_0 = .text:0x00000000; // type:function size:0x44
+create__17muAdvGameOverTaskFPC22muAdvGameOverTaskParam = .text:0x00000000; // type:function size:0x44
 fn_33_44 = .text:0x00000044; // type:function size:0x418
 fn_33_45C = .text:0x0000045C; // type:function size:0xCC
 fn_33_528 = .text:0x00000528; // type:function size:0xC0
@@ -13,7 +13,7 @@ fn_33_E50 = .text:0x00000E50; // type:function size:0xCEC
 fn_33_1B3C = .text:0x00001B3C; // type:function size:0x330
 fn_33_1E6C = .text:0x00001E6C; // type:function size:0x294
 fn_33_2100 = .text:0x00002100; // type:function size:0x384
-fn_33_2484 = .text:0x00002484; // type:function size:0x60
+getSelection__17muAdvGameOverTaskCFv = .text:0x00002484; // type:function size:0x60
 fn_33_24E4 = .text:0x000024E4; // type:function size:0xF0
 fn_33_25D4 = .text:0x000025D4; // type:function size:0x4DC
 fn_33_2AB0 = .text:0x00002AB0; // type:function size:0x30
