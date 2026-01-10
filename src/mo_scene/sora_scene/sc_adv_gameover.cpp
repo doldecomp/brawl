@@ -8,6 +8,7 @@
 #include <sr/sr_common.h>
 #include <types.h>
 
+// NONMATCHING: instruction ordering in the ctor
 scAdvGameover* scAdvGameover::create() {
     return new (Heaps::GlobalMode) scAdvGameover("scAdvGameover");
 }
