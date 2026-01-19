@@ -88,7 +88,7 @@ Vec3f soModelModuleImplVariable::getNodeGlobalPosition(u32 p1, bool p2) {
     return soModelModuleImpl::getNodeGlobalPosition(getRealNodeId(p1), p2);
 }
 
-Vec3f soModelModuleImplVariable::getNodeGlobalPosition(u32 p1, Vec3f* p2, bool p3, bool p4) {
+Vec3f soModelModuleImplVariable::getNodeGlobalPosition(u32 p1, const Vec3f* p2, bool p3, bool p4) {
     return soModelModuleImpl::getNodeGlobalPosition(getRealNodeId(p1), p2, p3, p4);
 }
 
@@ -112,8 +112,8 @@ Vec3f soModelModuleImplVariable::getNodeGlobalRotation(u32 p1, bool p2) {
     return soModelModuleImpl::getNodeGlobalRotation(getRealNodeId(p1), p2);
 }
 
-bool soModelModuleImplVariable::isNode(int p1) {
-    return soModelModuleImpl::isNode(getRealNodeId(p1));
+bool soModelModuleImplVariable::isNode(u32 id) {
+    return soModelModuleImpl::isNode(getRealNodeId(id));
 }
 
 Vec3f soModelModuleImplVariable::getResFileNodeTranslate(u32 p1) {
@@ -136,19 +136,19 @@ void soModelModuleImplVariable::renderNodeAxis(u32 p1, float f1) {
     return soModelModuleImpl::renderNodeAxis(getRealNodeId(p1), f1);
 }
 
-void soModelModuleImplVariable::setNodeVisibility(u32 p1, bool p2, bool p3) {
-    u32 realId = getRealNodeId(p1);
+void soModelModuleImplVariable::setNodeVisibility(u32 nodeId, bool vis, bool p3) {
+    u32 realId = getRealNodeId(nodeId);
     if (realId != 0xFFFFFFFF) {
-        soModelModuleImpl::setNodeVisibility(realId, p2, p3);
+        soModelModuleImpl::setNodeVisibility(realId, vis, p3);
     }
 }
 
-void soModelModuleImplVariable::setNodeVisibility(int p1, u32* p2, bool p3, bool p4) {
+void soModelModuleImplVariable::setNodeVisibility(s32 numIds, const u32* nodeIds, bool vis, bool p4) {
     if (getScnMdl(p4)) {
-        for (s32 i = 0; i < p1; i++) {
-            u32 realId = getRealNodeId(p2[i]);
+        for (s32 i = 0; i < numIds; i++) {
+            u32 realId = getRealNodeId(nodeIds[i]);
             if (realId != 0xFFFFFFFF) {
-                soModelModuleImpl::setNodeVisibility(realId, p3, p4);
+                soModelModuleImpl::setNodeVisibility(realId, vis, p4);
             }
         }
     }

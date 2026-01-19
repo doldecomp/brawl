@@ -11,6 +11,11 @@ global_destructor_chain.c:
 	.dtors      start:0x00000000 end:0x00000008
 	.bss        start:0x00000000 end:0x00000004
 
+mo_melee/sora_melee/so/model/so_model_module_simple.cpp:
+	.text       start:0x0000E268 end:0x0000EEAC
+	.rodata     start:0x00000318 end:0x00000320
+	.data       start:0x000007D0 end:0x00000A88
+
 mo_melee/sora_melee/so/model/so_model_module_impl_variable.cpp:
 	.text       start:0x0000F288 end:0x0000FED0
 	.data       start:0x00000A98 end:0x00000C78
