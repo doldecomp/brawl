@@ -48,7 +48,7 @@ bool tyFigListDataManager::isLoadFinish() {
 // "m_bySeries-2" and "m_byKind-2", then adding back the 2 when
 // dereferencing, but this would still result in UB
 void tyFigListDataManager::setData(void* fileBuf, u32 fileSz) {
-    utRelocate object(fileBuf, fileSz);
+    utRelocate object(reinterpret_cast<u8*>(fileBuf), fileSz);
     m_data = static_cast<tyFigListData*>(object.getPublicAddress("tyDataList"));
     m_count = 0;
     while (m_data[m_count].id >= 0) {

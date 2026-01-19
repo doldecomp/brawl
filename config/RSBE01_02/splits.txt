@@ -131,6 +131,14 @@ sora/st/module.cpp:
 	.text       start:0x80043B18 end:0x80043B6C
 	.data       start:0x8042AEB0 end:0x8042B598
 
+sora/ut/ut_nw.cpp:
+	.text       start:0x80043B6C end:0x80043E1C
+	.sdata2     start:0x805A17E0 end:0x805A17E8
+
+sora/ut/ut_relocate.cpp:
+	.text       start:0x80043E1C end:0x80044214
+	.data       start:0x8042B598 end:0x8042B5FC
+
 sora/ut/ut_list.cpp:
 	.text       start:0x800448F8 end:0x80044AD0
 
