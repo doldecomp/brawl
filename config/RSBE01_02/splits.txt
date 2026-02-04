@@ -203,11 +203,18 @@ sora/if/if_stgedit.cpp:
 	.sdata      start:0x8059E690 end:0x8059E6A0
 	.sdata2     start:0x805A28C8 end:0x805A28E8
 
+sora/gr/collision/gr_collision_shape.cpp:
+	.sdata2     start:0x805A2A20 end:0x805A2A2C
+
 sora/gr/collision/gr_collision_data.cpp:
 	.text       start:0x80110720 end:0x80110748
 
 sora/gr/collision/gr_collision_handle.cpp:
 	.text       start:0x801122E4 end:0x8011234C
+
+sora/gr/collision/gr_collision_shape_rhombus.cpp:
+	.text       start:0x80132B64 end:0x801330B8
+	.data       start:0x8045DA88 end:0x8045DAEC
 
 sora/gr/gr_path.cpp:
 	.text       start:0x80139570 end:0x80139658
