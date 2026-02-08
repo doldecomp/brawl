@@ -216,6 +216,11 @@ sora/gr/collision/gr_collision_shape_rhombus.cpp:
 	.text       start:0x80132B64 end:0x801330B8
 	.data       start:0x8045DA88 end:0x8045DAEC
 
+sora/gr/collision/gr_collision_shape_circle.cpp:
+	.text       start:0x801330B8 end:0x8013344C
+	.data       start:0x8045DAF0 end:0x8045DB54
+	.sdata2     start:0x805A2A30 end:0x805A2A3C
+
 sora/gr/gr_path.cpp:
 	.text       start:0x80139570 end:0x80139658
 
