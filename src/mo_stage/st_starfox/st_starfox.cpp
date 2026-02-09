@@ -45,25 +45,25 @@ void stStarfox::createObj() {
     grMadein* stageElement = grMadein::create(0, "", "grStarfoxWarp1", Heaps::StageInstance);
     if (stageElement) {
         addGround(stageElement);
-        stageElement->startup(m_secondaryFileData, false, 0);
+        stageElement->startup(m_secondaryFileData, false, gfSceneRoot::Layer_Ground);
         stageElement->setStageData(m_stageData);
     }
     stageElement = grMadein::create(1, "", "grStarfoxWarp2", Heaps::StageInstance);
     if (stageElement) {
         addGround(stageElement);
-        stageElement->startup(m_secondaryFileData, false, 0);
+        stageElement->startup(m_secondaryFileData, false, gfSceneRoot::Layer_Ground);
         stageElement->setStageData(m_stageData);
     }
     stageElement = grMadein::create(2, "", "grStarfoxWarp3", Heaps::StageInstance);
     if (stageElement) {
         addGround(stageElement);
-        stageElement->startup(m_secondaryFileData, false, 0);
+        stageElement->startup(m_secondaryFileData, false, gfSceneRoot::Layer_Ground);
         stageElement->setStageData(m_stageData);
     }
     stageElement = grMadein::create(0, "", "grStarfoxGdiff", Heaps::StageInstance);
     if (stageElement) {
         addGround(stageElement);
-        stageElement->startup(m_fileData, false, 0);
+        stageElement->startup(m_fileData, false, gfSceneRoot::Layer_Ground);
         stageElement->setStageData(m_stageData);
     }
     createCollision(m_fileData, 2, stageElement);
@@ -187,7 +187,7 @@ void stStarfox::updateScene(float deltaFrame) {
                     scene_ground = grMadein::create((s16)i, "", "SceneGround", Heaps::StageInstance);
                     if (scene_ground) {
                         addGround(scene_ground);
-                        scene_ground->startup(unk1A8, 0, 0);
+                        scene_ground->startup(unk1A8, 0, gfSceneRoot::Layer_Ground);
                         scene_ground->setStageData(m_stageData);
                         scene_ground->initializeEntity();
                         scene_ground->startEntityAutoLoop();

@@ -11,6 +11,17 @@ global_destructor_chain.c:
 	.dtors      start:0x00000000 end:0x00000008
 	.bss        start:0x00000000 end:0x00000004
 
+mo_stage/st_config/st_config.cpp:
+	.text       start:0x00000070 end:0x000004E4
+	.ctors      start:0x00000000 end:0x00000004
+	.rodata     start:0x00000000 end:0x00000008
+	.data       start:0x00000000 end:0x00000368
+	.bss        start:0x00000008 end:0x00000018
+
+mo_stage/st_config/gr_config.cpp:
+	.text       start:0x000004E4 end:0x0000069C
+	.data       start:0x00000368 end:0x000005E0
+
 mo_stage/mo_stage.cpp:
 	.text       start:0x0000069C end:0x00000738
 	.data       start:0x000005E0 end:0x000005ED

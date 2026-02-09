@@ -147,11 +147,11 @@ if not config.non_matching:
 
 # Tool versions
 config.binutils_tag = "2.42-1"
-config.compilers_tag = "20240706"
-config.dtk_tag = "v1.4.1"
-config.objdiff_tag = "v2.5.0"
-config.sjiswrap_tag = "v1.2.0"
-config.wibo_tag = "0.6.11"
+config.compilers_tag = "20250812"
+config.dtk_tag = "v1.7.5"
+config.objdiff_tag = "v3.4.4"
+config.sjiswrap_tag = "v1.2.2"
+config.wibo_tag = "1.0.0"
 
 # Project
 config.config_path = Path("config") / config.version / "config.yml"
@@ -294,10 +294,13 @@ config.libs = [
             Object(Matching, "sora/gf/gf_3d_scene_light_resource.cpp"),
             Object(Matching, "sora/gf/gf_archive_load_thread.cpp"),
             Object(Matching, "sora/gf/gf_archive_file.cpp"),
+            Object(Matching, "sora/gf/gf_archive_db.cpp"),
             Object(Matching, "sora/gf/gf_camera_controller.cpp"),
             Object(Matching, "sora/gf/gf_callback.cpp"),
             Object(Matching, "sora/gf/gf_decomp.cpp"),
             Object(Matching, "sora/gf/gf_error_check.cpp"),
+            Object(Matching, "sora/gf/gf_file_io_handle.cpp"),
+            Object(Matching, "sora/gf/gf_file_io_request.cpp"),
             Object(Matching, "sora/gf/gf_gameframe_counter.cpp"),
             Object(Matching, "sora/gf/gf_keep_fb.cpp"),
             Object(Matching, "sora/gf/gf_memory_util.cpp"),
@@ -311,7 +314,10 @@ config.libs = [
             Object(Matching, "sora/gf/gf_resource_loader.cpp"),
             Object(NonMatching, "sora/mt/mt_vector_old.cpp"),
             Object(Matching, "sora/mt/mt_prng.cpp", extra_cflags=["-RTTI off"]),
+            Object(Matching, "sora/mt/mt_prng_log.cpp"),
             Object(Matching, "sora/st/module.cpp"),
+            Object(Matching, "sora/ut/ut_nw.cpp"),
+            Object(NonMatching, "sora/ut/ut_relocate.cpp"),
             Object(Matching, "sora/ut/ut_list.cpp"),
             Object(Matching, "sora/ip/ip_human.cpp"),
             Object(NonMatching, "sora/ip/ip_network_producer.cpp"),
@@ -325,9 +331,13 @@ config.libs = [
             Object(NonMatching, "sora/ty/ty_fig_listmng.cpp"),
             Object(Matching, "sora/if/if_wifipr_task.cpp"),
             Object(Matching, "sora/if/if_adv_task.cpp"),
+            Object(Matching, "sora/if/if_stgedit.cpp"),
+            Object(Matching, "sora/gr/collision/gr_collision_shape.cpp"),
             Object(Matching, "sora/gr/collision/gr_collision_data.cpp"),
             Object(Matching, "sora/gr/collision/gr_collision_handle.cpp"),
-            Object(NonMatching, "sora/gr/gr_path.cpp"),
+            Object(Matching, "sora/gr/collision/gr_collision_shape_rhombus.cpp", extra_cflags=["-RTTI off"]),
+            Object(Matching, "sora/gr/collision/gr_collision_shape_circle.cpp", extra_cflags=["-RTTI off"]),
+            Object(Matching, "sora/gr/gr_path.cpp"),
             Object(NonMatching, "sora/ac/ac_cmd_interpreter.cpp"),
             Object(Matching, "sora/ac/ac_anim_cmd_impl.cpp"),
             Object(Matching, "sora/ac/ac_null.cpp"),
@@ -777,9 +787,11 @@ config.libs = [
         "cflags": cflags_rel,
         "host": False,
         "objects": [
+            Object(Matching, "mo_melee/sora_melee/so/model/so_model_module_simple.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/model/so_model_module_impl_variable.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/anim/so_anim_chr.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_controller_module_link_ref.cpp"),
+            Object(Matching, "mo_melee/sora_melee/so/so_heap_module_impl.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_resource_module_impl.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_general_work.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_general_work_abstract.cpp"),
@@ -971,6 +983,17 @@ config.libs = [
         "cflags": cflags_rel,
         "host": False,
         "objects": [
+            Object(Matching, "mo_scene/sora_scene/sc_demo.cpp"),
+            Object(Matching, "mo_scene/sora_scene/sc_tutorial.cpp"),
+            Object(Matching, "mo_scene/sora_scene/sc_staffroll.cpp"),
+            Object(Matching, "mo_scene/sora_scene/sc_seal_list.cpp"),
+            Object(Matching, "mo_scene/sora_scene/sc_seal_disp.cpp"),
+            Object(Matching, "mo_scene/sora_scene/sc_net_time_result.cpp"),
+            Object(Matching, "mo_scene/sora_scene/sc_adv_selchar.cpp"),
+            Object(Matching, "mo_scene/sora_scene/sc_adv_saveload.cpp"),
+            Object(Matching, "mo_scene/sora_scene/sc_adv_diff.cpp"),
+            Object(Matching, "mo_scene/sora_scene/sc_adv_result.cpp"),
+            Object(NonMatching, "mo_scene/sora_scene/sc_adv_gameover.cpp"),
             Object(Matching, "mo_scene/mo_scene.cpp"),
         ],
     },
@@ -993,7 +1016,10 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_stage/st_config/st_config.cpp"),
+            Object(Matching, "mo_stage/st_config/gr_config.cpp"),
+			],
     },
     {
         "lib": "st_crayon",
@@ -1129,7 +1155,10 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_stage/st_final/st_final.cpp"),
+            Object(Matching, "mo_stage/st_final/gr_final.cpp"),
+			],
     },
     {
         "lib": "st_fzero",

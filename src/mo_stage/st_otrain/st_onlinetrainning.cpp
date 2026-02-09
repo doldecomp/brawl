@@ -107,7 +107,7 @@ void stOnlineTrainning::createObj() {
     while (i != groundNum) {
         Ground* gr = getGround(i);
         if (gr) {
-            gr->startup(m_fileData, false, 0);
+            gr->startup(m_fileData, false, gfSceneRoot::Layer_Ground);
         }
         i++;
     }

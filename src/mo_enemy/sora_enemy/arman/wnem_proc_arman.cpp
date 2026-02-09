@@ -55,7 +55,7 @@ void wnemArmanProc::ArmDead(wnemSimple* wn, soModuleAccesser* acc) {
         wnemCommonProc::Report("call wnemArmanProc::ArmDead  \n");
         wn->unk21B8 = false;
         wn->unk21BB = false;
-        UnkLinkEvent unk(0x13FF, false, 3);
+        UnkLinkEvent unk(0x13FF, 3);
         acc->getLinkModule().sendEventParents(3, unk);
     }
     if (wn->getFrameCounter(1) >= r30[0]) {

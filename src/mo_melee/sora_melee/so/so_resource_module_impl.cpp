@@ -30,70 +30,70 @@ void soResourceModuleImpl::setGroupNo(u8 unk1, u16 index) {
     ptr[0x14] = unk1;
 }
 
-nw4r::g3d::ResFileData* soResourceModuleImpl::getTexFile(u32 p1, u32 p2) {
-    if (p2 == 0xFFFF) {
-        p2 = m_resourceIdAccesser->getTexResId();
+nw4r::g3d::ResFile soResourceModuleImpl::getTexFile(u16 fileIndex, u32 texResId) {
+    if (texResId == 0xFFFF) {
+        texResId = m_resourceIdAccesser->getTexResId();
     }
-    if (p2 != 0xFFFF) {
+    if (texResId != 0xFFFF) {
         u32 arcId = m_resourceIdAccesser->getTexArchiveId();
         u32 grpNo = getGroupNo(2);
         utArchiveManager* arcManager = soArchiveDb::getManager(m_managerID);
-        return arcManager->getResFileFromId(p2, Data_Type_Tex, p1, (u8)grpNo, arcId);
+        return arcManager->getResFileFromId(texResId, Data_Type_Tex, fileIndex, (u8)grpNo, arcId);
     }
-    return 0;
+    return nw4r::g3d::ResFile();
 }
 
-nw4r::g3d::ResFileData* soResourceModuleImpl::getMdlFile(u32 p1, u32 p2) {
-    if (p2 == 0xFFFF) {
-        p2 = m_resourceIdAccesser->getMdlResId();
+nw4r::g3d::ResFile soResourceModuleImpl::getMdlFile(u16 fileIndex, u32 mdlResId) {
+    if (mdlResId == 0xFFFF) {
+        mdlResId = m_resourceIdAccesser->getMdlResId();
     }
-    if (p2 != 0xFFFF) {
+    if (mdlResId != 0xFFFF) {
         u32 arcId = m_resourceIdAccesser->getMdlArchiveId();
         u32 grpNo = getGroupNo(1);
         utArchiveManager* arcManager = soArchiveDb::getManager(m_managerID);
-        return arcManager->getResFileFromId(p2, Data_Type_Model, p1, (u8)grpNo, arcId);
+        return arcManager->getResFileFromId(mdlResId, Data_Type_Model, fileIndex, (u8)grpNo, arcId);
     }
-    return 0;
+    return nw4r::g3d::ResFile();
 }
 
-nw4r::g3d::ResFileData* soResourceModuleImpl::getAnmFile(u32 p1, u32 p2, u32 p3) {
+nw4r::g3d::ResFile soResourceModuleImpl::getAnmFile(u16 fileIndex, u32 anmResId, u32 p3) {
     u32 arcId = m_resourceIdAccesser->getAnmArchiveId();
-    if (p2 == 0xFFFF) {
-        p2 = m_resourceIdAccesser->getAnmResId();
+    if (anmResId == 0xFFFF) {
+        anmResId = m_resourceIdAccesser->getAnmResId();
     }
     if (p3 == 1) {
         arcId = -1;
     }
-    if (p2 != 0xFFFF) {
+    if (anmResId != 0xFFFF) {
         p3 = getGroupNo(3);
         utArchiveManager* arcManager = soArchiveDb::getManager(m_managerID);
-        return arcManager->getResFileFromId(p2, Data_Type_Anim, p1, (u8)p3, arcId);
+        return arcManager->getResFileFromId(anmResId, Data_Type_Anim, fileIndex, (u8)p3, arcId);
     }
-    return 0;
+    return nw4r::g3d::ResFile();
 }
 
-nw4r::g3d::ResFileData* soResourceModuleImpl::getBinFile(u32 p1, u32 p2, u32 p3) {
-    u32 r31 = p1;
-    if (p1 == 0xFFFF) {
+nw4r::g3d::ResFile soResourceModuleImpl::getBinFile(u32 binResId, u16 fileIndex, s32 archiveId) {
+    u32 r31 = binResId;
+    if (binResId == 0xFFFF) {
         r31 = m_resourceIdAccesser->getBinResId();
     }
-    if ((s32)p3 == -1) {
-        p3 = m_resourceIdAccesser->getBinArchiveId();
+    if ((s32)archiveId == -1) {
+        archiveId = m_resourceIdAccesser->getBinArchiveId();
     }
     if (r31 != 0xFFFF) {
         r31 = getGroupNo(0);
         utArchiveManager* arcManager = soArchiveDb::getManager(m_managerID);
-        return arcManager->getResFileFromId(p1, Data_Type_Misc, p2, (u8)r31, p3);
+        return arcManager->getResFileFromId(binResId, Data_Type_Misc, fileIndex, (u8)r31, archiveId);
     }
-    return 0;
+    return nw4r::g3d::ResFile();
 }
 
-nw4r::g3d::ResFileData* soResourceModuleImpl::getFile(u32 p1, u32 p2, u32 p3) {
-    if (p1 != 0xFFFF) {
+nw4r::g3d::ResFile soResourceModuleImpl::getFile(u32 resId, ARCNodeType nodeType, u16 fileIndex) {
+    if (resId != 0xFFFF) {
         u32 arcId = m_resourceIdAccesser->getBinArchiveId();
         u32 grpNo = getGroupNo(0);
         utArchiveManager* arcManager = soArchiveDb::getManager(m_managerID);
-        return arcManager->getResFileFromId(p1, (ARCNodeType)p2, p3, (u8)grpNo, arcId);
+        return arcManager->getResFileFromId(resId, nodeType, fileIndex, (u8)grpNo, arcId);
     }
-    return 0;
+    return nw4r::g3d::ResFile();
 }

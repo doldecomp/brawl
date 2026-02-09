@@ -41,6 +41,9 @@ sora/gf/gf_archive_load_thread.cpp:
 sora/gf/gf_archive_file.cpp:
 	.text       start:0x80016408 end:0x8001643C
 
+sora/gf/gf_archive_db.cpp:
+	.text       start:0x8001643C end:0x80016688
+
 sora/gf/gf_camera_controller.cpp:
 	.text       start:0x8001A3A4 end:0x8001A3AC
 	.data       start:0x80420B88 end:0x80420BA0
@@ -58,6 +61,12 @@ sora/gf/gf_error_check.cpp:
 	.data       start:0x80420BA0 end:0x80420C28
 	.bss        start:0x804948E8 end:0x80494900
 	.sdata      start:0x8059C508 end:0x8059C520
+
+sora/gf/gf_file_io_handle.cpp:
+	.text       start:0x80020B38 end:0x80022054
+
+sora/gf/gf_file_io_request.cpp:
+	.text       start:0x80022054 end:0x80022490
 
 sora/gf/gf_gameframe_counter.cpp:
 	.text       start:0x800241B4 end:0x800242DC
@@ -113,9 +122,22 @@ sora/mt/mt_prng.cpp:
 	.sbss       start:0x805A00B8 end:0x805A00C0
 	.sdata2     start:0x805A1748 end:0x805A176C
 
+sora/mt/mt_prng_log.cpp:
+	.text       start:0x8004392C end:0x80043B18
+	.ctors      start:0x80406514 end:0x80406518
+	.bss        start:0x804977A8 end:0x804977C0
+
 sora/st/module.cpp:
 	.text       start:0x80043B18 end:0x80043B6C
 	.data       start:0x8042AEB0 end:0x8042B598
+
+sora/ut/ut_nw.cpp:
+	.text       start:0x80043B6C end:0x80043E1C
+	.sdata2     start:0x805A17E0 end:0x805A17E8
+
+sora/ut/ut_relocate.cpp:
+	.text       start:0x80043E1C end:0x80044214
+	.data       start:0x8042B598 end:0x8042B5FC
 
 sora/ut/ut_list.cpp:
 	.text       start:0x800448F8 end:0x80044AD0
@@ -175,11 +197,29 @@ sora/if/if_adv_task.cpp:
 	.data       start:0x8045D070 end:0x8045D0F8
 	.sdata      start:0x8059E5F0 end:0x8059E5F8
 
+sora/if/if_stgedit.cpp:
+	.text       start:0x8010EFD4 end:0x8010F310
+	.data       start:0x8045D810 end:0x8045D840
+	.sdata      start:0x8059E690 end:0x8059E6A0
+	.sdata2     start:0x805A28C8 end:0x805A28E8
+
+sora/gr/collision/gr_collision_shape.cpp:
+	.sdata2     start:0x805A2A20 end:0x805A2A2C
+
 sora/gr/collision/gr_collision_data.cpp:
 	.text       start:0x80110720 end:0x80110748
 
 sora/gr/collision/gr_collision_handle.cpp:
 	.text       start:0x801122E4 end:0x8011234C
+
+sora/gr/collision/gr_collision_shape_rhombus.cpp:
+	.text       start:0x80132B64 end:0x801330B8
+	.data       start:0x8045DA88 end:0x8045DAEC
+
+sora/gr/collision/gr_collision_shape_circle.cpp:
+	.text       start:0x801330B8 end:0x8013344C
+	.data       start:0x8045DAF0 end:0x8045DB54
+	.sdata2     start:0x805A2A30 end:0x805A2A3C
 
 sora/gr/gr_path.cpp:
 	.text       start:0x80139570 end:0x80139658

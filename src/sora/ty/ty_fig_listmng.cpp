@@ -5,10 +5,8 @@
 #include <ty/ty_fig_listmng.h>
 #include <ut/ut_relocate.h>
 
-tyFigListDataManager::tyFigListDataManager(bool loadFile) {
-    m_isLoaded = false;
-    m_fileHandle.fileToLoad = 0;
-    m_isUnloaded = true;
+tyFigListDataManager::tyFigListDataManager(bool loadFile) :
+        m_isLoaded(false), m_isUnloaded(true) {
     if (loadFile) {
         loadRequest();
     }
@@ -50,7 +48,7 @@ bool tyFigListDataManager::isLoadFinish() {
 // "m_bySeries-2" and "m_byKind-2", then adding back the 2 when
 // dereferencing, but this would still result in UB
 void tyFigListDataManager::setData(void* fileBuf, u32 fileSz) {
-    utRelocate object(fileBuf, fileSz);
+    utRelocate object(reinterpret_cast<u8*>(fileBuf), fileSz);
     m_data = static_cast<tyFigListData*>(object.getPublicAddress("tyDataList"));
     m_count = 0;
     while (m_data[m_count].id >= 0) {
