@@ -1300,7 +1300,11 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_stage/st_pictchat/st_pictchat.cpp"),
+            Object(NonMatching, "mo_stage/st_pictchat/gr_pictchat.cpp"),
+            Object(NonMatching, "mo_stage/st_pictchat/gr_pictchat_pict.cpp"),
+        ],
     },
     {
         "lib": "st_pirates",
