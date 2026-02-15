@@ -488,11 +488,13 @@ void stEmblem::updateScene(float deltaFrame) {
             m_curr_scene_effect.end();
             // TODO: figure out how to pass 1 to the destructors insead of -1
             if (unk734 != NULL) {
-                unk734->~grCollision();
+                delete(unk734);
+                //unk734->~grCollision();
                 unk734 = NULL;
             }
             if (unk738 != NULL) {
-                unk738->~grCollision();
+                delete(unk738);
+                //unk738->~grCollision();
                 unk738 = NULL;
             }
             s32 i = 0;
