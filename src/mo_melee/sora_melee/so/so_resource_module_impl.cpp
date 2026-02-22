@@ -88,12 +88,12 @@ nw4r::g3d::ResFile soResourceModuleImpl::getBinFile(u32 binResId, u16 fileIndex,
     return nw4r::g3d::ResFile();
 }
 
-nw4r::g3d::ResFile soResourceModuleImpl::getFile(u32 resId, ARCNodeType nodeType, u16 fileIndex) {
+void* soResourceModuleImpl::getFile(u32 resId, ARCNodeType nodeType, u16 fileIndex) {
     if (resId != 0xFFFF) {
         u32 arcId = m_resourceIdAccesser->getBinArchiveId();
         u32 grpNo = getGroupNo(0);
         utArchiveManager* arcManager = soArchiveDb::getManager(m_managerID);
         return arcManager->getResFileFromId(resId, nodeType, fileIndex, (u8)grpNo, arcId);
     }
-    return nw4r::g3d::ResFile();
+    return nullptr;
 }

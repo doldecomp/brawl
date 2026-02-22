@@ -7,7 +7,7 @@
 #include <revolution/OS/OSThread.h>
 #include <types.h>
 
-// UBFIX: Several files should be revisited to fix types and casting
+// UBFIX: Several functions should be revisited to fix types and casting
 
 static THPAudioDecWork* g_audioDecWork;
 
@@ -96,9 +96,8 @@ void* AudioDecoderForOnMemory(void* p1) {
                 r29 = *static_cast<u32*>(msg.unk0);
                 msg.unk0 = r30->unkB4;
             } else {
-                if (r31 < 2) {
+                if (r31 < 2)
                     PrepareReady(true);
-                }
                 OSSuspendThread(&g_audioDecWork->m_thread);
             }
         } else {
@@ -106,9 +105,8 @@ void* AudioDecoderForOnMemory(void* p1) {
             msg.unk0 = static_cast<char*>(msg.unk0) + r29;
             r29 = r4;
         }
-        if (r31 == 2) {
+        if (r31 == 2)
             PrepareReady(true);
-        }
         r31++;
     }
 }
