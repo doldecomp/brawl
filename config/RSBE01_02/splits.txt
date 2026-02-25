@@ -155,6 +155,10 @@ sora/ip/ip_network_producer.cpp:
 sora/ef/ef_screen_handle.cpp:
 	.text       start:0x8005E5C8 end:0x8005E5E8
 
+sora/ec/ec_trace_mgr.cpp:
+	.text       start:0x80065458 end:0x80065B60
+	.sdata2     start:0x805A1988 end:0x805A1990
+
 sora/snd/snd_init_thread.cpp:
 	.text       start:0x800797AC end:0x800798E8
 	.data       start:0x80454550 end:0x80454580
