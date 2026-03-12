@@ -707,6 +707,7 @@ config.libs = [
         "cflags": cflags_rel,
         "host": False,
         "objects": [
+            Object(Matching, "mo_adv_stage/gr_adventure_final.cpp"),
             Object(Matching, "mo_adv_stage/mo_adv_stage.cpp"),
         ],
     },

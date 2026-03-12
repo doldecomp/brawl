@@ -11,6 +11,11 @@ global_destructor_chain.c:
 	.dtors      start:0x00000000 end:0x00000008
 	.bss        start:0x00000000 end:0x00000004
 
+mo_adv_stage/gr_adventure_final.cpp:
+	.text       start:0x0003D6E4 end:0x0003DA24
+	.rodata     start:0x000008E8 end:0x000008F4
+	.data       start:0x000177D8 end:0x000179F8
+
 mo_adv_stage/mo_adv_stage.cpp:
 	.text       start:0x00048CF0 end:0x00048D8C
 	.data       start:0x00018550 end:0x00018561
