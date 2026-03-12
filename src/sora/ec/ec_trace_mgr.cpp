@@ -138,13 +138,13 @@ bool ecTraceMgr::setOffset(u32 id, const Vec3f& p2, const Vec3f& p3) {
 }
 
 void ecTraceMgr::setAttachEffect(u32 id, EfID efId, nw4r::g3d::ScnMdl* scnMdl,
-        const char* name, const Vec3f* pos, const Vec3f* rot, const Vec3f* scale) {
+        u32 nodeIndex, const Vec3f* pos, const Vec3f* rot, const Vec3f* scale) {
     ecTrace* trace = getTraceById(id);
     if (trace)
         switch (trace->unk2C) {
             case 0:
                 trace->unk2C = g_ecMgr->setEffect(efId, pos, rot, scale);
-                g_ecMgr->setParent2(trace->unk2C, scnMdl, name, 0);
+                g_ecMgr->setParent(trace->unk2C, scnMdl, nodeIndex, false);
                 break;
             default:
                 break;
