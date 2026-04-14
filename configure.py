@@ -636,7 +636,9 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_adv_menu/sora_adv_menu_game_over/mu_adv_game_over.cpp"),
+        ],
     },
     {
         "lib": "sora_adv_menu_name",
