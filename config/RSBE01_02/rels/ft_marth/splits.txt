@@ -11,6 +11,46 @@ global_destructor_chain.c:
 	.dtors      start:0x00000000 end:0x00000008
 	.bss        start:0x00000000 end:0x00000004
 
+mo_fighter/ft_marth/ft_marth.cpp:
+	.text       start:0x00000070 end:0x0000A714
+	.ctors      start:0x00000000 end:0x00000004
+	.rodata     start:0x00000000 end:0x00000020
+	.data       start:0x00000000 end:0x00005410
+	.bss        start:0x00000008 end:0x00000198
+
+mo_fighter/ft_marth/ft_marth_status_uniq_process_special_s.cpp:
+	.text       start:0x0000A714 end:0x0000B5D8
+	.ctors      start:0x00000004 end:0x00000008
+	.rodata     start:0x00000020 end:0x00000028
+	.data       start:0x00005410 end:0x00005584
+	.bss        start:0x00000198 end:0x000001A8
+
+mo_fighter/ft_marth/ft_marth_status_uniq_process_special_hi.cpp:
+	.text       start:0x0000B5D8 end:0x0000BFF0
+	.ctors      start:0x00000008 end:0x0000000C
+	.rodata     start:0x00000028 end:0x00000038
+	.data       start:0x00005584 end:0x00005600
+	.bss        start:0x000001A8 end:0x000001B8
+
+mo_fighter/ft_marth/ft_marth_status_uniq_process_special_lw.cpp:
+	.text       start:0x0000BFF0 end:0x0000C99C
+	.ctors      start:0x0000000C end:0x00000010
+	.rodata     start:0x00000038 end:0x00000040
+	.data       start:0x00005600 end:0x00005678
+	.bss        start:0x000001B8 end:0x000001C8
+
+mo_fighter/ft_marth/ft_marth_status_uniq_process_special_final.cpp:
+	.text       start:0x0000C99C end:0x0000D410
+	.ctors      start:0x00000010 end:0x00000014
+	.rodata     start:0x00000040 end:0x00000048
+	.data       start:0x00005678 end:0x000056F0
+	.bss        start:0x000001C8 end:0x000001D8
+
+mo_fighter/ft_marth/if_marth_final.cpp:
+	.text       start:0x0000D410 end:0x0000DB78
+	.rodata     start:0x00000048 end:0x00000060
+	.data       start:0x000056F0 end:0x00005818
+
 mo_fighter/mo_fighter.cpp:
 	.text       start:0x0000DB78 end:0x0000DC14
 	.data       start:0x00005818 end:0x00005827
