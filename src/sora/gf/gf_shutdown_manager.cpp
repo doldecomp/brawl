@@ -3,8 +3,8 @@
 #include <gf/gf_error_manager.h>
 #include <gf/gf_pad_system.h>
 #include <gf/gf_shutdown_manager.h>
-#include <gm/gm_syssave_task.h>
 #include <gf/gf_system_callback.h>
+#include <gm/gm_syssave_task.h>
 #include <revolution/OS/OSReset.h>
 #include <revolution/OS/OSStateTM.h>
 #include <sr/sr_common.h>
