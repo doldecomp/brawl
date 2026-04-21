@@ -490,7 +490,14 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+                Object(NonMatching, "mo_fighter/ft_marth/ft_marth.cpp"),
+                Object(NonMatching, "mo_fighter/ft_marth/ft_marth_status_uniq_process_s.cpp"),
+                Object(NonMatching, "mo_fighter/ft_marth/ft_marth_status_uniq_process_hi.cpp"),
+                Object(NonMatching, "mo_fighter/ft_marth/ft_marth_status_uniq_process_lw.cpp"),
+                Object(NonMatching, "mo_fighter/ft_marth/ft_marth_status_uniq_process_final.cpp"),
+                Object(NonMatching, "mo_fighter/ft_marth/if_marth_final.cpp"),
+            ],
     },
     {
         "lib": "ft_metaknight",
