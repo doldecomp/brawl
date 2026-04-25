@@ -270,6 +270,10 @@ sora/ft/ft_system.cpp:
 	.bss        start:0x8049EA20 end:0x8049EA30
 	.sbss       start:0x805A0380 end:0x805A0388
 
+sora/nt/nt_offline.cpp:
+	.text       start:0x8014C004 end:0x8014C180
+	.data       start:0x80460D40 end:0x80460D4C
+
 sora/nt/d_net_connect.cpp:
 	.text       start:0x8014CC40 end:0x8014CD5C
 	.data       start:0x80460DC8 end:0x80460E00
