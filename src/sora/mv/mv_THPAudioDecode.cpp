@@ -30,13 +30,13 @@ bool CreateAudioDecodeThread(s32 prio, void* funcArg) {
     if (funcArg) {
         if (!OSCreateThread(&g_audioDecWork->m_thread, AudioDecoderForOnMemory,
             funcArg, g_audioDecWork->m_stack + THPAudioDecWork::StackSize,
-            THPAudioDecWork::StackSize, prio, 1)) {
+            THPAudioDecWork::StackSize, prio, OS_THREAD_DETACHED)) {
             return false;
         }
     } else {
         if (!OSCreateThread(&g_audioDecWork->m_thread, AudioDecoder, nullptr,
             g_audioDecWork->m_stack + THPAudioDecWork::StackSize, THPAudioDecWork::StackSize,
-            prio, 1)) {
+            prio, OS_THREAD_DETACHED)) {
             return false;
         }
     }
@@ -76,7 +76,7 @@ void* AudioDecoder(void* p1) {
         if (r29 == 2) {
             PrepareReady(true);
         }
-        PushReadedBuffer2(static_cast<OSMessage>(r30));
+        PushReadedBuffer2(r30);
         r29++;
     }
 }
