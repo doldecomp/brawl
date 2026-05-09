@@ -8,7 +8,7 @@ emSparParamAccesser g_emSpaakParamAccesser;
 emSparParamAccesser::emSparParamAccesser()
     : emExtendParamAccesser(Enemy_Spaak) { }
 
-float emSparParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emSparParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -23,7 +23,7 @@ float emSparParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emSparParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emSparParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -36,7 +36,7 @@ s32 emSparParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-void* emSparParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emSparParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

@@ -8,19 +8,19 @@ emRobodistanceParamAccesser g_emROBDistanceParamAccesser;
 emRobodistanceParamAccesser::emRobodistanceParamAccesser()
     : emExtendParamAccesser(Enemy_ROB_Distance) { }
 
-float emRobodistanceParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emRobodistanceParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     return 0.0f;
 }
 
-s32 emRobodistanceParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emRobodistanceParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     return 0;
 }
 
-void* emRobodistanceParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emRobodistanceParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

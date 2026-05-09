@@ -8,7 +8,7 @@ emGyraanParamAccesser g_emGreapParamAccesser;
 emGyraanParamAccesser::emGyraanParamAccesser()
     : emExtendParamAccesser(Enemy_Greap) { }
 
-float emGyraanParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emGyraanParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -19,7 +19,7 @@ float emGyraanParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emGyraanParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emGyraanParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -30,7 +30,7 @@ s32 emGyraanParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-void* emGyraanParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emGyraanParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

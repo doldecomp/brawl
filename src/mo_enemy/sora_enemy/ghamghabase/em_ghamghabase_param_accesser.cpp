@@ -13,7 +13,7 @@ emGhamghabaseParamAccesser::emGhamghabaseParamAccesser()
     emExtendParamAccesser::reset(this, 50);
 }
 
-float emGhamghabaseParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emGhamghabaseParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -26,13 +26,13 @@ float emGhamghabaseParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emGhamghabaseParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emGhamghabaseParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     return 0;
 }
 
-void* emGhamghabaseParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emGhamghabaseParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

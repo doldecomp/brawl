@@ -8,7 +8,7 @@ emPatapataParamAccesser g_emKoopaParamAccesser;
 emPatapataParamAccesser::emPatapataParamAccesser()
     : emExtendParamAccesser(Enemy_Koopa) { }
 
-float emPatapataParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emPatapataParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -27,13 +27,13 @@ float emPatapataParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emPatapataParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emPatapataParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     return 0;
 }
 
-void* emPatapataParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emPatapataParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

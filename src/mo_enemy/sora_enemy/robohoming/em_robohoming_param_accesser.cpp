@@ -8,19 +8,19 @@ emRobohomingParamAccesser g_emROBLauncherParamAccesser;
 emRobohomingParamAccesser::emRobohomingParamAccesser()
     : emExtendParamAccesser(Enemy_ROB_Launcher) { }
 
-float emRobohomingParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emRobohomingParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     return 0.0f;
 }
 
-s32 emRobohomingParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emRobohomingParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     return 0;
 }
 
-void* emRobohomingParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emRobohomingParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

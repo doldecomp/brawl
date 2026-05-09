@@ -8,7 +8,7 @@ emMiteParamAccesser g_emMiteParamAccesser;
 emMiteParamAccesser::emMiteParamAccesser()
     : emExtendParamAccesser(Enemy_Mite) { }
 
-float emMiteParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emMiteParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -23,7 +23,7 @@ float emMiteParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emMiteParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emMiteParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -34,7 +34,7 @@ s32 emMiteParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-void* emMiteParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emMiteParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

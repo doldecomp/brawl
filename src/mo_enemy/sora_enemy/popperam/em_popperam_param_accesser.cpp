@@ -8,7 +8,7 @@ emPopperamParamAccesser g_emPoppantParamAccesser;
 emPopperamParamAccesser::emPopperamParamAccesser()
     : emExtendParamAccesser(Enemy_Poppant) { }
 
-float emPopperamParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emPopperamParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -29,7 +29,7 @@ float emPopperamParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emPopperamParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emPopperamParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -40,7 +40,7 @@ s32 emPopperamParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-void* emPopperamParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emPopperamParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

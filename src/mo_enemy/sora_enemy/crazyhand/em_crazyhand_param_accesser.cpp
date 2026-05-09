@@ -8,7 +8,7 @@ emCrazyhandParamAccesser g_emCrazyHandParamAccesser;
 emCrazyhandParamAccesser::emCrazyhandParamAccesser()
     : emExtendParamAccesser(Enemy_Boss_CrazyHand) { }
 
-float emCrazyhandParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emCrazyhandParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -43,7 +43,7 @@ float emCrazyhandParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emCrazyhandParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emCrazyhandParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -56,7 +56,7 @@ s32 emCrazyhandParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-void* emCrazyhandParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emCrazyhandParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

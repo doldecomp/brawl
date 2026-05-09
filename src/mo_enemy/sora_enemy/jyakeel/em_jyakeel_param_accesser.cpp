@@ -8,13 +8,13 @@ emJyakeelParamAccesser g_emJykParamAccesser;
 emJyakeelParamAccesser::emJyakeelParamAccesser()
     : emExtendParamAccesser(Enemy_Jyk) { }
 
-float emJyakeelParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emJyakeelParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     return 0.0f;
 }
 
-s32 emJyakeelParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emJyakeelParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -27,7 +27,7 @@ s32 emJyakeelParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-void* emJyakeelParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emJyakeelParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

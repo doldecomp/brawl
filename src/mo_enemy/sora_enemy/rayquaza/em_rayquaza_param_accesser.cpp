@@ -8,7 +8,7 @@ emRayquazaParamAccesser g_emRayquazaParamAccesser;
 emRayquazaParamAccesser::emRayquazaParamAccesser()
     : emExtendParamAccesser(Enemy_Boss_Rayquaza) { }
 
-float emRayquazaParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emRayquazaParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -27,7 +27,7 @@ float emRayquazaParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emRayquazaParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emRayquazaParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -38,7 +38,7 @@ s32 emRayquazaParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-void* emRayquazaParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emRayquazaParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

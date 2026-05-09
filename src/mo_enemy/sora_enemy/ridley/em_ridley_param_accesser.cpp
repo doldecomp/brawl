@@ -8,7 +8,7 @@ emRidleyParamAccesser g_emRidleyParamAccesser;
 emRidleyParamAccesser::emRidleyParamAccesser()
     : emExtendParamAccesser(Enemy_Boss_Ridley) { }
 
-float emRidleyParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emRidleyParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -21,7 +21,7 @@ float emRidleyParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emRidleyParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emRidleyParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -40,7 +40,7 @@ s32 emRidleyParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-void* emRidleyParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emRidleyParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

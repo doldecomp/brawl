@@ -8,7 +8,7 @@ emPacciParamAccesser g_emFeyeshParamAccesser;
 emPacciParamAccesser::emPacciParamAccesser()
     : emExtendParamAccesser(Enemy_Feyesh) { }
 
-float emPacciParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emPacciParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -23,13 +23,13 @@ float emPacciParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emPacciParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emPacciParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     return 0;
 }
 
-void* emPacciParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emPacciParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

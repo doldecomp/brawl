@@ -8,13 +8,13 @@ emSiralamosParamAccesser g_emArmightParamAccesser;
 emSiralamosParamAccesser::emSiralamosParamAccesser()
     : emExtendParamAccesser(Enemy_Armight) { }
 
-float emSiralamosParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emSiralamosParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     return 0.0f;
 }
 
-s32 emSiralamosParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emSiralamosParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -29,7 +29,7 @@ s32 emSiralamosParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-void* emSiralamosParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emSiralamosParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

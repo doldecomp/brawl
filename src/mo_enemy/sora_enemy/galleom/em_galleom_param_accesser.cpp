@@ -8,7 +8,7 @@ emGalleomParamAccesser g_emGalleomParamAccesser;
 emGalleomParamAccesser::emGalleomParamAccesser()
     : emExtendParamAccesser(Enemy_Boss_Galleom) { }
 
-float emGalleomParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emGalleomParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -25,7 +25,7 @@ float emGalleomParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emGalleomParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emGalleomParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -38,7 +38,7 @@ s32 emGalleomParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-void* emGalleomParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emGalleomParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

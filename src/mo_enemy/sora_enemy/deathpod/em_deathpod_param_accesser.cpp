@@ -8,13 +8,13 @@ emDeathpodParamAccesser g_emRoturretParamAccesser;
 emDeathpodParamAccesser::emDeathpodParamAccesser()
     : emExtendParamAccesser(Enemy_Roturret) { }
 
-float emDeathpodParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emDeathpodParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     return 0.0f;
 }
 
-s32 emDeathpodParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emDeathpodParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -25,7 +25,7 @@ s32 emDeathpodParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-void* emDeathpodParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emDeathpodParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

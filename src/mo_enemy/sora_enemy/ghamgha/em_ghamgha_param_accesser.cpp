@@ -8,7 +8,7 @@ emGhamghaParamAccesser g_emGamygaParamAccesser;
 emGhamghaParamAccesser::emGhamghaParamAccesser()
     : emExtendParamAccesser(Enemy_Gamyga) { }
 
-float emGhamghaParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emGhamghaParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -23,13 +23,13 @@ float emGhamghaParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emGhamghaParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emGhamghaParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     return 0;
 }
 
-void* emGhamghaParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emGhamghaParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

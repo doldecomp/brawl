@@ -8,7 +8,7 @@ emBucyulusParamAccesser g_emBucculusParamAccesser;
 emBucyulusParamAccesser::emBucyulusParamAccesser()
     : emExtendParamAccesser(Enemy_Bucculus) { }
 
-float emBucyulusParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emBucyulusParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -33,13 +33,13 @@ float emBucyulusParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emBucyulusParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emBucyulusParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     return 0;
 }
 
-void* emBucyulusParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emBucyulusParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

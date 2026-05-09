@@ -16,7 +16,7 @@ emPrimParamAccesser::emPrimParamAccesser()
     emExtendParamAccesser::reset(this, 35);
 }
 
-float emPrimParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emPrimParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -43,7 +43,7 @@ float emPrimParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emPrimParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emPrimParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -54,7 +54,7 @@ s32 emPrimParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-void* emPrimParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emPrimParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

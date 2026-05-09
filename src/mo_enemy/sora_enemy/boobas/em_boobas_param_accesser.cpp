@@ -7,13 +7,13 @@ emBoobasParamAccesser g_emBorborasParamAccesser;
 emBoobasParamAccesser::emBoobasParamAccesser()
     : emExtendParamAccesser(Enemy_Borboras) { }
 
-float emBoobasParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emBoobasParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     return 0.0f;
 }
 
-s32 emBoobasParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emBoobasParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -28,7 +28,7 @@ s32 emBoobasParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-void* emBoobasParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emBoobasParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

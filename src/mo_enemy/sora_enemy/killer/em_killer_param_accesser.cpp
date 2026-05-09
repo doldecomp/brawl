@@ -7,7 +7,7 @@ emKillerParamAccesser g_emBulletBillParamAccesser;
 emKillerParamAccesser::emKillerParamAccesser()
     : emExtendParamAccesser(Enemy_BulletBill) { }
 
-float emKillerParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emKillerParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -20,7 +20,7 @@ float emKillerParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emKillerParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emKillerParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -33,7 +33,7 @@ s32 emKillerParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-void* emKillerParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emKillerParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

@@ -12,7 +12,7 @@ emPorkyParamAccesser g_emPorkyParamAccesser;
 emPorkyParamAccesser::emPorkyParamAccesser()
     : emExtendParamAccesser(Enemy_Boss_Porky) { }
 
-float emPorkyParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emPorkyParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -31,7 +31,7 @@ float emPorkyParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emPorkyParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emPorkyParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -48,7 +48,7 @@ s32 emPorkyParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-void* emPorkyParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emPorkyParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     s32 r29;

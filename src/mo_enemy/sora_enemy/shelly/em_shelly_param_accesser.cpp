@@ -8,7 +8,7 @@ emShellyParamAccesser g_emShellpodParamAccesser;
 emShellyParamAccesser::emShellyParamAccesser()
     : emExtendParamAccesser(Enemy_Shellpod) { }
 
-float emShellyParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emShellyParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -21,13 +21,13 @@ float emShellyParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emShellyParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emShellyParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     return 0;
 }
 
-void* emShellyParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emShellyParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

@@ -7,7 +7,7 @@ emFaulongParamAccesser g_emTrowlonParamAccesser;
 emFaulongParamAccesser::emFaulongParamAccesser()
     : emExtendParamAccesser(Enemy_Trowlon) { }
 
-float emFaulongParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emFaulongParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -18,7 +18,7 @@ float emFaulongParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emFaulongParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emFaulongParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -29,7 +29,7 @@ s32 emFaulongParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-void* emFaulongParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emFaulongParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

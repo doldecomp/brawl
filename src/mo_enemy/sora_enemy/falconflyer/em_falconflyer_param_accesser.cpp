@@ -7,13 +7,13 @@ emFalconflyerParamAccesser g_emFalconFlyerParamAccesser;
 emFalconflyerParamAccesser::emFalconflyerParamAccesser()
     : emExtendParamAccesser(Enemy_Boss_FalconFlyer) { }
 
-float emFalconflyerParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emFalconflyerParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     return 0.0f;
 }
 
-s32 emFalconflyerParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emFalconflyerParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -24,7 +24,7 @@ s32 emFalconflyerParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-void* emFalconflyerParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emFalconflyerParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

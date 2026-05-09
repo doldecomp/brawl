@@ -8,7 +8,7 @@ emDekakuriboParamAccesser g_emGiantGoombaParamAccesser;
 emDekakuriboParamAccesser::emDekakuriboParamAccesser()
     : emExtendParamAccesser(Enemy_GiantGoomba) { }
 
-float emDekakuriboParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emDekakuriboParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -27,13 +27,13 @@ float emDekakuriboParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emDekakuriboParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emDekakuriboParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     return 0;
 }
 
-void* emDekakuriboParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emDekakuriboParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

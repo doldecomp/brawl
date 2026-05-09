@@ -8,19 +8,19 @@ emRobopunchParamAccesser g_emROBSentryParamAccesser;
 emRobopunchParamAccesser::emRobopunchParamAccesser()
     : emExtendParamAccesser(Enemy_ROB_Sentry) { }
 
-float emRobopunchParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emRobopunchParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     return 0.0f;
 }
 
-s32 emRobopunchParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emRobopunchParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     return 0;
 }
 
-void* emRobopunchParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emRobopunchParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

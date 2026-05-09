@@ -8,13 +8,13 @@ emRobobeamParamAccesser g_emROBBlasterParamAccesser;
 emRobobeamParamAccesser::emRobobeamParamAccesser()
     : emExtendParamAccesser(Enemy_ROB_Blaster) { }
 
-float emRobobeamParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emRobobeamParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     return 0.0f;
 }
 
-s32 emRobobeamParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emRobobeamParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -27,7 +27,7 @@ s32 emRobobeamParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-void* emRobobeamParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emRobobeamParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {

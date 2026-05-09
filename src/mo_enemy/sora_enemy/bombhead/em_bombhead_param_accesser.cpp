@@ -8,7 +8,7 @@ emBombheadParamAccesser g_emBombedParamAccesser;
 emBombheadParamAccesser::emBombheadParamAccesser()
     : emExtendParamAccesser(Enemy_Bombed) { }
 
-float emBombheadParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
+float emBombheadParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -23,7 +23,7 @@ float emBombheadParamAccesser::getParamFloat(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-s32 emBombheadParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
+s32 emBombheadParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
@@ -34,7 +34,7 @@ s32 emBombheadParamAccesser::getParamInt(soModuleAccesser* acc, s32 p2) {
     }
 }
 
-void* emBombheadParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2) {
+void* emBombheadParamAccesser::getParamIndefinite(soModuleAccesser* acc, s32 p2, s32 p3) {
     UnkParamAccesser* ptr = dynamic_cast<emResourceModuleImpl&>(
         acc->getResourceModule()).unk2C;
     switch (p2) {
