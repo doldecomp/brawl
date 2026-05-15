@@ -249,6 +249,7 @@ cflags_rel = [
     "-sdata2 0",
 ]
 
+cflags_fighter = ["-O2,s" if flag == "-O4,p" else flag for flag in cflags_rel]
 cflags_sora_enemy = ["-O2,s" if flag == "-O4,p" else flag for flag in cflags_rel]
 cflags_st_starfox = [*cflags_rel, "-inline on,noauto"]
 
@@ -555,9 +556,11 @@ config.libs = [
     {
         "lib": "ft_purin",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_purin/ft_purin.cpp"),
+        ],
     },
     {
         "lib": "ft_robot",
@@ -815,6 +818,7 @@ config.libs = [
             Object(Matching, "mo_melee/sora_melee/so/so_common_data_accesser.cpp"),
             Object(Matching, "mo_melee/sora_melee/ft/ft_class_info.cpp"),
             Object(Matching, "mo_melee/sora_melee/ft/ft_extend_param_accesser.cpp"),
+            Object(NonMatching, "mo_melee/sora_melee/ft/ft_fighter_build_data.cpp"),
             Object(Matching, "mo_melee/mo_melee.cpp"),
         ],
     },
