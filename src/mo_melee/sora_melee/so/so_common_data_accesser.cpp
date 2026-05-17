@@ -1,6 +1,8 @@
 #include <so/so_common_data_accesser.h>
 #include <types.h>
 
+soCommonDataAccesser g_soCommonDataAccesser;
+
 void soCommonDataAccesser::setupCommonParam(soCommonParam** p1) {
     for (u32 i = 0; i < 2; i++) {
         u32 j = 0;
