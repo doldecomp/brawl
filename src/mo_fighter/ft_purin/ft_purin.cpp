@@ -1,77 +1,89 @@
-#include <ft/ft_entry.h>
-#include <ft/ft_extend_param_accesser.h>
-#include <ft/purin/ft_purin_extend_param_accesser.h>
-#include <so/so_array.h>
-#include <so/so_module_accesser.h>
-#include <sr/sr_common.h>
 #include <StaticAssert.h>
 #include <ft/fighter.h>
+#include <ft/ft_entry.h>
+#include <ft/ft_extend_param_accesser.h>
+#include <ft/ft_fighter_build_data.h>
+#include <ft/purin/ft_purin_extend_param_accesser.h>
+#include <so/so_array.h>
+#include <so/event/so_event_manage_module_impl.h>
+#include <so/event/so_event_system.h>
+#include <so/so_inside_event_manage_module_builder.h>
+#include <so/so_instance_unit.h>
+#include <so/so_module_accesser.h>
+#include <so/template_utils.h>
+#include <sr/sr_common.h>
 #include <types.h>
+
+typedef soInsideEventManageModuleBuildConfig
+    <32, 40, 4, 4, 4, 4, 4, 4, 5, 4, 4, 4, 4, 4, 1, 1, 0, 2, 1, ftInsideEventManageModuleTypes>
+ftPurinInsideEventManageModuleBuildConfig;
+
+// FIXME: Present only to emit the constructor; delete once ftPurin is done
+void testBuilder() {
+    soInsideEventManageModuleBuilder<ftPurinInsideEventManageModuleBuildConfig, ftInsideEventManageModuleTypes> insideBuilder;
+}
+soInsideEventManageModuleBuilder<ftPurinInsideEventManageModuleBuildConfig, ftInsideEventManageModuleTypes> g_insideBuilder;
 
 ftPurinExtendParamAccesser g_ftPurinExtendParamAccesser;
 
-template<typename BuildConfig>
+template<typename BC>
 class ftFighterBuilder : public Fighter {
-public:
-    ftFighterBuilder(s32 entryId, ftKind kind, s32 p3, soModuleAccesser* acc) :
-        Fighter(entryId, kind, p3, acc) {
-        // TODO create ftFighterBuildData
+    BC m_buildConfig; // +0x194
+    u32 unk9A38[2]; // cameraRangeSet TODO type
+    u32 unk9A40[2]; // cameraClipSphereSet TODO type
 
+public:
+    ftFighterBuilder(s32 entryId,
+                     ftKind kind,
+                     Heaps::HeapType instHeap,
+                     Heaps::HeapType nwModelInstHeap,
+                     Heaps::HeapType nwMotionInstHeap) :
+        Fighter(entryId, kind, instHeap, &m_buildConfig.unkB64),
+        m_buildConfig(ftFighterBuildData(entryId,
+                               Fighter_Jigglypuff,
+                               instHeap,
+                               nwModelInstHeap,
+                               nwMotionInstHeap,
+                               0,
+                               m_moduleAccesser,
+                               -1,
+                               &unk9A38,
+                               &unk9A40)) {
     }
 };
 
-// TODO: Are there more template params?
-template<u32 C1, u32 C2, u32 C3, u32 C4, u32 C5,
-         u32 C6, u32 C7, u32 C8, u32 C9, u32 C10,
-         u32 C11, u32 C12, u32 C13, u32 C14, u32 C15,
-         u32 C16, u32 C17, u32 C18>
-class soInsideEventManageModuleBuildConfig {
-
-};
-// size is 0x9A48
-
-// e.g. soEventUnitWithWorkArea<soStatusEventObserver,32>
-// TODO: more template params?
-template<typename Cfg>
-class soInsideEventManageModuleBuilder {
-public:
-    soInsideEventManageModuleBuilder();
-};
-
 class ftPurinBuildConfig {
-
-};
-
-// Note: The values passed here are the capacities of
-// the soEventUnitWithWorkAreas managed by the builder
-typedef soInsideEventManageModuleBuildConfig
-    <32, 40, 4, 4, 4, 4, 4, 4, 5, 4, 4, 4, 4, 4, 1, 1, 2, 1>
-ftPurinInsideEventManageModuleBuildConfig;
-
-class ftPurin : public ftFighterBuilder<ftPurinBuildConfig> {
-    soInsideEventManageModuleBuilder<ftPurinInsideEventManageModuleBuildConfig> unk194;
-    u8 unk198[0x9CC];
+public:
+    soInsideEventManageModuleBuilder<ftPurinInsideEventManageModuleBuildConfig, ftInsideEventManageModuleTypes> unk194;
     soModuleAccesser unkB64;
     u8 unkC44[0x8DF4];
-    u32 unk9A38; // cameraRangeSet TODO type
-    u8 unk9A3C[0x4];
-    u32 unk9A40; // cameraClipSphereSet TODO type
+    ftPurinBuildConfig(const ftFighterBuildData& fbd) {
+
+    }
+    ~ftPurinBuildConfig() { }
+};
+
+class ftPurin : public ftFighterBuilder<ftPurinBuildConfig> {
 
     // begin ftPurin fields
     soArrayContractibleTable<const soStatusData> unk9A48;
     void* unk9A58; // TODO type
 public:
     ftPurin(s32 entryId,
-            s32 p2,
+            Heaps::HeapType instHeap,
             Heaps::HeapType nwModelInstHeap,
             Heaps::HeapType nwMotionInstHeap);
 };
 // static_assert(sizeof(ftPurin) == 0x9A5C, "Class is the wrong size!");
 
 ftPurin::ftPurin(s32 entryId,
-                 s32 p2,
+                 Heaps::HeapType instHeap,
                  Heaps::HeapType nwModelInstHeap,
                  Heaps::HeapType nwMotionInstHeap) :
-    ftFighterBuilder<ftPurinBuildConfig>(entryId, Fighter_Jigglypuff, p2, &unkB64) {
+    ftFighterBuilder<ftPurinBuildConfig>(entryId,
+                                         Fighter_Jigglypuff,
+                                         instHeap,
+                                         nwModelInstHeap,
+                                         nwMotionInstHeap) {
     // TODO
 }
