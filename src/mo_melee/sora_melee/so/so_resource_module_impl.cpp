@@ -7,7 +7,8 @@
 #include <ut/ut_archive_manager.h>
 
 soResourceModuleImpl::
-soResourceModuleImpl(u32 mId, soResourceIdAccesserImpl* rsrcIdAcc, u32 arcGrp) {
+soResourceModuleImpl(u32 mId, soResourceIdAccesser* rsrcIdAcc, u8 arcGrp)
+        : soResourceModule(false) {
     m_managerID = mId;
     m_resourceIdAccesser = rsrcIdAcc;
     m_archiveType1 = arcGrp;

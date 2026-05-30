@@ -40,7 +40,7 @@ ftFighterBuildData::ftFighterBuildData(s32 entryId, ftKind kind,
     m_nwModelInstHeap(nwModelInstHeap),
     m_nwMotionInstHeap(nwMotionInstHeap) { }
 
-void* ftFighterBuildData::getAnimCmdData(u32 eventThread, s32 p2) {
+void* ftFighterBuildData::getAnimCmdData(u32 eventThread, s32 p2) const {
     if (p2 == 0) {
         switch (eventThread) {
             case 0:
@@ -69,7 +69,7 @@ Exit:
     return nullptr;
 }
 
-soAnimCmdDisguiseList* ftFighterBuildData::getAnimCmdDisguiseList(bool p1, s32 actionType) {
+soAnimCmdDisguiseList* ftFighterBuildData::getAnimCmdDisguiseList(bool p1, s32 actionType) const {
     if (p1 == false) {
         if (actionType == 0)
             return m_ftData->unk50;
@@ -79,105 +79,105 @@ soAnimCmdDisguiseList* ftFighterBuildData::getAnimCmdDisguiseList(bool p1, s32 a
     return nullptr;
 }
 
-u32 ftFighterBuildData::getMdlResId() {
+u32 ftFighterBuildData::getMdlResId() const {
     return 0xFFFF;
 }
 
-u32 ftFighterBuildData::getAnimResId() {
+u32 ftFighterBuildData::getAnmResId() const {
     return 0xFFFF;
 }
 
-u8 ftFighterBuildData::getResGroupNo() {
+u8 ftFighterBuildData::getResGroupNo() const {
     return m_resGroupNo;
 }
 
-ftMotionData* ftFighterBuildData::getMotionData() {
+ftMotionData* ftFighterBuildData::getMotionData() const {
     return g_ftCommonDataAccesser.getData(m_kind)->motionData;
 }
 
-ftStatusData* ftFighterBuildData::getStatusData() {
+ftStatusData* ftFighterBuildData::getStatusData() const {
     return g_ftCommonDataAccesser.getData(m_kind)->statusData;
 }
 
-ftVisibilityData* ftFighterBuildData::getVisibilityData() {
+ftVisibilityData* ftFighterBuildData::getVisibilityData() const {
     return g_ftCommonDataAccesser.getData(m_kind)->visibilityData;
 }
 
-soParamAccesser* ftFighterBuildData::getParamAccesser() {
+soParamAccesser* ftFighterBuildData::getParamAccesser() const {
     return &g_soParamAccesserNull;
 }
 
-s32 ftFighterBuildData::getAreaCategory() {
+s32 ftFighterBuildData::getAreaCategory() const {
     return 0;
 }
 
-void* ftFighterBuildData::getCameraRangeSet() {
+void* ftFighterBuildData::getCameraRangeSet() const {
     return m_cameraRangeSet;
 }
 
-void* ftFighterBuildData::getCameraClipSphereSet() {
+void* ftFighterBuildData::getCameraClipSphereSet() const {
     return m_cameraClipSphereSet;
 }
 
-void* ftFighterBuildData::getItemNodeData() {
+void* ftFighterBuildData::getItemNodeData() const {
     return soValueAccesser::getConstantIndefinite(m_moduleAccsr, 43015, 0);
 }
 
-void* ftFighterBuildData::getModelExtendNodeTable() {
+void* ftFighterBuildData::getModelExtendNodeTable() const {
     return soValueAccesser::getConstantIndefinite(m_moduleAccsr, 43014, 0);
 }
 
-ftIkData* ftFighterBuildData::getIkData() {
+ftIkData* ftFighterBuildData::getIkData() const {
     return g_ftCommonData.dataCommon->ikData;
 }
 
-ftShakeData* ftFighterBuildData::getShakeData() {
+ftShakeData* ftFighterBuildData::getShakeData() const {
     return g_ftCommonData.dataCommon->shakeData;
 }
 
-void* ftFighterBuildData::getEffectNodeData() {
+void* ftFighterBuildData::getEffectNodeData() const {
     return nullptr;
 }
 
-void* ftFighterBuildData::getEffectEmitData() {
+void* ftFighterBuildData::getEffectEmitData() const {
     return soValueAccesser::getConstantIndefinite(m_moduleAccsr, 43010, 0);
 }
 
-ftEffectCommonData* ftFighterBuildData::getEffectCommonData() {
+ftEffectCommonData* ftFighterBuildData::getEffectCommonData() const {
     return g_ftCommonData.dataCommon->effectCommonData;
 }
 
-ftEffectScreenData* ftFighterBuildData::getEffectScreenData() {
+ftEffectScreenData* ftFighterBuildData::getEffectScreenData() const {
     return g_ftCommonData.dataCommon->effectScreenData;
 }
 
-soGroundConditionChecker* ftFighterBuildData::getGroundConditionChecker() {
+soGroundConditionChecker* ftFighterBuildData::getGroundConditionChecker() const {
     return &g_ftGroundConditionCheckerImpl;
 }
 
-ftJostleData* ftFighterBuildData::getJostleData() {
+ftJostleData* ftFighterBuildData::getJostleData() const {
     return g_ftCommonData.dataCommon->jostleData;
 }
 
-ftPreCheckAnimCmdData* ftFighterBuildData::getPreCheckAnimCmdData() {
+ftPreCheckAnimCmdData* ftFighterBuildData::getPreCheckAnimCmdData() const {
     return g_ftCommonDataAccesser.getData(m_kind)->preCheckAnimCmdData;
 }
 
-float ftFighterBuildData::getModelScale() {
+float ftFighterBuildData::getModelScale() const {
     return g_ftCommonDataAccesser.getParam(m_kind)->modelScale;
 }
 
-s32 ftFighterBuildData::getHeapSlotNo() {
+s32 ftFighterBuildData::getHeapSlotNo() const {
     return g_ftManager->getSlotNo(m_entryId);
 }
 
-ftSoundIdExchangerImpl* ftFighterBuildData::getSoundIdExchanger() {
+ftSoundIdExchangerImpl* ftFighterBuildData::getSoundIdExchanger() const {
     if (m_kind == Fighter_Kirby)
         return &g_ftKirbySoundIdExchangerImpl;
     return &g_ftSoundIdExchangerImpl;
 }
 
-float ftFighterBuildData::getSlopeAngleLimit() {
+float ftFighterBuildData::getSlopeAngleLimit() const {
     return g_ftCommonDataAccesser.getParam(m_kind)->slopeAngleLimit;
 }
 

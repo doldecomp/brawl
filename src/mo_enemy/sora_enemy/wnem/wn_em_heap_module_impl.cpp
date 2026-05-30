@@ -4,7 +4,7 @@
 wnemHeapModuleImpl g_wnemHeapModule(Heaps::WeaponInstance, Heaps::StageResource);
 
 wnemHeapModuleImpl::wnemHeapModuleImpl(HeapType p1, HeapType p2)
-    : unk8(p1), unkC(p2) { }
+    : soHeapModule(false), unk8(p1), unkC(p2) { }
 
 // Note: This emits the code for soHeapModule's inlined methods
 static void unused() {

@@ -4,7 +4,7 @@
 
 soHeapModuleImpl::soHeapModuleImpl(Heaps::HeapType instHeap,
         Heaps::HeapType modelInstHeap, Heaps::HeapType motionInstHeap,
-        s32 heapSlotNo) {
+        s32 heapSlotNo) : soHeapModule(false) {
     m_instanceHeap = instHeap;
     m_modelInstanceHeap = modelInstHeap;
     m_motionInstanceHeap = motionInstHeap;
