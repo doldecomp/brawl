@@ -11,7 +11,7 @@ soModelModuleImplVariable::~soModelModuleImplVariable() { }
 
 static inline u32 minus400(u32 p1) { return p1 - 400; }
 
-int soModelModuleImplVariable::getRealNodeId(u32 p1) {
+int soModelModuleImplVariable::getRealNodeId(u32 p1) const {
     if (p1 < 400 || p1 == 0xFFFFFFFF) {
         return p1;
     }
@@ -100,7 +100,7 @@ void soModelModuleImplVariable::getNodeLocalMtxFromNode(u32 p1, u32 p2, Matrix* 
     return soModelModuleImpl::getNodeLocalMtxFromNode(getRealNodeId(p1), getRealNodeId(p2), p3, p4);
 }
 
-void soModelModuleImplVariable::getNodeGlobalMtx(u32 p1, Matrix* p2, bool p3) {
+void soModelModuleImplVariable::getNodeGlobalMtx(u32 p1, Matrix* p2, bool p3) const {
     return soModelModuleImpl::getNodeGlobalMtx(getRealNodeId(p1), p2, p3);
 }
 

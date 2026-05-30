@@ -69,7 +69,7 @@ end:
     return nullptr;
 }
 
-void soModelModuleSimple::getNodeGlobalMtx(u32 idx, Matrix* outMtx, bool) {
+void soModelModuleSimple::getNodeGlobalMtx(u32 idx, Matrix* outMtx, bool) const {
     getScnMdl()->GetScnMtxPos(outMtx, nw4r::g3d::ScnMdl::MTX_WORLD, idx);
 }
 
