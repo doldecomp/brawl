@@ -54,6 +54,7 @@ public:
     soHeapModuleBuilder<typename BC::HeapModuleBuildConfig> m_heapModuleBuilder;
     soParamCustomizeModuleBuilder<typename BC::ParamCustomizeModuleBuildConfig> m_paramCustomizeModuleBuilder;
     soResourceModuleBuilder<typename BC::ResourceModuleBuildConfig> m_resourceModuleBuilder;
+    soModelModuleBuilder<typename BC::ModelModuleBuildConfig> m_modelModuleBuilder;
 
     // TODO: add remaining ModuleBuilders
     // Add getModule() member functions for each Builder
@@ -67,6 +68,12 @@ public:
             fbd.getAnmResId(),
             fbd.getResGroupNo(),
             &m_moduleAccsr
+        ),
+        m_modelModuleBuilder(
+            &m_moduleAccsr,
+            fbd.getModelExtendNodeTable(),
+            &g_soEventObserverRegistrationDescNull,
+            fbd.getModelScale()
         ) {
     }
 
@@ -127,6 +134,8 @@ typedef soInsideEventManageModuleBuildConfig<
 typedef soHeapModuleBuildConfig<soHeapModuleImpl> ftPurinHeapModuleBuildConfig;
 typedef soParamCustomizeModuleBuildConfig<ftParamCustomizeModuleImpl> ftPurinParamCustomizeModuleBuildConfig;
 typedef soResourceModuleBuildConfigDynamic<0, ftResourceIdAccesserImpl, soResourceModuleImpl> ftPurinResourceModuleBuildConfig;
+typedef soModelModuleBuildConfig<8, 3, soModelModuleImpl> ftPurinModelModuleBuildConfig;
+
 typedef ftAnimCmdModuleSubBuildConfig<288, 501> ftPurinAnimCmdModuleSubBuildConfig;
 
 class ftPurinBuildConfig {
@@ -136,6 +145,7 @@ public:
     typedef ftPurinParamCustomizeModuleBuildConfig ParamCustomizeModuleBuildConfig;
     typedef ftPurinResourceModuleBuildConfig ResourceModuleBuildConfig;
     typedef ftPurinAnimCmdModuleSubBuildConfig AnimCmdModuleSubBuildConfig;
+    typedef ftPurinModelModuleBuildConfig ModelModuleBuildConfig;
 };
 
 class ftPurin : public ftFighterBuilder<ftPurinBuildConfig> {

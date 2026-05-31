@@ -4,8 +4,22 @@
 #include <so/so_module_accesser.h>
 #include <types.h>
 
-soModelModuleImplVariable::soModelModuleImplVariable(soModuleAccesser* p1, void* p2, u32 p3, u32 p4, void* p5, float f1)
-    : soModelModuleImpl(p1, p2, p3, p4, p5, f1), unkCC(0) { }
+soModelModuleImplVariable::soModelModuleImplVariable(soModuleAccesser* acc,
+                                                     soArray<soModelNodeSetUp>* nodeSetUps,
+                                                     void* extendNodeTbl,
+                                                     soArray<soModelVirtualNode>* virtualNodes,
+                                                     soEventObserverRegistrationDesc* regDesc,
+                                                     float f1) :
+    soModelModuleImpl(
+        acc,
+        nodeSetUps,
+        extendNodeTbl,
+        virtualNodes,
+        regDesc,
+        f1
+    ),
+    unkCC(0) {
+}
 
 soModelModuleImplVariable::~soModelModuleImplVariable() { }
 
