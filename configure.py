@@ -1373,7 +1373,13 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_stage/st_tengan/st_tengan.cpp"),
+            Object(Matching, "mo_stage/st_tengan/gr_tengan.cpp"),
+            Object(Matching, "mo_stage/st_tengan/gr_tengan_bg.cpp"),
+            Object(Matching, "mo_stage/st_tengan/gr_tengan_floor.cpp"),
+            Object(Matching, "mo_stage/st_tengan/gr_tengan_ashiba.cpp"),
+        ],
     },
     {
         "lib": "st_village",
