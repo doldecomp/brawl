@@ -95,6 +95,10 @@ mo_melee/sora_melee/ft/ft_fighter_build_data.cpp:
 	.data       start:0x00032A98 end:0x00032BF8
 	.bss        start:0x00005040 end:0x00005050
 
+mo_melee/sora_melee/st/st_common_gimmick.cpp:
+	.text       start:0x00237C00 end:0x002381FC
+	.data       start:0x0004C748 end:0x0004C96C
+
 mo_melee/mo_melee.cpp:
 	.text       start:0x003CBCBC end:0x003CBE40
 	.ctors      start:0x00000514 end:0x00000518
