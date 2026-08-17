@@ -3,7 +3,6 @@
 #include <types.h>
 #include <ut/ut_relocate.h>
 
-// NONMATCHING regswap
 utRelocate::utRelocate(u8* fileBuf, u32 fileSz) {
     m_dataStart = nullptr;
     m_relStart = nullptr;
@@ -11,9 +10,8 @@ utRelocate::utRelocate(u8* fileBuf, u32 fileSz) {
     m_importStart = nullptr;
     m_strtabStart = nullptr;
     std::memcpy(&m_hdr, fileBuf, sizeof(m_hdr));
-    if (m_hdr.fileSz != fileSz) {
+    if (m_hdr.fileSz != fileSz)
         OSReport("utRelocate: byte-order mismatch! Please check data format\n");
-    }
 
     u32 fp = sizeof(m_hdr);
     if (m_hdr.dataSz) {
@@ -36,19 +34,10 @@ utRelocate::utRelocate(u8* fileBuf, u32 fileSz) {
         fp += m_hdr.nImports * sizeof(m_importStart[0]);
     }
 
-    if (fp < m_hdr.fileSz) {
+    if (fp < m_hdr.fileSz)
         m_strtabStart = reinterpret_cast<char*>(fileBuf + fp);
-    }
 
-    if (!m_hdr.isAbsolute) {
-        // Resolve all internal relocations
-        for (u32 i = 0; i < m_hdr.nRels; i++) {
-            u8* datap = m_dataStart;
-            u32 offset = reinterpret_cast<u32>(datap);
-            *reinterpret_cast<u32*>(&datap[m_relStart[i]]) += offset;
-        }
-        reinterpret_cast<DATHeader*>(fileBuf)->isAbsolute = true;
-    }
+    relocate(fileBuf);
 }
 
 utRelocate::~utRelocate() { }
@@ -57,9 +46,8 @@ void* utRelocate::getPublicAddress(const char* symName) const {
     const DATSymbol* sym;
     for (u32 i = 0; i < m_hdr.nSymbols; i++) {
         sym = m_symtabStart;
-        if (!std::strcmp(m_strtabStart + sym[i].name, symName)) {
+        if (!std::strcmp(m_strtabStart + sym[i].name, symName))
             return m_dataStart + sym[i].offset;
-        }
     }
     return nullptr;
 }
@@ -94,9 +82,8 @@ void utRelocate::resolveReference(const utRelocate* other) {
         const char* importName = getImportName(i, m_hdr.nImports);
         if (importName) {
             void* addr = reinterpret_cast<void*>(other->getPublicAddress(importName));
-            if (!addr) {
+            if (!addr)
                 OSReport("utRelocate: not found symbol! ->[%s] \n", importName);
-            }
             locateExtern(importName, addr);
         }
     }
