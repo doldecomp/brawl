@@ -14,31 +14,31 @@ void gfErrorCheck::init() {
 
 void gfErrorCheck::check() {
     s32 status = DVDGetDriveStatus();
-    u32 r31;
+    u32 errCode;
     bool r30 = false;
     if (status == -1) {
         r30 = true;
-        r31 = 4;
+        errCode = 4;
     } else if (status == 4) {
         r30 = true;
-        r31 = 1;
+        errCode = 1;
     } else if (status == 11) {
         r30 = true;
-        r31 = 3;
+        errCode = 3;
     } else if (status == 6) {
         r30 = true;
-        r31 = 2;
+        errCode = 2;
     } else {
         const DVDDiskID* id1 = DVDGetCurrentDiskID();
         const DVDDiskID* id2 = gfFileIO::getDVDDiskId();
         if (true != DVDCompareDiskID(id1, id2)) {
             r30 = true;
-            r31 = 2;
+            errCode = 2;
         }
     }
 
     if (r30) {
-        gfErrorManager::getInstance()->notifyError(r31, 0);
+        gfErrorManager::getInstance()->notifyError(errCode, 0);
     } else {
         gfErrorManager::getInstance()->notifyErrorRecovery(false);
     }

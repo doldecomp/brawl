@@ -299,6 +299,7 @@ config.libs = [
             Object(Matching, "sora/gf/gf_camera_controller.cpp"),
             Object(Matching, "sora/gf/gf_callback.cpp"),
             Object(Matching, "sora/gf/gf_decomp.cpp"),
+            Object(Matching, "sora/gf/gf_error_manager.cpp"),
             Object(Matching, "sora/gf/gf_error_check.cpp"),
             Object(Matching, "sora/gf/gf_file_io_handle.cpp"),
             Object(Matching, "sora/gf/gf_file_io_request.cpp"),
