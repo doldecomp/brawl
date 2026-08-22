@@ -36,9 +36,7 @@ void gfShutdownManager::enterReturnToWiiMenuProcess() {
 void gfShutdownManager::update() {
     if (m_reset || m_powerOff || m_returnToWiiMenu) {
         if (unkC && unkD) {
-            if (!unk0_b3 &&
-                (gfErrorManager::getInstance()->unk0_b6 != true ||
-                gfErrorManager::getInstance()->unk0_b7)) {
+            if (!unk0_b3 && (gfErrorManager::getInstance()->m_isSuspended != true || gfErrorManager::getInstance()->m_isFatal)) {
                 unk8.add(gmSysSave::create(Heaps::GlobalMode));
                 unk0_b3 = true;
             }
