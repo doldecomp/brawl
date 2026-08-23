@@ -6,11 +6,12 @@ stDataContainer::stDataContainer(stDataContainerData* data)
 
 stDataContainer::~stDataContainer() { }
 
-void* stDataContainer::getData(u32 index) {
+stDataContainerData* stDataContainer::getData(u32 index) {
     if (m_filedata->m_numFiles <= index)
         return nullptr;
     u32* startOffsets = static_cast<u32*>(getDataAddressHead());
-    return reinterpret_cast<u8*>(m_filedata) + startOffsets[index];
+    return reinterpret_cast<stDataContainerData*>(
+               reinterpret_cast<u8*>(m_filedata) + startOffsets[index]);
 }
 
 void* stDataContainer::getDataAddressHead() {
@@ -23,4 +24,3 @@ stDataSimpleContainer::stDataSimpleContainer(stDataContainerData* data)
 }
 
 stDataSimpleContainer::~stDataSimpleContainer() { }
-

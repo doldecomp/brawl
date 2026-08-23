@@ -354,6 +354,8 @@ config.libs = [
             Object(Matching, "sora/nt/nt_etc_dwc.cpp", extra_cflags=["-RTTI off"]),
             Object(Matching, "sora/ad/ad_static_data.cpp"),
             Object(Matching, "sora/st/st_data_container.cpp"),
+            Object(Matching, "sora/st/st_data_container_multi.cpp"),
+            Object(Matching, "sora/st/st_data_container_magic.cpp"),
         ],
     },
     # Common REL units

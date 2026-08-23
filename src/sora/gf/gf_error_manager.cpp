@@ -15,9 +15,15 @@
 #include <types.h>
 
 // TODO: These belong to different files
+
+// Big compressed object, possibly linked from an independent data-only unit
 // .data start:0x80423980 end:0x8042ADD0
 extern CXStream g_LZEncodedAlertFont;
+
+// global defined in ms_resfont.cpp
 extern nw4r::ut::ResFont g_AlertFont;
+
+// probably defined in gf_file_io.cpp
 extern const char* g_ErrorMsgTable[12];
 
 static gfErrorManager* g_gfErrorManager;
@@ -113,9 +119,9 @@ void gfErrorManager::render() {
 }
 
 void gfErrorManager::notifyError(u32 errorCode, u32 reasonCode) {
-    bool res;
-    notifyErrorHelper(res, errorCode);
-    if (res) {
+    bool statusChanged;
+    suspendGame(statusChanged, errorCode);
+    if (statusChanged) {
         m_reasonCode = reasonCode;
         m_errorCode = errorCode;
     }
