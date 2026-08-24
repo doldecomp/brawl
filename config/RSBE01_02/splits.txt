@@ -44,6 +44,10 @@ sora/gf/gf_archive_file.cpp:
 sora/gf/gf_archive_db.cpp:
 	.text       start:0x8001643C end:0x80016688
 
+sora/gf/gf_archive_manager.cpp:
+	.text       start:0x80016688 end:0x800167C4
+	.sbss       start:0x8059FFA0 end:0x8059FFA4
+
 sora/gf/gf_camera_controller.cpp:
 	.text       start:0x8001A3A4 end:0x8001A3AC
 	.data       start:0x80420B88 end:0x80420BA0
