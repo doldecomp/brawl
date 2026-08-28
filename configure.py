@@ -354,6 +354,7 @@ config.libs = [
             Object(Matching, "sora/nt/nt_offline.cpp", extra_cflags=["-RTTI off"]),
             Object(Matching, "sora/nt/d_net_connect.cpp"),
             Object(Matching, "sora/nt/nt_etc_dwc.cpp", extra_cflags=["-RTTI off"]),
+            Object(Matching, "sora/nt/nt_etc_so.cpp", extra_cflags=["-O0", "-opt peephole", "-opt schedule", "-RTTI off"]),
             Object(Matching, "sora/ad/ad_static_data.cpp"),
             Object(Matching, "sora/st/st_data_container.cpp"),
             Object(Matching, "sora/st/st_data_container_multi.cpp"),

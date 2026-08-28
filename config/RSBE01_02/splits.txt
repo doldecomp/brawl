@@ -302,6 +302,10 @@ sora/nt/nt_etc_dwc.cpp:
 	.bss        start:0x8049ECE0 end:0x8049ECF8
 	.sdata      start:0x8059E7E8 end:0x8059E7F0
 
+sora/nt/nt_etc_so.cpp:
+	.text       start:0x80150CE4 end:0x801510F4
+	.data       start:0x804610F8 end:0x80461108
+
 sora/ad/ad_static_data.cpp:
 	.text       start:0x8015B09C end:0x8015B0E0
 	.data       start:0x804621C0 end:0x804629C8

@@ -1,6 +1,7 @@
 #include <gf/gf_heap_manager.h>
 #include <gf/gf_task.h>
 #include <nt/etc/nt_etc_dwc.h>
+#include <nt/etc/nt_etc_so.h>
 #include <revolution/DWC/dwc_init.h>
 #include <revolution/DWC/dwc_error.h>
 #include <revolution/DWC/dwc_main.h>
@@ -24,16 +25,15 @@ nteDWC::nteDWC() : gfTask("nteDWC", Category_Network, 14, 13, true) {
     unk2C_b1 = false;
 }
 
-void nteDWC::notifyDoneSOProc(s32 p1, s32 p2) {
-    switch (p2) {
+void nteDWC::notifyDoneSOProc(nteSODone::NotifType notifType, s32 code) {
+    switch (code) {
         case 0:
-            switch (p1) {
-                case 0:
-                    if (!DWC_Init(unk6C, m_name, m_appCode, AllocEx, FreeEx)) {
+            switch (notifType) {
+                case nteSODone::Startup:
+                    if (!DWC_Init(unk6C, m_name, m_appCode, AllocEx, FreeEx))
                         m_initialized = true;
-                    }
                     break;
-                case 1:
+                case nteSODone::Finish:
                     m_initialized = false;
                     break;
                 default:
@@ -43,19 +43,17 @@ void nteDWC::notifyDoneSOProc(s32 p1, s32 p2) {
         case 0x80000000:
             break;
         default:
-            showError(p2);
-            s32 err = -NETGetStartupErrorCode(p2);
-            if (unk60) {
+            nteSO::showError(code);
+            s32 err = -NETGetStartupErrorCode(code);
+            if (unk60)
                 unk60->func0(err);
-            }
             break;
     }
 }
 
 bool nteDWC::startupDWC() {
-    if (m_initialized) {
+    if (m_initialized)
         return true;
-    }
     unk6C = 1;
     m_name = "smashbrosxwii";
     m_appCode = srGetAppInitialCode();
@@ -71,27 +69,22 @@ bool nteDWC::finishDWC() {
 }
 
 bool nteDWC::login(s32 p1, s32 p2, s32 p3, s32 p4) {
-    if (!m_initialized) {
+    if (!m_initialized)
         return false;
-    }
-    if (DWC_GetState()) {
+    if (DWC_GetState())
         return true;
-    }
     DWC_InitFriendsMatch(0, p1, 0x2B1E, p3, p4, 0, 0, 0, 0);
-    if (!DWC_LoginAsync(p2, 0, callbackLogin, this)) {
+    if (!DWC_LoginAsync(p2, 0, callbackLogin, this))
         return false;
-    }
     m_loggedIn = true;
     return true;
 }
 
 bool nteDWC::logout() {
-    if (!m_initialized) {
+    if (!m_initialized)
         return false;
-    }
-    if (!DWC_GetState()) {
+    if (!DWC_GetState())
         return true;
-    }
     OSLockMutex(&m_mutex);
     m_loggedIn = false;
     DWC_ShutdownFriendsMatch();
@@ -118,13 +111,12 @@ void nteDWC::processDefault() {
             break;
         case true:
             DWC_ProcessFriendsMatch();
-            s32 err2, err1;
-            if (DWC_GetLastErrorEx(&err1, &err2)) {
+            s32 err, nType;
+            if (DWC_GetLastErrorEx(&nType, &err)) {
                 if (unk64) {
-                    if (err1 < 0) {
-                        err1 = -err1;
-                    }
-                    unk64->notifyDoneSOProc(err1, err2);
+                    if (nType < 0)
+                        nType = -nType;
+                    unk64->notifyDoneSOProc(nteSODone::NotifType(nType), err);
                 }
                 DWC_ClearError();
             }
@@ -156,37 +148,32 @@ s64 nteDWC::getTime() const {
     return ticks;
 }
 
-void nteDWC::callbackLogin(s32 p1, s32 p2, void* p3) {
-    (void)p2;
+void nteDWC::callbackLogin(s32 p1, s32 _unused, void* p3) {
     nteDWC* dwc = static_cast<nteDWC*>(p3);
     if (p1) {
         dwc->m_loggedIn = false;
-        s32 err1, err2;
-        if (DWC_GetLastErrorEx(&err1, &err2)) {
+        s32 nType, err;
+        if (DWC_GetLastErrorEx(&nType, &err)) {
             if (dwc->unk64) {
-                if (err1 < 0) {
-                    err1 = -err1;
-                }
-                dwc->unk64->notifyDoneSOProc(err1, err2);
+                if (nType < 0)
+                    nType = -nType;
+                dwc->unk64->notifyDoneSOProc(nteSODone::NotifType(nType), err);
             }
             DWC_ClearError();
         }
     }
 }
 
-void* nteDWC::AllocEx(int heap, size_t size, int align) {
-    (void)heap;
-    if (!size) {
+void* nteDWC::AllocEx(int _heap, size_t size, int align) {
+    if (!size)
         return nullptr;
-    }
     OSLockMutex(&NteDWCMutex);
     void* ptr = gfHeapManager::alloc(Heaps::Network, size, align);
     OSUnlockMutex(&NteDWCMutex);
     return ptr;
 }
 
-void nteDWC::FreeEx(int heap, void* ptr) {
-    (void)heap;
+void nteDWC::FreeEx(int _heap, void* ptr, int unused) {
     if (ptr) {
         OSLockMutex(&NteDWCMutex);
         gfHeapManager::free(ptr);
