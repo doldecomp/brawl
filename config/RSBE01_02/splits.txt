@@ -288,6 +288,13 @@ sora/ft/ft_system.cpp:
 	.bss        start:0x8049EA20 end:0x8049EA30
 	.sbss       start:0x805A0380 end:0x805A0388
 
+sora/nt/nt_report.cpp:
+	.text       start:0x8013D078 end:0x8013D490
+	.ctors      start:0x8040655C end:0x80406560
+	.data       start:0x8045DFD0 end:0x8045E000
+	.bss        start:0x8049EA30 end:0x8049EBA8
+	.sdata2     start:0x805A2AC0 end:0x805A2AC4
+
 sora/nt/nt_offline.cpp:
 	.text       start:0x8014C004 end:0x8014C180
 	.data       start:0x80460D40 end:0x80460D4C
