@@ -352,6 +352,7 @@ config.libs = [
             Object(Matching, "sora/ac/ac_null.cpp"),
             Object(Matching, "sora/ft/ft_system.cpp"),
             Object(NonMatching, "sora/nt/nt_report.cpp", extra_cflags=["-RTTI off"]),
+            Object(NonMatching, "sora/nt/nt_send.cpp", extra_cflags=["-RTTI off"]),
             Object(Matching, "sora/nt/nt_offline.cpp", extra_cflags=["-RTTI off"]),
             Object(Matching, "sora/nt/d_net_connect.cpp"),
             Object(Matching, "sora/nt/nt_etc_dwc.cpp", extra_cflags=["-RTTI off"]),

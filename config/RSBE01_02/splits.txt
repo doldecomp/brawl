@@ -295,6 +295,11 @@ sora/nt/nt_report.cpp:
 	.bss        start:0x8049EA30 end:0x8049EBA8
 	.sdata2     start:0x805A2AC0 end:0x805A2AC4
 
+sora/nt/nt_send.cpp:
+	.text       start:0x8013D490 end:0x8013D8A8
+	.data       start:0x8045E000 end:0x8045E018
+	.sbss       start:0x805A0388 end:0x805A038C
+
 sora/nt/nt_offline.cpp:
 	.text       start:0x8014C004 end:0x8014C180
 	.data       start:0x80460D40 end:0x80460D4C
