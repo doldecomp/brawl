@@ -245,6 +245,7 @@ cflags_runtime = [
 config.rel_strip_partial = True
 cflags_rel = [
     *cflags_common,
+    "-fp_contract off",
     "-sdata 0",
     "-sdata2 0",
 ]
