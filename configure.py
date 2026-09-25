@@ -1040,7 +1040,10 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_stage/st_battles/st_battles.cpp"),
+            Object(Matching, "mo_stage/st_battles/gr_battles.cpp"),
+        ],
     },
     {
         "lib": "st_config",
