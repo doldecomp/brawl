@@ -337,6 +337,15 @@ sora/st/st_data_container_multi.cpp:
 sora/st/st_data_container_magic.cpp:
 	.sdata      start:0x8059E860 end:0x8059E864
 
+nw4r/ut/ut_list.cpp:
+	.text       start:0x8015BF9C end:0x8015C238
+
+nw4r/ut/ut_LinkList.cpp:
+	.text       start:0x8015C238 end:0x8015C3A4
+
+nw4r/ut/ut_binaryFileFormat.cpp:
+	.text       start:0x8015C3A4 end:0x8015C418
+
 Runtime.PPCEABI.H/__init_cpp_exceptions.cpp:
 	.text       start:0x803F1A08 end:0x803F1A78
 	.ctors      start:0x804064E0 end:0x804064E4 rename:.ctors$10
