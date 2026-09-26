@@ -337,6 +337,11 @@ sora/st/st_data_container_multi.cpp:
 sora/st/st_data_container_magic.cpp:
 	.sdata      start:0x8059E860 end:0x8059E864
 
+nw4r/math/math_arithmetic.cpp:
+	.text       start:0x80162188 end:0x801622C4
+	.data       start:0x80464828 end:0x80465138
+	.sdata2     start:0x805A2BF0 end:0x805A2C10
+
 Runtime.PPCEABI.H/__init_cpp_exceptions.cpp:
 	.text       start:0x803F1A08 end:0x803F1A78
 	.ctors      start:0x804064E0 end:0x804064E4 rename:.ctors$10

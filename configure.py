@@ -361,6 +361,7 @@ config.libs = [
             Object(Matching, "sora/st/st_data_container.cpp"),
             Object(Matching, "sora/st/st_data_container_multi.cpp"),
             Object(Matching, "sora/st/st_data_container_magic.cpp"),
+            Object(Matching, "nw4r/math/math_arithmetic.cpp", extra_cflags=["-RTTI off"]),
         ],
     },
     # Common REL units
