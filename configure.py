@@ -361,6 +361,10 @@ config.libs = [
             Object(Matching, "sora/st/st_data_container.cpp"),
             Object(Matching, "sora/st/st_data_container_multi.cpp"),
             Object(Matching, "sora/st/st_data_container_magic.cpp"),
+            Object(Matching, "nw4r/ut/ut_CharStrmReader.cpp", extra_cflags=["-RTTI off"]),
+            Object(Matching, "nw4r/ut/ut_TagProcessorBase.cpp", extra_cflags=["-RTTI off"]),
+            Object(Matching, "nw4r/ut/ut_Font.cpp", extra_cflags=["-RTTI off"]),
+            Object(Matching, "nw4r/ut/ut_RomFont.cpp", extra_cflags=["-RTTI off"]),
         ],
     },
     # Common REL units

@@ -337,6 +337,23 @@ sora/st/st_data_container_multi.cpp:
 sora/st/st_data_container_magic.cpp:
 	.sdata      start:0x8059E860 end:0x8059E864
 
+nw4r/ut/ut_CharStrmReader.cpp:
+	.text       start:0x8015C418 end:0x8015C528
+
+nw4r/ut/ut_TagProcessorBase.cpp:
+	.text       start:0x8015C528 end:0x8015CBF8
+	.data       start:0x80464580 end:0x804645A8
+	.sdata2     start:0x805A2BB0 end:0x805A2BB8
+
+nw4r/ut/ut_Font.cpp:
+	.text       start:0x8015D8DC end:0x8015D984
+	.data       start:0x80464678 end:0x804646A8
+
+nw4r/ut/ut_RomFont.cpp:
+	.text       start:0x8015D984 end:0x8015DF8C
+	.data       start:0x804646A8 end:0x80464768
+	.sdata      start:0x8059E868 end:0x8059E870
+
 Runtime.PPCEABI.H/__init_cpp_exceptions.cpp:
 	.text       start:0x803F1A08 end:0x803F1A78
 	.ctors      start:0x804064E0 end:0x804064E4 rename:.ctors$10
