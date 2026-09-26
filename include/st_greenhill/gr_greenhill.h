@@ -16,11 +16,11 @@ class grGreenhillBg : public grGreenhill {
     u8* unk15C;
 
 public:
-    static grGreenhillBg* create(int mdlIndex, const char* nodeName, const char* taskName); // Name unknown
-    virtual void updateCollision(float deltaFrame); // Name unknown
-    virtual void updateFlowers(float deltaFrame); // Name unknown
-    virtual void setPositions(Vec3f* positions) { unk158 = positions; } // Name unknown
-    virtual void setState(u8* state) { unk15C = state; } // Name unknown
+    static grGreenhillBg* create(int mdlIndex, const char* nodeName, const char* taskName);
+    virtual void updateJoint(float deltaFrame);
+    virtual void updateHang(float deltaFrame);
+    virtual void setPosGimmickWork(Vec3f* positions) { unk158 = positions; }
+    virtual void setBreakInfo(u8* state) { unk15C = state; }
 };
 
 class grGreenhillBreak : public grGreenhill {
@@ -30,17 +30,17 @@ class grGreenhillBreak : public grGreenhill {
     u8 unk16C;
 
 public:
-    static grGreenhillBreak* create(int mdlIndex, const char* nodeName, const char* taskName); // Name unknown
-    virtual void updateCollision(float deltaFrame); // Name unknown
-    virtual void updateCallback(float deltaFrame); // Name unknown
-    virtual void updateBreak(float deltaFrame); // Name unknown
-    virtual void createYakumono(); // Name unknown
-    virtual void createAttack(); // Name unknown
-    virtual void createAttack(int index); // Name unknown
-    virtual void setMotion(u32 index, bool loop, bool force, float* frameCount); // Name unknown
-    virtual void setState(u8* state) { unk164 = state; } // Name unknown
-    virtual void setIndex(u8 index) { unk16C = index; } // Name unknown
-    virtual void setBackgroundState(u8* state) { unk168 = state; } // Name unknown
+    static grGreenhillBreak* create(int mdlIndex, const char* nodeName, const char* taskName);
+    virtual void updateJoint(float deltaFrame);
+    virtual void updateYakumono(float deltaFrame);
+    virtual void updateBreak(float deltaFrame);
+    virtual void setHit();
+    virtual void setAttack();
+    virtual void setAttack(int index);
+    virtual void setMotion(u32 index, bool loop, bool force, float* frameCount);
+    virtual void setStateWork(u8* state) { unk164 = state; }
+    virtual void setType(u8 type) { unk16C = type; }
+    virtual void setBreakInfo(u8* state) { unk168 = state; }
 };
 
 class grGreenhillCheck : public grGreenhill {
@@ -50,35 +50,35 @@ class grGreenhillCheck : public grGreenhill {
     Vec3f* unk164;
 
 public:
-    static grGreenhillCheck* create(int mdlIndex, const char* nodeName, const char* taskName); // Name unknown
-    virtual void updateYakumono(float deltaFrame); // Name unknown
-    virtual void updateMotion(float deltaFrame); // Name unknown
-    virtual void updateCallback(float deltaFrame); // Name unknown
-    virtual void createYakumono(); // Name unknown
-    virtual void createAttack(); // Name unknown
-    virtual void setMaterialColor(int state); // Name unknown
-    virtual void setMotion(u32 index, bool loop, bool force, float* frameCount); // Name unknown
-    virtual void setPositions(Vec3f* positions) { unk164 = positions; } // Name unknown
-    virtual void setState(u8* state) { unk15C = state; } // Name unknown
-    virtual void setBreakStates(u8* states) { unk160 = states; } // Name unknown
+    static grGreenhillCheck* create(int mdlIndex, const char* nodeName, const char* taskName);
+    virtual void updateYakumono(float deltaFrame);
+    virtual void updateActive(float deltaFrame);
+    virtual void updateCallBack(float deltaFrame);
+    virtual void setHit();
+    virtual void setAttack();
+    virtual void changeColor(int state);
+    virtual void setMotion(u32 index, bool loop, bool force, float* frameCount);
+    virtual void setPosWork(Vec3f* positions) { unk164 = positions; }
+    virtual void setStateWork(u8* state) { unk15C = state; }
+    virtual void setStateBreakWork(u8* states) { unk160 = states; }
 };
 
 class grGreenhillGuest : public grGreenhill {
     GreenhillGuestData* unk158;
 
 public:
-    static grGreenhillGuest* create(int mdlIndex, const char* nodeName, const char* taskName); // Name unknown
-    virtual void updateMotion(float deltaFrame); // Name unknown
-    virtual void updateCallback(float deltaFrame); // Name unknown
-    virtual void setGuestData(GreenhillGuestData* data) { unk158 = data; } // Name unknown
+    static grGreenhillGuest* create(int mdlIndex, const char* nodeName, const char* taskName);
+    virtual void updateActive(float deltaFrame);
+    virtual void updateCallBack(float deltaFrame);
+    virtual void setGuestData(GreenhillGuestData* data) { unk158 = data; }
 };
 
 class grGreenhillGuestLine : public grGreenhill {
     GreenhillGuestData* unk158;
 
 public:
-    static grGreenhillGuestLine* create(int mdlIndex, const char* nodeName, const char* taskName); // Name unknown
-    virtual void updateMotion(float deltaFrame); // Name unknown
-    virtual void setMotion(u32 index, bool loop, bool force, float* frameCount); // Name unknown
-    virtual void setGuestData(GreenhillGuestData* data) { unk158 = data; } // Name unknown
+    static grGreenhillGuestLine* create(int mdlIndex, const char* nodeName, const char* taskName);
+    virtual void updateActive(float deltaFrame);
+    virtual void setMotion(u32 index, bool loop, bool force, float* frameCount);
+    virtual void setGuestData(GreenhillGuestData* data) { unk158 = data; }
 };
