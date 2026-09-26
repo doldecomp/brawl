@@ -35,9 +35,7 @@ public:
     virtual void update(float deltaFrame);
     virtual bool isBamperVector() { return true; }
 
-    // Name unknown. Raises the error screen selected by a debug value in
-    // the melee init data; nothing in this module calls it.
-    virtual void notifyDebugError();
+    virtual void updateError();
 
     static stClassInfoImpl<Stages::BattleFieldS, stBattleFieldS> bss_loc_14;
 };

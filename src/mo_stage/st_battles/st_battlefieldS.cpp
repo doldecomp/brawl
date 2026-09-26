@@ -6,10 +6,10 @@
 #include <nw4r/g3d/g3d_resfile.h>
 #include <st/st_class_info.h>
 #include <st/st_melee.h>
-#include <st_battles/gr_battles.h>
+#include <st_battles/gr_battlefieldS.h>
 #include <types.h>
 
-#include <st_battles/st_battles.h>
+#include <st_battles/st_battlefieldS.h>
 
 stClassInfoImpl<Stages::BattleFieldS, stBattleFieldS> stBattleFieldS::bss_loc_14;
 
@@ -53,7 +53,7 @@ void stBattleFieldS::createObj() {
 
 void stBattleFieldS::update(float deltaFrame) { }
 
-void stBattleFieldS::notifyDebugError() {
+void stBattleFieldS::updateError() {
     gmGlobalModeMelee* modeMelee = g_GameGlobal->m_modeMelee;
     if (modeMelee) {
         u32 errorCode = 0;

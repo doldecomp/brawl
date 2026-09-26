@@ -1041,8 +1041,8 @@ config.libs = [
         "cflags": cflags_rel,
         "host": False,
         "objects": [
-            Object(Matching, "mo_stage/st_battles/st_battles.cpp"),
-            Object(Matching, "mo_stage/st_battles/gr_battles.cpp"),
+            Object(Matching, "mo_stage/st_battles/st_battlefieldS.cpp"),
+            Object(Matching, "mo_stage/st_battles/gr_battlefieldS.cpp"),
         ],
     },
     {
