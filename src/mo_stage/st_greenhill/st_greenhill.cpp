@@ -59,10 +59,10 @@ bool stGreenhill::loading() {
 void stGreenhill::createObj() {
     testStageParamInit(m_fileData, 10);
     testStageDataInit(m_fileData, 20, 80);
-    createBackground();
-    createBreaks();
-    createMarker();
-    createGuests();
+    createObjBg();
+    createObjBreak();
+    createObjMarker();
+    createObjGuest();
     createCollision(m_fileData, 2, nullptr);
     initCameraParam();
     nw4r::g3d::ResFile posData(m_fileData->getData(Data_Type_Model, 100, 0xFFFE));
@@ -79,63 +79,63 @@ void stGreenhill::createObj() {
     createObjPokeTrainer(m_fileData, 101, "PokeTrainer00", m_pokeTrainerPos, nullptr);
 }
 
-void stGreenhill::createBackground() {
+void stGreenhill::createObjBg() {
     grGreenhillBg* ground = grGreenhillBg::create(1, "StgGreenhillMain", "grGreenhillMainBg");
     if (ground) {
         addGround(ground);
         ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
         ground->setStageData(m_stageData);
-        ground->setPositions(unk290);
-        ground->setState(&unk1DB);
+        ground->setPosGimmickWork(unk290);
+        ground->setBreakInfo(&unk1DB);
     }
 }
 
-void stGreenhill::createBreaks() {
+void stGreenhill::createObjBreak() {
     grGreenhillBreak* ground = grGreenhillBreak::create(2, "StgGreenhillBrk_gake01", "grGreenhillBreak01");
     if (!ground) {
         return;
     }
     addGround(ground);
-    ground->setIndex(0);
+    ground->setType(0);
     ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
     ground->setStageData(m_stageData);
-    ground->setState(&unk1D8[0]);
-    ground->setBackgroundState(&unk1DB);
+    ground->setStateWork(&unk1D8[0]);
+    ground->setBreakInfo(&unk1DB);
     ground = grGreenhillBreak::create(3, "StgGreenhillBrk_gake02", "grGreenhillBreak02");
     if (!ground) {
         return;
     }
     addGround(ground);
-    ground->setIndex(1);
+    ground->setType(1);
     ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
     ground->setStageData(m_stageData);
-    ground->setState(&unk1D8[1]);
-    ground->setBackgroundState(&unk1DB);
+    ground->setStateWork(&unk1D8[1]);
+    ground->setBreakInfo(&unk1DB);
     ground = grGreenhillBreak::create(4, "StgGreenhillBrk_gake03", "grGreenhillBreak03");
     if (!ground) {
         return;
     }
     addGround(ground);
-    ground->setIndex(2);
+    ground->setType(2);
     ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
     ground->setStageData(m_stageData);
-    ground->setState(&unk1D8[2]);
-    ground->setBackgroundState(&unk1DB);
+    ground->setStateWork(&unk1D8[2]);
+    ground->setBreakInfo(&unk1DB);
 }
 
-void stGreenhill::createMarker() {
+void stGreenhill::createObjMarker() {
     grGreenhillCheck* ground = grGreenhillCheck::create(5, "StgGreenhillMarker", "grGreenhillMarker");
     if (ground) {
         addGround(ground);
         ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
         ground->setStageData(m_stageData);
-        ground->setState(&unk2C0);
-        ground->setBreakStates(unk1D8);
-        ground->setPositions(unk290);
+        ground->setStateWork(&unk2C0);
+        ground->setStateBreakWork(unk1D8);
+        ground->setPosWork(unk290);
     }
 }
 
-void stGreenhill::createGuests() {
+void stGreenhill::createObjGuest() {
     unk1E8[0].unk01 = 0;
     unk1E8[1].unk01 = 1;
     unk1E8[2].unk01 = 2;
@@ -198,10 +198,10 @@ void stGreenhill::update(float deltaFrame) {
     } else {
         resetCameraLimitRange();
     }
-    updateGuests(deltaFrame);
+    updateGuest(deltaFrame);
 }
 
-struct GreenhillStageData {
+struct GreenhillStageData { // Name unknown
     u8 unk00[0x34];
     float unk34;
     float unk38;
@@ -211,7 +211,7 @@ struct GreenhillStageData {
     u32 unk4C;
 };
 
-void stGreenhill::updateGuests(float deltaFrame) {
+void stGreenhill::updateGuest(float deltaFrame) {
     GreenhillStageData* data = static_cast<GreenhillStageData*>(m_stageData);
     if (!data) {
         return;

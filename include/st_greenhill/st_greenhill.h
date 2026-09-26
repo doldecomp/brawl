@@ -52,11 +52,11 @@ public:
     virtual void createObj();
     virtual void update(float deltaFrame);
     virtual bool isBamperVector() { return true; }
-    virtual void createBackground(); // Name unknown
-    virtual void createBreaks(); // Name unknown
-    virtual void createMarker(); // Name unknown
-    virtual void createGuests(); // Name unknown
-    virtual void updateGuests(float deltaFrame); // Name unknown
+    virtual void createObjBg();
+    virtual void createObjBreak();
+    virtual void createObjMarker();
+    virtual void createObjGuest();
+    virtual void updateGuest(float deltaFrame);
 
     static stGreenhill* create();
     static stClassInfoImpl<Stages::GreenHill, stGreenhill> bss_loc_14;
