@@ -54,14 +54,18 @@ s32 emExternalValueAccesser::getNameMsgId(Enemy* em, u32 taskId) {
     return wn->unk21E8;
 }
 
-// NONMATCHING
 nw4r::g3d::ResFileData* emExternalValueAccesser::getFaceTexPtr(Enemy* em, u32 taskId) {
     if (taskId == -1 || taskId == em->m_taskId) {
         return em->getFaceTexPtr();
     }
 
     const wnemSimple* wn = emWeaponManager::getInstance()->GetManagedWeaponFromTaskID(taskId);
-    return (!wn) ? em->getFaceTexPtr() : em->getFaceTexPtr(wn->unk21EC);
+    if (!wn) {
+        return em->getFaceTexPtr();
+    } else {
+        taskId = wn->unk21EC;
+        return em->getFaceTexPtr(taskId);
+    }
 }
 
 float emExternalValueAccesser::getScore(Enemy* em) {
