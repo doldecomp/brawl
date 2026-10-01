@@ -34,19 +34,23 @@ void cmMenuFixedController::storeDefault() {
     unk8 = true;
 }
 
-// NONMATCHING
 void cmMenuFixedController::init() {
-    m_cameraManager->m_cameras[0].unkCC = unkC;
-    m_cameraManager->m_cameras[0].unkFA.m_flag7 = true;
-    m_cameraManager->m_cameras[0].m_targetPos.m_x = unk10.m_x;
-    m_cameraManager->m_cameras[0].m_targetPos.m_y = unk10.m_y;
-    m_cameraManager->m_cameras[0].m_targetPos.m_z = unk10.m_z;
-    m_cameraManager->m_cameras[0].unkFA.m_flag1 = true;
-    m_cameraManager->m_cameras[0].unkD0 = unk1C;
-    m_cameraManager->m_cameras[0].m_rot.m_x = 0.0f;
-    m_cameraManager->m_cameras[0].m_rot.m_y = 0.0f;
-    m_cameraManager->m_cameras[0].m_rot.m_z = 0.0f;
-    m_cameraManager->m_cameras[0].unkFA.m_flag2 = true;
+    gfCamera* camera = &m_cameraManager->m_cameras[0];
+    camera->unkCC = unkC;
+    u16 flags = camera->unkFA.m_mask;
+    u16 flagsWith7 = flags | 0x80;
+    u16 flagsWith7And1 = flags | 0x82;
+    camera->unkFA.m_mask = flagsWith7;
+    camera->m_targetPos.m_x = unk10.m_x;
+    camera->m_targetPos.m_y = unk10.m_y;
+    camera->m_targetPos.m_z = unk10.m_z;
+    camera->unkFA.m_mask = flagsWith7And1;
+    camera->unkD0 = unk1C;
+    Vec2f rot(0.0f, 0.0f);
+    camera->m_rot.m_x = rot.m_x;
+    camera->m_rot.m_y = rot.m_y;
+    camera->m_rot.m_z = 0.0f;
+    camera->unkFA.m_mask |= 0x40;
 }
 
 // TODO: cmMenuFixedController::update
