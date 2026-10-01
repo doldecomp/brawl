@@ -20,8 +20,13 @@ void NtSend::create() {
     memset(m_pktBuffer, 0, 4);
     NtPacketArrPtr pktPtr = m_pktBuffer;
     for (u32 i = 0; i < Capacity; i++) {
+#ifdef MATCHING
         (*pktPtr)[i].rawData = reinterpret_cast<NtPacketData*>(
             reinterpret_cast<u32>(m_pktMemory.m_buf) + i * sizeof(NtPacketData));
+#else
+        (*pktPtr)[i].rawData = reinterpret_cast<NtPacketData*>(
+            static_cast<u8*>(m_pktMemory.m_buf) + i * sizeof(NtPacketData));
+#endif
     }
     clearSendBuffer();
     OSInitMutex(&m_mutex);
