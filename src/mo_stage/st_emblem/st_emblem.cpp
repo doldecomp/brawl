@@ -80,29 +80,30 @@ bool stEmblem::loading() {
 
 void stEmblem::createObj() {
     gmGlobalModeMelee* mode_melee = g_GameGlobal->m_modeMelee;
-    if (mode_melee->m_meleeInitData.m_gameMode == 7u) {
-        //TODO: Fix m_eventId and m_playeMode
+    // Access these packed fields as bytes to match the original instructions.
+    if (((reinterpret_cast<u8*>(&mode_melee->m_meleeInitData)[0] >> 2) & 0x3f) == 7u) {
         if (mode_melee->m_meleeInitData.m_eventId == (s8)14) {
             m_eventType = 1;
         }
-        if ((mode_melee->m_meleeInitData.m_eventId == (s8)40) and (mode_melee->m_meleeInitData.m_playeMode != false))
+        if ((mode_melee->m_meleeInitData.m_eventId == (s8)40) and (reinterpret_cast<u8*>(&mode_melee->m_meleeInitData)[8] & 0x80))
         {
             m_eventType = 2;
         }
     }
     testStageParamInit(m_secondaryFileData, 0xA);
     //testStageDataInit(m_fileData, 0x14, 0x38);
-    grMadein* stageElement;
+    grMadein* firstElement;
     for (s16 i = 0; i < 9; i++) {
-        stageElement = grMadein::create(i, "", "Tsunagi", Heaps::StageInstance);
-        if (stageElement) {
-            addGround(stageElement);
-            stageElement->startup(m_secondaryFileData,false,gfSceneRoot::Layer_Ground);
-            stageElement->setStageData(m_stageData);
-            stageElement->m_sceneModels[0]->SetPriorityDrawXlu(200);
-            stageElement->m_sceneModels[0]->SetPriorityDrawOpa(200);
+        firstElement = grMadein::create(i, "", "Tsunagi", Heaps::StageInstance);
+        if (firstElement) {
+            addGround(firstElement);
+            firstElement->startup(m_secondaryFileData,false,gfSceneRoot::Layer_Ground);
+            firstElement->setStageData(m_stageData);
+            firstElement->m_sceneModels[0]->SetPriorityDrawXlu(200);
+            firstElement->m_sceneModels[0]->SetPriorityDrawOpa(200);
         }
     }
+    grMadein* stageElement;
     for (u8 i = 0; i < 7; i++) {
         stageElement = grMadein::create(0, "", "NodeOnlyCollision", Heaps::StageInstance);
         if (stageElement) {
