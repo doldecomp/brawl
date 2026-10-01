@@ -53,4 +53,35 @@ void cmMenuFixedController::init() {
     camera->unkFA.m_mask |= 0x40;
 }
 
-// TODO: cmMenuFixedController::update
+extern "C" void fn_80018778(gfCamera*);
+
+void cmMenuFixedController::update(float) {
+    gfCamera* camera;
+    gfCamera* cachedCamera = &m_cameraManager->m_cameras[0];
+    if (!unk8) {
+        unkC = cachedCamera->unkCC;
+        unk10.m_x = cachedCamera->m_targetPos.m_x;
+        unk10.m_y = cachedCamera->m_targetPos.m_y;
+        unk10.m_z = cachedCamera->m_targetPos.m_z;
+        unk1C = cachedCamera->unkD0;
+        unk8 = true;
+    }
+    camera = &m_cameraManager->m_cameras[0];
+    camera->unkCC = unkC;
+    u16 flags = camera->unkFA.m_mask;
+    u16 flagsWith7 = flags | 0x80;
+    u16 flagsWith7And1 = flags | 0x82;
+    camera->unkFA.m_mask = flagsWith7;
+    camera->m_targetPos.m_x = unk10.m_x;
+    camera->m_targetPos.m_y = unk10.m_y;
+    camera->m_targetPos.m_z = unk10.m_z;
+    camera->unkFA.m_mask = flagsWith7And1;
+    camera->unkD0 = unk1C;
+    Vec2f rot(0.0f, 0.0f);
+    camera->m_rot.m_x = rot.m_x;
+    camera->m_rot.m_y = rot.m_y;
+    camera->m_rot.m_z = 0.0f;
+    camera->unkFA.m_mask |= 0x40;
+    cachedCamera->m_transformFlag.m_mask = 0xE1;
+    fn_80018778(cachedCamera);
+}
