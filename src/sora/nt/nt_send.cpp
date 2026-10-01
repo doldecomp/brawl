@@ -20,7 +20,6 @@ void NtSend::create() {
     memset(m_pktBuffer, 0, 4);
     NtPacketArrPtr pktPtr = m_pktBuffer;
     for (u32 i = 0; i < Capacity; i++) {
-        // Integer address arithmetic preserves the original unrolled loop.
         (*pktPtr)[i].rawData = reinterpret_cast<NtPacketData*>(
             reinterpret_cast<u32>(m_pktMemory.m_buf) + i * sizeof(NtPacketData));
     }
