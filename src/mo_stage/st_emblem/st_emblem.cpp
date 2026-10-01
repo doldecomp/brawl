@@ -80,7 +80,6 @@ bool stEmblem::loading() {
 
 void stEmblem::createObj() {
     gmGlobalModeMelee* mode_melee = g_GameGlobal->m_modeMelee;
-    // Access these packed fields as bytes to match the original instructions.
     if (((reinterpret_cast<u8*>(&mode_melee->m_meleeInitData)[0] >> 2) & 0x3f) == 7u) {
         if (mode_melee->m_meleeInitData.m_eventId == (s8)14) {
             m_eventType = 1;
