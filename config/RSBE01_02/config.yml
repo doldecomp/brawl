@@ -221,7 +221,7 @@ modules:
   hash: 4696ac66a14c7e023bbe4c47bd997055a3107138
   splits: config/RSBE01_02/rels/st_battles/splits.txt
   symbols: config/RSBE01_02/rels/st_battles/symbols.txt
-  force_active: [HomeBtnIcon]
+  force_active: [create__14stBattleFieldSFv, HomeBtnIcon]
 - object: files/module/st_battle.rel
   hash: 6c23a264cc9732f0f411a8b4611e647e27e3690c
   splits: config/RSBE01_02/rels/st_battle/splits.txt
