@@ -80,11 +80,19 @@ bool stEmblem::loading() {
 
 void stEmblem::createObj() {
     gmGlobalModeMelee* mode_melee = g_GameGlobal->m_modeMelee;
+#ifdef MATCHING
     if (((reinterpret_cast<u8*>(&mode_melee->m_meleeInitData)[0] >> 2) & 0x3f) == 7u) {
+#else
+    if (mode_melee->m_meleeInitData.m_gameMode == 7u) {
+#endif
         if (mode_melee->m_meleeInitData.m_eventId == (s8)14) {
             m_eventType = 1;
         }
+#ifdef MATCHING
         if ((mode_melee->m_meleeInitData.m_eventId == (s8)40) and (reinterpret_cast<u8*>(&mode_melee->m_meleeInitData)[8] & 0x80))
+#else
+        if ((mode_melee->m_meleeInitData.m_eventId == (s8)40) and mode_melee->m_meleeInitData.m_playeMode)
+#endif
         {
             m_eventType = 2;
         }
