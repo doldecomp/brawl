@@ -24,8 +24,8 @@ void NtSend::create() {
         (*pktPtr)[i].rawData = reinterpret_cast<NtPacketData*>(
             reinterpret_cast<u32>(m_pktMemory.m_buf) + i * sizeof(NtPacketData));
 #else
-        (*pktPtr)[i].rawData = reinterpret_cast<NtPacketData*>(
-            static_cast<u8*>(m_pktMemory.m_buf) + i * sizeof(NtPacketData));
+        (*pktPtr)[i].rawData =
+            i + static_cast<NtPacketData*>(m_pktMemory.m_buf);
 #endif
     }
     clearSendBuffer();
