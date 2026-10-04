@@ -235,7 +235,7 @@ public:
     static void drawBoxLine(u32 color, u8 lineWidth, int zTest, float x1, float y1, float x2, float y2, float z);
     static int writeTagClear(char* dst);
     static bool appendSubstr(char* dst, const char* src, int skip, int count);
-    static void fullToHalf(char* dst, const char* src);
+    static char* fullToHalf(char* dst, const char* src);
     static int halfToFull(char* dst, const char* src);
     static int stripTags(const u8* src, int len, int unused, u8* dst);
 };

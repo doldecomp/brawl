@@ -824,215 +824,222 @@ u32 Message::utf16to8(char* dst, const wchar_t* src) {
     return count;
 }
 
-void Message::fullToHalf(char* dst, const char* src) {
-    do {
+char* Message::fullToHalf(char* dst, const char* s) {
+    const u8* src = (const u8*)s;
+    char* d = dst;
+    for (;;) {
         u8 c = *src++;
         if (c == 0xe2) {
-            u16 code = (src[0] << 8) + src[1];
-            src += 2;
-            if (code == 0x8098) {
-                c = 0x27;
-            } else {
-                src -= 2;
-            }
-        } else if (c == 0xef) {
-            u16 code = (src[0] << 8) + src[1];
+            u16 code = src[1] + (src[0] << 8);
             src += 2;
             switch (code) {
-        case 0xbc90:
-            c = 0x30;
-            break;
-        case 0xbc91:
-            c = 0x31;
-            break;
-        case 0xbc92:
-            c = 0x32;
-            break;
-        case 0xbc93:
-            c = 0x33;
-            break;
-        case 0xbc94:
-            c = 0x34;
-            break;
-        case 0xbc95:
-            c = 0x35;
-            break;
-        case 0xbc96:
-            c = 0x36;
-            break;
-        case 0xbc97:
-            c = 0x37;
-            break;
-        case 0xbc98:
-            c = 0x38;
-            break;
-        case 0xbc99:
-            c = 0x39;
-            break;
-        case 0xbca1:
-            c = 0x41;
-            break;
-        case 0xbca2:
-            c = 0x42;
-            break;
-        case 0xbca3:
-            c = 0x43;
-            break;
-        case 0xbca4:
-            c = 0x44;
-            break;
-        case 0xbca5:
-            c = 0x45;
-            break;
-        case 0xbca6:
-            c = 0x46;
-            break;
-        case 0xbca7:
-            c = 0x47;
-            break;
-        case 0xbca8:
-            c = 0x48;
-            break;
-        case 0xbca9:
-            c = 0x49;
-            break;
-        case 0xbcaa:
-            c = 0x4a;
-            break;
-        case 0xbcab:
-            c = 0x4b;
-            break;
-        case 0xbcac:
-            c = 0x4c;
-            break;
-        case 0xbcad:
-            c = 0x4d;
-            break;
-        case 0xbcae:
-            c = 0x4e;
-            break;
-        case 0xbcaf:
-            c = 0x4f;
-            break;
-        case 0xbcb0:
-            c = 0x50;
-            break;
-        case 0xbcb1:
-            c = 0x51;
-            break;
-        case 0xbcb2:
-            c = 0x52;
-            break;
-        case 0xbcb3:
-            c = 0x53;
-            break;
-        case 0xbcb4:
-            c = 0x54;
-            break;
-        case 0xbcb5:
-            c = 0x55;
-            break;
-        case 0xbcb6:
-            c = 0x56;
-            break;
-        case 0xbcb7:
-            c = 0x57;
-            break;
-        case 0xbcb8:
-            c = 0x58;
-            break;
-        case 0xbcb9:
-            c = 0x59;
-            break;
-        case 0xbcba:
-            c = 0x5a;
-            break;
-        case 0xbd81:
-            c = 0x61;
-            break;
-        case 0xbd82:
-            c = 0x62;
-            break;
-        case 0xbd83:
-            c = 0x63;
-            break;
-        case 0xbd84:
-            c = 0x64;
-            break;
-        case 0xbd85:
-            c = 0x65;
-            break;
-        case 0xbd86:
-            c = 0x66;
-            break;
-        case 0xbd87:
-            c = 0x67;
-            break;
-        case 0xbd88:
-            c = 0x68;
-            break;
-        case 0xbd89:
-            c = 0x69;
-            break;
-        case 0xbd8a:
-            c = 0x6a;
-            break;
-        case 0xbd8b:
-            c = 0x6b;
-            break;
-        case 0xbd8c:
-            c = 0x6c;
-            break;
-        case 0xbd8d:
-            c = 0x6d;
-            break;
-        case 0xbd8e:
-            c = 0x6e;
-            break;
-        case 0xbd8f:
-            c = 0x6f;
-            break;
-        case 0xbd90:
-            c = 0x70;
-            break;
-        case 0xbd91:
-            c = 0x71;
-            break;
-        case 0xbd92:
-            c = 0x72;
-            break;
-        case 0xbd93:
-            c = 0x73;
-            break;
-        case 0xbd94:
-            c = 0x74;
-            break;
-        case 0xbd95:
-            c = 0x75;
-            break;
-        case 0xbd96:
-            c = 0x76;
-            break;
-        case 0xbd97:
-            c = 0x77;
-            break;
-        case 0xbd98:
-            c = 0x78;
-            break;
-        case 0xbd99:
-            c = 0x79;
-            break;
-        case 0xbd9a:
-            c = 0x7a;
-            break;
-        default:
-            src -= 2;
-            break;
+            case 0x8098:
+                c = 0x27;
+                break;
+            default:
+                src -= 2;
+                break;
+            }
+        } else if (c == 0xef) {
+            u16 code = src[1] + (src[0] << 8);
+            src += 2;
+            switch (code) {
+            case 0xbc90:
+                c = 0x30;
+                break;
+            case 0xbc91:
+                c = 0x31;
+                break;
+            case 0xbc92:
+                c = 0x32;
+                break;
+            case 0xbc93:
+                c = 0x33;
+                break;
+            case 0xbc94:
+                c = 0x34;
+                break;
+            case 0xbc95:
+                c = 0x35;
+                break;
+            case 0xbc96:
+                c = 0x36;
+                break;
+            case 0xbc97:
+                c = 0x37;
+                break;
+            case 0xbc98:
+                c = 0x38;
+                break;
+            case 0xbc99:
+                c = 0x39;
+                break;
+            case 0xbca1:
+                c = 0x41;
+                break;
+            case 0xbca2:
+                c = 0x42;
+                break;
+            case 0xbca3:
+                c = 0x43;
+                break;
+            case 0xbca4:
+                c = 0x44;
+                break;
+            case 0xbca5:
+                c = 0x45;
+                break;
+            case 0xbca6:
+                c = 0x46;
+                break;
+            case 0xbca7:
+                c = 0x47;
+                break;
+            case 0xbca8:
+                c = 0x48;
+                break;
+            case 0xbca9:
+                c = 0x49;
+                break;
+            case 0xbcaa:
+                c = 0x4a;
+                break;
+            case 0xbcab:
+                c = 0x4b;
+                break;
+            case 0xbcac:
+                c = 0x4c;
+                break;
+            case 0xbcad:
+                c = 0x4d;
+                break;
+            case 0xbcae:
+                c = 0x4e;
+                break;
+            case 0xbcaf:
+                c = 0x4f;
+                break;
+            case 0xbcb0:
+                c = 0x50;
+                break;
+            case 0xbcb1:
+                c = 0x51;
+                break;
+            case 0xbcb2:
+                c = 0x52;
+                break;
+            case 0xbcb3:
+                c = 0x53;
+                break;
+            case 0xbcb4:
+                c = 0x54;
+                break;
+            case 0xbcb5:
+                c = 0x55;
+                break;
+            case 0xbcb6:
+                c = 0x56;
+                break;
+            case 0xbcb7:
+                c = 0x57;
+                break;
+            case 0xbcb8:
+                c = 0x58;
+                break;
+            case 0xbcb9:
+                c = 0x59;
+                break;
+            case 0xbcba:
+                c = 0x5a;
+                break;
+            case 0xbd81:
+                c = 0x61;
+                break;
+            case 0xbd82:
+                c = 0x62;
+                break;
+            case 0xbd83:
+                c = 0x63;
+                break;
+            case 0xbd84:
+                c = 0x64;
+                break;
+            case 0xbd85:
+                c = 0x65;
+                break;
+            case 0xbd86:
+                c = 0x66;
+                break;
+            case 0xbd87:
+                c = 0x67;
+                break;
+            case 0xbd88:
+                c = 0x68;
+                break;
+            case 0xbd89:
+                c = 0x69;
+                break;
+            case 0xbd8a:
+                c = 0x6a;
+                break;
+            case 0xbd8b:
+                c = 0x6b;
+                break;
+            case 0xbd8c:
+                c = 0x6c;
+                break;
+            case 0xbd8d:
+                c = 0x6d;
+                break;
+            case 0xbd8e:
+                c = 0x6e;
+                break;
+            case 0xbd8f:
+                c = 0x6f;
+                break;
+            case 0xbd90:
+                c = 0x70;
+                break;
+            case 0xbd91:
+                c = 0x71;
+                break;
+            case 0xbd92:
+                c = 0x72;
+                break;
+            case 0xbd93:
+                c = 0x73;
+                break;
+            case 0xbd94:
+                c = 0x74;
+                break;
+            case 0xbd95:
+                c = 0x75;
+                break;
+            case 0xbd96:
+                c = 0x76;
+                break;
+            case 0xbd97:
+                c = 0x77;
+                break;
+            case 0xbd98:
+                c = 0x78;
+                break;
+            case 0xbd99:
+                c = 0x79;
+                break;
+            case 0xbd9a:
+                c = 0x7a;
+                break;
+            default:
+                src -= 2;
+                break;
             }
         }
-        *dst++ = c;
-    } while (*src != 0);
-    *dst = 0;
+        *d++ = c;
+        if (*src == 0) break;
+    }
+    *d = 0;
+    return dst;
 }
 
 int Message::halfToFull(char* dst, const char* src) {
@@ -1066,33 +1073,84 @@ int Message::halfToFull(char* dst, const char* src) {
 
 int Message::stripTags(const u8* src, int len, int unused, u8* dst) {
     const u8* p = src;
-    u8* d = dst;
-    u8 tmp[0x80];
+    u8* start = dst;
+    u8 tmp[0x5c];
+    int k;
     while (*p != 1) {
         if (p - src >= len) {
             break;
         }
-        u8 c = *p;
-        if (c < 0x20) {
-            switch (c) {
+        if (*p < 0x20) {
+            switch (*p) {
             case 0:
-                for (int n = 1; n--;) {
-                    *d++ = *p++;
+                k = 1;
+                while (--k >= 0) {
+                    *dst++ = *p++;
                 }
                 break;
-            case 1:
+            case 23:
+                p += 5;
+                break;
+            case 26:
+                p += 2;
+                break;
+            case 25:
+                p += 6;
+                break;
+            case 24:
+                p += 3;
+                break;
+            case 5:
+                p += 2;
+                break;
+            case 10:
+                k = 1;
+                while (--k >= 0) {
+                    *dst++ = *p++;
+                }
+                break;
+            case 16:
+                k = 3;
+                while (--k >= 0) {
+                    *dst++ = *p++;
+                }
                 break;
             case 2:
                 p += 2;
                 break;
-            case 3:
+            case 11: {
+                *dst++ = *(volatile u8*)p;
+                u8* lenPtr = dst;
+                int len1 = p[1];
+                dst += 2;
+                int len2 = p[2];
+                p += 3;
+                int n = stripTags(p, len1, 0xffff, tmp);
+                lenPtr[0] = n;
+                memcpy(dst, tmp, n);
+                p += len1;
+                dst += n;
+                n = stripTags(p, len2, 0xffff, tmp);
+                lenPtr[1] = n;
+                memcpy(dst, tmp, n);
+                p += len2;
+                dst += n;
+                break;
+            }
+            case 29:
+                p += 2;
+                break;
+            case 28:
                 p += 3;
                 break;
-            case 4:
-                p += 5;
-                break;
-            case 5:
+            case 18:
                 p += 2;
+                break;
+            case 19:
+                p += 1;
+                break;
+            case 17:
+                p += 4;
                 break;
             case 7:
                 p += 2;
@@ -1100,32 +1158,15 @@ int Message::stripTags(const u8* src, int len, int unused, u8* dst) {
             case 8:
                 p += 2;
                 break;
-            case 10:
-                for (int n = 1; n--;) {
-                    *d++ = *p++;
-                }
-                break;
-            case 11: {
-                *d++ = *p;
-                u8* lenPtr = d;
-                int len1 = p[1];
-                d += 2;
-                int len2 = p[2];
-                p += 3;
-                int n = stripTags(p, len1, 0xffff, tmp);
-                lenPtr[0] = n;
-                memcpy(d, tmp, n);
-                p += len1;
-                d += n;
-                n = stripTags(p, len2, 0xffff, tmp);
-                lenPtr[1] = n;
-                memcpy(d, tmp, n);
-                p += len2;
-                d += n;
-                break;
-            }
+            case 4:
             case 12:
                 p += 5;
+                break;
+            case 3:
+                p += 3;
+                break;
+            case 27:
+                p += 2;
                 break;
             case 13:
                 p += 3;
@@ -1136,61 +1177,29 @@ int Message::stripTags(const u8* src, int len, int unused, u8* dst) {
             case 15:
                 p += 3;
                 break;
-            case 16:
-                for (int n = 3; n--;) {
-                    *d++ = *p++;
-                }
-                break;
-            case 17:
-                p += 4;
-                break;
-            case 18:
-                p += 2;
-                break;
-            case 19:
-                p += 1;
-                break;
             case 20:
                 p += 7;
                 break;
             case 22:
                 p += 0xd;
                 break;
-            case 23:
-                p += 5;
-                break;
-            case 24:
-                p += 3;
-                break;
-            case 25:
-                p += 6;
-                break;
-            case 26:
-                p += 2;
-                break;
-            case 27:
-                p += 2;
-                break;
-            case 28:
-                p += 3;
-                break;
-            case 29:
-                p += 2;
-                break;
             }
-        } else if (!(c & 0x80)) {
-            for (int n = 1; n--;) {
-                *d++ = *p++;
+        } else if (!(*p & 0x80)) {
+            k = 1;
+            while (--k >= 0) {
+                *dst++ = *p++;
             }
-        } else if ((c & 0xe0) == 0xc0) {
-            for (int n = 2; n--;) {
-                *d++ = *p++;
+        } else if ((*p & 0xe0) == 0xc0) {
+            k = 2;
+            while (--k >= 0) {
+                *dst++ = *p++;
             }
-        } else if ((c & 0xf0) == 0xe0) {
-            for (int n = 3; n--;) {
-                *d++ = *p++;
+        } else if ((*p & 0xf0) == 0xe0) {
+            k = 3;
+            while (--k >= 0) {
+                *dst++ = *p++;
             }
         }
     }
-    return d - dst;
+    return dst - start;
 }
