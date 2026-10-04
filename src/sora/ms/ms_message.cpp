@@ -537,7 +537,7 @@ void Message::getPrintIndexData(void* msgbin, u32 index, char** outStr, u32* out
     *outStr = (char*)msgbin + off;
 }
 
-void Message::drawBoxLine(u32 color, u8 lineWidth, int zTest, float x1, float y1, float x2, float y2, float z) {
+void Message::drawBoxLine(s32 color, s32 lineWidth, s32 zTest, float x1, float y1, float x2, float y2, float z) {
     GXSetNumTexGens(0);
     GXSetNumChans(1);
     GXSetNumTevStages(1);
@@ -554,7 +554,7 @@ void Message::drawBoxLine(u32 color, u8 lineWidth, int zTest, float x1, float y1
     GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
     GXSetVtxDesc(GX_VA_CLR0, GX_DIRECT);
     if (lineWidth != 0) {
-        GXSetLineWidth(lineWidth, 0);
+        ((void (*)(s32, u32))GXSetLineWidth)(lineWidth, 0);
         GXBegin(GX_LINESTRIP, GX_VTXFMT0, 5);
         GXPosition3f32(x1, y1, z);
         GXColor1u32(color);
