@@ -27,6 +27,10 @@ mo_melee/sora_melee/so/anim/so_anim_chr.cpp:
 	.text       start:0x0001F2D0 end:0x0001F980
 	.rodata     start:0x00000360 end:0x00000370
 
+mo_melee/sora_melee/so/collision/so_collision_hit_module_impl.cpp:
+	.text       start:0x00045510 end:0x00046588
+	.data       start:0x00003BC0 end:0x00003CC0
+
 mo_melee/sora_melee/so/so_collision_shield_part.cpp:
 	.text       start:0x00046588 end:0x00046A74
 	.rodata     start:0x000004C8 end:0x000004E0
