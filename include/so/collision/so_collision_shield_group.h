@@ -7,12 +7,15 @@
 
 // NOTE: shadows the BrawlHeaders copy to model the layout of soCollisionShieldData.
 struct soCollisionShieldData {
-    Vec3f m_startOffsetPos;
-    Vec3f m_endOffsetPos;
+    // MATCH-ONLY: stored as plain words (a struct copy uses lwz/stw); read as two Vec3f.
+    u32 m_offset0, m_offset1, m_offset2, m_offset3, m_offset4, m_offset5;
+    // (struct copy tested with various member layouts)
     float m_size;
     u32 m_nodeIndex : 9;
     u32 m_shapeType : 1; // HYPOTHESIS: same meaning as the bit after the node index in soCollisionHitData
     u32 _1c_rest : 22;
+
+    float offset(int i) { return ((float*)&m_offset0)[i]; }
 };
 static_assert(sizeof(soCollisionShieldData) == 0x20, "Class is wrong size!");
 

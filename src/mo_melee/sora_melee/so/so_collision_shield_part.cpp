@@ -3,8 +3,10 @@
 #include <types.h>
 
 soCollisionShieldPart::soCollisionShieldPart(u32 category1, u32 category2) : m_targets(6, 0) {
-    m_targets.at(0).m_0 = 1 << category2;
-    m_targets.at(1).m_0 = 1 << category1;
+    clTarget& target0 = m_targets.at(0);
+    target0.m_0 = 1 << category2;
+    clTarget& target1 = m_targets.at(1);
+    target1.m_0 = 1 << category1;
     if (m_targets.at(0).m_0 & 8) {
         m_targets.at(5).m_4 = 2;
     } else if (m_targets.at(0).m_0 & 0x10) {
@@ -25,8 +27,14 @@ void soCollisionShieldPart::setData(soCollisionShieldData* data) {
 
 bool soCollisionShieldPart::update(soModuleAccesser* moduleAccesser, soCollisionShieldPartUnit* unit, float scale) {
     if (m_isActive) {
-        Vec3f start = m_data.m_startOffsetPos;
-        Vec3f end = m_data.m_endOffsetPos;
+        Vec3f start;
+        start.m_x = m_data.offset(0);
+        start.m_y = m_data.offset(1);
+        start.m_z = m_data.offset(2);
+        Vec3f end;
+        end.m_x = m_data.offset(3);
+        end.m_y = m_data.offset(4);
+        end.m_z = m_data.offset(5);
         soCollisionUtil::updateCollision(moduleAccesser, unit, m_data.m_shapeType, 0, m_data.m_nodeIndex, &start, &end, 0, false,
                                          m_data.m_size, scale);
         unit->m_isUpdated = true;
@@ -37,7 +45,8 @@ bool soCollisionShieldPart::update(soModuleAccesser* moduleAccesser, soCollision
 }
 
 void soCollisionShieldPart::setTargetProperty(u32 property) {
-    m_targets.at(5).m_4 = 1 << property;
+    clTarget& target = m_targets.at(5);
+    target.m_4 = 1 << property;
 }
 
 void soCollisionShieldPart::debugDisplay(int arg, soCollisionShieldPartUnit* unit) {
