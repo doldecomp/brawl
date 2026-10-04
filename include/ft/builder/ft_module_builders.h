@@ -210,6 +210,31 @@ public:
     typename BC::ModuleType* getModule() { return &m_shieldModule; }
 };
 
+// The reflector has its own builder class in the original; it is the shield builder plus 4 bytes (HYPOTHESIS).
+template <s32 Kind, s32 NumParts, typename Presenter, typename T>
+class soCollisionReflectorModuleBuildConfig {
+public:
+    enum { PartKind = Kind, PartCapacity = NumParts };
+    typedef Presenter PresenterType;
+    typedef T ModuleType;
+};
+
+template <typename BC>
+class soCollisionReflectorModuleBuilder {
+    soArrayVector<soCollisionShieldPart, BC::PartCapacity> m_parts;
+    soArrayVector<soCollisionShieldGroup, 2> m_shieldGroups;
+    soArrayVector<soCollisionGroup, 2> m_groups;
+    typename BC::PresenterType m_presenter;
+    typename BC::ModuleType m_shieldModule;
+    u8 unkTail[4];
+public:
+    soCollisionReflectorModuleBuilder(soModuleAccesser* acc, int taskId, gfTask::Category category) :
+        m_parts(BC::PartCapacity, soCollisionShieldPart(soCollision::Category_Fighter, BC::PartKind), 0),
+        m_shieldGroups(2, 0), m_groups(2, 0), m_presenter(acc),
+        m_shieldModule(acc, taskId, category, &m_parts, &m_groups, &m_shieldGroups, &m_presenter, BC::PartKind, true) { }
+    typename BC::ModuleType* getModule() { return &m_shieldModule; }
+};
+
 ////////////////////////////////////////
 // soLinkModuleBuilder
 ////////////////////////////////////////
@@ -300,16 +325,6 @@ public:
         m_continuals(1, 0), m_times(1, 0), m_screens(1, 0), m_u32s(1, 0, 0),
         m_effectModule(acc, &m_continuals, nodeData, &m_u32s, &m_times, emitData, regDesc, commonData, 10, screenData, &m_screens) { }
     typename BC::ModuleType* getModule() { return &m_effectModule; }
-};
-
-////////////////////////////////////////
-// soAnimCmdModuleBuilder
-////////////////////////////////////////
-
-template <typename T>
-class soAnimCmdModuleBuildConfig {
-public:
-    typedef T ModuleType;
 };
 
 ////////////////////////////////////////

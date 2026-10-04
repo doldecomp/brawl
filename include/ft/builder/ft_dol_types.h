@@ -9,6 +9,8 @@
 #include <types.h>
 
 struct clTarget;
+class soTeamModuleImpl;
+class soKineticModuleGenericImpl;
 class soModuleAccesser;
 class soEventObserverRegistrationDesc;
 
@@ -110,4 +112,21 @@ FT_DOL_POLY_END;
 
 FT_DOL_POLY_BEGIN(soCollisionShieldEventPresenterReflector, 0x10);
     soCollisionShieldEventPresenterReflector(soModuleAccesser* acc);
+FT_DOL_POLY_END;
+
+// ---- modules of the misc builders (ft_builder_misc.h) ------------------------------------------
+FT_DOL_POLY_BEGIN(ftComboModuleImpl, 0x30);
+    ftComboModuleImpl(soModuleAccesser* acc);
+FT_DOL_POLY_END;
+
+FT_DOL_POLY_BEGIN(soJostleModuleImpl, 0x4C);
+    soJostleModuleImpl(soModuleAccesser* acc, int a, int b, void* jostleData);
+FT_DOL_POLY_END;
+
+FT_DOL_POLY_BEGIN(ftAbnormalModuleImpl, 0x68);
+    ftAbnormalModuleImpl(soModuleAccesser* acc);
+FT_DOL_POLY_END;
+
+FT_DOL_POLY_BEGIN(ftGlowModuleImpl, 0x180);
+    ftGlowModuleImpl(soModuleAccesser* acc);
 FT_DOL_POLY_END;

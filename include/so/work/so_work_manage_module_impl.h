@@ -76,5 +76,13 @@ public:
 
     virtual bool isObserv(char unk1);
     virtual bool notifyEventAnimCmd(acAnimCmd* acmd, soModuleAccesser* moduleAccesser, int unk3);
+
+#ifdef FT_MODULE_BUILDER
+    char m_unkPad[4]; // HYPOTHESIS: sizeof(soWorkManageModuleImpl) is 0x34 in the REL builder
+#endif
 };
+#ifdef FT_MODULE_BUILDER
+static_assert(sizeof(soWorkManageModuleImpl) == 52, "Class is wrong size!");
+#else
 static_assert(sizeof(soWorkManageModuleImpl) == 48, "Class is wrong size!");
+#endif

@@ -289,4 +289,8 @@ public:
 
     virtual bool notifyEventAnimCmd(acAnimCmd* acmd, soModuleAccesser* moduleAccesser, int unk3);
     virtual bool isObserv(char unk1);
+
+#ifdef FT_MODULE_BUILDER
+    char m_unkPad[0x40]; // HYPOTHESIS: members of soLinkModuleImpl that are not reconstructed yet (sizeof is 0x54)
+#endif
 };

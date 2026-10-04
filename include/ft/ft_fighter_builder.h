@@ -39,16 +39,7 @@
 // ftAnimCmdModuleSubBuilder
 ////////////////////////////////////////
 
-template <u32 P1, u32 P2>
-class ftAnimCmdModuleSubBuildConfig {
-    // TODO
-};
-
-
-template <typename BC>
-class ftAnimCmdModuleSubBuilder {
-    // TODO
-};
+// ftAnimCmdModuleSubBuildConfig / ftAnimCmdModuleSubBuilder: see ft/builder/ft_builder_animcmd.h
 
 
 #include <ft/builder/ft_module_accesser_builder.h>
