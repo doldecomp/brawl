@@ -377,8 +377,27 @@ sora/st/st_data_container_multi.cpp:
 sora/st/st_data_container_magic.cpp:
 	.sdata      start:0x8059E860 end:0x8059E864
 
+havok/hkBaseObjectClass.cpp:
+	.text       start:0x8027B510 end:0x8027B568
+	.ctors      start:0x804065D4 end:0x804065D8
+	.rodata     start:0x8040E9E8 end:0x8040E9F8
+	.bss        start:0x80532318 end:0x80532340
+
+havok/hkReferencedObjectClass.cpp:
+	.text       start:0x8027B568 end:0x8027B5D0
+	.ctors      start:0x804065D8 end:0x804065DC
+	.rodata     start:0x8040E9F8 end:0x8040EA58
+	.bss        start:0x80532340 end:0x80532368
+
 havok/hkClass.cpp:
 	.text       start:0x8027C808 end:0x8027C914
+
+havok/hkClassClass.cpp:
+	.text       start:0x8027C914 end:0x8027C97C
+	.ctors      start:0x804065E0 end:0x804065E4
+	.rodata     start:0x8040EA58 end:0x8040EB70
+	.bss        start:0x80532378 end:0x805323A0
+	.sdata2     start:0x805A3B90 end:0x805A3BA8
 
 Runtime.PPCEABI.H/__init_cpp_exceptions.cpp:
 	.text       start:0x803F1A08 end:0x803F1A78

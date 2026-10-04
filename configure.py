@@ -254,6 +254,9 @@ cflags_fighter = ["-O2,s" if flag == "-O4,p" else flag for flag in cflags_rel] +
 cflags_sora_enemy = ["-O2,s" if flag == "-O4,p" else flag for flag in cflags_rel]
 cflags_st_starfox = [*cflags_rel, "-inline on,noauto"]
 
+# Havok middleware (embedded in the main DOL): no RTTI, string literals in .rodata
+cflags_havok = [*cflags_common, "-RTTI off", "-str reuse,readonly"]
+
 config.linker_version = "GC/3.0a5.2"
 
 Matching = True  # Object matches and should be linked
@@ -369,9 +372,22 @@ config.libs = [
             Object(Matching, "sora/st/st_data_container.cpp"),
             Object(Matching, "sora/st/st_data_container_multi.cpp"),
             Object(Matching, "sora/st/st_data_container_magic.cpp"),
-            Object(Matching, "havok/hkClass.cpp", extra_cflags=["-RTTI off"]),
         ],
     },
+    # HAVOK-BEGIN
+    {
+        "lib": "havok",
+        "mw_version": config.linker_version,
+        "cflags": cflags_havok,
+        "host": False,
+        "objects": [
+            Object(Matching, "havok/hkBaseObjectClass.cpp"),
+            Object(Matching, "havok/hkReferencedObjectClass.cpp"),
+            Object(Matching, "havok/hkClass.cpp"),
+            Object(Matching, "havok/hkClassClass.cpp"),
+        ],
+    },
+    # HAVOK-END
     # Common REL units
     {
         "lib": "REL",

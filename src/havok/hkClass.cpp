@@ -1,12 +1,5 @@
 #include <havok/hkClass.h>
 
-struct hkClassMember {
-    int unk0;
-    int unk4;
-    int unk8;
-    int unkC;
-    int unk10;
-};
 
 hkClass::hkClass(const char* name, const hkClass* parent, int objectSize, const hkClass** interfaces,
                  int numInterfaces, const hkClassEnum* enums, int numEnums,
