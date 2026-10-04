@@ -56,6 +56,18 @@ nw4r::g3d::ResMdl ResFile_GetResMdlByName(nw4r::g3d::ResFile* file, const char* 
 nw4r::g3d::ResMdl ResFile_GetResMdlByIndex(nw4r::g3d::ResFile* file, int index);
 nw4r::g3d::ScnMdl* ScnMdl_Construct(MEMAllocator* allocator, u32* size, nw4r::g3d::ResMdl mdl, u32 bufferOption, int nView, void (*callback)());
 
+extern "C" {
+bool fn_80192B00(nw4r::g3d::ResTex* tex, void** image, u16* w, u16* h, GXTexFmt* fmt, f32* minLod, f32* maxLod, GXBool* mipmap);
+bool fn_80192A44(nw4r::g3d::ResTex* tex, void** image, u16* w, u16* h, GXTexFmt* fmt, f32* minLod, f32* maxLod, GXBool* mipmap);
+void* fn_801AFF94(nw4r::g3d::ScnMdl::CopiedMatAccess* access, bool sync);
+GXTlutObj* fn_80190DC8(void** tlutObj, int id);
+}
+
+struct ResPlttRef {
+    u8* m_data;
+};
+extern "C" u8* fn_8018D310(nw4r::g3d::ResFile* file, const char* name);
+
 void ScnMdl_SetNodeMtx(nw4r::g3d::ScnMdl* mdl, u32 nodeId, const Matrix* mtx);
 
 struct MuAnimIdxData {
@@ -171,6 +183,8 @@ public:
     void setScale(const char* nodeName, Vec3f* scale);
     void changeMaterialTex(const char* matName, GXTexObj* srcObj);
     void changeMaterialTex(const char* matName, void* image, u16 width, u16 height);
+    void changeMaterialTex(const char* matName, int texIndex, nw4r::g3d::ResFile* texFile);
+    void changeMaterialTex(u32 matId, const char* texName, nw4r::g3d::ResFile* texFile);
     void changeAnimN(int animId, u32 flags, bool play, bool reset);
     void setAnimIdx(MuAnimIdxData* data, bool force);
     void setAnimName(MuAnimNameData* data, bool force);
@@ -187,6 +201,14 @@ public:
     virtual ~MuObject();
     virtual void vfunc1();
 };
+
+static inline gfModelAnimation* newModelAnimIdx(void* mem, nw4r::g3d::ResMdl mdl, nw4r::g3d::ResFile file, int index, Heaps::HeapType heap) {
+    return __ct__16gfModelAnimationFd(mem, &file, &mdl, true, index, heap);
+}
+
+static inline gfModelAnimation* newModelAnimName(void* mem, nw4r::g3d::ResMdl mdl, nw4r::g3d::ResFile file, const char* name, Heaps::HeapType heap) {
+    return __ct1__16gfModelAnimationFd(mem, &file, &mdl, true, name, heap);
+}
 
 static inline u32 getScnMdlBufferFlags(nw4r::g3d::ResFile* file) {
     u32 flags = 0;
@@ -260,9 +282,7 @@ MuObject::MuObject(nw4r::g3d::ResFile* modelSource, const char* modelNode, int d
     {
         gfModelAnimation* anim = (gfModelAnimation*)operator new(0x20, heapType);
         if (anim != NULL) {
-            nw4r::g3d::ResMdl mdlCopy = m_resMdl;
-            nw4r::g3d::ResFile fileCopy = m_resFile;
-            anim = __ct1__16gfModelAnimationFd(anim, &fileCopy, &mdlCopy, true, modelNode, heapType);
+            anim = newModelAnimName(anim, m_resMdl, m_resFile, modelNode, heapType);
         }
         gfModelAnimation::bind(scnMdl, anim);
         m_modelAnim = anim;
@@ -305,9 +325,7 @@ MuObject::MuObject(nw4r::g3d::ResFile* modelSource, int node, int drawPriority, 
     {
         gfModelAnimation* anim = (gfModelAnimation*)operator new(0x20, heapType);
         if (anim != NULL) {
-            nw4r::g3d::ResMdl mdlCopy = m_resMdl;
-            nw4r::g3d::ResFile fileCopy = m_resFile;
-            anim = __ct__16gfModelAnimationFd(anim, &fileCopy, &mdlCopy, true, node, heapType);
+            anim = newModelAnimIdx(anim, m_resMdl, m_resFile, node, heapType);
         }
         gfModelAnimation::bind(scnMdl, anim);
         m_modelAnim = anim;
@@ -406,9 +424,7 @@ void MuObject::initFromFile(const char* path, int drawPriority, int node, nw4r::
     }
     gfModelAnimation* anim = (gfModelAnimation*)operator new(0x20, heapType);
     if (anim != NULL) {
-        nw4r::g3d::ResMdl mdlCopy = m_resMdl;
-        nw4r::g3d::ResFile fileCopy = m_resFile;
-        anim = __ct__16gfModelAnimationFd(anim, &fileCopy, &mdlCopy, true, node, heapType);
+        anim = newModelAnimIdx(anim, m_resMdl, m_resFile, node, heapType);
     }
     gfModelAnimation::bind(scnMdl, anim);
     m_scnMdl = scnMdl;
@@ -430,9 +446,7 @@ void MuObject::initFromObject(MuObject* src, int drawPriority, int node, Heaps::
     }
     gfModelAnimation* anim = (gfModelAnimation*)operator new(0x20, heapType);
     if (anim != NULL) {
-        nw4r::g3d::ResMdl mdlCopy = m_resMdl;
-        nw4r::g3d::ResFile fileCopy = src->m_resFile;
-        anim = __ct__16gfModelAnimationFd(anim, &fileCopy, &mdlCopy, true, node, heapType);
+        anim = newModelAnimIdx(anim, m_resMdl, src->m_resFile, node, heapType);
     }
     gfModelAnimation::bind(scnMdl, anim);
     m_scnMdl = scnMdl;
@@ -1283,6 +1297,60 @@ void MuObject::changeMaterialTex(const char* matName, void* image, u16 width, u1
     GXTexObj* obj = texObj.GetTexObj(GX_TEXMAP0);
     GXInitTexObj(obj, image, width, height, GX_TF_RGBA8, GX_CLAMP, GX_CLAMP, false);
     GXLoadTexObj(obj, GX_TEXMAP0);
+}
+
+void MuObject::changeMaterialTex(const char* matName, int texIndex, nw4r::g3d::ResFile* texFile) {
+    nw4r::g3d::ResFile* file = texFile == NULL ? &m_resFile : texFile;
+    u8* tex = (u8*)file->GetResTex(texIndex).ptr();
+    u32 off = *(u32*)(tex + 0x14);
+    const char* texName = off != 0 ? (const char*)(tex + off) : NULL;
+    changeMaterialTex(m_resMdl.GetResMat(matName)->m_id, texName, texFile);
+}
+
+void MuObject::changeMaterialTex(u32 matId, const char* texName, nw4r::g3d::ResFile* texFile) {
+    MatAccess access(m_scnMdl, matId);
+    nw4r::g3d::ResTex tex(NULL);
+    nw4r::g3d::ResTexObj texObj(CopiedMatAccess_GetResTexObj(&access, false));
+    GXTexObj* obj = texObj.GetTexObj(GX_TEXMAP0);
+    if (texFile == NULL) {
+        texFile = &m_resFile;
+    }
+    tex = texFile->GetResTex(texName);
+    if ((*(u32*)((u8*)tex.ptr() + 0x18)) & 1) {
+        u8* pltt = fn_8018D310(texFile, texName);
+        void* tlutObjPtr = fn_801AFF94(&access, false);
+        GXTlutObj* tlut = fn_80190DC8(&tlutObjPtr, 0);
+        GXBool mipmap;
+        f32 maxLod;
+        f32 minLod;
+        GXTexFmt fmt;
+        u16 height;
+        u16 width;
+        void* image;
+        fn_80192B00(&tex, &image, &width, &height, &fmt, &minLod, &maxLod, &mipmap);
+        s32 plttOff = *(s32*)(pltt + 0x10);
+        s32 mask = (-plttOff | plttOff) >> 31;
+        void* plttData = (void*)((u32)(pltt + plttOff) & mask);
+        GXInitTlutObj(tlut, plttData, (GXTlutFmt) * (u32*)(pltt + 0x18), *(u16*)(pltt + 0x1c));
+        GXLoadTlut(tlut, GX_TLUT0);
+        GXInitTexObjCI(obj, image, width, height, fmt, GX_CLAMP, GX_CLAMP, mipmap, 0);
+        GXLoadTexObj(obj, GX_TEXMAP0);
+        fn_801AFF94(&access, false);
+        CopiedMatAccess_GetResTexObj(&access, false);
+    } else {
+        GXBool mipmap;
+        f32 maxLod;
+        f32 minLod;
+        GXTexFmt fmt;
+        u16 height;
+        u16 width;
+        void* image;
+        fn_80192A44(&tex, &image, &width, &height, &fmt, &minLod, &maxLod, &mipmap);
+        GXTexWrapMode wrapS = GXGetTexObjWrapS(obj);
+        GXTexWrapMode wrapT = GXGetTexObjWrapT(obj);
+        GXInitTexObj(obj, image, width, height, fmt, wrapS, wrapT, mipmap);
+        CopiedMatAccess_GetResTexObj(&access, false);
+    }
 }
 
 void MuObject::setFrame(float frame) {
