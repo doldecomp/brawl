@@ -390,9 +390,829 @@ void ms::CharWriter::SetEdge(float width, nw4r::ut::Color color) {
     m_edgeColor = color;
 }
 
+void Message::printMsgBuf(FontData::FONT_RESOURCE fontId) {
+    m_unknownFontWidthModifier = 1.0f;
+    m_84 = 1.0f;
+    init(false, fontId);
+    float textWidth = 0.0f;
+    const u8* p = m_cur->m_data;
+    while (*p != 1) {
+        u8 c = *p;
+        if (c < 0x20 && c <= 0x1a) {
+            switch (c) {
+            case 0:
+                p++;
+                break;
+            case 0x17: {
+                s16 a = (p[1] << 8) + p[2];
+                s16 b = (p[3] << 8) + p[4];
+                s16 cc = (p[5] << 8) + p[6];
+                s16 d = (p[7] << 8) + p[8];
+                SetWindowRect(a, b, cc, d);
+                SetCursor(0.0f, 0.0f, 0.0f);
+                p += 9;
+                continue;
+            }
+            case 0x18: {
+                u8 a = p[1];
+                u8 b = p[2];
+                u32 aLow = a & 3;
+                u32 bLow = b & 3;
+                u32 flags = GetFlags();
+                u32 mask = (((b << 4) & 0x300) + bLow) + ((b << 2) & 0x30);
+                u32 value = (((a << 4) & 0x300) + aLow) + ((a << 2) & 0x30);
+                SetFlags(value | (flags & ~mask));
+                if (bLow != 0 && aLow == 0) {
+                    SetCursorX(0.0f);
+                }
+                p += 3;
+                continue;
+            }
+            case 0x1a:
+                p += 2;
+                switch (p[-1]) {
+                case 0:
+                    m_1c8();
+                    break;
+                case 1:
+                    m_1cc();
+                    break;
+                }
+                continue;
+            case 0x19: {
+                u32 color = (p[1] << 24) + (p[2] << 16) + (p[3] << 8) + p[4];
+                u8 lineWidth = p[5];
+                p += 6;
+                float scaleX = 1.0f;
+                float scaleY = scaleX;
+                float zOff = 0.0f;
+                if (_76[0] != 0) {
+                    scaleX = m_scale;
+                    zOff = 0.01f;
+                    scaleY = -scaleX;
+                }
+                float bottom = m_rect.bottom;
+                float right = m_rect.right;
+                float top = m_rect.top;
+                float left = m_rect.left;
+                drawBoxLine(color, lineWidth, 0, scaleX * left, scaleY * top, scaleX * right, scaleY * bottom, zOff + GetCursorZ());
+                SetupGX();
+                continue;
+            }
+            case 5: {
+                p += 2;
+                int len = MsgParseChar(p, 0, 0, 0);
+                if (len != 0) {
+                    float r[4];
+                    r[0] = 0.0f;
+                    r[1] = 0.0f;
+                    r[2] = 0.0f;
+                    r[3] = 0.0f;
+                    GetCharRect(r, p, len);
+                    textWidth = r[2] - r[0];
+                    if (m_rect.right - m_rect.left < textWidth) {
+                        float ratio = (m_rect.right - m_rect.left) / textWidth;
+                        m_84 = ratio;
+                        m_unknownFontWidthModifier = GetScaleH() * ratio;
+                    }
+                }
+                continue;
+            }
+            }
+        }
+        int len = MsgParseChar(p, 0, 0, 0);
+        if (len != 0) {
+            float r[4];
+            r[0] = 0.0f;
+            r[1] = 0.0f;
+            r[2] = 0.0f;
+            r[3] = 0.0f;
+            if (textWidth == 0.0f) {
+                if ((GetFlags() & 0x100) || (GetFlags() & 0x40) || (GetFlags() & 2) || (GetFlags() & 1)) {
+                    GetCharRect(r, p, len);
+                    textWidth = r[2] - r[0];
+                }
+            }
+            if (GetFlags() & 2) {
+                if (textWidth != 0.0f) {
+                    float x = (m_rect.right - m_rect.left) - textWidth;
+                    if (m_84 < 1.0f && x < 0.0f) {
+                        x = 0.0f;
+                    }
+                    SetCursorX(x);
+                }
+                PrintBytes((const char*)p, len);
+            } else if (GetFlags() & 1) {
+                if (textWidth != 0.0f) {
+                    float x = (m_rect.right - m_rect.left) - textWidth;
+                    if (m_84 < 1.0f && x < 0.0f) {
+                        x = 0.0f;
+                    }
+                    SetCursorX(x * 0.5f);
+                }
+                PrintBytes((const char*)p, len);
+            } else {
+                PrintBytes((const char*)p, len);
+            }
+            p += len;
+        }
+    }
+}
+
+void Message::writeIndexData(void* msgbin, u32 index) {
+    MsgBuf* buf = m_cur;
+    u32* tbl = (u32*)msgbin;
+    u32 off = tbl[index];
+    u32 next = tbl[index + 1];
+    int len = next - off;
+    memcpy(buf->m_data + buf->m_pos, (char*)msgbin + off, len);
+    buf->m_pos += len;
+}
+
+void Message::getPrintIndexData(void* msgbin, u32 index, char** outStr, u32* outLen) {
+    u32* tbl = (u32*)msgbin;
+    u32 off = tbl[index];
+    u32 next = tbl[index + 1];
+    *outLen = next - off;
+    *outStr = (char*)msgbin + off;
+}
+
+void Message::drawBoxLine(s32 color, s32 lineWidth, s32 zTest, float x1, float y1, float x2, float y2, float z) {
+    GXSetNumTexGens(0);
+    GXSetNumChans(1);
+    GXSetNumTevStages(1);
+    GXSetChanCtrl(GX_COLOR0A0, 0, GX_SRC_REG, GX_SRC_VTX, GX_LIGHT_NULL, GX_DF_NONE, GX_AF_NONE);
+    GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
+    GXSetTevOp(GX_TEVSTAGE0, GX_PASSCLR);
+    GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
+    if (zTest != 0) {
+        GXSetZMode(1, GX_ALWAYS, 1);
+    }
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8, 0);
+    GXClearVtxDesc();
+    GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+    GXSetVtxDesc(GX_VA_CLR0, GX_DIRECT);
+    if (lineWidth != 0) {
+        GXSetLineWidth(lineWidth, 0);
+        GXBegin(GX_LINESTRIP, GX_VTXFMT0, 5);
+        GXPosition3f32(x1, y1, z);
+        GXColor1u32(color);
+        GXPosition3f32(x2, y1, z);
+        GXColor1u32(color);
+        GXPosition3f32(x2, y2, z);
+        GXColor1u32(color);
+        GXPosition3f32(x1, y2, z);
+        GXColor1u32(color);
+        GXPosition3f32(x1, y1, z);
+        GXColor1u32(color);
+    } else {
+        GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+        GXPosition3f32(x1, y1, z);
+        GXColor1u32(color);
+        GXPosition3f32(x2, y1, z);
+        GXColor1u32(color);
+        GXPosition3f32(x2, y2, z);
+        GXColor1u32(color);
+        GXPosition3f32(x1, y2, z);
+        GXColor1u32(color);
+    }
+}
+
+static void drawCallbackProjection() {
+    GXSetScissor(0, 0, 640, 480);
+    GXSetViewport(0.0f, 0.0f, 640.0f, 480.0f, 0.0f, 1.0f);
+    GXSetScissorBoxOffset(0, 0);
+    Mtx44 proj;
+    C_MTXOrtho(proj, 0.0f, 480.0f, 0.0f, 640.0f, 0.0f, 1.0f);
+    GXSetProjection(proj, GX_ORTHOGRAPHIC);
+    Mtx mtx;
+    PSMTXIdentity(mtx);
+    GXLoadPosMtxImm(mtx, 0);
+    GXSetCurrentMtx(0);
+}
+
+bool Message::allocMsgBuf(u32 msgSize, u32 numMsgs, Heaps::HeapType heapType) {
+    m_bufs = (MsgBuf**)gfHeapManager::alloc(heapType, numMsgs * 4);
+    for (int i = 0; i < (int)numMsgs; i++) {
+        MsgBuf* buf = new (heapType) MsgBuf(msgSize, heapType);
+        buf->m_size = msgSize;
+        m_bufs[i] = buf;
+    }
+    m_numBufs = numMsgs;
+    return true;
+}
+
+bool Message::attachMsgBuf(u32 index, nw4r::g3d::ScnMdlSimple* scn, const char* nodeName, u8 zCompare, int zUpdate, float scale) {
+    msScnObjCallback* cb = &m_bufs[index]->m_cb;
+    nw4r::g3d::ScnObj* obj = (nw4r::g3d::ScnObj*)scn;
+    if (cb->m_next != NULL) {
+        cb->m_next = NULL;
+    }
+    msScnObjCallback* prev = *(msScnObjCallback**)((u8*)obj + 0xd4);
+    if (prev != NULL) {
+        cb->m_next = prev;
+    }
+    *(msScnObjCallback**)((u8*)obj + 0xd4) = cb;
+    ScnObj_EnableCallbackTiming(obj, 0x20);
+    ScnObj_EnableCallbackExecOp(obj, 4);
+    cb->m_msg = this;
+    cb->m_idx = index;
+    cb->m_scale = scale;
+    cb->m_zCompare = zCompare;
+    cb->m_zUpdate = zUpdate;
+    cb->m_scnMdl = scn;
+    if (*nodeName != 0) {
+        nw4r::g3d::ResMdl resMdl = scn->m_resMdl;
+        nw4r::g3d::ResNode node = resMdl.GetResNode(nodeName);
+        if (node.IsValid()) {
+            cb->m_nodeId = node->m_nodeIndex;
+        } else {
+            cb->m_nodeId = 0;
+        }
+    } else {
+        cb->m_nodeId = 0;
+    }
+    return true;
+}
+
+void Message::detachMsgBuf(nw4r::g3d::ScnMdlSimple* scn) {
+    nw4r::g3d::ScnObj* obj = (nw4r::g3d::ScnObj*)scn;
+    *(msScnObjCallback**)((u8*)obj + 0xd4) = NULL;
+    ScnObj_DisableCallbackTiming(obj, 0x20);
+    ScnObj_DisableCallbackExecOp(obj, 4);
+}
+
+void Message::setBufField34(int index, int value) {
+    m_bufs[index]->m_cb.m_zUpdate = value;
+}
+
 void Message::clearMsgBuf() {
     m_cur->m_pos = 0;
     m_cur->m_data[m_cur->m_pos] = 1;
 }
 
-static void drawCallbackProjection() {}
+void Message::getPrintRect(float* rect, const u8* p) {
+    init(true, 9);
+    rect[0] = 0.0f;
+    rect[2] = 0.0f;
+    rect[1] = 0.0f;
+    rect[3] = 0.0f;
+    MsgBuf* buf = m_cur;
+    buf->m_data[buf->m_pos] = 1;
+    while (*p != 1) {
+        u8 c = *p;
+        if (c < 0x20 && c <= 0x1a) {
+            switch (c) {
+            case 0:
+                p++;
+                break;
+            case 5:
+                p += 2;
+                continue;
+            case 0x17: {
+                s16 a = (p[1] << 8) + p[2];
+                s16 b = (p[3] << 8) + p[4];
+                s16 cc = (p[5] << 8) + p[6];
+                s16 d = (p[7] << 8) + p[8];
+                SetWindowRect(a, b, cc, d);
+                SetCursor(0.0f, 0.0f, 0.0f);
+                rect[0] = 0.0f;
+                rect[1] = 0.0f;
+                rect[2] = (float)(s16)(cc - a);
+                rect[3] = (float)(s16)(d - b);
+                p += 9;
+                continue;
+            }
+            case 0x18: {
+                u8 a = p[1];
+                u8 b = p[2];
+                u32 aLow = a & 3;
+                u32 bLow = b & 3;
+                u32 flags = GetFlags();
+                u32 mask = (((b << 4) & 0x300) + bLow) + ((b << 2) & 0x30);
+                u32 value = (((a << 4) & 0x300) + aLow) + ((a << 2) & 0x30);
+                SetFlags(value | (flags & ~mask));
+                if (bLow != 0 && aLow == 0) {
+                    SetCursorX(0.0f);
+                }
+                p += 3;
+                continue;
+            }
+            case 0x19:
+                p += 6;
+                continue;
+            case 0x1a:
+                p += 2;
+                continue;
+            }
+        }
+        int len = MsgParseChar(p, 0, 0, 0);
+        if (len != 0) {
+            float r[4];
+            r[0] = 0.0f;
+            r[1] = 0.0f;
+            r[2] = 0.0f;
+            r[3] = 0.0f;
+            GetCharRect(r, p, len);
+            p += len;
+            rect[0] = (rect[0] > r[0]) ? r[0] : rect[0];
+            rect[1] = (rect[1] > r[1]) ? r[1] : rect[1];
+            rect[2] = (rect[2] < r[2]) ? r[2] : rect[2];
+            rect[3] = (rect[3] < r[3]) ? r[3] : rect[3];
+        }
+    }
+}
+
+void msScnObjCallback::ExecCallback_DRAW_XLU(int pass) {
+    if (m_next != NULL) {
+        m_next->ExecCallback_DRAW_XLU(pass);
+    }
+    if (pass == 4) {
+        GXSetZMode(1, (GXCompare)m_zUpdate, m_zCompare);
+        Message* msg = m_msg;
+        msg->_76[0] = 1;
+        msg->m_scale = m_scale;
+        msg->changeMsgBuf(m_idx);
+        Mtx mtx;
+        ((nw4r::g3d::ScnMdlSimple*)m_scnMdl)->GetScnMtxPos((nw4r::math::MTX34*)mtx, nw4r::g3d::ScnObj::MTX_VIEW, m_nodeId);
+        GXLoadPosMtxImm(mtx, 0);
+        GXSetCurrentMtx(0);
+        msg->printMsgBuf((FontData::FONT_RESOURCE)9);
+        G3DState_Invalidate(0x7ff);
+        msg->_76[0] = 0;
+    }
+}
+
+bool Message::appendSubstr(char* dst, const char* src, int skip, int count) {
+    char* d = dst + strlen(dst);
+    while (*src != 0 && skip > 0) {
+        char c = *src;
+        if (!(c & 0x80)) {
+            skip--;
+            src++;
+        } else if ((c & 0xe0) == 0xc0) {
+            skip--;
+            src += 2;
+        } else if ((c & 0xf0) == 0xe0) {
+            skip--;
+            src += 3;
+        }
+    }
+    if (*src == 0) {
+        return false;
+    }
+    while (count > 0) {
+        char c = *src;
+        if (!(c & 0x80)) {
+            if (c == 0) {
+                *d = 0;
+                return false;
+            }
+            *d = c;
+            d++;
+            count--;
+            src++;
+        } else if ((c & 0xe0) == 0xc0) {
+            char c1 = src[1];
+            count--;
+            *d = c;
+            src += 2;
+            d[1] = c1;
+            d += 2;
+        } else if ((c & 0xf0) == 0xe0) {
+            *d = c;
+            count--;
+            char c1 = src[1];
+            char c2 = src[2];
+            src += 3;
+            d[1] = c1;
+            d[2] = c2;
+            d += 3;
+        }
+    }
+    *d = 0;
+    return true;
+}
+
+u32 Message::utf8to16(wchar_t* dst, const char* src) {
+    u32 count = 0;
+    while (*src != 0) {
+        u8 c = *src;
+        if (c <= 0x7f) {
+            *dst = c;
+            src++;
+            dst++;
+        } else if ((c >> 5) == 6) {
+            *dst = ((c & 0x1f) << 6) | (src[1] & 0x3f);
+            src += 2;
+            dst++;
+        } else if ((c >> 4) == 0xe) {
+            *dst = ((c & 0xf) << 12) | ((src[1] & 0x3f) << 6) | (src[2] & 0x3f);
+            src += 3;
+            dst++;
+        }
+        count++;
+    }
+    *dst = 0;
+    return count;
+}
+
+u32 Message::utf16to8(char* dst, const wchar_t* src) {
+    u32 count = 0;
+    while (*src != 0) {
+        u16 c = *src;
+        if (c <= 0x7f) {
+            *dst = c;
+            dst++;
+            src++;
+        } else if (c <= 0x7ff) {
+            u16 c2 = *src;
+            src++;
+            dst[0] = 0xc0 | ((c >> 6) & 0x1f);
+            dst[1] = 0x80 | (c2 & 0x3f);
+            dst += 2;
+        } else {
+            u16 c2 = *src;
+            src++;
+            dst[0] = 0xe0 | ((c >> 12) & 0xf);
+            dst[1] = 0x80 | ((c2 >> 6) & 0x3f);
+            dst[2] = 0x80 | (c2 & 0x3f);
+            dst += 3;
+        }
+        count++;
+    }
+    *dst = 0;
+    return count;
+}
+
+void Message::fullToHalf(char* dst, const char* src) {
+    do {
+        u8 c = *src++;
+        if (c == 0xe2) {
+            u16 code = (src[0] << 8) + src[1];
+            src += 2;
+            if (code == 0x8098) {
+                c = 0x27;
+            } else {
+                src -= 2;
+            }
+        } else if (c == 0xef) {
+            u16 code = (src[0] << 8) + src[1];
+            src += 2;
+            switch (code) {
+        case 0xbc90:
+            c = 0x30;
+            break;
+        case 0xbc91:
+            c = 0x31;
+            break;
+        case 0xbc92:
+            c = 0x32;
+            break;
+        case 0xbc93:
+            c = 0x33;
+            break;
+        case 0xbc94:
+            c = 0x34;
+            break;
+        case 0xbc95:
+            c = 0x35;
+            break;
+        case 0xbc96:
+            c = 0x36;
+            break;
+        case 0xbc97:
+            c = 0x37;
+            break;
+        case 0xbc98:
+            c = 0x38;
+            break;
+        case 0xbc99:
+            c = 0x39;
+            break;
+        case 0xbca1:
+            c = 0x41;
+            break;
+        case 0xbca2:
+            c = 0x42;
+            break;
+        case 0xbca3:
+            c = 0x43;
+            break;
+        case 0xbca4:
+            c = 0x44;
+            break;
+        case 0xbca5:
+            c = 0x45;
+            break;
+        case 0xbca6:
+            c = 0x46;
+            break;
+        case 0xbca7:
+            c = 0x47;
+            break;
+        case 0xbca8:
+            c = 0x48;
+            break;
+        case 0xbca9:
+            c = 0x49;
+            break;
+        case 0xbcaa:
+            c = 0x4a;
+            break;
+        case 0xbcab:
+            c = 0x4b;
+            break;
+        case 0xbcac:
+            c = 0x4c;
+            break;
+        case 0xbcad:
+            c = 0x4d;
+            break;
+        case 0xbcae:
+            c = 0x4e;
+            break;
+        case 0xbcaf:
+            c = 0x4f;
+            break;
+        case 0xbcb0:
+            c = 0x50;
+            break;
+        case 0xbcb1:
+            c = 0x51;
+            break;
+        case 0xbcb2:
+            c = 0x52;
+            break;
+        case 0xbcb3:
+            c = 0x53;
+            break;
+        case 0xbcb4:
+            c = 0x54;
+            break;
+        case 0xbcb5:
+            c = 0x55;
+            break;
+        case 0xbcb6:
+            c = 0x56;
+            break;
+        case 0xbcb7:
+            c = 0x57;
+            break;
+        case 0xbcb8:
+            c = 0x58;
+            break;
+        case 0xbcb9:
+            c = 0x59;
+            break;
+        case 0xbcba:
+            c = 0x5a;
+            break;
+        case 0xbd81:
+            c = 0x61;
+            break;
+        case 0xbd82:
+            c = 0x62;
+            break;
+        case 0xbd83:
+            c = 0x63;
+            break;
+        case 0xbd84:
+            c = 0x64;
+            break;
+        case 0xbd85:
+            c = 0x65;
+            break;
+        case 0xbd86:
+            c = 0x66;
+            break;
+        case 0xbd87:
+            c = 0x67;
+            break;
+        case 0xbd88:
+            c = 0x68;
+            break;
+        case 0xbd89:
+            c = 0x69;
+            break;
+        case 0xbd8a:
+            c = 0x6a;
+            break;
+        case 0xbd8b:
+            c = 0x6b;
+            break;
+        case 0xbd8c:
+            c = 0x6c;
+            break;
+        case 0xbd8d:
+            c = 0x6d;
+            break;
+        case 0xbd8e:
+            c = 0x6e;
+            break;
+        case 0xbd8f:
+            c = 0x6f;
+            break;
+        case 0xbd90:
+            c = 0x70;
+            break;
+        case 0xbd91:
+            c = 0x71;
+            break;
+        case 0xbd92:
+            c = 0x72;
+            break;
+        case 0xbd93:
+            c = 0x73;
+            break;
+        case 0xbd94:
+            c = 0x74;
+            break;
+        case 0xbd95:
+            c = 0x75;
+            break;
+        case 0xbd96:
+            c = 0x76;
+            break;
+        case 0xbd97:
+            c = 0x77;
+            break;
+        case 0xbd98:
+            c = 0x78;
+            break;
+        case 0xbd99:
+            c = 0x79;
+            break;
+        case 0xbd9a:
+            c = 0x7a;
+            break;
+        default:
+            src -= 2;
+            break;
+            }
+        }
+        *dst++ = c;
+    } while (*src != 0);
+    *dst = 0;
+}
+
+int Message::halfToFull(char* dst, const char* src) {
+    const u16 table[96] = { 0xbc81, 0x809c, 0xbc83, 0xbc84, 0xbc85, 0xbc86, 0x8098, 0xbc88, 0xbc89, 0xbc8a, 0xbc8b, 0xbc8c, 0x8892, 0xbc8e, 0xbc8f, 0xbc90, 0xbc91, 0xbc92, 0xbc93, 0xbc94, 0xbc95, 0xbc96, 0xbc97, 0xbc98, 0xbc99, 0xbc9a, 0xbc9b, 0xbc9c, 0xbc9d, 0xbc9e, 0xbc9f, 0xbca0, 0xbca1, 0xbca2, 0xbca3, 0xbca4, 0xbca5, 0xbca6, 0xbca7, 0xbca8, 0xbca9, 0xbcaa, 0xbcab, 0xbcac, 0xbcad, 0xbcae, 0xbcaf, 0xbcb0, 0xbcb1, 0xbcb2, 0xbcb3, 0xbcb4, 0xbcb5, 0xbcb6, 0xbcb7, 0xbcb8, 0xbcb9, 0xbcba, 0xbcbb, 0xbfa5, 0xbcbd, 0xbcbe, 0xbcbf, 0xbd80, 0xbd81, 0xbd82, 0xbd83, 0xbd84, 0xbd85, 0xbd86, 0xbd87, 0xbd88, 0xbd89, 0xbd8a, 0xbd8b, 0xbd8c, 0xbd8d, 0xbd8e, 0xbd8f, 0xbd90, 0xbd91, 0xbd92, 0xbd93, 0xbd94, 0xbd95, 0xbd96, 0xbd97, 0xbd98, 0xbd99, 0xbd9a, 0xbd9b, 0xbd9c, 0xbd9d, 0xbd9e, 0x0000, 0x0000 };
+    const char* start = src;
+    do {
+        char c = *src;
+        if (c < 0x21 || c >= 0x7f) {
+            *dst++ = c;
+        } else {
+            u8 lead;
+            switch (c) {
+            case 0x27:
+            case 0x22:
+            case 0x2d:
+                lead = 0xe2;
+                break;
+            default:
+                lead = 0xef;
+                break;
+            }
+            u16 code = table[c - 0x21];
+            dst[0] = lead;
+            dst[1] = code >> 8;
+            dst[2] = code;
+            dst += 3;
+        }
+    } while (*src++ != 0);
+    return src - start;
+}
+
+int Message::stripTags(const u8* src, int len, int unused, u8* dst) {
+    const u8* p = src;
+    u8* d = dst;
+    u8 tmp[0x80];
+    while (*p != 1) {
+        if (p - src >= len) {
+            break;
+        }
+        u8 c = *p;
+        if (c < 0x20) {
+            switch (c) {
+            case 0:
+                for (int n = 1; n--;) {
+                    *d++ = *p++;
+                }
+                break;
+            case 1:
+                break;
+            case 2:
+                p += 2;
+                break;
+            case 3:
+                p += 3;
+                break;
+            case 4:
+                p += 5;
+                break;
+            case 5:
+                p += 2;
+                break;
+            case 7:
+                p += 2;
+                break;
+            case 8:
+                p += 2;
+                break;
+            case 10:
+                for (int n = 1; n--;) {
+                    *d++ = *p++;
+                }
+                break;
+            case 11: {
+                *d++ = *p;
+                u8* lenPtr = d;
+                int len1 = p[1];
+                d += 2;
+                int len2 = p[2];
+                p += 3;
+                int n = stripTags(p, len1, 0xffff, tmp);
+                lenPtr[0] = n;
+                memcpy(d, tmp, n);
+                p += len1;
+                d += n;
+                n = stripTags(p, len2, 0xffff, tmp);
+                lenPtr[1] = n;
+                memcpy(d, tmp, n);
+                p += len2;
+                d += n;
+                break;
+            }
+            case 12:
+                p += 5;
+                break;
+            case 13:
+                p += 3;
+                break;
+            case 14:
+                p += 2;
+                break;
+            case 15:
+                p += 3;
+                break;
+            case 16:
+                for (int n = 3; n--;) {
+                    *d++ = *p++;
+                }
+                break;
+            case 17:
+                p += 4;
+                break;
+            case 18:
+                p += 2;
+                break;
+            case 19:
+                p += 1;
+                break;
+            case 20:
+                p += 7;
+                break;
+            case 22:
+                p += 0xd;
+                break;
+            case 23:
+                p += 5;
+                break;
+            case 24:
+                p += 3;
+                break;
+            case 25:
+                p += 6;
+                break;
+            case 26:
+                p += 2;
+                break;
+            case 27:
+                p += 2;
+                break;
+            case 28:
+                p += 3;
+                break;
+            case 29:
+                p += 2;
+                break;
+            }
+        } else if (!(c & 0x80)) {
+            for (int n = 1; n--;) {
+                *d++ = *p++;
+            }
+        } else if ((c & 0xe0) == 0xc0) {
+            for (int n = 2; n--;) {
+                *d++ = *p++;
+            }
+        } else if ((c & 0xf0) == 0xe0) {
+            for (int n = 3; n--;) {
+                *d++ = *p++;
+            }
+        }
+    }
+    return d - dst;
+}

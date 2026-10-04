@@ -109,6 +109,11 @@ u8* floatToBytes(u8* out, float f);
 int MsgParseChar(const u8* p, int* kind, u8* out, int flag);
 int strncmp_(const char* a, const char* b, unsigned long n);
 void SetFontResource(ms::CharWriter* w, int id);
+void ScnObj_EnableCallbackTiming(nw4r::g3d::ScnObj* obj, u32 timing);
+void ScnObj_EnableCallbackExecOp(nw4r::g3d::ScnObj* obj, u32 op);
+void ScnObj_DisableCallbackTiming(nw4r::g3d::ScnObj* obj, u32 timing);
+void ScnObj_DisableCallbackExecOp(nw4r::g3d::ScnObj* obj, u32 op);
+void G3DState_Invalidate(u32 flags);
 u8* floatToShortBytes(u8* out, float f);
 
 // Object at Message+0xa4 (tag/font set); constructed and destroyed by out-of-line code.
@@ -232,5 +237,5 @@ public:
     static bool appendSubstr(char* dst, const char* src, int skip, int count);
     static void fullToHalf(char* dst, const char* src);
     static int halfToFull(char* dst, const char* src);
-    static int stripTags(const u8* src, int maxLen, u8* dst, int* outLen);
+    static int stripTags(const u8* src, int len, int unused, u8* dst);
 };
