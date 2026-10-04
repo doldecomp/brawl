@@ -13,30 +13,24 @@
 // Applies the stick-driven drift that is allowed while in hitlag/hitstun (ASDI/SDI).
 // HYPOTHESIS: this block is an inline helper in the original (identical code appears in
 // execStop, leaveStop and twice in execStatus with different parameter ids).
-static inline bool applyDriftInput(soModuleAccesser* moduleAccesser, soDamageLog* damageLog, u32 paramId) {
-    float stickX = moduleAccesser->getControllerModule().getStickX();
-    float stickY = moduleAccesser->getControllerModule().getStickY();
-    float threshold = soValueAccesser::getConstantFloat(moduleAccesser, 0xc65, 0);
-    if (stickX * stickX + stickY * stickY >= threshold * threshold) {
-        float driftMul = soValueAccesser::getConstantFloat(moduleAccesser, paramId, 0);
-        Vec3f pos = moduleAccesser->getPostureModule().getPos();
-        float mul = driftMul * damageLog->m_hitStopDelay;
-        Vec2f drift;
-        drift.m_x = mul * stickX;
-        drift.m_y = mul * stickY;
-        if (damageLog->m_isSituationGround == true) {
-            if (damageLog->m_groundTouchNormal.m_x * drift.m_x + damageLog->m_groundTouchNormal.m_y * drift.m_y < 0.0f) {
-                drift.m_y = 0.0f;
-            }
-            float angle = atan2(-damageLog->m_groundTouchNormal.m_x, damageLog->m_groundTouchNormal.m_y);
-            drift.rot(&drift, angle);
+static inline void applyDriftInput(soModuleAccesser* moduleAccesser, soDamageLog* damageLog, u32 paramId, float stickX, float stickY) {
+    float driftMul = soValueAccesser::getConstantFloat(moduleAccesser, paramId, 0);
+    Vec3f pos = moduleAccesser->getPostureModule().getPos();
+    float mul = driftMul * damageLog->m_hitStopDelay;
+    Vec2f drift;
+    drift.m_x = mul * stickX;
+    drift.m_y = mul * stickY;
+    if (damageLog->m_isSituationGround == true) {
+        if (damageLog->m_groundTouchNormal.m_x * drift.m_x + damageLog->m_groundTouchNormal.m_y * drift.m_y < 0.0f) {
+            drift.m_y = 0.0f;
         }
-        pos.m_x += drift.m_x;
-        pos.m_y += drift.m_y;
-        moduleAccesser->getPostureModule().setPos(&pos);
-        return true;
+        float angle = atan2(-damageLog->m_groundTouchNormal.m_x, damageLog->m_groundTouchNormal.m_y);
+        drift.rot(&drift, angle);
     }
-    return false;
+    pos.m_y += drift.m_y;
+    pos.m_x += drift.m_x;
+    pos.m_z = pos.m_z;
+    moduleAccesser->getPostureModule().setPos(&pos);
 }
 
 ftStatusUniqProcessDamage::ftStatusUniqProcessDamage() { }
@@ -59,14 +53,19 @@ void ftStatusUniqProcessDamage::initNormalDamageCommon(soModuleAccesser* moduleA
             moduleAccesser->getWorkManageModule().setInt(0, 0x10000038);
         }
     }
-    moduleAccesser->getWorkManageModule().setInt(soValueAccesser::getConstantInt(moduleAccesser, 0x5a0a, 0), 0x10000002);
+    int v5a0a = soValueAccesser::getConstantInt(moduleAccesser, 0x5a0a, 0);
+    moduleAccesser->getWorkManageModule().setInt(v5a0a, 0x10000002);
     float c = soValueAccesser::getConstantFloat(moduleAccesser, 0xc8f, 0);
-    if (damageLog->m_speed.m_x * damageLog->m_speed.m_x + damageLog->m_speed.m_y * damageLog->m_speed.m_y > c * c) {
+    float cSq = c * c;
+    if (damageLog->m_speed.m_x * damageLog->m_speed.m_x + damageLog->m_speed.m_y * damageLog->m_speed.m_y > cSq) {
         moduleAccesser->getWorkManageModule().onFlag(0x1200001b);
-        moduleAccesser->getWorkManageModule().setInt(soValueAccesser::getConstantInt(moduleAccesser, 0x5a15, 0), 0x10000020);
+        int v5a15 = soValueAccesser::getConstantInt(moduleAccesser, 0x5a15, 0);
+        moduleAccesser->getWorkManageModule().setInt(v5a15, 0x10000020);
     }
-    moduleAccesser->getWorkManageModule().setInt(soValueAccesser::getConstantInt(moduleAccesser, 0x5a30, 0), 0x20000006);
-    moduleAccesser->getWorkManageModule().setInt(soValueAccesser::getConstantInt(moduleAccesser, 0x5a31, 0), 0x20000007);
+    int v5a30 = soValueAccesser::getConstantInt(moduleAccesser, 0x5a30, 0);
+    moduleAccesser->getWorkManageModule().setInt(v5a30, 0x20000006);
+    int v5a31 = soValueAccesser::getConstantInt(moduleAccesser, 0x5a31, 0);
+    moduleAccesser->getWorkManageModule().setInt(v5a31, 0x20000007);
 }
 
 void ftStatusUniqProcessDamage::initNormalDamage(soModuleAccesser* moduleAccesser) {
@@ -233,7 +232,16 @@ void ftStatusUniqProcessDamage::execStatus(soModuleAccesser* moduleAccesser) {
                 moduleAccesser->getKineticModule().getEnergy(1)->enable();
             }
             if (damageLog->m_isCollisionAbsolute == 0) {
-                applyDriftInput(moduleAccesser, damageLog, 0xc67);
+                {
+                float stickX = moduleAccesser->getControllerModule().getStickX();
+                float stickY = moduleAccesser->getControllerModule().getStickY();
+                float threshold = soValueAccesser::getConstantFloat(moduleAccesser, 0xc65, 0);
+                float ySq = stickY * stickY;
+                    float xSq = stickX * stickX;
+                    if (xSq + ySq >= threshold * threshold) {
+                    applyDriftInput(moduleAccesser, damageLog, 0xc67, stickX, stickY);
+                }
+            }
             }
             moduleAccesser->getSituationModule().setKeepAir(false);
             initNormalDamage(moduleAccesser);
@@ -248,7 +256,13 @@ void ftStatusUniqProcessDamage::execStatus(soModuleAccesser* moduleAccesser) {
                 u8 flickY = moduleAccesser->getControllerModule().getFlickY();
                 int threshold = soValueAccesser::getConstantInt(moduleAccesser, 0x5a01, 0);
                 if (flickX < threshold || flickY < threshold) {
-                    if (applyDriftInput(moduleAccesser, damageLog, 0xc66)) {
+                    float stickX = moduleAccesser->getControllerModule().getStickX();
+                    float stickY = moduleAccesser->getControllerModule().getStickY();
+                    float threshold = soValueAccesser::getConstantFloat(moduleAccesser, 0xc65, 0);
+                    float ySq = stickY * stickY;
+                    float xSq = stickX * stickX;
+                    if (xSq + ySq >= threshold * threshold) {
+                        applyDriftInput(moduleAccesser, damageLog, 0xc66, stickX, stickY);
                         moduleAccesser->getControllerModule().resetFlickX();
                         moduleAccesser->getControllerModule().resetFlickY();
                     }
@@ -269,7 +283,13 @@ void ftStatusUniqProcessDamage::execStop(soModuleAccesser* moduleAccesser) {
                 u8 flickY = moduleAccesser->getControllerModule().getFlickY();
                 int threshold = soValueAccesser::getConstantInt(moduleAccesser, 0x5a01, 0);
                 if (flickX < threshold || flickY < threshold) {
-                    if (applyDriftInput(moduleAccesser, damageLog, 0xc66)) {
+                    float stickX = moduleAccesser->getControllerModule().getStickX();
+                    float stickY = moduleAccesser->getControllerModule().getStickY();
+                    float threshold = soValueAccesser::getConstantFloat(moduleAccesser, 0xc65, 0);
+                    float ySq = stickY * stickY;
+                    float xSq = stickX * stickX;
+                    if (xSq + ySq >= threshold * threshold) {
+                        applyDriftInput(moduleAccesser, damageLog, 0xc66, stickX, stickY);
                         moduleAccesser->getControllerModule().resetFlickX();
                         moduleAccesser->getControllerModule().resetFlickY();
                     }
@@ -286,9 +306,13 @@ void ftStatusUniqProcessDamage::exitStatus(soModuleAccesser* moduleAccesser, int
     }
     if (moduleAccesser->getWorkManageModule().isFlag(0x22000012) == 1) {
         if (moduleAccesser->getWorkManageModule().getInt(0x10000039) <= 0) {
-            if (nextStatusKind == 0x114 || (nextStatusKind >= 0xc && nextStatusKind < 0xe)) {
+            switch (nextStatusKind) {
+            case 0xc:
+            case 0xd:
+            case 0x114:
                 moduleAccesser->getKineticModule().getEnergy(4)->clearSpeed();
                 moduleAccesser->getWorkManageModule().setInt(0, 0x10000038);
+                break;
             }
         }
     }
@@ -298,7 +322,16 @@ void ftStatusUniqProcessDamage::leaveStop(soModuleAccesser* moduleAccesser, int 
     if (isHitStopEnd == true) {
         soDamageLog* damageLog = moduleAccesser->getDamageModule().getDamageLog();
         if (damageLog->m_isCollisionAbsolute == 0) {
-            applyDriftInput(moduleAccesser, damageLog, 0xc67);
+            {
+                float stickX = moduleAccesser->getControllerModule().getStickX();
+                float stickY = moduleAccesser->getControllerModule().getStickY();
+                float threshold = soValueAccesser::getConstantFloat(moduleAccesser, 0xc65, 0);
+                float ySq = stickY * stickY;
+                    float xSq = stickX * stickX;
+                    if (xSq + ySq >= threshold * threshold) {
+                    applyDriftInput(moduleAccesser, damageLog, 0xc67, stickX, stickY);
+                }
+            }
         }
         int entryId = moduleAccesser->getWorkManageModule().getInt(0x1000003f);
         if (entryId != -1) {
@@ -311,7 +344,7 @@ void ftStatusUniqProcessDamage::leaveStop(soModuleAccesser* moduleAccesser, int 
 
 bool ftStatusUniqProcessDamage::checkTransitionPrecede(soModuleAccesser* moduleAccesser, int* statusKind) {
     int kind = *statusKind;
-    if (kind == 0xc || (kind >= 0xe && kind < 0x10)) {
+    if (kind == 0xc || (u32)(kind - 0xe) <= 1) {
         return false;
     }
     return true;

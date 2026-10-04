@@ -16,6 +16,22 @@ public:
     static bool checkCloudThroughOut(soModuleAccesser* moduleAccesser);
 };
 
+// HYPOTHESIS: the original uses its own inline length helper (float FLT_MIN compare and
+// inline fabs) instead of Vec2f::length from the shared header.
+static inline float calcLength(float lengthSq) {
+    float length;
+    if ((float)__fabs(lengthSq) <= 1.17549435e-38f) {
+        length = 0.0f;
+    } else {
+        length = rsqrtf(lengthSq) * lengthSq;
+    }
+    return length;
+}
+
+static inline float calcLength(const Vec2f& v) {
+    return calcLength(v.m_x * v.m_x + v.m_y * v.m_y);
+}
+
 ftStatusUniqProcessDamageFly g_ftStatusUniqProcessDamageFly;
 
 void ftStatusUniqProcessDamageFly::setDamageCamera(soModuleAccesser* moduleAccesser) {
@@ -28,12 +44,13 @@ void ftStatusUniqProcessDamageFly::initNormalDamageCommon(soModuleAccesser* modu
     ftStatusUniqProcessDamage::initNormalDamageCommon(moduleAccesser);
     float threshold = soValueAccesser::getConstantFloat(moduleAccesser, 0xcd1, 0);
     int effectHandle;
-    Vec2f speed = moduleAccesser->getKineticModule().getEnergy(4)->getSpeed();
-    if (speed.length() < threshold) {
+    const Vec2f& speed = moduleAccesser->getKineticModule().getEnergy(4)->getSpeed();
+    if (calcLength(speed) < threshold) {
         effectHandle = -1;
     } else {
+        soEffectModule& effect = moduleAccesser->getEffectModule();
         float c = soValueAccesser::getConstantFloat(moduleAccesser, 0xcd2, 0);
-        effectHandle = moduleAccesser->getEffectModule().reqContinual((EfID)0xc, c, soValueAccesser::getConstantInt(moduleAccesser, 0x59e0, 0), true, -1);
+        effectHandle = effect.reqContinual((EfID)0xc, c, soValueAccesser::getConstantInt(moduleAccesser, 0x59e0, 0), true, -1);
     }
     moduleAccesser->getWorkManageModule().setInt(effectHandle, 0x20000000);
     moduleAccesser->getGroundModule().selectCliffHangData(1, 0);
@@ -69,17 +86,13 @@ void ftStatusUniqProcessDamageFly::initNormalDamage(soModuleAccesser* moduleAcce
     setDamageCamera(moduleAccesser);
 }
 
-void ftStatusUniqProcessDamageFly::execNormalDamage(soModuleAccesser* moduleAccesser) {
-    execNormalDamageCommon(moduleAccesser);
-}
-
 void ftStatusUniqProcessDamageFly::execNormalDamageCommon(soModuleAccesser* moduleAccesser) {
     ftStatusUniqProcessDamage::execNormalDamageCommon(moduleAccesser);
     int effectHandle = moduleAccesser->getWorkManageModule().getInt(0x20000000);
     if (effectHandle != -1) {
         float threshold = soValueAccesser::getConstantFloat(moduleAccesser, 0xcd1, 0);
-        Vec2f speed = moduleAccesser->getKineticModule().getEnergy(4)->getSpeed();
-        if (speed.length() < threshold) {
+        const Vec2f& speed = moduleAccesser->getKineticModule().getEnergy(4)->getSpeed();
+        if (calcLength(speed) < threshold) {
             moduleAccesser->getEffectModule().removeContinual(effectHandle);
             moduleAccesser->getWorkManageModule().setInt(-1, 0x20000000);
         }
@@ -105,16 +118,16 @@ void ftStatusUniqProcessDamageFly::correctDamageVector(soModuleAccesser* moduleA
     if (!energy->isEnable()) {
         return;
     }
-    soKineticEnergyNormal* normal = dynamic_cast<soKineticEnergyNormal*>(energy);
-    Vec2f speed = normal->getSpeed();
+    soKineticEnergyNormal& normal = dynamic_cast<soKineticEnergyNormal&>(*energy);
+    const Vec2f& speed = normal.getSpeed();
     Vec3f velocity(speed.m_x, speed.m_y, 0.0f);
-    float length = velocity.length();
+    float length = calcLength(velocity.m_z * velocity.m_z + (velocity.m_x * velocity.m_x + velocity.m_y * velocity.m_y));
     if (length < 0.00001f) {
         return;
     }
     soDamageLog* damageLog = moduleAccesser->getDamageModule().getDamageLog();
     float limit = soValueAccesser::getConstantFloat(moduleAccesser, 0xcda, 0);
-    if (atan2(fabsf(velocity.m_y), fabsf(velocity.m_x)) <= limit) {
+    if ((float)atan2((float)__fabs(velocity.m_y), (float)__fabs(velocity.m_x)) <= limit) {
         return;
     }
     float angle = atan2(velocity.m_y, velocity.m_x);
@@ -123,15 +136,20 @@ void ftStatusUniqProcessDamageFly::correctDamageVector(soModuleAccesser* moduleA
     cross.m_x = velocity.m_y * stick.m_z - velocity.m_z * stick.m_y;
     cross.m_y = velocity.m_z * stick.m_x - velocity.m_x * stick.m_z;
     cross.m_z = velocity.m_x * stick.m_y - velocity.m_y * stick.m_x;
-    float perpendicular = fabsf(cross.m_z) / length;
+    float perpendicular = (float)__fabs(cross.m_z) / length;
     if (cross.m_z < 0.0f) {
         perpendicular = -perpendicular;
     }
     angle = angle + limit * perpendicular;
-    float newY = length * sin(angle);
-    float newX = length * cos(angle);
-    ((Vec2f*)&normal->m_normalData[0])->m_x = newX;
-    ((Vec2f*)&normal->m_normalData[0])->m_y = newY;
+    Vec2f result;
+    result.m_y = length * (float)sin(angle);
+    result.m_x = length * (float)cos(angle);
+    ((Vec2f*)&normal.m_normalData[0])->m_x = result.m_x;
+    ((Vec2f*)&normal.m_normalData[0])->m_y = result.m_y;
+}
+
+void ftStatusUniqProcessDamageFly::execNormalDamage(soModuleAccesser* moduleAccesser) {
+    execNormalDamageCommon(moduleAccesser);
 }
 
 void ftStatusUniqProcessDamageFly::execFixPosCounter(soModuleAccesser* moduleAccesser) {
@@ -140,11 +158,6 @@ void ftStatusUniqProcessDamageFly::execFixPosCounter(soModuleAccesser* moduleAcc
         float mul = soValueAccesser::getConstantFloat(moduleAccesser, 0xcdc, 0);
         moduleAccesser->getWorkManageModule().setInt((int)((float)frame * mul), 0x10000038);
     }
-}
-
-void ftStatusUniqProcessDamageFly::exitStatus(soModuleAccesser* moduleAccesser, int nextStatusKind) {
-    moduleAccesser->getCameraModule().exitDamageFly(0);
-    ftStatusUniqProcessDamage::exitStatus(moduleAccesser, nextStatusKind);
 }
 
 void ftStatusUniqProcessDamageFly::execFixPos(soModuleAccesser* moduleAccesser) {
@@ -159,7 +172,7 @@ void ftStatusUniqProcessDamageFly::execFixPos(soModuleAccesser* moduleAccesser) 
         float max = soValueAccesser::getConstantFloat(moduleAccesser, 0xcec, 0);
         float min = soValueAccesser::getConstantFloat(moduleAccesser, 0xced, 0);
         Vec2f speed = normal->getSpeed();
-        float length = speed.length();
+        float length = calcLength(speed);
         if (length < min || max < min) {
             moduleAccesser->getCollisionAttackModule().clear(0);
         } else {
@@ -197,4 +210,9 @@ void ftStatusUniqProcessDamageFly::checkAttack(soModuleAccesser* moduleAccesser,
         ((Vec2f*)&normal->m_normalData[0])->m_x = result.m_x;
         ((Vec2f*)&normal->m_normalData[0])->m_y = result.m_y;
     }
+}
+
+void ftStatusUniqProcessDamageFly::exitStatus(soModuleAccesser* moduleAccesser, int nextStatusKind) {
+    moduleAccesser->getCameraModule().exitDamageFly(0);
+    ftStatusUniqProcessDamage::exitStatus(moduleAccesser, nextStatusKind);
 }
