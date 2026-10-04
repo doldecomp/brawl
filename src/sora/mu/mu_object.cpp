@@ -45,7 +45,7 @@ public:
 };
 
 // Frame policy used when a binding is replaced: clamp the frame into [start, end - epsilon].
-static float anmPlayPolicyOneTime(float frame, float end, float start) {
+float muObjPlayPolicyOneTime(float frame, float end, float start) {
     float d = start - frame;
     float last = end - 1.0f;
     float v = nw4r::math::FSelect(d, start, frame);
@@ -55,7 +55,7 @@ static float anmPlayPolicyOneTime(float frame, float end, float start) {
 static inline void setPolicy(void* obj, u32 policy) {
     void* fn;
     if (policy == 0) {
-        fn = (void*)anmPlayPolicyOneTime;
+        fn = (void*)muObjPlayPolicyOneTime;
     } else {
         fn = lbl_8059C648[policy];
     }
@@ -140,10 +140,11 @@ static inline void setClrAnim(nw4r::g3d::ResAnmClr anim, gfModelAnimation* model
 static inline void setTexPatAnimIdx(u32 animId, nw4r::g3d::ResMdl model, Heaps::HeapType heap, gfModelAnimation* modelAnim) {
     if (animId < modelAnim->m_resFile.GetResAnmTexPatNumEntries()) {
         int instanceSize;
+        nw4r::g3d::AnmObjTexPatRes* anmObj;
         nw4r::g3d::ResAnmTexPat anim = modelAnim->m_resFile.GetResAnmTexPat(animId);
         if (anim.IsValid()) {
             MEMAllocator* allocator = gfHeapManager::getMEMAllocator(heap);
-            nw4r::g3d::AnmObjTexPatRes* anmObj = nw4r::g3d::AnmObjTexPatRes::Construct(allocator, &instanceSize, anim, model, false);
+            anmObj = nw4r::g3d::AnmObjTexPatRes::Construct(allocator, &instanceSize, anim, model, false);
             if (anmObj != NULL) {
                 anmObj->Bind(model);
                 if (modelAnim->m_anmObjTexPatRes != NULL) {
