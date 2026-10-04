@@ -146,6 +146,12 @@ sora/gf/gf_resource_loader.cpp:
 sora/mt/mt_vector_old.cpp:
 	.text       start:0x8003E244 end:0x8003E35C
 
+sora/mt/mt_matrix.cpp:
+	.text       start:0x8003E35C end:0x8003FABC
+	.data       start:0x8042AE08 end:0x8042AE50
+	.sdata      start:0x8059C788 end:0x8059C790
+	.sdata2     start:0x805A1728 end:0x805A1748
+
 sora/mt/mt_prng.cpp:
 	.text       start:0x8003FABC end:0x8003FD5C
 	.ctors      start:0x80406510 end:0x80406514

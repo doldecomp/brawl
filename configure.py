@@ -320,6 +320,7 @@ config.libs = [
             Object(Matching, "sora/gf/gf_monitor.cpp"),
             Object(Matching, "sora/gf/gf_resource_loader.cpp"),
             Object(NonMatching, "sora/mt/mt_vector_old.cpp"),
+            Object(NonMatching, "sora/mt/mt_matrix.cpp"),
             Object(Matching, "sora/mt/mt_prng.cpp", extra_cflags=["-RTTI off"]),
             Object(NonMatching, "sora/mt/mt_trig.cpp"),
             Object(Matching, "sora/mt/mt_prng_log.cpp"),
