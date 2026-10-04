@@ -137,7 +137,8 @@ public:
     virtual void renderDebug();
 
     // event2nd is the non-virtual helper from the map (soCollisionHitModuleImpl::event2nd), added by agent/damage
-    void event2nd(soCollisionAttackModule* attackModule, soModuleAccesser* attackerAccesser, soCollisionLog* collisionLog, u32 groupIndex);
+    void event(soCollisionAttackModule* attackModule, void* attackerGlowModule, soCollisionLog* collisionLog, u32 groupIndex);
+    void event2nd(soCollisionAttackModule* attackModule, void* attackerGlowModule, soCollisionLog* collisionLog, u32 groupIndex);
 
     virtual bool isObserv(char unk1);
     virtual bool notifyEventAnimCmd(acAnimCmd* acmd, soModuleAccesser* moduleAccesser, int unk3);
