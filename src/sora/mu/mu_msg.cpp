@@ -90,7 +90,7 @@ public:
     void beginPrint(u32 msgIndex);
     void printData(u32 msgIndex, const void* data, int len);
     void endPrint();
-    bool getTag(u32 msgIndex, char** tagOut);
+    u8 getTag(u32 msgIndex, char** tagOut);
     void printf(u32 msgIndex, const char* format, ...);
     bool printIndex(u32 msgIndex, u32 lineIndex, void* msgBinData = NULL);
     void setWindowRectVisible(u32 msgIndex, bool isVisible);
@@ -425,7 +425,7 @@ bool MuMsg::isEndDelayPrint(u32 msgIndex) {
     return m_message->isEndDelayPrint();
 }
 
-bool MuMsg::getTag(u32 msgIndex, char** tagOut) {
+u8 MuMsg::getTag(u32 msgIndex, char** tagOut) {
     m_message->changeMsgBuf(msgIndex);
     return m_message->getTag(tagOut);
 }

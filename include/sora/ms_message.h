@@ -6,6 +6,7 @@
 
 #include <ms/ms_char_writer.h>
 #include <nw4r/ut/ut_Color.h>
+#include <nw4r/ut/ut_Rect.h>
 #include <sr/sr_common.h>
 #include <stdarg.h>
 #include <types.h>
@@ -123,16 +124,13 @@ namespace ms {
     class TextWriterBase : public CharWriter {
     public:
         u8 m_70[4];
+        nw4r::ut::Rect m_rect; // 0x74, window rectangle (left, top, right, bottom)
         void SetWindowRect(float l, float t, float r, float b) {
-            m_74 = (r - l >= 0.0f) ? l : r;
-            m_78 = (b - t >= 0.0f) ? t : b;
-            m_7c = (r - l >= 0.0f) ? r : l;
-            m_80 = (b - t >= 0.0f) ? b : t;
+            m_rect.top = nw4r::math::FSelect(b - t, t, b);
+            m_rect.left = nw4r::math::FSelect(r - l, l, r);
+            m_rect.right = nw4r::math::FSelect(r - l, r, l);
+            m_rect.bottom = nw4r::math::FSelect(b - t, b, t);
         }
-        float m_74; // window rect, min x
-        float m_78; // min y
-        float m_7c; // max x
-        float m_80; // max y
         float m_84;
         float m_88;
         float m_8c;
@@ -218,7 +216,7 @@ public:
     void vprintf(const char* format, va_list args);
     void write(const void* data, int len);
     void writeString(const char* str);
-    bool getTag(char** tagOut);
+    u8 getTag(char** tagOut);
     u8 isEndDelayPrint();
     const u8* advanceDelayPrint(const u8* p);
     void init(bool, int);

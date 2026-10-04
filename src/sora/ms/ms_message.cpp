@@ -262,9 +262,9 @@ void Message::setDelayPrint(float f1, float f2, float f3, float f4) {
     buf->m_1c = 0;
 }
 
-bool Message::getTag(char** tagOut) {
+u8 Message::getTag(char** tagOut) {
     MsgBuf* buf = m_cur;
-    bool r = buf->m_1c;
+    u8 r = buf->m_1c;
     buf->m_1c = 0;
     *tagOut = (char*)buf->m_18;
     return r;
@@ -277,31 +277,29 @@ const u8* Message::advanceDelayPrint(const u8* p) {
     for (;;) {
         u8 c = *p;
         if (c < 0x20) {
-            if (c <= 0x1a) {
-                switch (c) {
-                case 0:
-                    frames = buf->m_rect[1];
-                    p++;
-                    goto parse;
-                case 1:
-                    buf->m_1d = 1;
-                    return p;
-                case 5:
-                    p += 2;
-                    continue;
-                case 0x17:
-                    p += 9;
-                    continue;
-                case 0x18:
-                    p += 3;
-                    continue;
-                case 0x19:
-                    p += 6;
-                    continue;
-                case 0x1a:
-                    p += 2;
-                    continue;
-                }
+            switch (c) {
+            case 0:
+                frames = buf->m_rect[1];
+                p++;
+                goto parse;
+            case 1:
+                buf->m_1d = 1;
+                return p;
+            case 0x17:
+                p += 9;
+                continue;
+            case 0x18:
+                p += 3;
+                continue;
+            case 0x1a:
+                p += 2;
+                continue;
+            case 0x19:
+                p += 6;
+                continue;
+            case 5:
+                p += 2;
+                continue;
             }
         }
         break;
@@ -376,15 +374,15 @@ void Message::init(bool raw, int fontId) {
     m_1b8 = 0.5f;
     m_1bc = 0.95f;
     if (!raw) {
-        nw4r::ut::Color col(0xff, 0xff, 0xff, 0xff);
+        GXColor col = {0xff, 0xff, 0xff, 0xff};
         m_1b4 = col;
-        SetTextColor(col);
+        SetTextColor(nw4r::ut::Color(col));
         SetupGX();
     }
-    m_tagProc.m_data[4] = 0;
     *(int*)&m_tagProc.m_data[8] = 0;
+    m_tagProc.m_data[4] = 0;
     m_cur->m_data[m_cur->m_pos] = 1;
-    GXSetCullMode(GX_CULL_NONE);
+    GXSetCullMode(GX_CULL_BACK);
 }
 
 void ms::CharWriter::SetEdge(float width, nw4r::ut::Color color) {
