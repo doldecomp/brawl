@@ -32,6 +32,10 @@ mo_melee/sora_melee/so/so_controller_module_link_ref.cpp:
 	.rodata     start:0x00000748 end:0x0000075C
 	.data       start:0x00005ED8 end:0x00006050
 
+mo_melee/sora_melee/so/damage/so_damage_transactor_actor.cpp:
+	.text       start:0x00061EE8 end:0x00063438
+	.rodata     start:0x000008B8 end:0x000008DC
+
 mo_melee/sora_melee/so/so_heap_module_impl.cpp:
 	.text       start:0x000649FC end:0x00064A90
 	.data       start:0x00007328 end:0x000073A8
