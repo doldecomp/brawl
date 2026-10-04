@@ -725,13 +725,18 @@ void gfPadSystem::updateSystem() {
     m_flags34.f1 = m_flags34.f2;
     m_flags34.f2 = 0;
     BOOL intr = OSDisableInterrupts();
+    gfPadStatus* sys = m_sysPads;
+    gfPadStatus* dbg = m_debugPads;
     for (u32 i = 0; i < 8; i++) {
-        m_debugPads[i].update(&m_sysPads[i]);
+        dbg->update(sys);
+        dbg++;
+        sys++;
     }
     OSRestoreInterrupts(intr);
     for (u32 i = 0; i < 8; i++) {
         m_debugPads[i].convSysStatusToMenuStatus(&m_menuPads[i]);
     }
+
     int t = m_repeatDelay > 1 ? m_repeatDelay : 1;
     m_repeatDelay = (u8)t < 100 ? t : 100;
     t = m_repeatBits > 1 ? m_repeatBits : 1;
@@ -761,7 +766,6 @@ void gfPadSystem::updateSystem() {
     merge(m_debugPads, 8, m_debugPadMask, &m_debugPadMerged);
     merge(m_menuPads, 8, 0xFF, &m_menuPadMerged);
     for (int i = 0; i < 8; i++) {
-        u16* p = &m_padMotorMasks[i];
         if (m_padMotorMasks[i] != 0 && m_padMotorMasks[i] != 0xFFFF) {
             m_padMotorMasks[i]--;
             if (m_padMotorMasks[i] == 0 && m_flags35.f6) {
@@ -770,7 +774,7 @@ void gfPadSystem::updateSystem() {
                 } else {
                     fn_8021A558(i - 4, 0);
                 }
-                *p = 0;
+                m_padMotorMasks[i] = 0;
             }
         }
     }
@@ -986,7 +990,7 @@ void gfPadSystem::merge(gfPadStatus* src, int numPads, u32 mask, gfPadStatus* de
     u8 rTrig = 0;
     u8 b36 = 0;
     u8 b37 = 0;
-    for (u32 i = 0; i < numPads; i++, src++) {
+    for (u32 i = 0; i < numPads; src++, i++) {
         if (((mask >> i) & 1) && src->m_error == gfPadError::NONE) {
             cur |= src->m_buttonsCurrentFrame2.bits;
             pressed |= src->m_buttonsPressedThisFrame.bits;
