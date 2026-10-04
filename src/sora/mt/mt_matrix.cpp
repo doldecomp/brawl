@@ -287,39 +287,24 @@ extern "C" void fn_8003EA50(Matrix* mtx, const Vec3f* angles) {
 
 #pragma scheduling 603
 extern "C" void fn_8003EA9C(Matrix* mtx, float angle) {
-    float s = sin(angle);
-    float c = cos(angle);
-    Matrix rot;
-    rot.m[1][1] = c;
-    rot.m[1][2] = -s;
-    rot.m[2][1] = s;
-    rot.m[2][2] = c;
+    Matrix rot(true);
+    fn_8003E87C(&rot, angle);
     mtx->mul(&rot, mtx);
 }
 #pragma scheduling reset
 
 #pragma scheduling 603
 void Matrix::rotY(float angle) {
-    float s = sin(angle);
-    float c = cos(angle);
-    Matrix rot;
-    rot.m[0][0] = c;
-    rot.m[0][2] = s;
-    rot.m[2][0] = -s;
-    rot.m[2][2] = c;
+    Matrix rot(true);
+    fn_8003E918(&rot, angle);
     this->mul(&rot, this);
 }
 #pragma scheduling reset
 
 #pragma scheduling 603
 extern "C" void fn_8003EBF4(Matrix* mtx, float angle) {
-    float s = sin(angle);
-    float c = cos(angle);
-    Matrix rot;
-    rot.m[0][0] = c;
-    rot.m[0][1] = -s;
-    rot.m[1][0] = s;
-    rot.m[1][1] = c;
+    Matrix rot(true);
+    fn_8003E9B4(&rot, angle);
     mtx->mul(&rot, mtx);
 }
 #pragma scheduling reset
