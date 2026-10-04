@@ -529,11 +529,10 @@ static inline u32 mapButtons(u32 buttons, PadMapEntry* table, int count) {
 
 void gfPadSystem::updateLowWii(gfPadStatus* dest) {
     PadMapEntry* map = s_padMap;
-    PadMapEntry* zEntry = &s_nunchukZ;
     KpadStatusRaw* status = (KpadStatusRaw*)__alloca(sizeof(KpadStatusRaw) * 8);
     for (u16 i = 0; i < 4; i++) {
         gfPadStatus* pad = &dest[i];
-        int n = fn_80227728(i, status, 8);
+        s32 n = fn_80227728(i, status, 8);
         u16* timer = &s_wiiRetryTimer[i];
         u8* count = &s_wiiRetryCount[i];
         if (n <= 0) {
@@ -552,7 +551,7 @@ void gfPadSystem::updateLowWii(gfPadStatus* dest) {
         }
         s8 err = status[0].wpadErr;
         *count = 5;
-        u8 devType = status[0].devType;
+        int devType = status[0].devType;
         if (err != 0) {
             padInitBegin(pad);
             padInitBody(pad);
@@ -567,7 +566,7 @@ void gfPadSystem::updateLowWii(gfPadStatus* dest) {
             pad->m_controllerType = gfPadType::WIIMOTE;
             continue;
         }
-        u16 t = *timer;
+        u32 t = *timer;
         pad->m_error = gfPadError::NONE;
         if (t != 0) {
             padInitBegin(pad);
@@ -589,9 +588,10 @@ void gfPadSystem::updateLowWii(gfPadStatus* dest) {
             pad->m_buttonsHeld.bits = prev;
             pad->m_buttonsCurrentFrame.bits = buttons;
             pad->m_buttonsCurrentFrame2.bits = buttons;
-            pad->m_buttonsPressedThisFrame.bits = buttons & diff;
+            u32 pr = buttons & diff;
+            pad->m_buttonsPressedThisFrame.bits = pr;
             pad->m_buttonsReleasedThisFrame.bits = prev & diff;
-            pad->m_buttonsPressedThisFrame2.bits = buttons & diff;
+            pad->m_buttonsPressedThisFrame2.bits = pr;
             pad->m_stickX = 0;
             pad->m_stickY = 0;
             pad->m_subStickX = 0;
@@ -614,11 +614,12 @@ void gfPadSystem::updateLowWii(gfPadStatus* dest) {
             pad->m_buttonsHeld.bits = prev;
             pad->m_buttonsCurrentFrame.bits = buttons;
             pad->m_buttonsCurrentFrame2.bits = buttons;
-            pad->m_buttonsPressedThisFrame.bits = buttons & diff;
+            u32 pr = buttons & diff;
+            pad->m_buttonsPressedThisFrame.bits = pr;
             pad->m_buttonsReleasedThisFrame.bits = prev & diff;
-            pad->m_buttonsPressedThisFrame2.bits = buttons & diff;
-            float v = 127.0f * status[0].fs.stickX / s_stickScale;
+            pad->m_buttonsPressedThisFrame2.bits = pr;
             float sx = 1.0f;
+            float v = 127.0f * status[0].fs.stickX / s_stickScale;
             if (v < 0.0f) {
                 sx = -1.0f;
             }
@@ -626,8 +627,8 @@ void gfPadSystem::updateLowWii(gfPadStatus* dest) {
             v = nw4r::math::FSelect(v - 1.0f, 1.0f, v);
             sx = sx * (float)fn_80400B44((float)fabs(v), s_stickPow);
             pad->m_stickX = (int)(sx * s_stickScale);
-            v = 127.0f * status[0].fs.stickY / s_stickScale;
             float sy = 1.0f;
+            v = 127.0f * status[0].fs.stickY / s_stickScale;
             if (v < 0.0f) {
                 sy = -1.0f;
             }
@@ -648,10 +649,14 @@ void gfPadSystem::updateLowWii(gfPadStatus* dest) {
         }
         case 2: {
             u32 buttons = 0;
-            if (status[0].hold & zEntry->in) {
-                buttons = zEntry->out;
+            PadMapEntry* p = &s_nunchukZ;
+            for (int k = 0; k < 1; k++) {
+                if (status[0].hold & p->in) {
+                    buttons |= p->out;
+                }
+                p++;
             }
-            PadMapEntry* p = &map[29];
+            p = &map[29];
             for (int j = 0; j < 15; j++) {
                 if (status[0].cl.hold & p->in) {
                     buttons |= p->out;
@@ -666,9 +671,10 @@ void gfPadSystem::updateLowWii(gfPadStatus* dest) {
             pad->m_buttonsHeld.bits = prev;
             pad->m_buttonsCurrentFrame.bits = buttons;
             pad->m_buttonsCurrentFrame2.bits = buttons;
-            pad->m_buttonsPressedThisFrame.bits = buttons & diff;
+            u32 pr = buttons & diff;
+            pad->m_buttonsPressedThisFrame.bits = pr;
             pad->m_buttonsReleasedThisFrame.bits = prev & diff;
-            pad->m_buttonsPressedThisFrame2.bits = buttons & diff;
+            pad->m_buttonsPressedThisFrame2.bits = pr;
             pad->m_stickX = (int)(status[0].cl.lstickX * 100.0f);
             pad->m_stickY = (int)(status[0].cl.lstickY * 100.0f);
             pad->m_subStickX = (int)(status[0].cl.rstickX * 100.0f);
