@@ -830,6 +830,7 @@ config.libs = [
             Object(Matching, "mo_melee/sora_melee/so/so_heap_module_impl.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_module_accesser.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_resource_module_impl.cpp"),
+            Object(NonMatching, "mo_melee/sora_melee/so/so_kinetic_energy_normal.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_general_work.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_general_work_abstract.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_general_work_simple.cpp"),

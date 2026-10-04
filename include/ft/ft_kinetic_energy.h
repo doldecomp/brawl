@@ -2,20 +2,15 @@
 
 #include <mt/mt_vector.h>
 #include <so/kinetic/so_kinetic_energy.h>
+#include <so/so_kinetic_energy_normal.h>
 #include <types.h>
 
 // Kinetic energies used by fighters (instantiated in the soKineticMediatorImpl type list).
 // Only the members that the REL code touches directly are modelled; the rest of the
 // classes live in sora_melee.
 
-class soKineticEnergyNormal : public soKineticEnergy {
-public:
-    u8 m_normalData[0x20 - 0x8]; // TODO: model
-};
-
 class ftKineticEnergyMotion : public soKineticEnergyNormal {
 public:
-    u8 m_motionPad[0x34 - 0x20]; // HYPOTHESIS: remaining members
     int m_motionMode; // +0x34
 };
 
