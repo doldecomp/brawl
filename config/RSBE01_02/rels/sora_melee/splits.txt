@@ -33,6 +33,8 @@ mo_melee/sora_melee/so/so_collision_shield_part.cpp:
 
 mo_melee/sora_melee/so/controller/so_controller_module_impl.cpp:
 	.text       start:0x00058264 end:0x000598CC
+	.rodata     start:0x00000730 end:0x00000748
+	.data       start:0x00005C10 end:0x00005ED8
 
 mo_melee/sora_melee/so/so_controller_module_link_ref.cpp:
 	.text       start:0x000598CC end:0x00059FD4

@@ -4,6 +4,9 @@
 #include <so/so_value_accesser.h>
 #include <types.h>
 
+// HYPOTHESIS: a table (not folded into the float pool) holding the 50 degrees (in radians) "side" angle limit.
+static const float s_sideAngle[] = { 0.87266463f };
+
 soControllerModuleImpl::soControllerModuleImpl(s16 manageID, int unk, soArray<soControllerClatter>* clatters)
     : soAnimCmdEventObserver(5, manageID), m_clatters(clatters) { }
 
@@ -71,8 +74,141 @@ void soControllerModuleImpl::endClatter(u32 index) {
     t = 0.0f;
 }
 
-bool soControllerModuleImpl::notifyEventAnimCmd(acAnimCmd* acmd, soModuleAccesser* moduleAccesser, s32 unk3) {
-    return false;
+typedef soArrayContractibleTable<const acCmdArgConv> ArgTable;
+
+// MATCH-ONLY helpers mirroring the inlined argument accessors.
+static inline acCmdArg getFrontArg(const ArgTable& args) {
+    return acCmdArg(&args.at(0));
+}
+
+static inline void shiftArg(ArgTable& args) {
+    args.shift();
+}
+
+// MATCH-ONLY: macro so the "unsupported argument type" early return stays a direct branch.
+#define READ_FLOAT_ARG(args, accesser, out)                                                            if (getFrontArg(args).getArgType() == 1) {                                                             out = getFrontArg(args).getFloatData();                                                        } else if (getFrontArg(args).getArgType() == 5) {                                                      out = (float) soValueAccesser::getValueInt(accesser, getFrontArg(args).getIntData(), 0);       } else {                                                                                               return true;                                                                                   }
+
+bool soControllerModuleImpl::notifyEventAnimCmd(acAnimCmd* cmd, soModuleAccesser* accesser, s32 unk3) {
+    s32 group = cmd->getGroup();
+    if (!isObserv(group)) {
+        return false;
+    }
+    if (cmd->getType() <= -1 || cmd->getType() >= 13) {
+        return false;
+    }
+    switch (cmd->getType()) {
+    case 0:
+        resetFlickX();
+        return true;
+    case 1:
+        resetFlickY();
+        return true;
+    case 2:
+        resetTrigger();
+        return true;
+    case 3: {
+        s32 argNum = cmd->getArgNum();
+        if (argNum < 3) {
+            return true;
+        }
+        ArgTable args = cmd->getArgList();
+        float time, p2, p3;
+        READ_FLOAT_ARG(args, accesser, time)
+        shiftArg(args);
+        READ_FLOAT_ARG(args, accesser, p2)
+        shiftArg(args);
+        READ_FLOAT_ARG(args, accesser, p3)
+        shiftArg(args);
+        bool flag = false;
+        if (argNum > 3) {
+            flag = getFrontArg(args).getBoolData();
+            shiftArg(args);
+        }
+        s32 kind = -1;
+        if (argNum > 4) {
+            kind = getFrontArg(args).getIntData();
+            shiftArg(args);
+        }
+        u32 index = 0;
+        if (argNum > 5) {
+            index = getFrontArg(args).getIntData();
+            shiftArg(args);
+        }
+        startClatter(time, p2, p3, flag, (char) kind, index, false);
+        return true;
+    }
+    case 4:
+    case 5: {
+        if (cmd->getArgNum() < 1) {
+            return true;
+        }
+        ArgTable args = cmd->getArgList();
+        float time;
+        READ_FLOAT_ARG(args, accesser, time)
+        shiftArg(args);
+        u32 index = 0;
+        if (cmd->getArgNum() > 1) {
+            index = getFrontArg(args).getIntData();
+        }
+        if (cmd->getType() == 5) {
+            time *= -1.0f;
+        }
+        addClatterTime(time, index);
+        return true;
+    }
+    case 6: {
+        if (cmd->getArgNum() < 1) {
+            return true;
+        }
+        acCmdArg arg;
+        cmd->getArg(&arg, 0);
+        return true;
+    }
+    case 7:
+    case 9:
+    case 11: {
+        acCmdArg arg;
+        if (!cmd->getArg(&arg, 0)) {
+            return true;
+        }
+        s32 a = arg.getIntData();
+        s32 b = 0;
+        if (cmd->getArg(&arg, 1) == true) {
+            b = arg.getIntData();
+        }
+        switch (cmd->getType()) {
+        case 7:
+            setRumble(a, b, false, -1);
+            break;
+        case 11:
+            setRumble(a, b, true, -1);
+            break;
+        case 9:
+            setRumbleAll(a, b, -1);
+            break;
+        }
+        return true;
+    }
+    case 8:
+    case 10: {
+        if (cmd->getArgNum() != 1) {
+            return true;
+        }
+        ArgTable args = cmd->getArgList();
+        const acCmdArg& arg = getFrontArg(args);
+        if (arg.getArgType() != 0) {
+            return true;
+        }
+        if (cmd->getType() == 8) {
+            stopRumbleKind(arg.getIntData(), -1);
+        } else {
+            stopRumbleAll(arg.getIntData(), -1);
+        }
+        return true;
+    }
+    default:
+        return false;
+    }
 }
 
 bool soControllerModuleImpl::isObserv(char unk1) {
@@ -93,7 +229,7 @@ void soControllerModuleImpl::stopRumble(bool) { }
 
 bool soControllerModuleImpl::isSubStickSide() {
     float dir = fabs(getSubStickDir());
-    return dir < 0.87266463f;
+    return dir < s_sideAngle[0];
 }
 
 float soControllerModuleImpl::getSubStickDir() {
@@ -102,7 +238,7 @@ float soControllerModuleImpl::getSubStickDir() {
 
 bool soControllerModuleImpl::isStickSide() {
     float dir = fabs(getStickDir());
-    return dir < 0.87266463f;
+    return dir < s_sideAngle[0];
 }
 
 float soControllerModuleImpl::getStickDir() {
