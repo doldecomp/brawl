@@ -15,6 +15,8 @@ public:
 
 class ftKineticEnergyMotion : public soKineticEnergyNormal {
 public:
+    u8 m_motionPad[0x34 - 0x20]; // HYPOTHESIS: remaining members
+    int m_motionMode; // +0x34
 };
 
 class ftKineticEnergyController : public soKineticEnergyNormal {
