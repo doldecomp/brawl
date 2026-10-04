@@ -53,9 +53,10 @@ int muMenu::getFighterColorFileNo(int charKind, int costume, int) {
 }
 
 int muMenu::getCharColorNo(int charKind, int colorNo, int) {
+    const muCharColorInfo* info = &lbl_80455458[charKind];
     int n = getNumCharColor(charKind, 0, 0);
     for (int i = 0; i < n; i++) {
-        if (colorNo == lbl_80455458[charKind].colors[i * 2]) {
+        if (colorNo == info->colors[i * 2]) {
             return i;
         }
     }
