@@ -125,7 +125,7 @@ struct KpadStatusRaw {
 class Network;
 extern Network g_Network;
 
-
+// Unnamed SDK functions (PAD / WPAD / KPAD) and Brawl helpers
 extern "C" {
 void* fn_8002C78C(gfRumble*);
 void* fn_8002BAB0(void*);
@@ -215,7 +215,17 @@ void gfPadStatus::init() {
     padInit(this);
 }
 
-#define CLAMP_STICK(f)                             if (f >= 0) {                                      int t = f - 15;                                t = t > 0 ? t : 0;                             f = t < 127 ? t : 127;                     } else {                                           int t = f + 15;                                t = t > -128 ? t : -128;                       f = t < 0 ? t : 0;                         }
+// Deadzone of 15 around the center, saturating at the s8 range
+#define CLAMP_STICK(f)                             \
+    if (f >= 0) {                              \
+        int t = f - 15;                        \
+        t = t > 0 ? t : 0;                     \
+        f = t < 127 ? t : 127;                 \
+    } else {                                   \
+        int t = f + 15;                        \
+        t = t > -128 ? t : -128;               \
+        f = t < 0 ? t : 0;                     \
+    }
 
 void gfPadStatus::clamp() {
     CLAMP_STICK(m_stickX)
@@ -225,23 +235,26 @@ void gfPadStatus::clamp() {
 }
 
 void gfPadStatus::update(gfPadStatus* src) {
-    float srcA = src->_0x18;
+    s8 sx = src->m_stickX;
     u32 cur = src->m_buttonsCurrentFrame2.bits;
-    float oldA = _0x18;
+    s8 sy = src->m_stickY;
+    float srcA = src->_0x18;
     u32 prev = m_buttonsCurrentFrame2.bits;
-    char u = src->_0x37;
-    char r = src->m_rTriggerAnalog;
-    char l = src->m_lTriggerAnalog;
-    char cy = src->m_subStickY;
-    char cx = src->m_subStickX;
-    char sy = src->m_stickY;
-    char sx = src->m_stickX;
+    u32 diff = cur ^ prev;
+    s8 cx = src->m_subStickX;
+    s8 l = src->m_lTriggerAnalog;
+    s8 cy = src->m_subStickY;
+    u32 released = prev & diff;
+    float oldA = _0x18;
+    s8 r = src->m_rTriggerAnalog;
+    u32 pressed = cur & diff;
+    s8 u = src->_0x37;
     m_buttonsHeld.bits = prev;
     m_buttonsCurrentFrame.bits = cur;
     m_buttonsCurrentFrame2.bits = cur;
-    m_buttonsPressedThisFrame.bits = cur & (cur ^ prev);
-    m_buttonsReleasedThisFrame.bits = prev & (cur ^ prev);
-    m_buttonsPressedThisFrame2.bits = cur & (cur ^ prev);
+    m_buttonsPressedThisFrame.bits = pressed;
+    m_buttonsReleasedThisFrame.bits = released;
+    m_buttonsPressedThisFrame2.bits = pressed;
     m_stickX = sx;
     m_stickY = sy;
     m_subStickX = cx;
@@ -259,12 +272,18 @@ void gfPadStatus::update(gfPadStatus* src) {
     } else {
         _0x1c = src->_0x1c;
     }
-    _0x20 = src->_0x20;
-    _0x24 = src->_0x24;
-    _0x28 = src->_0x28;
-    _0x2c = src->_0x2c;
-    m_error = src->m_error;
-    m_controllerType = src->m_controllerType;
+    float t20 = src->_0x20;
+    float t24 = src->_0x24;
+    float t28 = src->_0x28;
+    float t2c = src->_0x2c;
+    gfPadError::PadError te = src->m_error;
+    gfPadType::PadType tt = src->m_controllerType;
+    _0x20 = t20;
+    _0x24 = t24;
+    _0x28 = t28;
+    _0x2c = t2c;
+    m_error = te;
+    m_controllerType = tt;
 }
 
 struct HomeMenuView {
@@ -424,6 +443,8 @@ void gfPadSystem::clearPadQueue() {
     }
 }
 
+// TODO: the original also reserves ~0x500 bytes of stack in this function (a run of dead
+// gfPadStatus::init() style stores in the home-menu branch) which is not reproduced yet.
 void gfPadSystem::updateLow() {
     BOOL intr = OSDisableInterrupts();
     gfPadStatus* pads = m_sysPads;
