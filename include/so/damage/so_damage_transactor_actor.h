@@ -17,7 +17,7 @@ class soDamageTransactor {
 public:
     virtual ~soDamageTransactor() { }
     virtual int getDamageValueParam(soModuleAccesser* moduleAccesser) = 0;
-    virtual bool onDamageChangeStatusRequest(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog, int unk) = 0;
+    virtual bool onDamageChangeStatusRequest(int statusKind, soModuleAccesser* moduleAccesser, soDamageLog* damageLog) = 0;
     virtual int getDamageStatusKind(soModuleAccesser* moduleAccesser) = 0;
     virtual bool isUseTurnDamage(soModuleAccesser* moduleAccesser) = 0;
     virtual bool isUseTurn(soModuleAccesser* moduleAccesser) = 0;

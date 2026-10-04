@@ -109,3 +109,91 @@ int soDamageTransactorActor::checkDownDamage(float reaction, float angle, soModu
     }
     return ret;
 }
+
+bool soDamageTransactorActor::onDamageSub(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog, bool* isNotFlinch) {
+    *isNotFlinch = true;
+    if (damage->m_reaction == 0.0f && damage->m_powerMax <= 0.0f) {
+        return false;
+    }
+    if (damage->m_attackData.m_noTransaction == 1) {
+        if (isSpeedDamage(moduleAccesser) == 1) {
+            setupSpeedDamage(moduleAccesser, damage, damageLog);
+        }
+        return false;
+    }
+    switch (damage->m_attackData.m_attribute) {
+    case soCollisionAttackData::Attribute_Flower:
+        onFlowerDamage(moduleAccesser, damage);
+        break;
+    case soCollisionAttackData::Attribute_Turn:
+        if (isUseTurnDamage(moduleAccesser) == 1) {
+            if (isApplyTurnDamage(moduleAccesser) == 1) {
+                setupDamageStatusTurn(moduleAccesser, damage, damageLog);
+                return true;
+            }
+        }
+        break;
+    }
+    if (moduleAccesser->getDamageModule().checkNoReaction(damage) == 1) {
+        setupDamageStatusNoReaction(moduleAccesser, damage, damageLog);
+        return false;
+    }
+    *isNotFlinch = false;
+    return false;
+}
+
+bool soDamageTransactorActor::onDamage(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog) {
+    bool isNotFlinch = false;
+    if (onDamageSub(moduleAccesser, damage, damageLog, &isNotFlinch) == 0) {
+        if (isNotFlinch == true && damage->m_isFlinchFlag == 0) {
+            return false;
+        }
+        if (moduleAccesser->getStatusModule().checkDamage(moduleAccesser, damage) == 1) {
+            setupDamageStatusNoReaction(moduleAccesser, damage, damageLog);
+            return true;
+        }
+        setupDamageStatusNormal(moduleAccesser, damage, damageLog, -1);
+    }
+    return true;
+}
+
+void soDamageTransactorActor::setupDamageStatusNoReaction(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog) {
+    float frameMul = soValueAccesser::getConstantFloat(moduleAccesser, 2002, 0);
+    int level = soDamageUtilActor::getDamageLevel(moduleAccesser, damage->m_reaction * frameMul);
+    moduleAccesser->getDamageModule().getEffector()->reqCommonEffectParam(moduleAccesser, level, &damage->m_attackData);
+    int hitStopFrame = soDamageUtilActor::getDamageHitStopFrame(moduleAccesser, damage, true, 1.0f);
+    if (hitStopFrame > 0) {
+        moduleAccesser->getStopModule().setHitStopFrame(hitStopFrame, true);
+    }
+}
+
+void soDamageTransactorActor::setupDamageFlyRollStatus(float angle, float speed, soModuleAccesser* moduleAccesser, soDamageLog* damageLog) {
+    Vec2f vec(speed, 0.0f);
+    Vec2f rotated;
+    vec.rot(&rotated, angle * 0.017453292f);
+    float reaction = speed / soValueAccesser::getConstantFloat(moduleAccesser, 2010, 0);
+    float frame = reaction * soValueAccesser::getConstantFloat(moduleAccesser, 2002, 0);
+    damageLog->m_reaction = reaction;
+    damageLog->m_level = soDamage::Level_FlyRoll;
+    damageLog->m_height = -1;
+    damageLog->m_speed.m_x = 0.0f;
+    damageLog->m_speed.m_y = 0.0f;
+    damageLog->m_angle = 0.0f;
+    damageLog->m_lr = 1.0f;
+    damageLog->m_frame = frame;
+    damageLog->m_hitStopFrame = 0;
+    damageLog->m_attribute = soCollisionAttackData::Attribute_Normal;
+    damageLog->m_damageAdd = 0.0f;
+    damageLog->m_attackerTeamNo = -1;
+    damageLog->m_hitStopDelay = 1.0f;
+    damageLog->m_attackerTaskId = -1;
+    damageLog->m_isDamageAir = false;
+    damageLog->m_unk26 = false;
+    damageLog->m_isCollisionAbsolute = false;
+    damageLog->m_isMeteor = false;
+    damageLog->m_isAttackDirect = false;
+    damageLog->m_isVector365 = false;
+    damageLog->m_speed.m_x = rotated.m_x;
+    damageLog->m_speed.m_y = rotated.m_y;
+    onDamageChangeStatusRequest(5, moduleAccesser, damageLog);
+}
