@@ -13,12 +13,35 @@
 // Animation frame policy function table (lives in gf_model_animation.cpp).
 extern void* lbl_8059C648[2];
 
+// "%s__%d"
+extern char lbl_8059DF20[7];
+extern "C" int sprintf(char* str, const char* fmt, ...);
+
 // ResFile name lookups that are not declared in the BrawlHeaders ResFile class.
 nw4r::g3d::ResAnmChr ResFile_GetResAnmChrByName(nw4r::g3d::ResFile* file, const char* name);
 nw4r::g3d::ResAnmVis ResFile_GetResAnmVisByName(nw4r::g3d::ResFile* file, const char* name);
 nw4r::g3d::ResAnmClr ResFile_GetResAnmClrByName(nw4r::g3d::ResFile* file, const char* name);
 nw4r::g3d::ResAnmTexPat ResFile_GetResAnmTexPatByName(nw4r::g3d::ResFile* file, const char* name);
 nw4r::g3d::ResAnmTexSrt ResFile_GetResAnmTexSrtByName(nw4r::g3d::ResFile* file, const char* name);
+
+void ResNode_SetRotate(nw4r::g3d::ResNode* node, float x, float y, float z);
+void ResNode_SetScale(nw4r::g3d::ResNode* node, float x, float y, float z);
+
+struct ChrAnmResult {
+    u32 m_flags;
+    Vec3f m_scale;
+    u8 m_10[0x40];
+};
+void ChrAnmResult_GetScale(const ChrAnmResult* res, Vec3f* out);
+
+// The real CopiedMatAccess is 0x34 bytes; the BrawlHeaders copy is 4 bytes short.
+struct MatAccess : public nw4r::g3d::ScnMdl::CopiedMatAccess {
+    u32 m_pad;
+    MatAccess(nw4r::g3d::ScnMdl* mdl, u32 id) : CopiedMatAccess(mdl, id) {}
+};
+
+nw4r::g3d::ResTexObjData* CopiedMatAccess_GetResTexObj(nw4r::g3d::ScnMdl::CopiedMatAccess* access, bool sync);
+extern "C" void GXGetTexObjAll(const GXTexObj* obj, void** image, u16* w, u16* h, GXTexFmt* fmt, GXTexWrapMode* wrapS, GXTexWrapMode* wrapT, GXBool* mipmap);
 
 void ScnMdl_SetNodeMtx(nw4r::g3d::ScnMdl* mdl, u32 nodeId, const Matrix* mtx);
 
@@ -43,6 +66,8 @@ public:
 
     static MuObject* create(nw4r::g3d::ResFile* modelSource, const char* modelNode, int drawPriority, nw4r::g3d::ResFile* textureSource, Heaps::HeapType type);
     static MuObject* create(nw4r::g3d::ResFile* modelSource, int modelNode, nw4r::g3d::ResFile* textureSource, int animNode, Heaps::HeapType type);
+
+    static MuObject* createAlt(nw4r::g3d::ResFile* modelSource, const char* modelNode, int drawPriority, nw4r::g3d::ResFile* textureSource, Heaps::HeapType type);
 
     void changeNodeAnimN(const char* animName);
     bool changeNodeAnimNIf(const char* animName);
@@ -83,6 +108,18 @@ public:
     Vec3f getGlobalPosition(const char* nodeName);
     Vec3f getGlobalPosition();
     void getAnimScale(Vec3f* scl, const char* name);
+    Vec3f getScale(const char* nodeName);
+    void setObjScale(Vec3f* scale);
+    Vec3f getObjScale();
+    void setRotate(Vec3f* rot);
+    void setRotate(const char* nodeName, Vec3f* rot);
+    void setObjRotate(Vec3f* rot);
+    void getRotate(Vec3f* rot, const char* nodeName);
+    void setScale(const char* nodeName, Vec3f* scale);
+    void changeMaterialTex(const char* matName, GXTexObj* srcObj);
+    void changeMaterialTex(const char* matName, void* image, u16 width, u16 height);
+    void changeAnimN(int animId, u32 flags, bool play, bool reset);
+    void setFrame(float frame);
     void setFrameNode(float frame);
     void setFrameVisible(float frame);
     void setFrameTex(float frame);
@@ -96,6 +133,10 @@ MuObject* MuObject::create(nw4r::g3d::ResFile* modelSource, const char* modelNod
 
 MuObject* MuObject::create(nw4r::g3d::ResFile* modelSource, int modelNode, nw4r::g3d::ResFile* textureSource, int animNode, Heaps::HeapType type) {
     return new (type) MuObject(modelSource, animNode, modelNode, textureSource, true, type);
+}
+
+MuObject* MuObject::createAlt(nw4r::g3d::ResFile* modelSource, const char* modelNode, int drawPriority, nw4r::g3d::ResFile* textureSource, Heaps::HeapType type) {
+    return new (type) MuObject(modelSource, modelNode, drawPriority, textureSource, false, type);
 }
 
 // Frame policy used when a binding is replaced: clamp the frame into [start, end - epsilon].
@@ -714,6 +755,83 @@ void MuObject::getAnimScale(Vec3f* scl, const char* name) {
     scl->m_z = node->m_scale.m_z;
 }
 
+Vec3f MuObject::getScale(const char* nodeName) {
+    nw4r::g3d::ResMdl mdl = m_sceneModel->m_resMdl;
+    nw4r::g3d::ResNode node = mdl.GetResNode(nodeName);
+    u32 id = node.IsValid() ? node->m_nodeIndex : 0;
+    ChrAnmResult res;
+    m_modelAnim->m_anmObjChrRes->GetResult((int*)&res, id);
+    Vec3f scale;
+    ChrAnmResult_GetScale(&res, &scale);
+    Vec3f ret;
+    ret = scale;
+    return ret;
+}
+
+static inline void ScnObj_SetScale(nw4r::g3d::ScnMdl* mdl, const Vec3f& v) {
+    Vec3f* dst = (Vec3f*)((u8*)mdl + 0xdc);
+    float x = v.m_x;
+    float y = v.m_y;
+    dst->m_x = x;
+    dst->m_y = y;
+    dst->m_z = v.m_z;
+}
+
+void MuObject::setObjScale(Vec3f* scale) {
+    ScnObj_SetScale(m_sceneModel, *scale);
+    nw4r::g3d::ScnMdl* sceneModel = m_sceneModel;
+    sceneModel->SetScnObjOption(2, 0);
+    sceneModel->SetScnObjOption(5, 0);
+}
+
+static inline Vec3f ScnObj_GetScale(nw4r::g3d::ScnMdl* mdl) {
+    Vec3f* src = (Vec3f*)((u8*)mdl + 0xdc);
+    Vec3f r;
+    r = *src;
+    return r;
+}
+
+Vec3f MuObject::getObjScale() {
+    return ScnObj_GetScale(m_sceneModel);
+}
+
+void MuObject::setRotate(Vec3f* rot) {
+    nw4r::g3d::ResMdl mdl = m_sceneModel->m_resMdl;
+    nw4r::g3d::ResNode node = mdl.GetResNode(m_baseNode);
+    ResNode_SetRotate(&node, rot->m_x, rot->m_y, rot->m_z);
+}
+
+void MuObject::setRotate(const char* nodeName, Vec3f* rot) {
+    nw4r::g3d::ResMdl mdl = m_sceneModel->m_resMdl;
+    nw4r::g3d::ResNode node = mdl.GetResNode(nodeName);
+    ResNode_SetRotate(&node, rot->m_x, rot->m_y, rot->m_z);
+}
+
+void MuObject::setObjRotate(Vec3f* rot) {
+    m_rot = *rot;
+    Vec3f scale(1.0f, 1.0f, 1.0f);
+    Matrix mtx;
+    mtx.setSRT(scale, m_rot, m_trans);
+    ScnMdl_SetNodeMtx(m_scnMdl, 0, &mtx);
+    nw4r::g3d::ScnMdl* sceneModel = m_sceneModel;
+    sceneModel->SetScnObjOption(2, 0);
+    sceneModel->SetScnObjOption(5, 0);
+}
+
+void MuObject::getRotate(Vec3f* rot, const char* nodeName) {
+    nw4r::g3d::ResMdl mdl = m_sceneModel->m_resMdl;
+    nw4r::g3d::ResNode node = mdl.GetResNode(nodeName);
+    rot->m_x = node->m_rotation.m_x;
+    rot->m_y = node->m_rotation.m_y;
+    rot->m_z = node->m_rotation.m_z;
+}
+
+void MuObject::setScale(const char* nodeName, Vec3f* scale) {
+    nw4r::g3d::ResMdl mdl = m_sceneModel->m_resMdl;
+    nw4r::g3d::ResNode node = mdl.GetResNode(nodeName);
+    ResNode_SetScale(&node, scale->m_x, scale->m_y, scale->m_z);
+}
+
 void MuObject::setFrameNode(float frame) {
     if (frame != m_modelAnim->m_anmObjChrRes->GetFrame()) {
         nw4r::g3d::ScnMdl* sceneModel = m_sceneModel;
@@ -751,4 +869,95 @@ void MuObject::setFrameMatCol(float frame) {
         m_sceneModel->SetScnObjOption(3, 0);
     }
     m_modelAnim->m_anmObjMatClrRes->SetFrame(frame);
+}
+
+void MuObject::changeMaterialTex(const char* matName, GXTexObj* srcObj) {
+    u32 matId = m_resMdl.GetResMat(matName)->m_id;
+    MatAccess access(m_scnMdl, matId);
+    void* image;
+    GXTexFmt fmt;
+    GXTexWrapMode wrapS;
+    GXTexWrapMode wrapT;
+    nw4r::g3d::ResTexObj texObj(CopiedMatAccess_GetResTexObj(&access, false));
+    u16 width;
+    u16 height;
+    GXBool mipmap;
+    GXTexObj* obj = texObj.GetTexObj(GX_TEXMAP0);
+    GXGetTexObjAll(srcObj, &image, &width, &height, &fmt, &wrapS, &wrapT, &mipmap);
+    GXInitTexObj(obj, image, width, height, fmt, wrapS, wrapT, mipmap);
+}
+
+void MuObject::changeMaterialTex(const char* matName, void* image, u16 width, u16 height) {
+    nw4r::g3d::ResTexObj texObj(NULL);
+    u32 matId = m_resMdl.GetResMat(matName)->m_id;
+    MatAccess access(m_scnMdl, matId);
+    texObj = nw4r::g3d::ResTexObj(CopiedMatAccess_GetResTexObj(&access, false));
+    GXTexObj* obj = texObj.GetTexObj(GX_TEXMAP0);
+    GXInitTexObj(obj, image, width, height, GX_TF_RGBA8, GX_CLAMP, GX_CLAMP, false);
+    GXLoadTexObj(obj, GX_TEXMAP0);
+}
+
+void MuObject::setFrame(float frame) {
+    if (m_modelAnim->m_anmObjChrRes != NULL) {
+        setFrameNode(frame);
+    }
+    if (m_modelAnim->m_anmObjVisRes != NULL) {
+        setFrameVisible(frame);
+    }
+    if (m_modelAnim->m_anmObjTexPatRes != NULL) {
+        setFrameTex(frame);
+    }
+    if (m_modelAnim->m_anmObjTexSrtRes != NULL) {
+        setFrameTexSrt(frame);
+    }
+    if (m_modelAnim->m_anmObjMatClrRes != NULL) {
+        setFrameMatCol(frame);
+    }
+}
+
+static inline const char* ResMdl_GetName(nw4r::g3d::ResMdl& mdl) {
+    u8* data = (u8*)mdl.ptr();
+    u32 off = *(u32*)(data + 0x3c);
+    return off != 0 ? (const char*)(data + off) : NULL;
+}
+
+void MuObject::changeAnimN(int animId, u32 flags, bool play, bool reset) {
+    char name[0x40];
+    sprintf(name, lbl_8059DF20, ResMdl_GetName(m_resMdl), animId);
+    float rate = play ? 1.0f : 0.0f;
+    if (flags & 1) {
+        changeNodeAnimN(name);
+        m_modelAnim->m_anmObjChrRes->SetUpdateRate(rate);
+        if (reset) {
+            setFrameNode(0.0f);
+        }
+    }
+    if (flags & 2) {
+        changeVisAnimN(name);
+        m_modelAnim->m_anmObjVisRes->SetUpdateRate(rate);
+        if (reset) {
+            setFrameVisible(0.0f);
+        }
+    }
+    if (flags & 4) {
+        changeTexPatAnimN(name);
+        m_modelAnim->m_anmObjTexPatRes->SetUpdateRate(rate);
+        if (reset) {
+            setFrameTex(0.0f);
+        }
+    }
+    if (flags & 8) {
+        changeTexSrtAnimN(name);
+        m_modelAnim->m_anmObjTexSrtRes->SetUpdateRate(rate);
+        if (reset) {
+            setFrameTexSrt(0.0f);
+        }
+    }
+    if (flags & 0x10) {
+        changeClrAnimN(name);
+        m_modelAnim->m_anmObjMatClrRes->SetUpdateRate(rate);
+        if (reset) {
+            setFrameMatCol(0.0f);
+        }
+    }
 }
