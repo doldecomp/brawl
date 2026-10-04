@@ -385,10 +385,10 @@ void soDamageTransactorActor::setupDamageStatusTurn(soModuleAccesser* moduleAcce
     } else {
         speed = speed * soValueAccesser::getConstantFloat(moduleAccesser, 2023, 0);
     }
-    damageLog->m_speed.m_x = speed.m_x;
-    damageLog->m_speed.m_y = speed.m_y;
+    u32 attribute = getAttackDataWord(damage, 0x30) & 0x1f;
+    damageLog->m_speed = speed;
     damageLog->m_angle = angle;
-    damageLog->m_attribute = (soCollisionAttackData::Attribute)(getAttackDataWord(damage, 0x30) & 0x1f);
+    damageLog->m_attribute = (soCollisionAttackData::Attribute)attribute;
     Vec3f speed3(speed.m_x, speed.m_y, 0.0f);
     moduleAccesser->getKineticModule().addSpeedOutside(soKineticEnergy::Outside_Attack, &speed3);
     moduleAccesser->getDamageModule().toTurnDamage();
@@ -454,8 +454,6 @@ void soDamageTransactorActor::setupDamageFlyRollStatus(float angle, float speed,
     damageLog->m_speed.m_y = rotated.m_y;
     onDamageChangeStatusRequest(5, moduleAccesser, damageLog);
 }
-
-
 
 int soDamageTransactorActor::checkDownDamage(float reaction, float angle, soModuleAccesser* moduleAccesser) {
     soDamageTransactor* transactor = moduleAccesser->getDamageModule().getTransactor();
