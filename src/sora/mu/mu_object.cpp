@@ -46,8 +46,9 @@ public:
 
 // Frame policy used when a binding is replaced: clamp the frame into [start, end - epsilon].
 static float anmPlayPolicyOneTime(float frame, float end, float start) {
+    float d = start - frame;
     float last = end - 1.0f;
-    float v = nw4r::math::FSelect(start - frame, start, frame);
+    float v = nw4r::math::FSelect(d, start, frame);
     return nw4r::math::FSelect(v - last, last, v);
 }
 
@@ -136,7 +137,7 @@ static inline void setClrAnim(nw4r::g3d::ResAnmClr anim, gfModelAnimation* model
     }
 }
 
-static inline void setTexPatAnimIdx(u32 animId, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
+static inline void setTexPatAnimIdx(u32 animId, nw4r::g3d::ResMdl model, Heaps::HeapType heap, gfModelAnimation* modelAnim) {
     if (animId < modelAnim->m_resFile.GetResAnmTexPatNumEntries()) {
         int instanceSize;
         nw4r::g3d::ResAnmTexPat anim = modelAnim->m_resFile.GetResAnmTexPat(animId);
@@ -222,14 +223,18 @@ bool MuObject::changeVisAnimNIf(const char* animName) {
     return true;
 }
 
+static inline void bindTexPatAnimIdxImpl(MuObject* self, u32 index) {
+    self->m_modelAnim->unbindTexAnim(self->m_sceneModel);
+    setTexPatAnimIdx(index, self->m_resMdl, self->m_heapType, self->m_modelAnim);
+    self->m_modelAnim->bindTexAnim(self->m_sceneModel);
+    nw4r::g3d::AnmObjTexPatRes* o = self->m_modelAnim->m_anmObjTexPatRes;
+    setPolicy(o, *(u32*)((u8*)o->m_anmTexPatFile.ptr() + 0x34));
+    self->m_sceneModel->SetScnObjOption(3, 0);
+}
+
 void MuObject::changeTexPatAnim(u32 index) {
     if (index < m_resFile.GetResAnmTexPatNumEntries()) {
-        m_modelAnim->unbindTexAnim(m_sceneModel);
-        setTexPatAnimIdx(index, m_resMdl, m_modelAnim, m_heapType);
-        m_modelAnim->bindTexAnim(m_sceneModel);
-        nw4r::g3d::AnmObjTexPatRes* o = m_modelAnim->m_anmObjTexPatRes;
-        setPolicy(o, *(u32*)((u8*)o->m_anmTexPatFile.ptr() + 0x34));
-        m_sceneModel->SetScnObjOption(3, 0);
+        bindTexPatAnimIdxImpl(this, index);
     }
 }
 
@@ -332,9 +337,34 @@ u16 MuObject::getNodeAnimLength() {
 }
 
 void MuObject::changeAnimN(const char* animName) {
-    changeNodeAnimN(animName);
-    changeVisAnimN(animName);
-    changeTexPatAnimN(animName);
-    changeTexSrtAnimN(animName);
-    changeClrAnimN(animName);
+    {
+        nw4r::g3d::ResAnmChr anim = ResFile_GetResAnmChrByName(&m_resFile, animName);
+        if (anim.IsValid()) {
+            bindNodeAnimImpl(this, anim);
+        }
+    }
+    {
+        nw4r::g3d::ResAnmVis anim = ResFile_GetResAnmVisByName(&m_resFile, animName);
+        if (anim.IsValid()) {
+            bindVisAnimImpl(this, anim);
+        }
+    }
+    {
+        nw4r::g3d::ResAnmTexPat anim = ResFile_GetResAnmTexPatByName(&m_resFile, animName);
+        if (anim.IsValid()) {
+            bindTexPatAnimImpl(this, anim);
+        }
+    }
+    {
+        nw4r::g3d::ResAnmTexSrt anim = ResFile_GetResAnmTexSrtByName(&m_resFile, animName);
+        if (anim.IsValid()) {
+            bindTexSrtAnimImpl(this, anim);
+        }
+    }
+    {
+        nw4r::g3d::ResAnmClr anim = ResFile_GetResAnmClrByName(&m_resFile, animName);
+        if (anim.IsValid()) {
+            bindClrAnimImpl(this, anim);
+        }
+    }
 }
