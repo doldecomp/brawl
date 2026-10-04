@@ -48,6 +48,18 @@ public:
     bool changeClrAnimNIf(const char* animName);
     void changeAnimN(const char* animName);
     u16 getNodeAnimLength();
+    const char* getNodeAnimName();
+    const char* getVisAnimName();
+    const char* getTexPatAnimName();
+    const char* getTexSrtAnimName();
+    const char* getClrAnimName();
+    bool isNodeAnimFinished();
+    bool isVisAnimFinished();
+    bool isClrAnimFinished();
+    bool isTexPatAnimFinished();
+    bool isTexSrtAnimFinished();
+    bool isAnimFinished();
+    bool isNodeAnimLoop();
     void setFrameNode(float frame);
     void setFrameVisible(float frame);
     void setFrameTex(float frame);
@@ -387,6 +399,185 @@ void MuObject::changeAnimN(const char* animName) {
             bindClrAnimImpl(this, anim);
         }
     }
+}
+
+const char* MuObject::getNodeAnimName() {
+    nw4r::g3d::AnmObjChrRes* o = m_modelAnim->m_anmObjChrRes;
+    if (o == NULL) {
+        return NULL;
+    }
+    u8* d = (u8*)o->m_anmChrFile.ptr();
+    u32 offset = *(u32*)(d + 0x14);
+    if (offset != 0) {
+        return (const char*)(d + offset);
+    }
+    return NULL;
+}
+
+const char* MuObject::getVisAnimName() {
+    nw4r::g3d::AnmObjVisRes* o = m_modelAnim->m_anmObjVisRes;
+    if (o == NULL) {
+        return NULL;
+    }
+    u8* d = (u8*)o->m_anmVisFile.ptr();
+    u32 offset = *(u32*)(d + 0x14);
+    if (offset != 0) {
+        return (const char*)(d + offset);
+    }
+    return NULL;
+}
+
+const char* MuObject::getTexPatAnimName() {
+    nw4r::g3d::AnmObjTexPatRes* o = m_modelAnim->m_anmObjTexPatRes;
+    if (o == NULL) {
+        return NULL;
+    }
+    u8* d = (u8*)o->m_anmTexPatFile.ptr();
+    u32 offset = *(u32*)(d + 0x24);
+    if (offset != 0) {
+        return (const char*)(d + offset);
+    }
+    return NULL;
+}
+
+const char* MuObject::getTexSrtAnimName() {
+    nw4r::g3d::AnmObjTexSrtRes* o = m_modelAnim->m_anmObjTexSrtRes;
+    if (o == NULL) {
+        return NULL;
+    }
+    u8* d = (u8*)o->m_anmTexSrtFile.ptr();
+    u32 offset = *(u32*)(d + 0x14);
+    if (offset != 0) {
+        return (const char*)(d + offset);
+    }
+    return NULL;
+}
+
+const char* MuObject::getClrAnimName() {
+    nw4r::g3d::AnmObjMatClrRes* o = m_modelAnim->m_anmObjMatClrRes;
+    if (o == NULL) {
+        return NULL;
+    }
+    u8* d = (u8*)o->m_anmMatClrFile.ptr();
+    u32 offset = *(u32*)(d + 0x14);
+    if (offset != 0) {
+        return (const char*)(d + offset);
+    }
+    return NULL;
+}
+
+bool MuObject::isNodeAnimFinished() {
+    if (m_modelAnim == NULL) {
+        return true;
+    }
+    nw4r::g3d::AnmObjChrRes* o = m_modelAnim->m_anmObjChrRes;
+    if (o == NULL) {
+        return true;
+    }
+    u8* d = (u8*)o->m_anmChrFile.ptr();
+    if (*(int*)(d + 0x20) != 1) {
+        u16 length = *(u16*)(d + 0x1c);
+        if (o->GetFrame() >= (float)(length - 1)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool MuObject::isVisAnimFinished() {
+    if (m_modelAnim == NULL) {
+        return true;
+    }
+    nw4r::g3d::AnmObjVisRes* o = m_modelAnim->m_anmObjVisRes;
+    if (o == NULL) {
+        return true;
+    }
+    u8* d = (u8*)o->m_anmVisFile.ptr();
+    if (*(int*)(d + 0x20) != 1) {
+        u16 length = *(u16*)(d + 0x1c);
+        if (o->GetFrame() >= (float)(length - 1)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool MuObject::isClrAnimFinished() {
+    if (m_modelAnim == NULL) {
+        return true;
+    }
+    nw4r::g3d::AnmObjMatClrRes* o = m_modelAnim->m_anmObjMatClrRes;
+    if (o == NULL) {
+        return true;
+    }
+    u8* d = (u8*)o->m_anmMatClrFile.ptr();
+    if (*(int*)(d + 0x20) != 1) {
+        u16 length = *(u16*)(d + 0x1c);
+        if (o->GetFrame() >= (float)(length - 1)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+inline bool MuObject::isTexPatAnimFinished() {
+    if (m_modelAnim == NULL) {
+        return true;
+    }
+    nw4r::g3d::AnmObjTexPatRes* o = m_modelAnim->m_anmObjTexPatRes;
+    if (o == NULL) {
+        return true;
+    }
+    u8* d = (u8*)o->m_anmTexPatFile.ptr();
+    if (*(int*)(d + 0x34) != 1) {
+        u16 length = *(u16*)(d + 0x2c);
+        if (o->GetFrame() >= (float)(length - 1)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+inline bool MuObject::isTexSrtAnimFinished() {
+    if (m_modelAnim == NULL) {
+        return true;
+    }
+    nw4r::g3d::AnmObjTexSrtRes* o = m_modelAnim->m_anmObjTexSrtRes;
+    if (o == NULL) {
+        return true;
+    }
+    u8* d = (u8*)o->m_anmTexSrtFile.ptr();
+    if (*(int*)(d + 0x24) != 1) {
+        u16 length = *(u16*)(d + 0x1c);
+        if (o->GetFrame() >= (float)(length - 1)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool MuObject::isAnimFinished() {
+    if (!isNodeAnimFinished()) {
+        return false;
+    }
+    if (!isVisAnimFinished()) {
+        return false;
+    }
+    if (!isTexPatAnimFinished()) {
+        return false;
+    }
+    if (!isTexSrtAnimFinished()) {
+        return false;
+    }
+    return isClrAnimFinished();
+}
+
+bool MuObject::isNodeAnimLoop() {
+    nw4r::g3d::AnmObjChrRes* o = m_modelAnim->m_anmObjChrRes;
+    if (o == NULL) {
+        return false;
+    }
+    return *(u32*)((u8*)o->m_anmChrFile.ptr() + 0x20) == 1;
 }
 
 void MuObject::setFrameNode(float frame) {
