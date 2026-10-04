@@ -83,7 +83,7 @@ public:
     void setHScale(u32 msgIndex, float);
     void getHScale(u32 msgIndex, float);
     void setDelayPrint(u32 msgIndex, float, float, float, float);
-    bool isEndDelayPrint(u32 index);
+    u8 isEndDelayPrint(u32 index);
     void setEdgeEnable(u32 msgIndex, bool edgeEnable);
     void setEdge(u32 msgIndex, u8 r, u8 g, u8 b, float);
     void setFontType(u32 msgIndex, u32 fontType);
@@ -420,7 +420,7 @@ void MuMsg::setDelayPrint(u32 msgIndex, float f1, float f2, float f3, float f4) 
     ws->m_delay[3] = f4;
 }
 
-bool MuMsg::isEndDelayPrint(u32 msgIndex) {
+u8 MuMsg::isEndDelayPrint(u32 msgIndex) {
     m_message->changeMsgBuf(msgIndex);
     return m_message->isEndDelayPrint();
 }
