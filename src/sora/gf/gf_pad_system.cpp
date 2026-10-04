@@ -544,8 +544,7 @@ void gfPadSystem::updateLowGC(gfPadStatus* dest) {
     PadStatusRaw* st = status;
     for (int i = 0; i < 4; i++) {
         padInit(dest);
-        s8 err = st->err;
-        if (err == 0) {
+        if (st->err == 0) {
             dest->m_buttonsCurrentFrame.bits = st->button;
             dest->m_buttonsCurrentFrame2.bits = st->button;
             dest->m_stickX = st->stickX;
@@ -558,11 +557,11 @@ void gfPadSystem::updateLowGC(gfPadStatus* dest) {
             dest->m_error = (gfPadError::PadError)st->err;
             dest->m_controllerType = gfPadType::GCC;
         } else {
-            dest->m_error = (gfPadError::PadError)err;
+            dest->m_error = (gfPadError::PadError)st->err;
             dest->m_controllerType = gfPadType::GCC;
         }
-        st++;
         dest++;
+        st++;
     }
 }
 
@@ -807,20 +806,12 @@ void gfPadSystem::updateSystem() {
     m_flags34.f1 = m_flags34.f2;
     m_flags34.f2 = 0;
     BOOL intr = OSDisableInterrupts();
-    gfPadStatus* sys = m_sysPads;
-    gfPadStatus* dbg = m_debugPads;
     for (u32 i = 0; i < 8; i++) {
-        dbg->update(sys);
-        dbg++;
-        sys++;
+        m_debugPads[i].update(&m_sysPads[i]);
     }
     OSRestoreInterrupts(intr);
-    gfPadStatus* dbg2 = m_debugPads;
-    gfPadStatus* menu = m_menuPads;
     for (u32 i = 0; i < 8; i++) {
-        dbg2->convSysStatusToMenuStatus(menu);
-        dbg2++;
-        menu++;
+        m_debugPads[i].convSysStatusToMenuStatus(&m_menuPads[i]);
     }
     int t = m_repeatDelay > 1 ? m_repeatDelay : 1;
     m_repeatDelay = (u8)t < 100 ? t : 100;
@@ -831,8 +822,7 @@ void gfPadSystem::updateSystem() {
         u8* row = m_repeatCount[i];
         u8 mask = (1 << m_repeatBits) - 1;
         for (int j = 0; j < 32; j++) {
-            u32 bit = 1 << j;
-            if (pad->m_buttonsCurrentFrame2.bits & bit) {
+            if (pad->m_buttonsCurrentFrame2.bits & (1 << j)) {
                 row[j]++;
             } else {
                 row[j] = 0;
@@ -840,7 +830,7 @@ void gfPadSystem::updateSystem() {
             if (row[j] >= m_repeatDelay) {
                 int diff = row[j] - m_repeatDelay;
                 if (mask == (mask & diff)) {
-                    pad->m_buttonsPressedThisFrame2.bits |= bit;
+                    pad->m_buttonsPressedThisFrame2.bits |= (1 << j);
                 }
                 if (diff >= 0x80) {
                     row[j] -= 0x80;
@@ -852,15 +842,16 @@ void gfPadSystem::updateSystem() {
     merge(m_debugPads, 8, m_debugPadMask, &m_debugPadMerged);
     merge(m_menuPads, 8, 0xFF, &m_menuPadMerged);
     for (int i = 0; i < 8; i++) {
+        u16* p = &m_padMotorMasks[i];
         if (m_padMotorMasks[i] != 0 && m_padMotorMasks[i] != 0xFFFF) {
-            m_padMotorMasks[i] = m_padMotorMasks[i] - 1;
+            m_padMotorMasks[i]--;
             if (m_padMotorMasks[i] == 0 && m_flags35.f6) {
                 if (i < 4) {
                     fn_802162A4(i, 0);
                 } else {
                     fn_8021A558(i - 4, 0);
                 }
-                m_padMotorMasks[i] = 0;
+                *p = 0;
             }
         }
     }
