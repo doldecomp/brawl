@@ -38,9 +38,9 @@ nw4r::g3d::ResAnmShp fn_8018DFFC(nw4r::g3d::ResFile*, const char*);
 
 using namespace nw4r::g3d;
 
-static inline PlayPolicyFunc getPolicy(bool loop) {
+static inline PlayPolicyFunc getPolicy(int policy) {
     static PlayPolicyFunc policies[2] = { fn_8019D9E4, fn_8019D9EC };
-    return policies[loop];
+    return policies[policy];
 }
 
 static inline void setPolicy(void* anmObj, PlayPolicyFunc policy) {
@@ -231,7 +231,7 @@ gfModelAnimation::gfModelAnimation(ResFile* resFile, ResMdl* resMdl, bool doBind
 }
 
 void gfModelAnimation::setLoop(bool shouldLoop) {
-    PlayPolicyFunc policy = getPolicy(shouldLoop);
+    PlayPolicyFunc policy = shouldLoop ? getPolicy(1) : getPolicy(0);
     if (m_anmObjChrRes) setPolicy(m_anmObjChrRes, policy);
     if (m_anmObjVisRes) setPolicy(m_anmObjVisRes, policy);
     if (m_anmObjTexPatRes) setPolicy(m_anmObjTexPatRes, policy);
@@ -242,7 +242,7 @@ void gfModelAnimation::setLoop(bool shouldLoop) {
 
 #define SETLOOP_FN(name, field)                        \
     void gfModelAnimation::name(bool shouldLoop) {     \
-        PlayPolicyFunc policy = getPolicy(shouldLoop); \
+        PlayPolicyFunc policy = getPolicy(shouldLoop != 0); \
         if (field) {                                   \
             setPolicy(field, policy);                  \
         }                                              \
@@ -254,31 +254,29 @@ SETLOOP_FN(setLoopTex, m_anmObjTexPatRes)
 SETLOOP_FN(setLoopTexSrt, m_anmObjTexSrtRes)
 SETLOOP_FN(setLoopMatCol, m_anmObjMatClrRes)
 
+static inline int maxInt(int a, int b) {
+    return a > b ? a : b;
+}
+
 u32 gfModelAnimation::getFrameCount() {
     int count = 0;
     if (m_anmObjChrRes) {
-        int len = m_anmObjChrRes->m_anmChrFile->m_animLength;
-        count = count > len ? count : len;
+        count = maxInt(count, m_anmObjChrRes->m_anmChrFile->m_animLength);
     }
     if (m_anmObjVisRes) {
-        int len = m_anmObjVisRes->m_anmVisFile->m_animLength;
-        count = count > len ? count : len;
+        count = maxInt(count, m_anmObjVisRes->m_anmVisFile->m_animLength);
     }
     if (m_anmObjTexPatRes) {
-        int len = m_anmObjTexPatRes->m_anmTexPatFile->m_animLength;
-        count = count > len ? count : len;
+        count = maxInt(count, m_anmObjTexPatRes->m_anmTexPatFile->m_animLength);
     }
     if (m_anmObjTexSrtRes) {
-        int len = m_anmObjTexSrtRes->m_anmTexSrtFile->m_animLength;
-        count = count > len ? count : len;
+        count = maxInt(count, m_anmObjTexSrtRes->m_anmTexSrtFile->m_animLength);
     }
     if (m_anmObjMatClrRes) {
-        int len = m_anmObjMatClrRes->m_anmMatClrFile->m_animLength;
-        count = count > len ? count : len;
+        count = maxInt(count, m_anmObjMatClrRes->m_anmMatClrFile->m_animLength);
     }
     if (m_anmObjShpRes) {
-        int len = m_anmObjShpRes->m_anmShpFile->m_animLength;
-        count = count > len ? count : len;
+        count = maxInt(count, m_anmObjShpRes->m_anmShpFile->m_animLength);
     }
     return count;
 }
@@ -293,13 +291,14 @@ void gfModelAnimation::setFrame(float frame) {
 }
 
 float gfModelAnimation::getFrame() {
+    float frame = 0.0f;
     if (m_anmObjChrRes) return m_anmObjChrRes->GetFrame();
     if (m_anmObjVisRes) return m_anmObjVisRes->GetFrame();
     if (m_anmObjTexPatRes) return m_anmObjTexPatRes->GetFrame();
     if (m_anmObjTexSrtRes) return m_anmObjTexSrtRes->GetFrame();
     if (m_anmObjMatClrRes) return m_anmObjMatClrRes->GetFrame();
     if (m_anmObjShpRes) return m_anmObjShpRes->GetFrame();
-    return 0.0f;
+    return frame;
 }
 
 void gfModelAnimation::setUpdateRate(float updateRate) {
