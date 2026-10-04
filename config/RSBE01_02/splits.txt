@@ -87,6 +87,12 @@ sora/gf/gf_keep_fb.cpp:
 sora/gf/gf_memory_util.cpp:
 	.text       start:0x80026474 end:0x80026478
 
+sora/gf/gf_model_animation.cpp:
+	.text       start:0x80027610 end:0x80028808
+	.rodata     start:0x804068F8 end:0x80406910
+	.sdata      start:0x8059C648 end:0x8059C650
+	.sdata2     start:0x805A1520 end:0x805A1528
+
 sora/gf/gf_pad_queue.cpp:
 	.text       start:0x8002B700 end:0x8002B9C4
 
