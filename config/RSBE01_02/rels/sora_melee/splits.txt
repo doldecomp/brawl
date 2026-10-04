@@ -48,6 +48,9 @@ mo_melee/sora_melee/so/so_resource_module_impl.cpp:
 	.text       start:0x0006F850 end:0x0006FCF4
 	.data       start:0x00008028 end:0x000080F8
 
+mo_melee/sora_melee/so/so_status_module_impl.cpp:
+	.text       start:0x00073930 end:0x000767A0
+
 mo_melee/sora_melee/so/so_kinetic_energy_normal.cpp:
 	.text       start:0x0008A098 end:0x0008A674
 	.rodata     start:0x00000BA8 end:0x00000BB8
