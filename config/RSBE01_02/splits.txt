@@ -688,6 +688,7 @@ havok/hkxMaterialClass.cpp:
 	.ctors      start:0x8040679C end:0x804067A0
 	.rodata     start:0x80414F78 end:0x80415178
 	.bss        start:0x805335A0 end:0x805335E8
+	.sdata2     start:0x805A4938 end:0x805A4950
 
 havok/hkxMeshClass.cpp:
 	extab       start:0x8000922C end:0x80009234
