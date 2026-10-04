@@ -42,7 +42,6 @@ public:
 #include <so/so_module_accesser.h>
 
 // Sum speed helper (the real wrapper is probably an inline function of a util class)
-inline Vec2f ftKineticGetSumSpeed(soModuleAccesser* moduleAccesser) {
-    soKineticEnergy::AttributeFlag flag(1);
-    return moduleAccesser->getKineticModule().getSumSpeed(flag);
-}
+// MWCC only inlines these when each has a single call site in the TU, so the
+// wrapper is stamped out once per user (FT_DEFINE_GET_SUM_SPEED(name)).
+#define FT_DEFINE_GET_SUM_SPEED(name)     inline Vec2f name(soModuleAccesser* a) {         soKineticEnergy::AttributeFlag flag(1);         return a->getKineticModule().getSumSpeed(flag);     }
