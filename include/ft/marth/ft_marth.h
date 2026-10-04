@@ -19,7 +19,7 @@ typedef soModelModuleBuildConfig<8, 3, soModelModuleImpl> ftMarthModelModuleBuil
 
 typedef ftAnimCmdModuleSubBuildConfig<288, 501> ftMarthAnimCmdModuleSubBuildConfig;
 
-class ftMarthBuildConfig {
+class ftMarthBuildConfig : public ftCommonBuildConfig {
 public:
     typedef ftMarthInsideEventManageModuleBuildConfig InsideEventManageModuleBuildConfig;
     typedef ftMarthHeapModuleBuildConfig HeapModuleBuildConfig;

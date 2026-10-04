@@ -1,3 +1,4 @@
+#include <ft/builder/ft_dol_array_list.h>
 #include <so/anim/so_anim_cmd_event_presenter.h>
 #include <so/situation/so_situation_event_presenter.h>
 #include <so/so_heap_module_impl.h>
@@ -44,7 +45,7 @@ typedef soModelModuleBuildConfig<8, 3, soModelModuleImpl> ftPurinModelModuleBuil
 
 typedef ftAnimCmdModuleSubBuildConfig<288, 501> ftPurinAnimCmdModuleSubBuildConfig;
 
-class ftPurinBuildConfig {
+class ftPurinBuildConfig : public ftCommonBuildConfig {
 public:
     typedef ftPurinInsideEventManageModuleBuildConfig InsideEventManageModuleBuildConfig;
     typedef ftPurinHeapModuleBuildConfig HeapModuleBuildConfig;
