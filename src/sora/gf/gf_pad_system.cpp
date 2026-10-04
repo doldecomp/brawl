@@ -5,6 +5,7 @@
 #include <gf/gf_homemenu.h>
 #include <gf/gf_pad_queue.h>
 #include <gf/gf_pad_status.h>
+#include <gf/gf_pad_system.h>
 #include <gf/gf_rumble.h>
 #include <revolution/OS/OSAlarm.h>
 #include <revolution/OS/OSInterrupt.h>
@@ -12,8 +13,8 @@
 #include <sr/sr_common.h>
 #include <types.h>
 
-// gfThread / gfPadReadThread / gfPadSystem are redefined locally here because the
-// versions in BrawlHeaders do not describe the real layout / constructors.
+// gfThread / gfPadReadThread are redefined locally here because the versions in
+// BrawlHeaders do not provide the constructor used by gfPadSystem (priority 14, stack 0x1200).
 class gfRunnable {
 public:
     virtual void run() = 0;
@@ -121,103 +122,9 @@ struct KpadStatusRaw {
     };
 };
 
-// Bitfields are allocated MSB first by MWCC
-struct PadFlags34 {
-    u8 f7 : 1; // game pads have been read this frame
-    u8 f6 : 1; // simple sync callback fired
-    u8 f5 : 1;
-    u8 f4 : 1;
-    u8 f3 : 1; // read game pads from the pad queue
-    u8 f2 : 1;
-    u8 f1 : 1;
-    u8 f0 : 1;
-};
-
-struct PadFlags35 {
-    u8 f7 : 1; // game data callback fired
-    u8 f6 : 1; // rumble enabled
-    u8 f5 : 1;
-    u8 f4 : 1;
-    u8 f3 : 1;
-    u8 f2 : 1;
-    u8 f1 : 1;
-    u8 f0 : 1;
-};
-
-class gfPadSystem {
-public:
-    gfPadSystem();
-    void clearPadEdgeRepert();
-    void clearPadQueue();
-    void consumeFrameCounter(int frames);
-    static gfPadSystem* create();
-    void createRumbleSystem();
-    void disconectWiiControler();
-    u32 getGamePadQueueCount();
-    int getDebugPadStatus(int padNum, gfPadStatus* dest);
-    int getSysPadStatus(int padNum, gfPadStatus* dest);
-    int getGamePadStatus(int padNum, gfPadStatus* dest);
-    void maskMotor(u16);
-    static void merge(gfPadStatus* src, int numPads, u32 mask, gfPadStatus* dest);
-    static void merge(gfPadStatus* src, int numPads, gfPadStatus* dest);
-    void pauseNotify();
-    bool readGameDataRequest(int, int, int, int);
-    void setConnectCallback(int);
-    void startMotor(int padNum, u16 mask);
-    void startMotor(int padNum);
-    void stopMotor(int padNum);
-    void stopMotorH(int padNum);
-    void stopMotorAllForce();
-    bool startSimpleSync();
-    void updateGame();
-    void updateLow();
-    void updateLowGC(gfPadStatus* dest);
-    void updateLowWii(gfPadStatus* dest);
-    void updateSystem();
-    static void wpadGameDataCallback(int chan, int data);
-    static void wpadSimpleSyncCallback(int result);
-    bool writeGameDataRequest(int, int, int, int);
-    static void _alarmCallback(OSAlarm* alarm, OSContext* ctx);
-
-    OSAlarm m_alarm;                  // 0x00
-    int m_frameCounter;               // 0x30
-    PadFlags34 m_flags34;             // 0x34
-    PadFlags35 m_flags35;             // 0x35
-    u16 m_unkCounter;                 // 0x36
-    u16 m_debugPadMask;               // 0x38
-    u16 m_sysExcludedPadMask;         // 0x3A
-    u16 m_gamePadMask;                // 0x3C
-    u16 m_0x3e;                       // 0x3E
-    gfPadStatus m_sysPads[8];         // 0x40
-    gfPadStatusQueue* m_padQueue;     // 0x240
-    gfPadStatus m_debugPads[8];       // 0x244
-    gfPadStatus m_gamePads[8];        // 0x444
-    gfPadStatus m_menuPads[8];        // 0x644
-    gfPadStatus m_sysPadMerged;       // 0x844
-    gfPadStatus m_gamePadMerged;      // 0x884
-    gfPadStatus m_menuPadMerged;      // 0x8C4
-    gfPadStatus m_debugPadMerged;     // 0x904
-    int m_0x944;                      // 0x944
-    u8 m_repeatCount[8][32];          // 0x948
-    u8 m_unkCount[8][32];             // 0xA48
-    u8 m_repeatDelay;                 // 0xB48
-    u8 m_repeatBits;                  // 0xB49
-    u16 m_motorMask;                  // 0xB4A
-    int m_0xb4c[2];                   // 0xB4C
-    gfPadReadThread* m_controllerThread; // 0xB54
-    u16 m_padMotorMasks[8];           // 0xB58
-    gfRumble* m_gfRumble;             // 0xB68
-    int m_gameData;                   // 0xB6C
-    int m_0xb70;                      // 0xB70
-    int m_0xb74;                      // 0xB74
-};
-
 class Network;
 extern Network g_Network;
 
-#define GF_PAD_SYSTEM_GET_ALL_PADS 0xF0
-
-extern gfPadSystem* g_gfPadSystem;
 
 extern "C" {
 void* fn_8002C78C(gfRumble*);
@@ -626,6 +533,8 @@ static inline void padClearNoType(gfPadStatus* p) {
 }
 
 void gfPadSystem::updateLowWii(gfPadStatus* dest) {
+    PadMapEntry* map = s_padMap;
+    PadMapEntry* zEntry = &s_nunchukZ;
     KpadStatusRaw* status = (KpadStatusRaw*)__alloca(sizeof(KpadStatusRaw) * 8);
     for (u16 i = 0; i < 4; i++) {
         gfPadStatus* pad = &dest[i];
@@ -670,7 +579,7 @@ void gfPadSystem::updateLowWii(gfPadStatus* dest) {
         switch (devType) {
         case 0:
         case 0xFB: {
-            u32 buttons = mapButtons(status[0].hold, s_padMap, 14);
+            u32 buttons = mapButtons(status[0].hold, map, 14);
             u32 prev = pad->m_buttonsCurrentFrame2.bits;
             u32 diff = buttons ^ prev;
             pad->m_buttonsHeld.bits = prev;
@@ -695,7 +604,7 @@ void gfPadSystem::updateLowWii(gfPadStatus* dest) {
             break;
         }
         case 1: {
-            u32 buttons = mapButtons(status[0].hold, &s_padMap[14], 15);
+            u32 buttons = mapButtons(status[0].hold, map + 14, 15);
             u32 prev = pad->m_buttonsCurrentFrame2.bits;
             u32 diff = buttons ^ prev;
             pad->m_buttonsHeld.bits = prev;
@@ -735,10 +644,10 @@ void gfPadSystem::updateLowWii(gfPadStatus* dest) {
         }
         case 2: {
             u32 buttons = 0;
-            if (status[0].hold & s_nunchukZ.in) {
-                buttons = s_nunchukZ.out;
+            if (status[0].hold & zEntry->in) {
+                buttons = zEntry->out;
             }
-            buttons |= mapButtons(status[0].cl.hold, &s_padMap[29], 15);
+            buttons |= mapButtons(status[0].cl.hold, map + 29, 15);
             if (buttons & 0xC000) {
                 buttons |= 0x10;
             }
@@ -1048,12 +957,11 @@ int gfPadSystem::getDebugPadStatus(int padNum, gfPadStatus* dest) {
     return 1;
 }
 
-#define MERGE_STICK(merged, field)                                      a = src->field;                                                     absNew = (s8)a < 0 ? -(s8)a : (s8)a;                                absOld = (s8)merged < 0 ? -(s8)merged : (s8)merged;                if (absOld < absNew) merged = a;
+static inline s8 absS8(s8 v) {
+    return v < 0 ? -v : v;
+}
 
 void gfPadSystem::merge(gfPadStatus* src, int numPads, u32 mask, gfPadStatus* dest) {
-    u8 a;
-    s8 absNew;
-    s8 absOld;
     u8 count = 0;
     u32 cur = 0;
     u32 pressed = 0;
@@ -1075,10 +983,22 @@ void gfPadSystem::merge(gfPadStatus* src, int numPads, u32 mask, gfPadStatus* de
             released |= src->m_buttonsReleasedThisFrame.bits;
             held |= src->m_buttonsHeld.bits;
             repeat |= src->m_buttonsPressedThisFrame2.bits;
-            MERGE_STICK(stickX, m_stickX)
-            MERGE_STICK(stickY, m_stickY)
-            MERGE_STICK(subX, m_subStickX)
-            MERGE_STICK(subY, m_subStickY)
+            u8 a1 = src->m_stickX;
+            if (absS8(stickX) < absS8(a1)) {
+                stickX = a1;
+            }
+            u8 a2 = src->m_stickY;
+            if (absS8(stickY) < absS8(a2)) {
+                stickY = a2;
+            }
+            u8 a3 = src->m_subStickX;
+            if (absS8(subX) < absS8(a3)) {
+                subX = a3;
+            }
+            u8 a4 = src->m_subStickY;
+            if (absS8(subY) < absS8(a4)) {
+                subY = a4;
+            }
             u8 t = src->m_lTriggerAnalog;
             lTrig = lTrig > t ? lTrig : t;
             t = src->m_rTriggerAnalog;
