@@ -1,4 +1,5 @@
 #pragma once
+#include <ft/builder/ft_dol_array_list.h>
 
 // Shared fighter module builder scaffolding. Used by every ft_<char> REL.
 // Each character provides a BuildConfig class (see ftPurinBuildConfig) that selects the
@@ -31,71 +32,17 @@
 #include <ft/ft_status_uniq_process_gimmick.h>
 #include <ft/ft_virtual_node_matrix_pool.h>
 #include <so/so_module_accesser_builder.h>
+#include <ft/builder/ft_module_builders.h>
 #include <ut/ut_uncopyable.h>
 
 ////////////////////////////////////////
 // ftAnimCmdModuleSubBuilder
 ////////////////////////////////////////
 
-template <u32 P1, u32 P2>
-class ftAnimCmdModuleSubBuildConfig {
-    // TODO
-};
+// ftAnimCmdModuleSubBuildConfig / ftAnimCmdModuleSubBuilder: see ft/builder/ft_builder_animcmd.h
 
 
-template <typename BC>
-class ftAnimCmdModuleSubBuilder {
-    // TODO
-};
-
-
-// TODO: When the Builder base classes are done, move them to separate headers
-
-template <class BC>
-class soModuleAccesserBuilder : public utUnCopyable {
-public:
-    soInsideEventManageModuleBuilder<typename BC::InsideEventManageModuleBuildConfig, ftInsideEventManageModuleTypes> unk194;
-    soModuleAccesser m_moduleAccsr; // +0x9D0 for ft_purin
-    soHeapModuleBuilder<typename BC::HeapModuleBuildConfig> m_heapModuleBuilder;
-    soParamCustomizeModuleBuilder<typename BC::ParamCustomizeModuleBuildConfig> m_paramCustomizeModuleBuilder;
-    soResourceModuleBuilder<typename BC::ResourceModuleBuildConfig> m_resourceModuleBuilder;
-    soModelModuleBuilder<typename BC::ModelModuleBuildConfig> m_modelModuleBuilder;
-
-    // TODO: add remaining ModuleBuilders
-    // Add getModule() member functions for each Builder
-
-    u8 unkC44[0x8DF4];
-    soModuleAccesserBuilder(const ftFighterBuildData& fbd) :
-        m_heapModuleBuilder(fbd),
-        m_paramCustomizeModuleBuilder(&m_moduleAccsr),
-        m_resourceModuleBuilder(
-            fbd.getMdlResId(),
-            fbd.getAnmResId(),
-            fbd.getResGroupNo(),
-            &m_moduleAccsr
-        ),
-        m_modelModuleBuilder(
-            &m_moduleAccsr,
-            fbd.getModelExtendNodeTable(),
-            &g_soEventObserverRegistrationDescNull,
-            fbd.getModelScale()
-        ) {
-    }
-
-    ~soModuleAccesserBuilder() { }
-    soModuleAccesser* getModuleAccesser() { return &m_moduleAccsr; }
-};
-
-template <typename BC>
-class ftModuleAccesserBuilder : public soModuleAccesserBuilder<BC> {
-public:
-    soArrayContractibleTable<const soStatusData> unkTable;
-    ftAnimCmdModuleSubBuilder<typename BC::AnimCmdModuleSubBuildConfig> unkAnimCmdModuleSubBuilder;
-
-    ftModuleAccesserBuilder(const ftFighterBuildData& fbd) : soModuleAccesserBuilder<BC>(fbd) {
-
-    }
-};
+#include <ft/builder/ft_module_accesser_builder.h>
 
 template<typename BC>
 class ftFighterBuilder : public Fighter {
@@ -121,7 +68,8 @@ public:
                                m_moduleAccesser,
                                -1,
                                &unk9A38,
-                               &unk9A40)),
+                               &unk9A40),
+                           this),
         m_cancelModule(m_moduleAccesser),
         m_virtualNodeMtxPool(),
         m_gimmickProcPool(m_moduleAccesser) {
