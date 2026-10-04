@@ -250,7 +250,7 @@ cflags_rel = [
     "-sdata2 0",
 ]
 
-cflags_fighter = ["-O2,s" if flag == "-O4,p" else flag for flag in cflags_rel]
+cflags_fighter = ["-O2,s" if flag == "-O4,p" else flag for flag in cflags_rel] + ["-DFT_MODULE_BUILDER"]
 cflags_sora_enemy = ["-O2,s" if flag == "-O4,p" else flag for flag in cflags_rel]
 cflags_st_starfox = [*cflags_rel, "-inline on,noauto"]
 
@@ -826,6 +826,7 @@ config.libs = [
             Object(Matching, "mo_melee/sora_melee/so/model/so_model_virtual_node.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/model/so_model_module_impl_variable.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/anim/so_anim_chr.cpp"),
+            Object(NonMatching, "mo_melee/sora_melee/so/so_collision_shield_part.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/controller/so_controller_module_impl.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_controller_module_link_ref.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/controller/so_controller_impl.cpp"),
@@ -841,6 +842,9 @@ config.libs = [
             Object(Matching, "mo_melee/sora_melee/so/so_common_data_accesser.cpp"),
             Object(Matching, "mo_melee/sora_melee/ft/ft_class_info.cpp"),
             Object(Matching, "mo_melee/sora_melee/ft/ft_extend_param_accesser.cpp"),
+            Object(NonMatching, "mo_melee/sora_melee/ft/ft_info.cpp"),
+            Object(NonMatching, "mo_melee/sora_melee/ft/ft_status_uniq_process_guard.cpp"),
+            Object(NonMatching, "mo_melee/sora_melee/ft/ft_status_uniq_process_guard_damage.cpp"),
             Object(Matching, "mo_melee/sora_melee/ft/ft_fighter_build_data.cpp"),
             Object(Matching, "mo_melee/sora_melee/st/st_common_gimmick.cpp"),
             Object(Matching, "mo_melee/mo_melee.cpp"),

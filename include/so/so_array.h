@@ -695,11 +695,9 @@ public:
 
     soArrayVector() : m_topIndex(0), m_lastIndex(0), m_size(0), m_isFull(false) { }
 
-    soArrayVector(s32 size, s32 = 0) {
-        m_topIndex = 0;
-        m_lastIndex = 0;
-        m_isFull = false;
-        m_size = size;
+    // NOTE: shadows the BrawlHeaders copy; the bitfields are set by the mem-initializer list
+    // (before m_elements is constructed), as seen in soCollisionShieldPart's constructor.
+    soArrayVector(s32 size, s32 = 0) : m_topIndex(0), m_lastIndex(0), m_size(size), m_isFull(false) {
         soArrayVectorCalculator::postInitialize(*this, size, C);
     }
     soArrayVector(s32 size, const T& element, s32) {

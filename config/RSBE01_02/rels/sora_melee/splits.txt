@@ -27,6 +27,10 @@ mo_melee/sora_melee/so/anim/so_anim_chr.cpp:
 	.text       start:0x0001F2D0 end:0x0001F980
 	.rodata     start:0x00000360 end:0x00000370
 
+mo_melee/sora_melee/so/so_collision_shield_part.cpp:
+	.text       start:0x00046588 end:0x00046A74
+	.rodata     start:0x000004C8 end:0x000004E0
+
 mo_melee/sora_melee/so/controller/so_controller_module_impl.cpp:
 	.text       start:0x00058264 end:0x000598CC
 
@@ -98,6 +102,26 @@ mo_melee/sora_melee/ft/ft_extend_param_accesser.cpp:
 	.text       start:0x00149C70 end:0x00149E1C
 	.data       start:0x0002BC00 end:0x0002BCA0
 	.bss        start:0x00004568 end:0x00004648
+
+mo_melee/sora_melee/ft/ft_info.cpp:
+	.text       start:0x0014DE9C end:0x0014DFE4
+	.ctors      start:0x00000078 end:0x0000007C
+	.rodata     start:0x000018F0 end:0x00001C60
+	.data       start:0x0002C0C8 end:0x0002CFF8
+	.bss        start:0x00004660 end:0x00004678
+
+mo_melee/sora_melee/ft/ft_status_uniq_process_guard.cpp:
+	.text       start:0x0016A838 end:0x0016A904
+	.ctors      start:0x000000E4 end:0x000000E8
+	.data       start:0x0002EFA0 end:0x0002F018
+	.bss        start:0x000049B0 end:0x000049C8
+
+mo_melee/sora_melee/ft/ft_status_uniq_process_guard_damage.cpp:
+	.text       start:0x0016A904 end:0x0016AD18
+	.ctors      start:0x000000E8 end:0x000000EC
+	.rodata     start:0x00002110 end:0x00002120
+	.data       start:0x0002F018 end:0x0002F098
+	.bss        start:0x000049C8 end:0x000049E0
 
 mo_melee/sora_melee/ft/ft_fighter_build_data.cpp:
 	.text       start:0x00192D4C end:0x00193378
