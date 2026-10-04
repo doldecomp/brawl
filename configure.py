@@ -250,7 +250,7 @@ cflags_rel = [
     "-sdata2 0",
 ]
 
-cflags_fighter = ["-O2,s" if flag == "-O4,p" else flag for flag in cflags_rel]
+cflags_fighter = ["-O2,s" if flag == "-O4,p" else flag for flag in cflags_rel] + ["-DFT_MODULE_BUILDER"]
 cflags_sora_enemy = ["-O2,s" if flag == "-O4,p" else flag for flag in cflags_rel]
 cflags_st_starfox = [*cflags_rel, "-inline on,noauto"]
 
