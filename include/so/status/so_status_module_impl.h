@@ -17,6 +17,30 @@
 
 class soModuleAccesser;
 
+// HYPOTHESIS: layout of the last collision-attack log kept by the status module (copied from the
+// soCollisionLog passed to notifyEventCollisionAttack; field types inferred from the copy code).
+struct soStatusCollisionLogCopy {
+    struct { u32 a; u32 b; } m_unk00;
+    u32 m_unk08;
+    u32 m_taskId;
+    u32 m_pos[3];
+    u16 m_life;
+    u16 m_unk1e;
+    u8 m_unk20;
+    u8 m_unk21;
+    u8 m_taskCategory;
+    u8 m_unk23;
+    u8 m_unk24;
+    u8 m_unk25;
+    u8 m_unk26;
+    u8 m_unk27;
+    u8 m_unk28;
+    u8 m_unk29;
+    u8 m_unk2a;
+};
+static_assert(sizeof(soStatusCollisionLogCopy) == 0x2C, "Class is wrong size!");
+
+
 class soStatusUniqProcess {
 public:
     virtual ~soStatusUniqProcess() { }
@@ -98,7 +122,7 @@ public:
     soArray<soStatusUniqProcess*>* m_statusUniqProcessArr; // +0x30
     int m_statusKind;                                      // +0x34
     int m_nextStatusKind;                                  // +0x38
-    int m_unk3c;                                           // +0x3c
+    soGeneralWorkAbstract* m_generalWork;                  // +0x3c
     soArrayContractibleTable<const soStatusData>* m_statusDataArr; // +0x40 (HYPOTHESIS: table of const soStatusData)
     void** m_preCheckAnimCmdArr;                           // +0x44
     int m_preCheckAnimCmdNum;                              // +0x48
@@ -108,7 +132,9 @@ public:
     bool m_unk7d;                                          // +0x7d
     bool m_isChanged;                                      // +0x7e
     bool m_isCollisionAttackOccer;                         // +0x7f
-    soCollisionLog m_collisionLog;                         // +0x80
+    soStatusCollisionLogCopy m_collisionLog;               // +0x80
+    void succeedStatusWork(const soStatusData* statusData);
+
     virtual void activate(soModuleAccesser* moduleAccesser);
     virtual void deactivate(soModuleAccesser* moduleAccesser);
     virtual bool changeStatusRequest(int status, soModuleAccesser* moduleAccesser);
