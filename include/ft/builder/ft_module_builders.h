@@ -52,20 +52,21 @@ struct ftBuilderModule<soCollisionHitModuleBuilder<soCollisionHitModuleBuildConf
 
 template <s32 ShapeCap, typename T>
 class soGroundModuleBuildConfig {
+    soArrayVector<soGroundShapeImpl, ShapeCap> m_shapes;
+    T m_groundModule;
 public:
-    enum { ShapeCapacity = ShapeCap };
-    typedef T ModuleType;
+    soGroundModuleBuildConfig(soModuleAccesser* acc, soGroundConditionChecker* checker) :
+        m_shapes(1, 0),
+        m_groundModule(acc, &m_shapes, checker, &g_soEventObserverRegistrationDescNull) { }
+    T* getModule() { return &m_groundModule; }
 };
 
 template <typename BC>
 class soGroundModuleBuilder {
-    soArrayVector<soGroundShapeImpl, BC::ShapeCapacity> m_shapes;
-    typename BC::ModuleType m_groundModule;
+    BC m_buildConfig;
 public:
-    soGroundModuleBuilder(soModuleAccesser* acc, soGroundConditionChecker* checker) :
-        m_shapes(1, 0),
-        m_groundModule(acc, &m_shapes, checker, &g_soEventObserverRegistrationDescNull) { }
-    typename BC::ModuleType* getModule() { return &m_groundModule; }
+    soGroundModuleBuilder(soModuleAccesser* acc, soGroundConditionChecker* checker) : m_buildConfig(acc, checker) { }
+    soGroundModule* getModule() { return m_buildConfig.getModule(); }
 };
 
 ////////////////////////////////////////
@@ -354,4 +355,138 @@ public:
     soSoundModuleBuilder(soModuleAccesser* acc, soSoundIdExchanger* exchanger, soEventObserverRegistrationDesc* regDesc) :
         m_generator(), m_soundModule(acc, &m_generator, exchanger, true, true, regDesc) { }
     typename BC::ModuleType* getModule() { return &m_soundModule; }
+};
+
+////////////////////////////////////////
+// Builders that hold a single module (the original inlined their constructors into the fighter constructor,
+// but each of them still has its own out-of-line destructor)
+////////////////////////////////////////
+
+template <typename T>
+class soSituationModuleBuildConfig {
+public:
+    typedef T ModuleType;
+};
+
+template <typename BC>
+class soSituationModuleBuilder {
+    typename BC::ModuleType m_module;
+public:
+    soSituationModuleBuilder(s16 unitId, soModuleAccesser* acc, soEventObserverRegistrationDesc* regDesc) : m_module(unitId, acc, regDesc) { }
+    typename BC::ModuleType* getModule() { return &m_module; }
+};
+
+template <s32 N, typename T>
+class soCatchModuleBuildConfig {
+public:
+    enum { Flag = N };
+    typedef T ModuleType;
+};
+
+template <typename BC>
+class soCatchModuleBuilder {
+    typename BC::ModuleType m_module;
+public:
+    soCatchModuleBuilder(soModuleAccesser* acc) : m_module(acc, BC::Flag) { }
+    typename BC::ModuleType* getModule() { return &m_module; }
+};
+
+template <typename T>
+class soCaptureModuleBuildConfig {
+public:
+    typedef T ModuleType;
+};
+
+template <typename BC>
+class soCaptureModuleBuilder {
+    typename BC::ModuleType m_module;
+public:
+    soCaptureModuleBuilder(soModuleAccesser* acc) : m_module(acc) { }
+    typename BC::ModuleType* getModule() { return &m_module; }
+};
+
+template <typename T>
+class soStopModuleBuildConfig {
+public:
+    typedef T ModuleType;
+};
+
+template <typename BC>
+class soStopModuleBuilder {
+    typename BC::ModuleType m_module;
+public:
+    soStopModuleBuilder(soModuleAccesser* acc) : m_module(acc) { }
+    typename BC::ModuleType* getModule() { return &m_module; }
+};
+
+template <typename T>
+class soTurnModuleBuildConfig {
+public:
+    typedef T ModuleType;
+};
+
+template <typename BC>
+class soTurnModuleBuilder {
+    typename BC::ModuleType m_module;
+public:
+    soTurnModuleBuilder(soModuleAccesser* acc) : m_module(acc) { }
+    typename BC::ModuleType* getModule() { return &m_module; }
+};
+
+template <typename T, s32 N>
+class soVisibilityModuleBuildConfig {
+public:
+    enum { Flag = N };
+    typedef T ModuleType;
+};
+
+template <typename BC>
+class soVisibilityModuleBuilder {
+    typename BC::ModuleType m_module;
+public:
+    soVisibilityModuleBuilder(soModuleAccesser* acc, soVisibilityData* data) : m_module(acc, data, BC::Flag) { }
+    typename BC::ModuleType* getModule() { return &m_module; }
+};
+
+template <typename T>
+class soWorkManageModuleBuildConfig {
+public:
+    typedef T ModuleType;
+};
+
+template <typename BC>
+class soWorkManageModuleBuilder {
+    typename BC::ModuleType m_module;
+public:
+    soWorkManageModuleBuilder(soModuleAccesser* acc, void* paramAccesser) : m_module(acc, paramAccesser) { }
+    typename BC::ModuleType* getModule() { return &m_module; }
+};
+
+template <s32 A, s32 B, typename T>
+class soSlopeModuleBuildConfig {
+public:
+    enum { Arg0 = A, Arg1 = B };
+    typedef T ModuleType;
+};
+
+template <typename BC>
+class soSlopeModuleBuilder {
+    typename BC::ModuleType m_module;
+public:
+    soSlopeModuleBuilder(soModuleAccesser* acc, float slopeAngleLimit) : m_module(acc, BC::Arg0, BC::Arg1, 0, slopeAngleLimit) { }
+    typename BC::ModuleType* getModule() { return &m_module; }
+};
+
+template <typename T>
+class soShadowModuleBuildConfig {
+public:
+    typedef T ModuleType;
+};
+
+template <typename BC>
+class soShadowModuleBuilder {
+    typename BC::ModuleType m_module;
+public:
+    soShadowModuleBuilder(soModuleAccesser* acc) : m_module(acc, 0.0f, 0) { }
+    typename BC::ModuleType* getModule() { return &m_module; }
 };

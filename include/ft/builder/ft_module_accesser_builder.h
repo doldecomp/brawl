@@ -36,6 +36,15 @@ public:
     typedef soCollisionShieldModuleBuildConfig<3, 20, soCollisionShieldEventPresenterReflector, soCollisionShieldModuleImpl>
         CollisionReflectorModuleBuildConfig;
     typedef soCollisionCatchModuleBuildConfig<soCollisionCatchModuleImpl> CollisionCatchModuleBuildConfig;
+    typedef soSituationModuleBuildConfig<soSituationModuleImpl> SituationModuleBuildConfig;
+    typedef soCatchModuleBuildConfig<1, soCatchModuleImpl> CatchModuleBuildConfig;
+    typedef soCaptureModuleBuildConfig<soCaptureModuleImpl> CaptureModuleBuildConfig;
+    typedef soStopModuleBuildConfig<ftStopModuleImpl> StopModuleBuildConfig;
+    typedef soTurnModuleBuildConfig<soTurnModuleImpl> TurnModuleBuildConfig;
+    typedef soVisibilityModuleBuildConfig<soVisibilityModuleImpl, 2> VisibilityModuleBuildConfig;
+    typedef soWorkManageModuleBuildConfig<soWorkManageModuleImpl> WorkManageModuleBuildConfig;
+    typedef soSlopeModuleBuildConfig<0, 1, soSlopeModuleImpl> SlopeModuleBuildConfig;
+    typedef soShadowModuleBuildConfig<soShadowModuleImpl> ShadowModuleBuildConfig;
     typedef soDamageModuleBuildConfig<soDamageModuleActor> DamageModuleBuildConfig;
     typedef soShakeModuleBuildConfig<4, soShakeModuleImpl> ShakeModuleBuildConfig;
     typedef soSoundModuleBuildConfig<soSoundModuleImpl> SoundModuleBuildConfig;
@@ -69,7 +78,7 @@ public:
     ftUnknownBuilderPart<0x394> m_motionBuilder;                                                           // +0x1440
     soPostureModuleBuilder<typename BC::PostureModuleBuildConfig> m_postureModuleBuilder;                  // +0x17D4
     soGroundModuleBuilder<typename BC::GroundModuleBuildConfig> m_groundModuleBuilder;                     // +0x1888
-    soSituationModuleImpl m_situationModule;                                                               // +0x1930
+    soSituationModuleBuilder<typename BC::SituationModuleBuildConfig> m_situationModuleBuilder;                                                               // +0x1930
     ftUnknownBuilderPart<0x74> m_teamBuilder;                                                              // +0x196C
     soCollisionAttackModuleBuilder<typename BC::CollisionAttackModuleBuildConfig> m_attackModuleBuilder;   // +0x19E0
     soCollisionHitModuleBuilder<typename BC::CollisionHitModuleBuildConfig> m_hitModuleBuilder;            // +0x209C
@@ -77,17 +86,17 @@ public:
     soCollisionShieldModuleBuilder<typename BC::CollisionReflectorModuleBuildConfig> m_reflectorModuleBuilder; // +0x2DA0
     soCollisionCatchModuleBuilder<typename BC::CollisionCatchModuleBuildConfig> m_collisionCatchModuleBuilder; // +0x380C
     soDamageModuleBuilder<typename BC::DamageModuleBuildConfig> m_damageModuleBuilder;                     // +0x3A70
-    soCatchModuleImpl m_catchModule;                                                                       // +0x3C20
-    soCaptureModuleImpl m_captureModule;                                                                   // +0x3C84
-    ftStopModuleImpl m_stopModule;                                                                         // +0x3CB8
-    soTurnModuleImpl m_turnModule;                                                                         // +0x3CDC
+    soCatchModuleBuilder<typename BC::CatchModuleBuildConfig> m_catchModuleBuilder;                                                                       // +0x3C20
+    soCaptureModuleBuilder<typename BC::CaptureModuleBuildConfig> m_captureModuleBuilder;                                                                   // +0x3C84
+    soStopModuleBuilder<typename BC::StopModuleBuildConfig> m_stopModuleBuilder;                                                                         // +0x3CB8
+    soTurnModuleBuilder<typename BC::TurnModuleBuildConfig> m_turnModuleBuilder;                                                                         // +0x3CDC
     soShakeModuleBuilder<typename BC::ShakeModuleBuildConfig> m_shakeModuleBuilder;                        // +0x3D14
     soSoundModuleBuilder<typename BC::SoundModuleBuildConfig> m_soundModuleBuilder;                        // +0x3DAC
     soLinkModuleBuilder<typename BC::LinkModuleBuildConfig> m_linkModuleBuilder;                           // +0x3E1C
-    soVisibilityModuleImpl m_visibilityModule;                                                             // +0x3FE8
+    soVisibilityModuleBuilder<typename BC::VisibilityModuleBuildConfig> m_visibilityModuleBuilder;                                                             // +0x3FE8
     soControllerModuleBuilder<typename BC::ControllerModuleBuildConfig> m_controllerModuleBuilder;         // +0x4018
     soCameraModuleBuilder<typename BC::CameraModuleBuildConfig> m_cameraModuleBuilder;                     // +0x473C
-    soWorkManageModuleImpl m_workManageModule;                                                             // +0x47B0
+    soWorkManageModuleBuilder<typename BC::WorkManageModuleBuildConfig> m_workManageModuleBuilder;                                                             // +0x47B0
     ftUnknownBuilderPart<0xF4> m_animCmdBuilder;                                                           // +0x47E4
     ftUnknownBuilderPart<0xEB8> m_statusBuilder;                                                           // +0x48D8
     ftUnknownBuilderPart<0x308> m_kineticBuilder;                                                          // +0x5790
@@ -96,8 +105,8 @@ public:
     ftUnknownBuilderPart<0x30> m_comboModule;                                                              // +0x5E24
     ftUnknownBuilderPart<0x374> m_areaBuilder;                                                             // +0x5E54
     soPhysicsModuleBuilder<typename BC::PhysicsModuleBuildConfig> m_physicsModuleBuilder;                  // +0x61C8
-    soSlopeModuleImpl m_slopeModule;                                                                       // +0x628C
-    soShadowModuleImpl m_shadowModule;                                                                     // +0x630C
+    soSlopeModuleBuilder<typename BC::SlopeModuleBuildConfig> m_slopeModuleBuilder;                                                                       // +0x628C
+    soShadowModuleBuilder<typename BC::ShadowModuleBuildConfig> m_shadowModuleBuilder;                                                                     // +0x630C
     soItemManageModuleBuilder<typename BC::ItemManageModuleBuildConfig> m_itemManageModuleBuilder;         // +0x6354
     ftUnknownBuilderPart<0x154> m_colorBlendModule;                                                        // +0x6464
     ftUnknownBuilderPart<0x4C> m_jostleModule;                                                             // +0x65B8
@@ -109,12 +118,12 @@ public:
     soModuleAccesserBuilder(const ftFighterBuildData& fbd, StageObject* owner) :
         m_moduleAccsr(
             owner,
-            (soResourceModule*)m_resourceModuleBuilder.getModule(&m_resourceModuleBuilder),
-            (soModelModule*)m_modelModuleBuilder.getModule(&m_modelModuleBuilder),
+            (soResourceModule*)((u8*)&m_resourceModuleBuilder + sizeof(typename BC::ResourceModuleBuildConfig::IdAccesserType)), // soResourceModuleBuilder::getModule() is not inlined by MWCC
+            (soModelModule*)((u8*)&m_modelModuleBuilder + sizeof(soArrayVector<soModelNodeSetUp, BC::ModelModuleBuildConfig::NodeSetUpCap>) + sizeof(soArrayVector<soModelVirtualNode, BC::ModelModuleBuildConfig::VirtualNodeCap>)),
             (soMotionModule*)((u8*)&m_motionBuilder + 0x224),
             (soPostureModule*)m_postureModuleBuilder.getModule(),
             (soGroundModule*)m_groundModuleBuilder.getModule(),
-            (soSituationModule*)&m_situationModule,
+            (soSituationModule*)m_situationModuleBuilder.getModule(),
             (void*)((u8*)&m_teamBuilder + 0x30),
             (soCollisionAttackModule*)ftBuilderModule<__typeof__(m_attackModuleBuilder)>::get(&m_attackModuleBuilder),
             (soCollisionHitModule*)ftBuilderModule<__typeof__(m_hitModuleBuilder)>::get(&m_hitModuleBuilder),
@@ -124,17 +133,17 @@ public:
             (void*)m_collisionCatchModuleBuilder.getModule(),
             (soCollisionSearchModule*)g_soCollisionSearchModuleNull,
             (soDamageModule*)m_damageModuleBuilder.getModule(),
-            (void*)&m_catchModule,
-            (void*)&m_captureModule,
-            (soStopModule*)&m_stopModule,
-            (void*)&m_turnModule,
+            (void*)m_catchModuleBuilder.getModule(),
+            (void*)m_captureModuleBuilder.getModule(),
+            (soStopModule*)m_stopModuleBuilder.getModule(),
+            (void*)m_turnModuleBuilder.getModule(),
             (void*)m_shakeModuleBuilder.getModule(),
             (soSoundModule*)m_soundModuleBuilder.getModule(),
             (soLinkModule*)m_linkModuleBuilder.getModule(),
-            (soVisibilityModule*)&m_visibilityModule,
+            (soVisibilityModule*)m_visibilityModuleBuilder.getModule(),
             (soControllerModule*)m_controllerModuleBuilder.getModule(),
             (soCameraModule*)m_cameraModuleBuilder.getModule(),
-            (soWorkManageModule*)&m_workManageModule,
+            (soWorkManageModule*)m_workManageModuleBuilder.getModule(),
             (void*)g_soDebugModuleNull,
             (soAnimCmdModule*)&m_animCmdBuilder,
             (soStatusModule*)((u8*)&m_statusBuilder + 0xE08),
@@ -149,8 +158,8 @@ public:
             (void*)g_soTerritoryModuleNull,
             (void*)g_soTargetSearchModuleNull,
             (void*)m_physicsModuleBuilder.getModule(),
-            (void*)&m_slopeModule,
-            (soShadowModule*)&m_shadowModule,
+            (void*)m_slopeModuleBuilder.getModule(),
+            (soShadowModule*)m_shadowModuleBuilder.getModule(),
             (soItemManageModule*)m_itemManageModuleBuilder.getModule(),
             (soColorBlendModule*)&m_colorBlendModule,
             (void*)&m_jostleModule,
@@ -176,28 +185,28 @@ public:
         ),
         m_postureModuleBuilder(&m_moduleAccsr, &g_soEventObserverRegistrationDescNull),
         m_groundModuleBuilder(&m_moduleAccsr, fbd.getGroundConditionChecker()),
-        m_situationModule(m_moduleAccsr.getEventManageModule().getManageId(), &m_moduleAccsr, &g_soEventObserverRegistrationDescNull),
+        m_situationModuleBuilder(m_moduleAccsr.getEventManageModule().getManageId(), &m_moduleAccsr, &g_soEventObserverRegistrationDescNull),
         m_attackModuleBuilder(&m_moduleAccsr, owner->m_taskId, owner->m_taskCategory, &g_soEventObserverRegistrationDescNull),
         m_hitModuleBuilder(&m_moduleAccsr, owner->m_taskId, owner->m_taskCategory, &g_soEventObserverRegistrationDescNull),
         m_shieldModuleBuilder(&m_moduleAccsr, owner->m_taskId, owner->m_taskCategory),
         m_reflectorModuleBuilder(&m_moduleAccsr, owner->m_taskId, owner->m_taskCategory),
         m_collisionCatchModuleBuilder(&m_moduleAccsr, owner->m_taskId, owner->m_taskCategory, &g_soEventObserverRegistrationDescNull),
         m_damageModuleBuilder(&m_moduleAccsr, &g_soEventObserverRegistrationDescNull),
-        m_catchModule(&m_moduleAccsr, 1),
-        m_captureModule(&m_moduleAccsr),
-        m_stopModule(&m_moduleAccsr),
-        m_turnModule(&m_moduleAccsr),
+        m_catchModuleBuilder(&m_moduleAccsr),
+        m_captureModuleBuilder(&m_moduleAccsr),
+        m_stopModuleBuilder(&m_moduleAccsr),
+        m_turnModuleBuilder(&m_moduleAccsr),
         m_shakeModuleBuilder(&m_moduleAccsr, fbd.getShakeData()),
         m_soundModuleBuilder(&m_moduleAccsr, fbd.getSoundIdExchanger(), &g_soEventObserverRegistrationDescNull),
         m_linkModuleBuilder(m_moduleAccsr.getEventManageModule().getManageId()),
-        m_visibilityModule(&m_moduleAccsr, fbd.getVisibilityData(), 2),
+        m_visibilityModuleBuilder(&m_moduleAccsr, fbd.getVisibilityData()),
         m_controllerModuleBuilder(&m_moduleAccsr, m_moduleAccsr.getEventManageModule().getManageId()),
         m_cameraModuleBuilder(&m_moduleAccsr, (soSet<soCameraRange>*)fbd.getCameraRangeSet(), (soSet<soCameraClipSphere>*)fbd.getCameraClipSphereSet(), &g_soEventObserverRegistrationDescNull),
-        m_workManageModule(&m_moduleAccsr, fbd.getParamAccesser()),
+        m_workManageModuleBuilder(&m_moduleAccsr, fbd.getParamAccesser()),
         m_effectModuleBuilder(&m_moduleAccsr, fbd.getEffectNodeData(), fbd.getEffectEmitData(), fbd.getEffectCommonData(), fbd.getEffectScreenData(), &g_soEventObserverRegistrationDescNull),
         m_physicsModuleBuilder(&m_moduleAccsr, fbd.getIkData()),
-        m_slopeModule(&m_moduleAccsr, 0, 1, 0, fbd.getSlopeAngleLimit()),
-        m_shadowModule(&m_moduleAccsr, 0.0f, 0),
+        m_slopeModuleBuilder(&m_moduleAccsr, fbd.getSlopeAngleLimit()),
+        m_shadowModuleBuilder(&m_moduleAccsr),
         m_itemManageModuleBuilder(&m_moduleAccsr, fbd.getItemNodeData()) {
     }
 
