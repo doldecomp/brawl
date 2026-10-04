@@ -228,6 +228,12 @@ sora/mu/mu_menu.cpp:
 	.text       start:0x800AF148 end:0x800AFB94
 	.sdata2     start:0x805A21F8 end:0x805A2200
 
+sora/mu/mu_msg.cpp:
+	.text       start:0x800B8930 end:0x800B95A4
+	.data       start:0x80455E10 end:0x80455E2C
+	.sdata      start:0x8059DF48 end:0x8059DF60
+	.sdata2     start:0x805A2210 end:0x805A2230
+
 sora/if/if_wifipr_task.cpp:
 	.text       start:0x800FD110 end:0x800FD1F8
 	.data       start:0x8045C678 end:0x8045C708
