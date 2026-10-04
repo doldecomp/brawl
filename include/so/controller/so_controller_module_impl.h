@@ -9,6 +9,8 @@
 
 // HYPOTHESIS: layout/field meaning inferred from soControllerModuleImpl::startClatter and
 // soControllerClatter::update. One entry per "clatter" (button mashing) slot.
+#ifndef SO_CONTROLLER_CLATTER_DEFINED
+#define SO_CONTROLLER_CLATTER_DEFINED
 class soControllerClatter {
 public:
     float m_time;       // 0x00
@@ -26,6 +28,7 @@ public:
     static int checkButton(soController* controller);
 };
 static_assert(sizeof(soControllerClatter) == 0x14, "Class is wrong size!");
+#endif
 
 class soControllerModule {
 public:

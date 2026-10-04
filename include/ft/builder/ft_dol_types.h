@@ -27,7 +27,10 @@ FT_OPAQUE_STRUCT(soMotionAnimObjCacheUnitChrRes, 0x8);
 
 
 FT_OPAQUE_STRUCT(soShakeTerm, 0x1C);
+#ifndef SO_CONTROLLER_CLATTER_DEFINED
+#define SO_CONTROLLER_CLATTER_DEFINED
 FT_OPAQUE_STRUCT(soControllerClatter, 0x14);
+#endif
 FT_OPAQUE_STRUCT(soEffectContinual, 0x2C);
 FT_OPAQUE_STRUCT(soEffectTime, 0xC);
 FT_OPAQUE_STRUCT(soPhysicsIKHandle, 0x38);
