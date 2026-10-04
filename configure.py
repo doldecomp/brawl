@@ -829,6 +829,7 @@ config.libs = [
             Object(NonMatching, "mo_melee/sora_melee/so/so_collision_shield_part.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/collision/so_collision_hit_module_impl.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_controller_module_link_ref.cpp"),
+            Object(NonMatching, "mo_melee/sora_melee/so/damage/so_damage_module_impl.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/damage/so_damage_transactor_actor.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_heap_module_impl.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_module_accesser.cpp"),

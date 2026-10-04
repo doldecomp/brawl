@@ -479,7 +479,7 @@ int soDamageTransactorActor::checkDownDamage(float reaction, float angle, soModu
     return ret;
 }
 
-bool soDamageTransactorActor::checkNoReaction(soModuleAccesser* moduleAccesser) {
+bool soDamageTransactorActor::checkNoReaction(soModuleAccesser* moduleAccesser, soDamage* damage) {
     return true;
 }
 
