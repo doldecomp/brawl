@@ -3,7 +3,10 @@
 #include <nw4r/g3d/g3d_resfile.h>
 #include <nw4r/g3d/g3d_resmdl.h>
 #include <nw4r/g3d/g3d_scnmdl.h>
+#include <mt/mt_matrix.h>
+#include <mt/mt_vector.h>
 #include <nw4r/math/math_arithmetic.h>
+#include <ut/ut_nw.h>
 #include <sr/sr_common.h>
 #include <types.h>
 
@@ -17,6 +20,8 @@ nw4r::g3d::ResAnmClr ResFile_GetResAnmClrByName(nw4r::g3d::ResFile* file, const 
 nw4r::g3d::ResAnmTexPat ResFile_GetResAnmTexPatByName(nw4r::g3d::ResFile* file, const char* name);
 nw4r::g3d::ResAnmTexSrt ResFile_GetResAnmTexSrtByName(nw4r::g3d::ResFile* file, const char* name);
 
+void ScnMdl_SetNodeMtx(nw4r::g3d::ScnMdl* mdl, u32 nodeId, const Matrix* mtx);
+
 class MuObject {
 public:
     virtual ~MuObject();
@@ -25,7 +30,11 @@ public:
     nw4r::g3d::ScnMdl* m_scnMdl;     // 0x0c
     nw4r::g3d::ScnMdl* m_sceneModel; // 0x10
     gfModelAnimation* m_modelAnim;   // 0x14
-    u8 m_18[0x3c];                   // 0x18
+    u8 m_18[0x1c];                   // 0x18
+    u32 m_baseNode;                  // 0x34
+    u8 m_38[4];                      // 0x38
+    Vec3f m_trans;                   // 0x3c
+    Vec3f m_rot;                     // 0x48
     Heaps::HeapType m_heapType;      // 0x54
     u8 m_58[8];                      // 0x58
 
@@ -60,6 +69,20 @@ public:
     bool isTexSrtAnimFinished();
     bool isAnimFinished();
     bool isNodeAnimLoop();
+    void getPos(Vec3f* pos);
+    void getPos(Vec3f* pos, const char* nodeName);
+    void setPos(Vec3f* pos);
+    void setPos(Vec3f* pos, const char* nodeName);
+    void setTrans(Vec3f* trans);
+    void getRect3D(Rect2D* rect, const char* nodeNameA, const char* nodeNameB);
+    void getRect3D(Rect2D* rect, int nodeA, int nodeB);
+    nw4r::g3d::ResNode getNode(const char* nodeName);
+    u32 getNodeID(const char* nodeName);
+    Matrix getNodeMatrix(const char* nodeName);
+    Vec3f getGlobalPosition(int resNode);
+    Vec3f getGlobalPosition(const char* nodeName);
+    Vec3f getGlobalPosition();
+    void getAnimScale(Vec3f* scl, const char* name);
     void setFrameNode(float frame);
     void setFrameVisible(float frame);
     void setFrameTex(float frame);
@@ -578,6 +601,117 @@ bool MuObject::isNodeAnimLoop() {
         return false;
     }
     return *(u32*)((u8*)o->m_anmChrFile.ptr() + 0x20) == 1;
+}
+
+void MuObject::getPos(Vec3f* pos) {
+    nw4r::g3d::ResMdl mdl = m_sceneModel->m_resMdl;
+    nw4r::g3d::ResNode node = mdl.GetResNode(m_baseNode);
+    pos->m_x = node->m_translation.m_x;
+    pos->m_y = node->m_translation.m_y;
+    pos->m_z = node->m_translation.m_z;
+}
+
+void MuObject::getPos(Vec3f* pos, const char* nodeName) {
+    nw4r::g3d::ResMdl mdl = m_sceneModel->m_resMdl;
+    nw4r::g3d::ResNode node = mdl.GetResNode(nodeName);
+    pos->m_x = node->m_translation.m_x;
+    pos->m_y = node->m_translation.m_y;
+    pos->m_z = node->m_translation.m_z;
+}
+
+void MuObject::setPos(Vec3f* pos) {
+    nw4r::g3d::ResMdl mdl = m_sceneModel->m_resMdl;
+    nw4r::g3d::ResNode node = mdl.GetResNode(m_baseNode);
+    node.SetTranslate(pos->m_x, pos->m_y, pos->m_z);
+}
+
+void MuObject::setPos(Vec3f* pos, const char* nodeName) {
+    nw4r::g3d::ResMdl mdl = m_sceneModel->m_resMdl;
+    nw4r::g3d::ResNode node = mdl.GetResNode(nodeName);
+    node.SetTranslate(pos->m_x, pos->m_y, pos->m_z);
+}
+
+void MuObject::setTrans(Vec3f* trans) {
+    m_trans = *trans;
+    Vec3f scale(1.0f, 1.0f, 1.0f);
+    Matrix mtx;
+    mtx.setSRT(scale, m_rot, m_trans);
+    ScnMdl_SetNodeMtx(m_scnMdl, 0, &mtx);
+    nw4r::g3d::ScnMdl* sceneModel = m_sceneModel;
+    sceneModel->SetScnObjOption(2, 0);
+    sceneModel->SetScnObjOption(5, 0);
+}
+
+void MuObject::getRect3D(Rect2D* rect, const char* nodeNameA, const char* nodeNameB) {
+    nw4r::g3d::ResMdl mdl = m_sceneModel->m_resMdl;
+    nw4r::g3d::ResNode nodeA = mdl.GetResNode(nodeNameA);
+    nw4r::g3d::ResNode nodeB = mdl.GetResNode(nodeNameB);
+    u32 idB = nodeB.IsValid() ? nodeB->m_nodeIndex : 0;
+    Vec3f a;
+    a = nwSMGetGlobalPosition(m_sceneModel, nodeA.IsValid() ? nodeA->m_nodeIndex : 0);
+    Vec3f b;
+    b = nwSMGetGlobalPosition(m_sceneModel, idB);
+    rect->m_left = nw4r::math::FSelect(a.m_x - b.m_x, b.m_x, a.m_x);
+    rect->m_right = nw4r::math::FSelect(a.m_x - b.m_x, a.m_x, b.m_x);
+    rect->m_up = nw4r::math::FSelect(b.m_y - a.m_y, b.m_y, a.m_y);
+    rect->m_down = nw4r::math::FSelect(b.m_y - a.m_y, a.m_y, b.m_y);
+}
+
+void MuObject::getRect3D(Rect2D* rect, int nodeA, int nodeB) {
+    Vec3f a;
+    a = nwSMGetGlobalPosition(m_sceneModel, nodeA);
+    Vec3f b;
+    b = nwSMGetGlobalPosition(m_sceneModel, nodeB);
+    rect->m_left = nw4r::math::FSelect(a.m_x - b.m_x, b.m_x, a.m_x);
+    rect->m_right = nw4r::math::FSelect(a.m_x - b.m_x, a.m_x, b.m_x);
+    rect->m_up = nw4r::math::FSelect(b.m_y - a.m_y, b.m_y, a.m_y);
+    rect->m_down = nw4r::math::FSelect(b.m_y - a.m_y, a.m_y, b.m_y);
+}
+
+nw4r::g3d::ResNode MuObject::getNode(const char* nodeName) {
+    nw4r::g3d::ResMdl mdl = m_sceneModel->m_resMdl;
+    return mdl.GetResNode(nodeName);
+}
+
+u32 MuObject::getNodeID(const char* nodeName) {
+    nw4r::g3d::ResMdl mdl = m_sceneModel->m_resMdl;
+    nw4r::g3d::ResNode node = mdl.GetResNode(nodeName);
+    return node.IsValid() ? node->m_nodeIndex : 0;
+}
+
+Matrix MuObject::getNodeMatrix(const char* nodeName) {
+    nw4r::g3d::ResMdl mdl = m_sceneModel->m_resMdl;
+    nw4r::g3d::ResNode node = mdl.GetResNode(nodeName);
+    Vec3f trans(node->m_translation.m_x, node->m_translation.m_y, node->m_translation.m_z);
+    Vec3f rot(node->m_rotation.m_x, node->m_rotation.m_y, node->m_rotation.m_z);
+    Vec3f scale(node->m_scale.m_x, node->m_scale.m_y, node->m_scale.m_z);
+    Matrix mtx(true);
+    mtx.setSRT(scale, rot, trans);
+    return mtx;
+}
+
+Vec3f MuObject::getGlobalPosition(int resNode) {
+    return nwSMGetGlobalPosition(m_sceneModel, resNode);
+}
+
+Vec3f MuObject::getGlobalPosition(const char* nodeName) {
+    nw4r::g3d::ResMdl mdl = m_sceneModel->m_resMdl;
+    nw4r::g3d::ResNode node = mdl.GetResNode(nodeName);
+    return nwSMGetGlobalPosition(m_sceneModel, node.IsValid() ? node->m_nodeIndex : 0);
+}
+
+Vec3f MuObject::getGlobalPosition() {
+    nw4r::g3d::ResMdl mdl = m_sceneModel->m_resMdl;
+    nw4r::g3d::ResNode node = mdl.GetResNode(m_baseNode);
+    return nwSMGetGlobalPosition(m_sceneModel, node.IsValid() ? node->m_nodeIndex : 0);
+}
+
+void MuObject::getAnimScale(Vec3f* scl, const char* name) {
+    nw4r::g3d::ResMdl mdl = m_sceneModel->m_resMdl;
+    nw4r::g3d::ResNode node = mdl.GetResNode(name);
+    scl->m_x = node->m_scale.m_x;
+    scl->m_y = node->m_scale.m_y;
+    scl->m_z = node->m_scale.m_z;
 }
 
 void MuObject::setFrameNode(float frame) {
