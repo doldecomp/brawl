@@ -330,6 +330,7 @@ config.libs = [
             Object(NonMatching, "sora/ip/ip_network_producer.cpp"),
             Object(Matching, "sora/ef/ef_screen_handle.cpp"),
             Object(Matching, "sora/ec/ec_trace_mgr.cpp"),
+            Object(NonMatching, "sora/ms/ms_message.cpp"),
             Object(Matching, "sora/snd/snd_init_thread.cpp"),
             Object(Matching, "sora/mv/mv_THPAudioDecode.cpp"),
             Object(Matching, "sora/mv/mv_THPRead.cpp"),

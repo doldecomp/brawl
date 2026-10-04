@@ -13,7 +13,8 @@
 namespace nw4r {
     namespace g3d {
         class ScnMdlSimple;
-    }
+        class ScnObj;
+    } // namespace g3d
 } // namespace nw4r
 
 struct FontData {
@@ -32,18 +33,33 @@ struct FontData {
 
 class Message;
 
+namespace nw4r {
+    namespace g3d {
+        // Draw callback interface registered on a ScnMdlSimple (implemented elsewhere).
+        class IScnObjCallback {
+        public:
+            virtual ~IScnObjCallback() {}
+            virtual void ExecCallback_CALC_WORLD();
+            virtual void ExecCallback_CALC_MAT();
+            virtual void ExecCallback_CALC_VIEW();
+            virtual void ExecCallback_DRAW_OPA();
+            virtual void ExecCallback_DRAW_XLU(int pass);
+        };
+    } // namespace g3d
+} // namespace nw4r
+
 // Draw callback registered on a ScnMdlSimple so that a message buffer is drawn with the model.
-class msScnObjCallback {
+class msScnObjCallback : public nw4r::g3d::IScnObjCallback {
 public:
-    int m_idx;         // 0x04, index of the message buffer to draw (-1 = base buffer)
-    float m_scale;     // 0x08
-    Message* m_msg;    // 0x0c
-    u8 m_zCompare;     // 0x10
-    int m_zUpdate;     // 0x14
-    msScnObjCallback* m_next; // 0x18
-    void* m_scnMdl;    // 0x1c
-    int m_nodeId;      // 0x20
-    u8 m_enable;       // 0x24
+    int m_idx;                // 0x04, index of the message buffer to draw (-1 = base buffer)
+    float m_scale;            // 0x08
+    Message* m_msg;           // 0x0c
+    u8 m_zCompare;            // 0x10
+    int m_zUpdate;            // 0x14
+    msScnObjCallback* m_next; // 0x18, previously registered callback
+    void* m_scnMdl;           // 0x1c
+    int m_nodeId;             // 0x20
+    u8 m_enable;              // 0x24
 
     msScnObjCallback()
         : m_idx(0)
@@ -54,26 +70,52 @@ public:
         , m_next(0)
         , m_enable(1) {}
     virtual ~msScnObjCallback() {}
-    virtual void ExecCallback0();
-    virtual void ExecCallback1();
-    virtual void ExecCallback2();
-    virtual void ExecCallback3();
-    virtual void ExecCallback4(int pass);
+    virtual void ExecCallback_DRAW_XLU(int pass);
 };
 
 // One command buffer for a message (0x54 bytes).
 struct MsgBuf {
-    int m_rect[4];  // 0x00
-    int m_10;       // 0x10
-    u8* m_14;       // 0x14
-    u8 m_18[4];     // 0x18
-    u8 m_1c;        // 0x1c
-    u8 m_1d;        // 0x1d
-    u8 m_1e[2];
+    int m_rect[4];         // 0x00, delay-print parameters (16.16)
+    int m_10;              // 0x10
+    u8* m_14;              // 0x14
+    u8 m_18[4];            // 0x18
+    u8 m_1c;               // 0x1c
+    u8 m_1d;               // 0x1d
+    u8 m_1e[2];            // 0x1e
     msScnObjCallback m_cb; // 0x20
-    int m_size;     // 0x48
-    int m_pos;      // 0x4c
-    u8* m_data;     // 0x50
+    int m_size;            // 0x48
+    int m_pos;             // 0x4c
+    u8* m_data;            // 0x50
+
+    MsgBuf(int size, Heaps::HeapType heap)
+        : m_pos(0) {
+        m_data = new (heap) u8[size];
+        m_size = size;
+        m_rect[0] = 0;
+        m_rect[1] = 0;
+        m_rect[2] = 0;
+        m_rect[3] = 0;
+        m_10 = 0;
+        m_18[0] = 0;
+        m_1c = 0;
+        m_1d = 0;
+        m_14 = 0;
+    }
+    ~MsgBuf() { delete[] m_data; }
+};
+
+u8* floatToBytes(u8* out, float f);
+int MsgParseChar(const u8* p, int* kind, u8* out, int flag);
+int strncmp_(const char* a, const char* b, unsigned long n);
+void SetFontResource(ms::CharWriter* w, int id);
+u8* floatToShortBytes(u8* out, float f);
+
+// Object at Message+0xa4 (tag/font set); constructed and destroyed by out-of-line code.
+class MsgTagProc {
+public:
+    u8 m_data[0x110];
+    MsgTagProc();
+    ~MsgTagProc();
 };
 
 namespace ms {
@@ -81,26 +123,46 @@ namespace ms {
     class TextWriterBase : public CharWriter {
     public:
         u8 m_70[4];
-        float m_74;
-        float m_78;
-        float m_7c;
-        float m_80;
+        void SetWindowRect(float l, float t, float r, float b) {
+            m_74 = (r - l >= 0.0f) ? l : r;
+            m_78 = (b - t >= 0.0f) ? t : b;
+            m_7c = (r - l >= 0.0f) ? r : l;
+            m_80 = (b - t >= 0.0f) ? b : t;
+        }
+        float m_74; // window rect, min x
+        float m_78; // min y
+        float m_7c; // max x
+        float m_80; // max y
         float m_84;
-        u8 m_88[0x14];
-        MsgBuf* m_curBuf; // 0x9c
+        float m_88;
+        float m_8c;
+        int m_90;
+        u32 m_flags;           // 0x94
+        MsgTagProc* m_tagProcPtr; // 0x98
+        MsgBuf* m_curBuf;      // 0x9c
+
+        TextWriterBase();
+        ~TextWriterBase();
+
+        void SetParam8C(float f);
+        void SetParam88(float f);
+        float GetParam88();
+        int GetParam90();
+        void SetFlags(u32 flags);
+        u32 GetFlags();
+        void SetTagProcessor(MsgTagProc* p);
+        void GetCharRect(float* rect, const u8* str, int len);
+        void PrintBytes(const char* str, int len);
+        static int GetBufferSize();
     };
 } // namespace ms
-
-// Object at Message+0xa4 (font/tag processor); constructed/destroyed by out-of-line code.
-struct MsgTagProc {
-    u8 m_data[0x110];
-};
 
 class Message : public ms::TextWriterBase<char> {
 public:
     virtual ~Message();
-    MsgTagProc m_tagProc;   // 0xa4
-    nw4r::ut::Color m_1b4;  // 0x1b4
+
+    MsgTagProc m_tagProc;  // 0xa4
+    GXColor m_1b4;        // 0x1b4
     float m_1b8;
     float m_1bc;
     int m_1c0;
@@ -132,6 +194,16 @@ public:
     void printf(const char* format, ...);
 
     // Not in the symbol map under a name; named from behaviour.
+    void put(u8 b) {
+        MsgBuf* buf = m_cur;
+        buf->m_data[buf->m_pos++] = b;
+    }
+    void putBytes(const u8* p, int n) {
+        MsgBuf* buf = m_cur;
+        for (int i = 0; i < n; i++) {
+            buf->m_data[buf->m_pos++] = p[i];
+        }
+    }
     void setWindowRect(u32 color, u8 width);
     void setWidthModeAuto(u8 v);
     void setCharSpace(float f1, float f2);
@@ -145,14 +217,22 @@ public:
     void detachMsgBuf(nw4r::g3d::ScnMdlSimple* sceneModel);
     void vprintf(const char* format, va_list args);
     void write(const void* data, int len);
+    void writeString(const char* str);
     bool getTag(char** tagOut);
-    bool isEndDelayPrint();
+    u8 isEndDelayPrint();
+    const u8* advanceDelayPrint(const u8* p);
     void init(bool, int);
     void writeIndexData(void* msgbin, u32 index);
     void setBufField34(int index, int value);
+    void getPrintRect(float* rect, const u8* data);
 
     static u32 utf8to16(wchar_t* dst, const char* src);
     static u32 utf16to8(char* dst, const wchar_t* src);
     static void getPrintIndexData(void* msgbin, u32 index, char** outStr, u32* outLen);
     static void drawBoxLine(s32 p1, s32 p2, s32 p3, float f1, float f2, float f3, float f4, float f5);
+    static int writeTagClear(u8* dst);
+    static bool appendSubstr(char* dst, const char* src, int skip, int count);
+    static void fullToHalf(char* dst, const char* src);
+    static int halfToFull(char* dst, const char* src);
+    static int stripTags(const u8* src, int maxLen, u8* dst, int* outLen);
 };

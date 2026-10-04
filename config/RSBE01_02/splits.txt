@@ -188,6 +188,13 @@ sora/ec/ec_trace_mgr.cpp:
 	.text       start:0x80065458 end:0x80065B60
 	.sdata2     start:0x805A1988 end:0x805A1990
 
+sora/ms/ms_message.cpp:
+	.text       start:0x800696B4 end:0x8006C5A0
+	.rodata     start:0x804075C8 end:0x80407688
+	.data       start:0x80453F20 end:0x80454178
+	.sdata      start:0x8059DB10 end:0x8059DB48
+	.sdata2     start:0x805A19E8 end:0x805A1A38
+
 sora/snd/snd_init_thread.cpp:
 	.text       start:0x800797AC end:0x800798E8
 	.data       start:0x80454550 end:0x80454580
