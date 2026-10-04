@@ -1119,13 +1119,17 @@ int Message::stripTags(const u8* src, int len, int unused, u8* dst) {
                 p += 2;
                 break;
             case 11: {
+                int len1;
+                int n;
+                int len2;
+                u8* lenPtr;
                 *dst++ = *(volatile u8*)p;
-                u8* lenPtr = dst;
-                int len1 = p[1];
+                lenPtr = dst;
+                len1 = p[1];
                 dst += 2;
-                int len2 = p[2];
+                len2 = p[2];
                 p += 3;
-                int n = stripTags(p, len1, 0xffff, tmp);
+                n = stripTags(p, len1, 0xffff, tmp);
                 lenPtr[0] = n;
                 memcpy(dst, tmp, n);
                 p += len1;
