@@ -417,10 +417,7 @@ void Message::printMsgBuf(FontData::FONT_RESOURCE fontId) {
                 u8 b = p[2];
                 u32 aLow = a & 3;
                 u32 bLow = b & 3;
-                u32 flags = GetFlags();
-                u32 mask = ((b << 2) & 0x30) + (((b << 4) & 0x300) + bLow);
-                u32 value = ((a << 2) & 0x30) + (((a << 4) & 0x300) + aLow);
-                SetFlags(value | (flags & ~mask));
+                SetFlags((GetFlags() & ~(((b << 4) & 0x300) + (bLow + ((b << 2) & 0x30)))) | (((a << 4) & 0x300) + (aLow + ((a << 2) & 0x30))));
                 if (bLow != 0 && aLow == 0) {
                     SetCursorX(0.0f);
                 }
@@ -584,7 +581,8 @@ static void drawCallbackProjection() {
     GXSetViewport(0.0f, 0.0f, 640.0f, 480.0f, 0.0f, 1.0f);
     GXSetScissorBoxOffset(0, 0);
     Mtx44 proj;
-    C_MTXOrtho(proj, 0.0f, 480.0f, 0.0f, 640.0f, 0.0f, 1.0f);
+    float one = 1.0f;
+    C_MTXOrtho(proj, 0.0f, 480.0f, 0.0f, 640.0f, 0.0f, one);
     GXSetProjection(proj, GX_ORTHOGRAPHIC);
     Mtx44 mtx;
     PSMTXIdentity((f32(*)[4])mtx);
@@ -656,26 +654,22 @@ void Message::getPrintRect(float* rect, const u8* p) {
     MsgBuf* buf = m_cur;
     buf->m_data[buf->m_pos] = 1;
     while (*p != 1) {
-        u8 c = *p;
-        if (c < 0x20 && c <= 0x1a) {
-            switch (c) {
+        if (*p < 0x20) {
+            switch (*p) {
             case 0:
                 p++;
                 break;
-            case 5:
-                p += 2;
-                continue;
             case 0x17: {
-                s16 a = (p[1] << 8) + p[2];
-                s16 b = (p[3] << 8) + p[4];
-                s16 cc = (p[5] << 8) + p[6];
-                s16 d = (p[7] << 8) + p[8];
+                s16 a = p[2] + (p[1] << 8);
+                s16 b = p[4] + (p[3] << 8);
+                s16 cc = p[6] + (p[5] << 8);
+                s16 d = p[8] + (p[7] << 8);
                 SetWindowRect(a, b, cc, d);
                 SetCursor(0.0f, 0.0f, 0.0f);
                 rect[0] = 0.0f;
                 rect[1] = 0.0f;
-                rect[2] = (float)(s16)(cc - a);
-                rect[3] = (float)(s16)(d - b);
+                rect[2] = (float)(cc - a);
+                rect[3] = (float)(d - b);
                 p += 9;
                 continue;
             }
@@ -684,20 +678,20 @@ void Message::getPrintRect(float* rect, const u8* p) {
                 u8 b = p[2];
                 u32 aLow = a & 3;
                 u32 bLow = b & 3;
-                u32 flags = GetFlags();
-                u32 mask = (((b << 4) & 0x300) + bLow) + ((b << 2) & 0x30);
-                u32 value = (((a << 4) & 0x300) + aLow) + ((a << 2) & 0x30);
-                SetFlags(value | (flags & ~mask));
+                SetFlags((GetFlags() & ~(((b << 4) & 0x300) + (bLow + ((b << 2) & 0x30)))) | (((a << 4) & 0x300) + (aLow + ((a << 2) & 0x30))));
                 if (bLow != 0 && aLow == 0) {
                     SetCursorX(0.0f);
                 }
                 p += 3;
                 continue;
             }
+            case 0x1a:
+                p += 2;
+                continue;
             case 0x19:
                 p += 6;
                 continue;
-            case 0x1a:
+            case 5:
                 p += 2;
                 continue;
             }
@@ -711,10 +705,14 @@ void Message::getPrintRect(float* rect, const u8* p) {
             r[3] = 0.0f;
             GetCharRect(r, p, len);
             p += len;
-            rect[0] = (rect[0] > r[0]) ? r[0] : rect[0];
-            rect[1] = (rect[1] > r[1]) ? r[1] : rect[1];
-            rect[2] = (rect[2] < r[2]) ? r[2] : rect[2];
-            rect[3] = (rect[3] < r[3]) ? r[3] : rect[3];
+            float v0 = r[0];
+            rect[0] = (rect[0] > v0) ? v0 : rect[0];
+            float v1 = r[1];
+            rect[1] = (rect[1] > v1) ? v1 : rect[1];
+            float v2 = r[2];
+            rect[2] = (rect[2] < v2) ? v2 : rect[2];
+            float v3 = r[3];
+            rect[3] = (rect[3] < v3) ? v3 : rect[3];
         }
     }
 }

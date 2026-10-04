@@ -131,10 +131,12 @@ namespace ms {
         u8 m_70[4];
         nw4r::ut::Rect m_rect; // 0x74, window rectangle (left, top, right, bottom)
         void SetWindowRect(float l, float t, float r, float b) {
-            m_rect.top = nw4r::math::FSelect(b - t, t, b);
-            m_rect.left = nw4r::math::FSelect(r - l, l, r);
-            m_rect.right = nw4r::math::FSelect(r - l, r, l);
-            m_rect.bottom = nw4r::math::FSelect(b - t, b, t);
+            float h = b - t;
+            float w = r - l;
+            m_rect.top = nw4r::math::FSelect(h, t, b);
+            m_rect.left = nw4r::math::FSelect(w, l, r);
+            m_rect.right = nw4r::math::FSelect(w, r, l);
+            m_rect.bottom = nw4r::math::FSelect(h, b, t);
         }
         float m_84;
         float m_88;
