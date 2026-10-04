@@ -9,6 +9,23 @@ struct Quatf {
     float x, y, z, w;
 };
 
+static inline float atan2f_(float y, float x) {
+    return atan2(y, x);
+}
+
+static inline void quatSet(Quatf* q, float x, float y, float z, float w) {
+    q->x = x;
+    q->y = y;
+    q->z = z;
+    q->w = w;
+}
+
+static inline void vecSet(Vec3f* v, float x, float y, float z) {
+    v->m_x = x;
+    v->m_y = y;
+    v->m_z = z;
+}
+
 static f32 Unit01[2] = { 0.0f, 1.0f };
 
 extern "C" {
@@ -226,6 +243,7 @@ extern "C" asm void fn_8003E828(const Matrix* mtx, const Vec3f* scale, Matrix* o
     blr
 }
 
+#pragma scheduling off
 extern "C" void fn_8003E87C(Matrix* mtx, float angle) {
     float s = sin(angle);
     float c = cos(angle);
@@ -235,7 +253,9 @@ extern "C" void fn_8003E87C(Matrix* mtx, float angle) {
     mtx->m[2][1] = s;
     mtx->m[2][2] = c;
 }
+#pragma scheduling reset
 
+#pragma scheduling off
 extern "C" void fn_8003E918(Matrix* mtx, float angle) {
     float s = sin(angle);
     float c = cos(angle);
@@ -245,7 +265,9 @@ extern "C" void fn_8003E918(Matrix* mtx, float angle) {
     mtx->m[2][0] = -s;
     mtx->m[2][2] = c;
 }
+#pragma scheduling reset
 
+#pragma scheduling off
 extern "C" void fn_8003E9B4(Matrix* mtx, float angle) {
     float s = sin(angle);
     float c = cos(angle);
@@ -255,6 +277,7 @@ extern "C" void fn_8003E9B4(Matrix* mtx, float angle) {
     mtx->m[1][0] = s;
     mtx->m[1][1] = c;
 }
+#pragma scheduling reset
 
 extern "C" void fn_8003EA50(Matrix* mtx, const Vec3f* angles) {
     Matrix rot(true);
@@ -297,7 +320,7 @@ extern "C" void fn_8003EBF4(Matrix* mtx, float angle) {
 
 // euler angles -> rotation matrix
 extern "C" void fn_8003ECA0(Matrix* mtx, float x, float y, float z) {
-    float sx, cx, sy, cy, sz, cz;
+    float sx, sy, sz, cx, cy, cz;
     mtSinCosf(x, &sx, &cx);
     mtSinCosf(y, &sy, &cy);
     mtSinCosf(z, &sz, &cz);
@@ -320,12 +343,12 @@ void Matrix::getRotate(Vec3f* outRot) {
     fn_8003E5B4(&tmp);
     float len = mtSqrtf(tmp.m[0][0] * tmp.m[0][0] + tmp.m[1][0] * tmp.m[1][0]);
     if (len > 0.0001f) {
-        outRot->m_x = atan2(tmp.m[2][1], tmp.m[2][2]);
-        outRot->m_y = atan2(-tmp.m[2][0], len);
-        outRot->m_z = atan2(tmp.m[1][0], tmp.m[0][0]);
+        outRot->m_x = atan2f_(tmp.m[2][1], tmp.m[2][2]);
+        outRot->m_y = atan2f_(-tmp.m[2][0], len);
+        outRot->m_z = atan2f_(tmp.m[1][0], tmp.m[0][0]);
     } else {
-        outRot->m_x = atan2(-tmp.m[1][2], tmp.m[1][1]);
-        outRot->m_y = atan2(-tmp.m[2][0], len);
+        outRot->m_x = atan2f_(-tmp.m[1][2], tmp.m[1][1]);
+        outRot->m_y = atan2f_(-tmp.m[2][0], len);
         outRot->m_z = 0.0f;
     }
 }
@@ -346,7 +369,7 @@ extern "C" void fn_8003F074(Matrix* mtx, float x, float y, float z) {
 }
 
 void Matrix::setSRT(const Vec3f& scale, const Vec3f& rot, const Vec3f& trans) {
-    float sx, cx, sy, cy, sz, cz;
+    float sx, sy, sz, cx, cy, cz;
     mtSinCosf(rot.m_x, &sx, &cx);
     mtSinCosf(rot.m_y, &sy, &cy);
     mtSinCosf(rot.m_z, &sz, &cz);
@@ -366,20 +389,18 @@ void Matrix::setSRT(const Vec3f& scale, const Vec3f& rot, const Vec3f& trans) {
 
 // decompose into scale, rotation, translation
 extern "C" void fn_8003F2AC(const Matrix* mtx, Vec3f* scale, Vec3f* rot, Vec3f* trans) {
-    trans->m_x = mtx->m[0][3];
-    trans->m_y = mtx->m[1][3];
-    trans->m_z = mtx->m[2][3];
+    vecSet(trans, mtx->m[0][3], mtx->m[1][3], mtx->m[2][3]);
     fn_8003E6DC(mtx, scale);
     Matrix tmp((Matrix*)mtx);
     fn_8003E5B4(&tmp);
     float len = mtSqrtf(tmp.m[0][0] * tmp.m[0][0] + tmp.m[1][0] * tmp.m[1][0]);
     if (len > 0.0001f) {
-        rot->m_x = atan2(tmp.m[2][1], tmp.m[2][2]);
-        rot->m_y = atan2(-tmp.m[2][0], len);
-        rot->m_z = atan2(tmp.m[1][0], tmp.m[0][0]);
+        rot->m_x = atan2f_(tmp.m[2][1], tmp.m[2][2]);
+        rot->m_y = atan2f_(-tmp.m[2][0], len);
+        rot->m_z = atan2f_(tmp.m[1][0], tmp.m[0][0]);
     } else {
-        rot->m_x = atan2(-tmp.m[1][2], tmp.m[1][1]);
-        rot->m_y = atan2(-tmp.m[2][0], len);
+        rot->m_x = atan2f_(-tmp.m[1][2], tmp.m[1][1]);
+        rot->m_y = atan2f_(-tmp.m[2][0], len);
         rot->m_z = 0.0f;
     }
 }
@@ -433,7 +454,7 @@ asm void Matrix::mul(const Matrix* mulMatrix, Matrix* outMatrix) const {
 void Matrix::inverse(Matrix* out) const {
     float det = m[2][2] * (m[0][0] * m[1][1]) + m[2][0] * (m[0][1] * m[1][2]) + m[2][1] * (m[0][2] * m[1][0])
               - m[0][2] * (m[2][0] * m[1][1]) - m[2][2] * (m[1][0] * m[0][1]) - m[1][2] * (m[0][0] * m[2][1]);
-    if (fabsf(det) < 1.1920929e-7f) {
+    if ((f32)fabs(det) < 1.1920929e-7f) {
         out->setIdentity();
         return;
     }
@@ -495,8 +516,8 @@ extern "C" void fn_8003F8FC(Quatf* out, float angle, const Vec3f* axis) {
     fn_8003DEE0(&n, axis);
     out->x = n.m_x * s;
     out->y = n.m_y * s;
-    out->w = c;
     out->z = n.m_z * s;
+    out->w = c;
 }
 
 extern "C" asm void fn_8003F9A8(const Quatf* a, const Quatf* b, Quatf* out) {
@@ -538,14 +559,9 @@ extern "C" void fn_8003FA14(const Quatf* q, const Vec3f* v, Vec3f* out) {
     conj.z = -q->z;
     conj.w = q->w;
     Quatf vq;
-    vq.x = v->m_x;
-    vq.y = v->m_y;
-    vq.z = v->m_z;
-    vq.w = 0.0f;
+    quatSet(&vq, v->m_x, v->m_y, v->m_z, 0.0f);
     Quatf tmp;
     fn_8003F9A8(q, &vq, &tmp);
     fn_8003F9A8(&tmp, &conj, &tmp);
-    out->m_x = tmp.x;
-    out->m_y = tmp.y;
-    out->m_z = tmp.z;
+    vecSet(out, tmp.x, tmp.y, tmp.z);
 }
