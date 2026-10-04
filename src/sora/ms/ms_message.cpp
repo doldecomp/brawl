@@ -391,23 +391,22 @@ void ms::CharWriter::SetEdge(float width, nw4r::ut::Color color) {
 }
 
 void Message::printMsgBuf(FontData::FONT_RESOURCE fontId) {
+    float textWidth = 0.0f;
     m_unknownFontWidthModifier = 1.0f;
     m_84 = 1.0f;
     init(false, fontId);
-    float textWidth = 0.0f;
     const u8* p = m_cur->m_data;
     while (*p != 1) {
-        u8 c = *p;
-        if (c < 0x20 && c <= 0x1a) {
-            switch (c) {
+        if (*p < 0x20) {
+            switch (*p) {
             case 0:
                 p++;
                 break;
             case 0x17: {
-                s16 a = (p[1] << 8) + p[2];
-                s16 b = (p[3] << 8) + p[4];
-                s16 cc = (p[5] << 8) + p[6];
-                s16 d = (p[7] << 8) + p[8];
+                s16 a = p[2] + (p[1] << 8);
+                s16 b = p[4] + (p[3] << 8);
+                s16 cc = p[6] + (p[5] << 8);
+                s16 d = p[8] + (p[7] << 8);
                 SetWindowRect(a, b, cc, d);
                 SetCursor(0.0f, 0.0f, 0.0f);
                 p += 9;
@@ -419,8 +418,8 @@ void Message::printMsgBuf(FontData::FONT_RESOURCE fontId) {
                 u32 aLow = a & 3;
                 u32 bLow = b & 3;
                 u32 flags = GetFlags();
-                u32 mask = (((b << 4) & 0x300) + bLow) + ((b << 2) & 0x30);
-                u32 value = (((a << 4) & 0x300) + aLow) + ((a << 2) & 0x30);
+                u32 mask = ((b << 2) & 0x30) + (((b << 4) & 0x300) + bLow);
+                u32 value = ((a << 2) & 0x30) + (((a << 4) & 0x300) + aLow);
                 SetFlags(value | (flags & ~mask));
                 if (bLow != 0 && aLow == 0) {
                     SetCursorX(0.0f);
@@ -440,13 +439,13 @@ void Message::printMsgBuf(FontData::FONT_RESOURCE fontId) {
                 }
                 continue;
             case 0x19: {
-                u32 color = (p[1] << 24) + (p[2] << 16) + (p[3] << 8) + p[4];
+                u32 color = ((p[1] << 24) + (p[2] << 16)) + (p[4] + (p[3] << 8));
                 u8 lineWidth = p[5];
                 p += 6;
                 float scaleX = 1.0f;
                 float scaleY = scaleX;
                 float zOff = 0.0f;
-                if (_76[0] != 0) {
+                if ((u8)_76[0] != 0) {
                     scaleX = m_scale;
                     zOff = 0.01f;
                     scaleY = -scaleX;
@@ -471,9 +470,10 @@ void Message::printMsgBuf(FontData::FONT_RESOURCE fontId) {
                     GetCharRect(r, p, len);
                     textWidth = r[2] - r[0];
                     if (m_rect.right - m_rect.left < textWidth) {
+                        float scale = GetScaleH();
                         float ratio = (m_rect.right - m_rect.left) / textWidth;
                         m_84 = ratio;
-                        m_unknownFontWidthModifier = GetScaleH() * ratio;
+                        m_unknownFontWidthModifier = scale * ratio;
                     }
                 }
                 continue;
@@ -488,14 +488,15 @@ void Message::printMsgBuf(FontData::FONT_RESOURCE fontId) {
             r[2] = 0.0f;
             r[3] = 0.0f;
             if (textWidth == 0.0f) {
-                if ((GetFlags() & 0x100) || (GetFlags() & 0x40) || (GetFlags() & 2) || (GetFlags() & 1)) {
+                if ((GetFlags() & 0x100) || (GetFlags() & 0x200) || (GetFlags() & 2) || (GetFlags() & 1)) {
                     GetCharRect(r, p, len);
                     textWidth = r[2] - r[0];
                 }
             }
             if (GetFlags() & 2) {
                 if (textWidth != 0.0f) {
-                    float x = (m_rect.right - m_rect.left) - textWidth;
+                    float l = m_rect.left; float r = m_rect.right;
+                    float x = (r - l) - textWidth;
                     if (m_84 < 1.0f && x < 0.0f) {
                         x = 0.0f;
                     }
@@ -504,7 +505,8 @@ void Message::printMsgBuf(FontData::FONT_RESOURCE fontId) {
                 PrintBytes((const char*)p, len);
             } else if (GetFlags() & 1) {
                 if (textWidth != 0.0f) {
-                    float x = (m_rect.right - m_rect.left) - textWidth;
+                    float l = m_rect.left; float r = m_rect.right;
+                    float x = (r - l) - textWidth;
                     if (m_84 < 1.0f && x < 0.0f) {
                         x = 0.0f;
                     }
