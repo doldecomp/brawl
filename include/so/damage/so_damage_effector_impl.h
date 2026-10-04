@@ -8,20 +8,20 @@
 
 class soModuleAccesser;
 
-// Vtable order recovered from the soDamageEffectorImpl vtable and the call sites in
-// soDamageTransactorActor. Parameter lists are inferred from the call sites.
-// HYPOTHESIS: names of the slots follow the map (reqShake/reqCommonEffect/...) but the
-// mapping slot -> name for the overridden (non-stub) ones is a guess.
+// Vtable order recovered from the soDamageEffectorImpl vtable (slot -> map name) and the
+// call sites in soDamageTransactorActor (argument lists).
+// HYPOTHESIS: the parameter lists are inferred from the call sites; the slot at +0x28 is
+// pure virtual in soDamageEffectorImpl and its name here is a guess.
 class soDamageEffector : public soNull, public soNullable {
 public:
     virtual ~soDamageEffector() { }
-    virtual void reqShake();
+    virtual void reqShake(soModuleAccesser* moduleAccesser, int situation, Vec2f* normal, soCollisionAttackData* attackData, int hitStopFrame);
     virtual void reqCommonEffect();
-    virtual void reqUniqEffect(soModuleAccesser* moduleAccesser, int level, Vec2f* speed, soCollisionAttackData* attackData, int hitStopFrame);
+    virtual void reqUniqEffect(soModuleAccesser* moduleAccesser, int level, soCollisionAttackData* attackData);
     virtual void reqInvincibleEffect();
-    virtual void reqCommonEffectParam(soModuleAccesser* moduleAccesser, int level, soCollisionAttackData* attackData);
-    virtual void reqDamageGroundBeatDownEffect();
-    virtual void reqQuake(float damage, float reaction, soModuleAccesser* moduleAccesser, soCollisionAttackData* attackData);
-    virtual void reqStop(soModuleAccesser* moduleAccesser, Vec2f* normal);
-    virtual void reqTipEffect(float reaction, soModuleAccesser* moduleAccesser, int level);
+    virtual void reqDamageEffectParam(float damageAdd, float reaction, soModuleAccesser* moduleAccesser, soCollisionAttackData* attackData);
+    virtual void reqDamageGroundBeatDownEffect(soModuleAccesser* moduleAccesser, Vec2f* normal);
+    virtual void reqQuake(float frameReaction, soModuleAccesser* moduleAccesser, int level);
+    virtual void reqStop();
+    virtual void reqTipEffect();
 };

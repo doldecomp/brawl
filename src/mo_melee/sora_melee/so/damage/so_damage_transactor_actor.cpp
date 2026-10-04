@@ -3,80 +3,12 @@
 #include <so/damage/so_damage_effector_impl.h>
 #include <so/so_module_accesser.h>
 #include <so/so_value_accesser.h>
+#include <nw4r/math/math_arithmetic.h>
 #include <types.h>
 
 // MATCH-ONLY: the original reads the attack data bitfields as whole words (lwz) with unsigned extraction.
 static inline u32 getAttackDataWord(soDamage* damage, int offset) {
     return *(u32*)((u8*)&damage->m_attackData + offset);
-}
-
-float soDamageTransactorActor::getHitStopMul(soModuleAccesser* moduleAccesser) {
-    return 1.0f;
-}
-
-bool soDamageTransactorActor::isSlip(soModuleAccesser* moduleAccesser, float slipChance) {
-    return false;
-}
-
-bool soDamageTransactorActor::onCompositionDamageSpeed(soModuleAccesser* moduleAccesser, soDamage* damage, Vec2f* speed, int level) {
-    return false;
-}
-
-bool soDamageTransactorActor::isSleepStatus(soModuleAccesser* moduleAccesser) {
-    return false;
-}
-
-bool soDamageTransactorActor::isParalyzeDamage(soModuleAccesser* moduleAccesser) {
-    return false;
-}
-
-bool soDamageTransactorActor::isBindStatus(soModuleAccesser* moduleAccesser) {
-    return false;
-}
-
-bool soDamageTransactorActor::isBuryStatus(soModuleAccesser* moduleAccesser) {
-    return false;
-}
-
-void soDamageTransactorActor::addSleepTime(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog) {
-}
-
-void soDamageTransactorActor::checkCheer(float reaction, float angle, soModuleAccesser* moduleAccesser, soDamageLog* damageLog) {
-}
-
-void soDamageTransactorActor::onParalyzeDamage(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog) {
-}
-
-bool soDamageTransactorActor::checkNoReaction(soModuleAccesser* moduleAccesser) {
-    return true;
-}
-
-void soDamageTransactorActor::getDamageForReaction(soModuleAccesser* moduleAccesser) {
-}
-
-float soDamageTransactorActor::getDamageMul(soModuleAccesser* moduleAccesser) {
-    return 1.0f;
-}
-
-float soDamageTransactorActor::getReactionMul(soModuleAccesser* moduleAccesser) {
-    return 1.0f;
-}
-
-float soDamageTransactorActor::getReactionSub(soModuleAccesser* moduleAccesser) {
-    return 0.0f;
-}
-
-void soDamageTransactorActor::onGroundDamageAfter(soModuleAccesser* moduleAccesser) {
-}
-
-void soDamageTransactorActor::setFlagDownDamage3(soModuleAccesser* moduleAccesser, bool flag) {
-}
-
-bool soDamageTransactorActor::isCheckGroundDamage(soModuleAccesser* moduleAccesser) {
-    return false;
-}
-
-void soDamageTransactorActor::onFlowerDamage(soModuleAccesser* moduleAccesser, soDamage* damage) {
 }
 
 // HYPOTHESIS: reconstructed interface of the turn module (only the slots called here are known)
@@ -94,30 +26,6 @@ public:
     virtual u32 getTurnFrame();
 };
 
-
-int soDamageTransactorActor::checkDownDamage(float reaction, float angle, soModuleAccesser* moduleAccesser) {
-    soDamageTransactor* transactor = moduleAccesser->getDamageModule().getTransactor();
-    int kind = transactor->getDamageStatusKind(moduleAccesser);
-    int ret = 0;
-    switch (kind) {
-    case 1:
-    case 2:
-    case 3:
-        if (reaction >= soValueAccesser::getConstantFloat(moduleAccesser, 2025, 0)) {
-            if (reaction >= soValueAccesser::getConstantFloat(moduleAccesser, 2026, 0)) {
-                if (angle < 0.017453292f * soValueAccesser::getConstantFloat(moduleAccesser, 2027, 0)) {
-                    transactor->setFlagDownDamage3(moduleAccesser, true);
-                    ret = 3;
-                }
-            } else {
-                transactor->setFlagDownDamage3(moduleAccesser, false);
-                ret = 3;
-            }
-        }
-        break;
-    }
-    return ret;
-}
 bool soDamageTransactorActor::onDamageSub(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog, bool* isNotFlinch) {
     float reaction = damage->m_reaction;
     *isNotFlinch = true;
@@ -151,6 +59,9 @@ bool soDamageTransactorActor::onDamageSub(soModuleAccesser* moduleAccesser, soDa
     return false;
 }
 
+void soDamageTransactorActor::onFlowerDamage(soModuleAccesser* moduleAccesser, soDamage* damage) {
+}
+
 bool soDamageTransactorActor::onDamage(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog) {
     bool isNotFlinch = false;
     if (onDamageSub(moduleAccesser, damage, damageLog, &isNotFlinch) == 0) {
@@ -166,101 +77,18 @@ bool soDamageTransactorActor::onDamage(soModuleAccesser* moduleAccesser, soDamag
     return true;
 }
 
-void soDamageTransactorActor::setupDamageStatusNoReaction(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog) {
-    float frameMul = soValueAccesser::getConstantFloat(moduleAccesser, 2002, 0);
-    int level = soDamageUtilActor::getDamageLevel(moduleAccesser, damage->m_reaction * frameMul);
-    moduleAccesser->getDamageModule().getEffector()->reqCommonEffectParam(moduleAccesser, level, &damage->m_attackData);
-    int hitStopFrame = soDamageUtilActor::getDamageHitStopFrame(moduleAccesser, damage, true, 1.0f);
-    if (hitStopFrame > 0) {
-        moduleAccesser->getStopModule().setHitStopFrame(hitStopFrame, true);
-    }
-}
-
-void soDamageTransactorActor::setupDamageFlyRollStatus(float angle, float speed, soModuleAccesser* moduleAccesser, soDamageLog* damageLog) {
-    Vec2f vec(speed, 0.0f);
-    Vec2f rotated;
-    vec.rot(&rotated, angle * 0.017453292f);
-    float reaction = speed / soValueAccesser::getConstantFloat(moduleAccesser, 2010, 0);
-    float frame = reaction * soValueAccesser::getConstantFloat(moduleAccesser, 2002, 0);
-    damageLog->m_reaction = reaction;
-    damageLog->m_level = soDamage::Level_FlyRoll;
-    damageLog->m_height = -1;
-    damageLog->m_speed.m_x = 0.0f;
-    damageLog->m_speed.m_y = 0.0f;
-    damageLog->m_angle = 0.0f;
-    damageLog->m_lr = 1.0f;
-    damageLog->m_frame = frame;
-    damageLog->m_hitStopFrame = 0;
-    damageLog->m_attribute = soCollisionAttackData::Attribute_Normal;
-    damageLog->m_damageAdd = 0.0f;
-    damageLog->m_attackerTeamNo = -1;
-    damageLog->m_hitStopDelay = 1.0f;
-    damageLog->m_attackerTaskId = -1;
-    damageLog->m_isDamageAir = false;
-    damageLog->m_unk26 = false;
-    damageLog->m_isCollisionAbsolute = false;
-    damageLog->m_isMeteor = false;
-    damageLog->m_isAttackDirect = false;
-    damageLog->m_isVector365 = false;
-    damageLog->m_speed.m_x = rotated.m_x;
-    damageLog->m_speed.m_y = rotated.m_y;
-    onDamageChangeStatusRequest(5, moduleAccesser, damageLog);
-}
-
-void soDamageTransactorActor::setupSpeedDamage(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog) {
-    Vec2f speed;
-    Vec2f attackSpeed;
-    Vec2f::copy(attackSpeed, damage->m_speed);
-    float angle = soDamageUtilActor::getDamageAngle(moduleAccesser, damage->m_reaction, damage->m_lr, damage->m_attackData.m_vector, &attackSpeed);
-    speed.m_x = -damage->m_lr * (float)cos(angle);
-    speed.m_y = sin(angle);
-    float mul = damage->m_reaction * soValueAccesser::getConstantFloat(moduleAccesser, 2010, 0);
-    soKineticEnergy::AttributeFlag attr(soKineticEnergy::ATTRIBUTE_MASK_DAMAGE);
-    speed.m_x *= mul;
-    speed.m_y *= mul;
-    Vec2f sum;
-    sum = moduleAccesser->getKineticModule().getSumSpeed(attr);
-    if (sum.m_x * speed.m_x + sum.m_y * speed.m_y >= 0.0f) {
-        speed = speed - sum;
-    }
-    Vec3f speed3(speed.m_x, speed.m_y, 0.0f);
-    moduleAccesser->getKineticModule().addSpeedOutside(soKineticEnergy::Outside_Attack, &speed3);
-}
-
-void soDamageTransactorActor::setupDamageStatusTurn(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog) {
-    int situationKind = moduleAccesser->getSituationModule().getKind();
-    const soModuleEnumeration* modules = moduleAccesser->m_enumerationStart;
-    soTurnModuleLocal* turnModule = (soTurnModuleLocal*)modules->m_turnModule;
-    float lr = modules->m_postureModule->getLr();
-    turnModule->startTurn(lr, soValueAccesser::getConstantIndefinite(moduleAccesser, 0xA411, 0), true, true);
-    moduleAccesser->getStopModule().setOtherStop(turnModule->getTurnFrame());
-    Vec2f speed;
-    Vec2f attackSpeed;
-    Vec2f::copy(attackSpeed, damage->m_speed);
-    float angle = soDamageUtilActor::getDamageAngle(moduleAccesser, damage->m_reaction, damage->m_lr, damage->m_attackData.m_vector, &attackSpeed);
-    speed.m_x = damage->m_lr * (float)cos(angle);
-    speed.m_y = sin(angle);
-    if (situationKind == 0) {
-        speed = speed * soValueAccesser::getConstantFloat(moduleAccesser, 2024, 0);
-    } else {
-        speed = speed * soValueAccesser::getConstantFloat(moduleAccesser, 2023, 0);
-    }
-    damageLog->m_speed.m_x = speed.m_x;
-    damageLog->m_speed.m_y = speed.m_y;
-    damageLog->m_angle = angle;
-    damageLog->m_attribute = (soCollisionAttackData::Attribute)(getAttackDataWord(damage, 0x30) & 0x1f);
-    Vec3f speed3(speed.m_x, speed.m_y, 0.0f);
-    moduleAccesser->getKineticModule().addSpeedOutside(soKineticEnergy::Outside_Attack, &speed3);
-    moduleAccesser->getDamageModule().toTurnDamage();
-}
-
 void soDamageTransactorActor::setupDamageStatusNormal(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog, int unk) {
+    float speedMul;
+    float newLr;
+    Vec2f groundNormal;
+    Vec2f dir;
+    Vec2f speed;
     int situationKind = moduleAccesser->getSituationModule().getKind();
     int statusKind = getDamageStatusKind(moduleAccesser);
     float lr = moduleAccesser->getPostureModule().getLr();
+    u32 attribute = getAttackDataWord(damage, 0x30) & 0x1f;
     int forcedStatus = 0;
     bool isDamageAir = true;
-    int attribute = getAttackDataWord(damage, 0x30) & 0x1f;
     bool isGround = false;
     int situation = moduleAccesser->getSituationModule().getKind();
     float reaction = damage->m_reaction;
@@ -271,8 +99,8 @@ void soDamageTransactorActor::setupDamageStatusNormal(soModuleAccesser* moduleAc
     float angle = soDamageUtilActor::getDamageAngle(moduleAccesser, reaction, damage->m_lr, damage->m_attackData.m_vector, &attackSpeed);
     bool isMeteor = soDamageUtilActor::checkDamageMeteor(moduleAccesser, damage->m_attackData.m_vector);
     float damageLr = damage->m_lr;
-    float newLr = damageLr;
-    float speedMul = reaction * soValueAccesser::getConstantFloat(moduleAccesser, 2010, 0);
+    newLr = damageLr;
+    speedMul = reaction * soValueAccesser::getConstantFloat(moduleAccesser, 2010, 0);
     int height = getDamageHeight(moduleAccesser, damage->m_collisionLog.m_damageIndex);
     if (statusKind == 15) {
         forcedStatus = 15;
@@ -282,12 +110,12 @@ void soDamageTransactorActor::setupDamageStatusNormal(soModuleAccesser* moduleAc
         if (statusKind != 15 && level >= 2) {
             forcedStatus = 15;
             float halfPi = 1.5707964f;
-            float cx = (float)cos(angle) + (float)cos(halfPi);
-            float sy = (float)sin(angle) + (float)sin(halfPi);
-            if (cx * cx + sy * sy <= 0.0001f) {
+            dir.m_x = (float)cos(angle) + (float)cos(halfPi);
+            dir.m_y = (float)sin(angle) + (float)sin(halfPi);
+            if (dir.m_x * dir.m_x + dir.m_y * dir.m_y <= 0.0001f) {
                 angle = 0.0f;
             } else {
-                angle = atan2(sy, cx);
+                angle = atan2(dir.m_y, dir.m_x);
             }
         }
         break;
@@ -334,7 +162,6 @@ void soDamageTransactorActor::setupDamageStatusNormal(soModuleAccesser* moduleAc
     if (forcedStatus != 0) {
         level = 2;
     }
-    Vec2f speed;
     if (damage->m_attackData.m_vector == 365) {
         speed.m_x = damage->m_speed.m_x;
         speed.m_y = damage->m_speed.m_y;
@@ -342,21 +169,23 @@ void soDamageTransactorActor::setupDamageStatusNormal(soModuleAccesser* moduleAc
         speed.m_x = -damageLr * (speedMul * (float)cos(angle));
         speed.m_y = speedMul * (float)sin(angle);
     }
-    Vec2f groundNormal;
     if (situation == 0) {
         Vec2f normal = moduleAccesser->getGroundModule().getTouchNormal(8, 0);
         isGround = true;
         float groundAngle;
         float lenProduct = (normal.m_x * normal.m_x + normal.m_y * normal.m_y) * (speed.m_x * speed.m_x + speed.m_y * speed.m_y);
-        groundNormal = normal;
+        groundNormal.m_x = normal.m_x;
+        groundNormal.m_y = normal.m_y;
         if (0.0f == lenProduct) {
             groundAngle = 0.0f;
         } else {
             float dot = normal.m_x * speed.m_x + normal.m_y * speed.m_y;
             float c = dot * rsqrtf(lenProduct);
-            if (c < -1.0f) c = -1.0f;
-            if (c > 1.0f) c = 1.0f;
-            groundAngle = acos(c);
+            const float hi = 1.0f;
+            const float lo = -1.0f;
+            float clamped = nw4r::math::FSelect(c - lo, c, lo);
+            clamped = nw4r::math::FSelect(clamped - hi, hi, clamped);
+            groundAngle = acos(clamped);
         }
         if (0.0f == angle && level > 2) {
             level = 2;
@@ -371,7 +200,7 @@ void soDamageTransactorActor::setupDamageStatusNormal(soModuleAccesser* moduleAc
             statusKind = 4;
             if (groundAngle > 1.5707964f + soValueAccesser::getConstantFloat(moduleAccesser, 2013, 0)) {
                 speed.m_y *= -soValueAccesser::getConstantFloat(moduleAccesser, 2014, 0);
-                moduleAccesser->getDamageModule().getEffector()->reqStop(moduleAccesser, &groundNormal);
+                moduleAccesser->getDamageModule().getEffector()->reqDamageGroundBeatDownEffect(moduleAccesser, &groundNormal);
             }
         } else {
             statusKind = 8;
@@ -463,15 +292,19 @@ void soDamageTransactorActor::setupDamageStatusNormal(soModuleAccesser* moduleAc
     damageLog->m_damageAdd = damage->m_damageAdd;
     damageLog->m_attackerTeamNo = damage->m_collisionLog.m_teamNo;
     damageLog->m_hitStopDelay = damage->m_attackData.m_hitStopDelay;
-    damageLog->m_groundTouchNormal = groundNormal;
+    Vec2f groundNormalCopy;
+    Vec2f::copy(groundNormalCopy, groundNormal);
+    damageLog->m_groundTouchNormal.m_x = groundNormalCopy.m_x;
+    damageLog->m_groundTouchNormal.m_y = groundNormalCopy.m_y;
     damageLog->m_attackerTaskId = damage->m_collisionLog.m_taskId;
     damageLog->m_attackerTeamOwnerId = damage->m_attackerTeamOwnerId;
-    damageLog->m_attackerTaskCategory = damage->m_collisionLog.m_taskCategory;
-    damageLog->m_isDamageAir = isDamageAir;
+    *((u8*)damageLog + 0x44) = *((u8*)damage + 0x32); // MATCH-ONLY: byte copy of the task category bitfield
     damageLog->m_isSituationGround = isGround;
+    damageLog->m_isDamageAir = isDamageAir;
+    damageLog->m_unk26 = false;
     damageLog->m_isCollisionAbsolute = damage->m_collisionLog.m_isAbsolute;
     damageLog->m_isMeteor = isMeteor;
-    damageLog->m_isAttackDirect = damage->m_attackData.m_isDirect;
+    damageLog->m_isAttackDirect = (getAttackDataWord(damage, 0x38) >> 13) & 1;
     damageLog->m_isVector365 = damage->m_attackData.m_vector == 365;
     if (statusKind != 0) {
         if (statusKind == 11) {
@@ -483,16 +316,196 @@ void soDamageTransactorActor::setupDamageStatusNormal(soModuleAccesser* moduleAc
         onDamageChangeStatusRequest(statusKind, moduleAccesser, damageLog);
     }
     moduleAccesser->getSituationModule().getKind();
-    if (damage->m_collisionLog.m_taskId != -1) {
+    if ((u32)damage->m_collisionLog.m_taskId != 0xFFFFFFFF) {
         checkCheer(reaction, angle, moduleAccesser, damageLog);
     }
-    moduleAccesser->getDamageModule().getEffector()->reqCommonEffectParam(moduleAccesser, level, &damage->m_attackData);
-    moduleAccesser->getDamageModule().getEffector()->reqQuake(damage->m_damageAdd, reaction, moduleAccesser, &damage->m_attackData);
+    moduleAccesser->getDamageModule().getEffector()->reqUniqEffect(moduleAccesser, level, &damage->m_attackData);
+    moduleAccesser->getDamageModule().getEffector()->reqDamageEffectParam(damage->m_damageAdd, reaction, moduleAccesser, &damage->m_attackData);
     if (attribute == 20) {
         onParalyzeDamage(moduleAccesser, damage, damageLog);
     }
-    moduleAccesser->getDamageModule().getEffector()->reqTipEffect(frameReaction, moduleAccesser, level);
+    moduleAccesser->getDamageModule().getEffector()->reqQuake(frameReaction, moduleAccesser, level);
     if (damage->m_reaction > 0.0f && hitStopFrame > 0) {
-        moduleAccesser->getDamageModule().getEffector()->reqUniqEffect(moduleAccesser, situation, &groundNormal, &damage->m_attackData, hitStopFrame);
+        moduleAccesser->getDamageModule().getEffector()->reqShake(moduleAccesser, situationKind, &groundNormal, &damage->m_attackData, hitStopFrame);
     }
+}
+
+bool soDamageTransactorActor::isSlip(soModuleAccesser* moduleAccesser, float slipChance) {
+    return false;
+}
+
+float soDamageTransactorActor::getHitStopMul(soModuleAccesser* moduleAccesser) {
+    return 1.0f;
+}
+
+bool soDamageTransactorActor::onCompositionDamageSpeed(soModuleAccesser* moduleAccesser, soDamage* damage, Vec2f* speed, int level) {
+    return false;
+}
+
+bool soDamageTransactorActor::isSleepStatus(soModuleAccesser* moduleAccesser) {
+    return false;
+}
+
+bool soDamageTransactorActor::isParalyzeDamage(soModuleAccesser* moduleAccesser) {
+    return false;
+}
+
+bool soDamageTransactorActor::isBindStatus(soModuleAccesser* moduleAccesser) {
+    return false;
+}
+
+bool soDamageTransactorActor::isBuryStatus(soModuleAccesser* moduleAccesser) {
+    return false;
+}
+
+void soDamageTransactorActor::addSleepTime(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog) {
+}
+
+void soDamageTransactorActor::checkCheer(float reaction, float angle, soModuleAccesser* moduleAccesser, soDamageLog* damageLog) {
+}
+
+void soDamageTransactorActor::onParalyzeDamage(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog) {
+}
+
+void soDamageTransactorActor::setupDamageStatusTurn(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog) {
+    int situationKind = moduleAccesser->getSituationModule().getKind();
+    const soModuleEnumeration* modules = moduleAccesser->m_enumerationStart;
+    soTurnModuleLocal* turnModule = (soTurnModuleLocal*)modules->m_turnModule;
+    float lr = modules->m_postureModule->getLr();
+    turnModule->startTurn(lr, soValueAccesser::getConstantIndefinite(moduleAccesser, 0xA411, 0), true, true);
+    moduleAccesser->getStopModule().setOtherStop(turnModule->getTurnFrame());
+    Vec2f speed;
+    Vec2f attackSpeed;
+    Vec2f::copy(attackSpeed, damage->m_speed);
+    float angle = soDamageUtilActor::getDamageAngle(moduleAccesser, damage->m_reaction, damage->m_lr, damage->m_attackData.m_vector, &attackSpeed);
+    speed.m_x = damage->m_lr * (float)cos(angle);
+    speed.m_y = sin(angle);
+    if (situationKind == 0) {
+        speed = speed * soValueAccesser::getConstantFloat(moduleAccesser, 2024, 0);
+    } else {
+        speed = speed * soValueAccesser::getConstantFloat(moduleAccesser, 2023, 0);
+    }
+    damageLog->m_speed.m_x = speed.m_x;
+    damageLog->m_speed.m_y = speed.m_y;
+    damageLog->m_angle = angle;
+    damageLog->m_attribute = (soCollisionAttackData::Attribute)(getAttackDataWord(damage, 0x30) & 0x1f);
+    Vec3f speed3(speed.m_x, speed.m_y, 0.0f);
+    moduleAccesser->getKineticModule().addSpeedOutside(soKineticEnergy::Outside_Attack, &speed3);
+    moduleAccesser->getDamageModule().toTurnDamage();
+}
+
+void soDamageTransactorActor::setupSpeedDamage(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog) {
+    Vec2f speed;
+    Vec2f attackSpeed;
+    Vec2f::copy(attackSpeed, damage->m_speed);
+    float angle = soDamageUtilActor::getDamageAngle(moduleAccesser, damage->m_reaction, damage->m_lr, damage->m_attackData.m_vector, &attackSpeed);
+    speed.m_x = -damage->m_lr * (float)cos(angle);
+    speed.m_y = sin(angle);
+    float mul = damage->m_reaction * soValueAccesser::getConstantFloat(moduleAccesser, 2010, 0);
+    soKineticEnergy::AttributeFlag attr(soKineticEnergy::ATTRIBUTE_MASK_DAMAGE);
+    speed.m_x *= mul;
+    speed.m_y *= mul;
+    Vec2f sum;
+    sum = moduleAccesser->getKineticModule().getSumSpeed(attr);
+    if (sum.m_x * speed.m_x + sum.m_y * speed.m_y >= 0.0f) {
+        speed = speed - sum;
+    }
+    Vec3f speed3(speed.m_x, speed.m_y, 0.0f);
+    moduleAccesser->getKineticModule().addSpeedOutside(soKineticEnergy::Outside_Attack, &speed3);
+}
+
+void soDamageTransactorActor::setupDamageStatusNoReaction(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog) {
+    float frameMul = soValueAccesser::getConstantFloat(moduleAccesser, 2002, 0);
+    int level = soDamageUtilActor::getDamageLevel(moduleAccesser, damage->m_reaction * frameMul);
+    moduleAccesser->getDamageModule().getEffector()->reqUniqEffect(moduleAccesser, level, &damage->m_attackData);
+    int hitStopFrame = soDamageUtilActor::getDamageHitStopFrame(moduleAccesser, damage, true, 1.0f);
+    if (hitStopFrame > 0) {
+        moduleAccesser->getStopModule().setHitStopFrame(hitStopFrame, true);
+    }
+}
+
+void soDamageTransactorActor::setupDamageFlyRollStatus(float angle, float speed, soModuleAccesser* moduleAccesser, soDamageLog* damageLog) {
+    Vec2f vec(speed, 0.0f);
+    Vec2f rotated;
+    vec.rot(&rotated, angle * 0.017453292f);
+    float reaction = speed / soValueAccesser::getConstantFloat(moduleAccesser, 2010, 0);
+    float frame = reaction * soValueAccesser::getConstantFloat(moduleAccesser, 2002, 0);
+    damageLog->m_reaction = reaction;
+    damageLog->m_level = soDamage::Level_FlyRoll;
+    damageLog->m_height = -1;
+    damageLog->m_speed.m_x = 0.0f;
+    damageLog->m_speed.m_y = 0.0f;
+    damageLog->m_angle = 0.0f;
+    damageLog->m_lr = 1.0f;
+    damageLog->m_frame = frame;
+    damageLog->m_hitStopFrame = 0;
+    damageLog->m_attribute = soCollisionAttackData::Attribute_Normal;
+    damageLog->m_damageAdd = 0.0f;
+    damageLog->m_attackerTeamNo = -1;
+    damageLog->m_hitStopDelay = 1.0f;
+    damageLog->m_attackerTaskId = -1;
+    damageLog->m_isDamageAir = false;
+    damageLog->m_unk26 = false;
+    damageLog->m_isCollisionAbsolute = false;
+    damageLog->m_isMeteor = false;
+    damageLog->m_isAttackDirect = false;
+    damageLog->m_isVector365 = false;
+    damageLog->m_speed.m_x = rotated.m_x;
+    damageLog->m_speed.m_y = rotated.m_y;
+    onDamageChangeStatusRequest(5, moduleAccesser, damageLog);
+}
+
+
+
+int soDamageTransactorActor::checkDownDamage(float reaction, float angle, soModuleAccesser* moduleAccesser) {
+    soDamageTransactor* transactor = moduleAccesser->getDamageModule().getTransactor();
+    int kind = transactor->getDamageStatusKind(moduleAccesser);
+    int ret = 0;
+    switch (kind) {
+    case 1:
+    case 2:
+    case 3:
+        if (reaction >= soValueAccesser::getConstantFloat(moduleAccesser, 2025, 0)) {
+            if (reaction >= soValueAccesser::getConstantFloat(moduleAccesser, 2026, 0)) {
+                if (angle < 0.017453292f * soValueAccesser::getConstantFloat(moduleAccesser, 2027, 0)) {
+                    transactor->setFlagDownDamage3(moduleAccesser, true);
+                    ret = 3;
+                }
+            } else {
+                transactor->setFlagDownDamage3(moduleAccesser, false);
+                ret = 3;
+            }
+        }
+        break;
+    }
+    return ret;
+}
+
+bool soDamageTransactorActor::checkNoReaction(soModuleAccesser* moduleAccesser) {
+    return true;
+}
+
+void soDamageTransactorActor::getDamageForReaction(soModuleAccesser* moduleAccesser) {
+}
+
+float soDamageTransactorActor::getDamageMul(soModuleAccesser* moduleAccesser) {
+    return 1.0f;
+}
+
+float soDamageTransactorActor::getReactionMul(soModuleAccesser* moduleAccesser) {
+    return 1.0f;
+}
+
+float soDamageTransactorActor::getReactionSub(soModuleAccesser* moduleAccesser) {
+    return 0.0f;
+}
+
+void soDamageTransactorActor::onGroundDamageAfter(soModuleAccesser* moduleAccesser) {
+}
+
+void soDamageTransactorActor::setFlagDownDamage3(soModuleAccesser* moduleAccesser, bool flag) {
+}
+
+bool soDamageTransactorActor::isCheckGroundDamage(soModuleAccesser* moduleAccesser) {
+    return false;
 }
