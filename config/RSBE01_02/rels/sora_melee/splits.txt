@@ -129,7 +129,6 @@ mo_melee/sora_melee/ft/ft_status_uniq_process_cliff.cpp:
 	.data       start:0x0002F698 end:0x0002F710
 	.bss        start:0x00004A90 end:0x00004AA0
 
-
 mo_melee/sora_melee/ft/ft_fighter_build_data.cpp:
 	.text       start:0x00192D4C end:0x00193378
 	.ctors      start:0x00000258 end:0x0000025C
