@@ -29,6 +29,12 @@ public:
     Heaps::HeapType m_heapType;      // 0x54
     u8 m_58[8];                      // 0x58
 
+    MuObject(nw4r::g3d::ResFile* modelSource, const char* modelNode, int drawPriority, nw4r::g3d::ResFile* textureSource, bool isByName, Heaps::HeapType heapType);
+    MuObject(nw4r::g3d::ResFile* modelSource, int animNode, int modelNode, nw4r::g3d::ResFile* textureSource, bool isByIndex, Heaps::HeapType heapType);
+
+    static MuObject* create(nw4r::g3d::ResFile* modelSource, const char* modelNode, int drawPriority, nw4r::g3d::ResFile* textureSource, Heaps::HeapType type);
+    static MuObject* create(nw4r::g3d::ResFile* modelSource, int modelNode, nw4r::g3d::ResFile* textureSource, int animNode, Heaps::HeapType type);
+
     void changeNodeAnimN(const char* animName);
     bool changeNodeAnimNIf(const char* animName);
     void changeVisAnimN(const char* animName);
@@ -42,7 +48,20 @@ public:
     bool changeClrAnimNIf(const char* animName);
     void changeAnimN(const char* animName);
     u16 getNodeAnimLength();
+    void setFrameNode(float frame);
+    void setFrameVisible(float frame);
+    void setFrameTex(float frame);
+    void setFrameTexSrt(float frame);
+    void setFrameMatCol(float frame);
 };
+
+MuObject* MuObject::create(nw4r::g3d::ResFile* modelSource, const char* modelNode, int drawPriority, nw4r::g3d::ResFile* textureSource, Heaps::HeapType type) {
+    return new (type) MuObject(modelSource, modelNode, drawPriority, textureSource, true, type);
+}
+
+MuObject* MuObject::create(nw4r::g3d::ResFile* modelSource, int modelNode, nw4r::g3d::ResFile* textureSource, int animNode, Heaps::HeapType type) {
+    return new (type) MuObject(modelSource, animNode, modelNode, textureSource, true, type);
+}
 
 // Frame policy used when a binding is replaced: clamp the frame into [start, end - epsilon].
 float muObjPlayPolicyOneTime(float frame, float end, float start) {
@@ -368,4 +387,43 @@ void MuObject::changeAnimN(const char* animName) {
             bindClrAnimImpl(this, anim);
         }
     }
+}
+
+void MuObject::setFrameNode(float frame) {
+    if (frame != m_modelAnim->m_anmObjChrRes->GetFrame()) {
+        nw4r::g3d::ScnMdl* sceneModel = m_sceneModel;
+        sceneModel->SetScnObjOption(2, 0);
+        sceneModel->SetScnObjOption(5, 0);
+    }
+    m_modelAnim->m_anmObjChrRes->SetFrame(frame);
+}
+
+void MuObject::setFrameVisible(float frame) {
+    if (frame != m_modelAnim->m_anmObjVisRes->GetFrame()) {
+        nw4r::g3d::ScnMdl* sceneModel = m_sceneModel;
+        sceneModel->SetScnObjOption(2, 0);
+        sceneModel->SetScnObjOption(5, 0);
+    }
+    m_modelAnim->m_anmObjVisRes->SetFrame(frame);
+}
+
+void MuObject::setFrameTex(float frame) {
+    if (frame != m_modelAnim->m_anmObjTexPatRes->GetFrame()) {
+        m_sceneModel->SetScnObjOption(3, 0);
+    }
+    m_modelAnim->m_anmObjTexPatRes->SetFrame(frame);
+}
+
+void MuObject::setFrameTexSrt(float frame) {
+    if (frame != m_modelAnim->m_anmObjTexSrtRes->GetFrame()) {
+        m_sceneModel->SetScnObjOption(3, 0);
+    }
+    m_modelAnim->m_anmObjTexSrtRes->SetFrame(frame);
+}
+
+void MuObject::setFrameMatCol(float frame) {
+    if (frame != m_modelAnim->m_anmObjMatClrRes->GetFrame()) {
+        m_sceneModel->SetScnObjOption(3, 0);
+    }
+    m_modelAnim->m_anmObjMatClrRes->SetFrame(frame);
 }
