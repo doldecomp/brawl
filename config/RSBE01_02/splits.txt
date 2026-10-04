@@ -225,7 +225,7 @@ sora/ty/ty_fig_listmng.cpp:
 	.data       start:0x80455120 end:0x80455180
 
 sora/mu/mu_menu.cpp:
-	.text       start:0x800AF148 end:0x800AFA04
+	.text       start:0x800AF148 end:0x800AFB94
 	.sdata2     start:0x805A21F8 end:0x805A2200
 
 sora/if/if_wifipr_task.cpp:
