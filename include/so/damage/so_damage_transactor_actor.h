@@ -22,12 +22,12 @@ public:
     virtual bool isUseTurnDamage(soModuleAccesser* moduleAccesser) = 0;
     virtual bool isUseTurn(soModuleAccesser* moduleAccesser) = 0;
     virtual bool isApplyTurnDamage(soModuleAccesser* moduleAccesser) = 0;
-    virtual int getDamageHeight(soModuleAccesser* moduleAccesser, int unk) = 0;
+    virtual int getDamageHeight(soModuleAccesser* moduleAccesser, u8 damageIndex) = 0;
     virtual float getHitStopMul(soModuleAccesser* moduleAccesser) = 0;
-    virtual bool isSlip(soModuleAccesser* moduleAccesser) = 0;
+    virtual bool isSlip(soModuleAccesser* moduleAccesser, float slipChance) = 0;
     virtual bool isSleepStatus(soModuleAccesser* moduleAccesser) = 0;
     virtual bool isParalyzeDamage(soModuleAccesser* moduleAccesser) = 0;
-    virtual void addSleepTime(soModuleAccesser* moduleAccesser, soDamage* damage) = 0;
+    virtual void addSleepTime(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog) = 0;
     virtual void onFlowerDamage(soModuleAccesser* moduleAccesser, soDamage* damage) = 0;
     virtual void onParalyzeDamage(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog) = 0;
     virtual void setFlagDownDamage3(soModuleAccesser* moduleAccesser, bool flag) = 0;
@@ -45,7 +45,7 @@ public:
     virtual float getReactionMul(soModuleAccesser* moduleAccesser) = 0;
     virtual float getWeightReactionMul(soModuleAccesser* moduleAccesser) { return 1.0f; }
     virtual float getDamageMul(soModuleAccesser* moduleAccesser) = 0;
-    virtual void checkCheer(soModuleAccesser* moduleAccesser, soDamage* damage) = 0;
+    virtual void checkCheer(float reaction, float angle, soModuleAccesser* moduleAccesser, soDamageLog* damageLog) = 0;
     virtual void getDamageForReaction(soModuleAccesser* moduleAccesser) = 0;
     virtual bool checkNoReaction(soModuleAccesser* moduleAccesser) = 0;
     virtual int checkDownDamage(float reaction, float speed, soModuleAccesser* moduleAccesser) = 0;
@@ -58,10 +58,10 @@ static_assert(sizeof(soDamageTransactor) == 4, "Class is wrong size!");
 class soDamageTransactorActor : public soDamageTransactor {
 public:
     virtual float getHitStopMul(soModuleAccesser* moduleAccesser);
-    virtual bool isSlip(soModuleAccesser* moduleAccesser);
+    virtual bool isSlip(soModuleAccesser* moduleAccesser, float slipChance);
     virtual bool isSleepStatus(soModuleAccesser* moduleAccesser);
     virtual bool isParalyzeDamage(soModuleAccesser* moduleAccesser);
-    virtual void addSleepTime(soModuleAccesser* moduleAccesser, soDamage* damage);
+    virtual void addSleepTime(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog);
     virtual void onFlowerDamage(soModuleAccesser* moduleAccesser, soDamage* damage);
     virtual void onParalyzeDamage(soModuleAccesser* moduleAccesser, soDamage* damage, soDamageLog* damageLog);
     virtual void setFlagDownDamage3(soModuleAccesser* moduleAccesser, bool flag);
@@ -77,7 +77,7 @@ public:
     virtual float getReactionSub(soModuleAccesser* moduleAccesser);
     virtual float getReactionMul(soModuleAccesser* moduleAccesser);
     virtual float getDamageMul(soModuleAccesser* moduleAccesser);
-    virtual void checkCheer(soModuleAccesser* moduleAccesser, soDamage* damage);
+    virtual void checkCheer(float reaction, float angle, soModuleAccesser* moduleAccesser, soDamageLog* damageLog);
     virtual void getDamageForReaction(soModuleAccesser* moduleAccesser);
     virtual bool checkNoReaction(soModuleAccesser* moduleAccesser);
     virtual int checkDownDamage(float reaction, float speed, soModuleAccesser* moduleAccesser);

@@ -22,6 +22,6 @@ public:
     virtual void reqCommonEffectParam(soModuleAccesser* moduleAccesser, int level, soCollisionAttackData* attackData);
     virtual void reqDamageGroundBeatDownEffect();
     virtual void reqQuake(float damage, float reaction, soModuleAccesser* moduleAccesser, soCollisionAttackData* attackData);
-    virtual void reqStop();
+    virtual void reqStop(soModuleAccesser* moduleAccesser, Vec2f* normal);
     virtual void reqTipEffect(float reaction, soModuleAccesser* moduleAccesser, int level);
 };
