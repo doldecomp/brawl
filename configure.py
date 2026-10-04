@@ -340,6 +340,7 @@ config.libs = [
             Object(Matching, "sora/cm/cm_stage_param.cpp"),
             Object(NonMatching, "sora/ty/ty_fig_listmng.cpp"),
             Object(NonMatching, "sora/mu/mu_menu.cpp"),
+            Object(NonMatching, "sora/mu/mu_object.cpp"),
             Object(Matching, "sora/mu/mu_msg.cpp"),
             Object(Matching, "sora/if/if_wifipr_task.cpp"),
             Object(Matching, "sora/if/if_adv_task.cpp"),
