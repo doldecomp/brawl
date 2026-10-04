@@ -14,7 +14,7 @@ void soControllerModuleLinkRef::update(Input* p1, bool p2) {
     }
 }
 
-float soControllerModuleLinkRef::getClatterThreshold() { return 0.5f; }
+float soControllerModuleLinkRef::getClatterThreshold(u32 index) { return 0.5f; }
 
 void soControllerModuleLinkRef::resetTrigger() {
     if (m_lkController) {
