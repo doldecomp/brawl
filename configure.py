@@ -505,7 +505,7 @@ config.libs = [
     {
         "lib": "ft_marth",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
         "objects": [
             Object(NonMatching, "mo_fighter/ft_marth/ft_marth.cpp"),
