@@ -436,7 +436,7 @@ void Message::printMsgBuf(FontData::FONT_RESOURCE fontId) {
                 }
                 continue;
             case 0x19: {
-                u32 color = ((p[1] << 24) + (p[2] << 16)) + (p[4] + (p[3] << 8));
+                u32 color = (p[4] + (p[3] << 8)) + ((p[1] << 24) + (p[2] << 16));
                 u8 lineWidth = p[5];
                 p += 6;
                 float scaleX = 1.0f;
