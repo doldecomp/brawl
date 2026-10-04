@@ -17,7 +17,7 @@
 // BrawlHeaders do not provide the constructor used by gfPadSystem (priority 14, stack 0x1200).
 class gfRunnable {
 public:
-    virtual void run() = 0;
+    virtual void run();
 };
 
 class gfThread : public gfRunnable {
@@ -37,7 +37,7 @@ public:
     gfThread(u32 priority, u32 stackSize, Heaps::HeapType heap) {
         createThread(this, priority, stackSize, heap);
     }
-    virtual void run() { }
+    virtual void run();
     ~gfThread();
     void createThread(gfRunnable* startRoutine, u32 priority, u32 stackSize, Heaps::HeapType heap);
     static void* startThread(void* arg);
@@ -283,7 +283,7 @@ static inline bool isHomeMenuActive(HomeMenuView* menu) {
 typedef void (*ConnectCallback)(int);
 static ConnectCallback s_connectCallback;
 static u16 s_wiiRetryTimer[4];
-static u8 s_wiiRetryCount[4];
+static u8 s_wiiRetryCount[8];
 
 extern "C" void fn_80028B74(int chan) {
     if (s_connectCallback) {
