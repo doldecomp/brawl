@@ -9,7 +9,7 @@
 // Slot order recovered from the ftStatusUniqProcessDamage vtable.
 class ftStatusUniqProcessDamage : public soStatusUniqProcess {
 public:
-    ftStatusUniqProcessDamage() { }
+    ftStatusUniqProcessDamage();
     virtual ~ftStatusUniqProcessDamage() { }
     virtual void initStatus(soModuleAccesser* moduleAccesser);
     virtual void exitStatus(soModuleAccesser* moduleAccesser, int nextStatusKind);

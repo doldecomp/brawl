@@ -39,6 +39,8 @@ static inline bool applyDriftInput(soModuleAccesser* moduleAccesser, soDamageLog
     return false;
 }
 
+ftStatusUniqProcessDamage::ftStatusUniqProcessDamage() { }
+
 ftStatusUniqProcessDamage g_ftStatusUniqProcessDamage;
 
 void ftStatusUniqProcessDamage::initNormalDamageCommon(soModuleAccesser* moduleAccesser) {
