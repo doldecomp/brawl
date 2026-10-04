@@ -6,6 +6,12 @@ symbols: config/RSBE01_02/symbols.txt
 mw_comment_version: 14 # GC 3.0a5.2 linker
 quick_analysis: true # Faster reruns after full analysis
 
+# The .ctors$10/.dtors$15 entries that reference these are data-only, so the
+# linker drops them unless the symbols are kept alive explicitly.
+force_active:
+- __init_cpp_exceptions_reference
+- __fini_cpp_exceptions_reference
+
 extract:
 - symbol: HomeBtnIcon
   binary: HomeBtnIcon.bin
@@ -221,7 +227,7 @@ modules:
   hash: 4696ac66a14c7e023bbe4c47bd997055a3107138
   splits: config/RSBE01_02/rels/st_battles/splits.txt
   symbols: config/RSBE01_02/rels/st_battles/symbols.txt
-  force_active: [HomeBtnIcon]
+  force_active: [create__14stBattleFieldSFv, HomeBtnIcon]
 - object: files/module/st_battle.rel
   hash: 6c23a264cc9732f0f411a8b4611e647e27e3690c
   splits: config/RSBE01_02/rels/st_battle/splits.txt
@@ -371,7 +377,7 @@ modules:
   hash: 1b1bd2e86ff46d41bad1263cde6bb056fe0bd448
   splits: config/RSBE01_02/rels/st_greenhill/splits.txt
   symbols: config/RSBE01_02/rels/st_greenhill/symbols.txt
-  force_active: [HomeBtnIcon]
+  force_active: [HomeBtnIcon, create__11stGreenhillFv]
 - object: files/module/st_pictchat.rel
   hash: 90899f1122cdf5c10f2aed3ad7718c094c59ebe3
   splits: config/RSBE01_02/rels/st_pictchat/splits.txt
