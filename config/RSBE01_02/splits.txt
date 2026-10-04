@@ -87,6 +87,12 @@ sora/gf/gf_keep_fb.cpp:
 sora/gf/gf_memory_util.cpp:
 	.text       start:0x80026474 end:0x80026478
 
+sora/gf/gf_model_animation.cpp:
+	.text       start:0x80027610 end:0x80028808
+	.rodata     start:0x804068F8 end:0x80406910
+	.sdata      start:0x8059C648 end:0x8059C650
+	.sdata2     start:0x805A1520 end:0x805A1528
+
 sora/gf/gf_pad_system.cpp:
 	.text       start:0x80028808 end:0x8002B700
 	.data       start:0x80422D10 end:0x80422E88
@@ -146,6 +152,12 @@ sora/gf/gf_resource_loader.cpp:
 
 sora/mt/mt_vector_old.cpp:
 	.text       start:0x8003E244 end:0x8003E35C
+
+sora/mt/mt_matrix.cpp:
+	.text       start:0x8003E35C end:0x8003FABC
+	.data       start:0x8042AE08 end:0x8042AE50
+	.sdata      start:0x8059C788 end:0x8059C790
+	.sdata2     start:0x805A1728 end:0x805A1748
 
 sora/mt/mt_prng.cpp:
 	.text       start:0x8003FABC end:0x8003FD5C
@@ -232,7 +244,7 @@ sora/ty/ty_fig_listmng.cpp:
 	.data       start:0x80455120 end:0x80455180
 
 sora/mu/mu_menu.cpp:
-	.text       start:0x800AF148 end:0x800AFA04
+	.text       start:0x800AF148 end:0x800AFB94
 	.sdata2     start:0x805A21F8 end:0x805A2200
 
 sora/if/if_wifipr_task.cpp:

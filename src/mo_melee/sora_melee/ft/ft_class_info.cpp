@@ -25,7 +25,7 @@ void ftClassInfo::setClassInfo(ftKind kind, ftClassInfo* info) {
     g_ftClassInfoTable[kind] = info;
 }
 
-ftClassInfo* ftClassInfoNull::create() const {
+Fighter* ftClassInfoNull::create(s32 entryId, Heaps::HeapType instHeap, Heaps::HeapType nwModelInstHeap, Heaps::HeapType nwMotionInstHeap) const {
     return nullptr;
 }
 

@@ -163,13 +163,13 @@ void gfTaskScheduler::process(bool p1) {
     unk0_1 = 0;
 }
 
-// NONMATCHING regswaps
 void gfTaskScheduler::renderPre() {
     gfTask* next;
     gfTask* r3;
     unk0_1 = 2;
-    for (s32 i = 0; i < unkF8Size; i++) {
-        r3 = unkF8[i];
+    u8* cursor = reinterpret_cast<u8*>(this);
+    for (s32 i = 0; i < unkF8Size; i++, cursor += sizeof(gfTask*)) {
+        r3 = *reinterpret_cast<gfTask**>(cursor + offsetof(gfTaskScheduler, unkF8));
         unk6 = i;
         for (gfTask* task = r3; task; task = next) {
             next = task->m_0x18;
@@ -180,42 +180,48 @@ void gfTaskScheduler::renderPre() {
     }
 }
 
-// NONMATCHING regswaps
 void gfTaskScheduler::render() {
     unk0_1 = 2;
     gfTask* r31;
     gfTask* r3;
-    for (s32 i = 0; i < unkF8Size; i++) {
-        r3 = unkF8[i];
-        unk6 = i;
-        for (gfTask* task = r3; task; task = r31) {
-            r31 = task->m_0x18;
-            if (task->m_alive && task->unk2C_b2) {
-                task->render(gfTask::Render_Opa);
+    {
+        u8* cursor = reinterpret_cast<u8*>(this);
+        for (s32 i = 0; i < unkF8Size; i++, cursor += sizeof(gfTask*)) {
+            r3 = *reinterpret_cast<gfTask**>(cursor + offsetof(gfTaskScheduler, unkF8));
+            unk6 = i;
+            for (gfTask* task = r3; task; task = r31) {
+                r31 = task->m_0x18;
+                if (task->m_alive && task->unk2C_b2) {
+                    task->render(gfTask::Render_Opa);
+                }
             }
         }
     }
-    for (s32 i = 0; i < unkF8Size; i++) {
-        r3 = unkF8[i];
-        unk6 = i;
-        for (gfTask* task = r3; task; task = r31) {
-            r31 = task->m_0x18;
-            if (task->m_alive && task->unk2C_b2) {
-                task->render(gfTask::Render_Xlu);
+    {
+        s32 i;
+        u8* cursor = reinterpret_cast<u8*>(this);
+        for (i = 0; i < unkF8Size; i++, cursor += sizeof(gfTask*)) {
+            r3 = *reinterpret_cast<gfTask**>(cursor + offsetof(gfTaskScheduler, unkF8));
+            unk6 = i;
+            for (gfTask* task = r3; task; task = r31) {
+                r31 = task->m_0x18;
+                if (task->m_alive && task->unk2C_b2) {
+                    task->render(gfTask::Render_Xlu);
+                }
             }
         }
     }
     unk0_1 = 0;
 }
 
-// NONMATCHING regswaps
 void gfTaskScheduler::updateStatus() {
     unk0_1 = 4;
     do {
         gfTask* next;
         unk2_b7 = false;
-        for (s32 i = 0; i < unk14Size; i++) {
-            for (gfTask* curr = unk14[i]; curr; curr = next) {
+        u8* cursor = reinterpret_cast<u8*>(this);
+        for (s32 i = 0; i < unk14Size; i++, cursor += sizeof(gfTask*)) {
+            for (gfTask* curr = *reinterpret_cast<gfTask**>(cursor + offsetof(gfTaskScheduler, unk14)); curr; curr = next) {
                 next = curr->m_next;
                 if (curr->m_alive && curr->getStatus() == 2) {
                     curr->setStatus(1);

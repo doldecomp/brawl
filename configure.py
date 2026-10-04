@@ -245,6 +245,7 @@ cflags_runtime = [
 config.rel_strip_partial = True
 cflags_rel = [
     *cflags_common,
+    "-fp_contract off",
     "-sdata 0",
     "-sdata2 0",
 ]
@@ -277,7 +278,7 @@ config.libs = [
         "host": False,
         "objects": [
             Object(NonMatching, "Runtime.PPCEABI.H/global_destructor_chain.c"),
-            Object(NonMatching, "Runtime.PPCEABI.H/__init_cpp_exceptions.cpp"),
+            Object(Matching, "Runtime.PPCEABI.H/__init_cpp_exceptions.cpp"),
         ],
     },
     # The DOL
@@ -307,6 +308,7 @@ config.libs = [
             Object(Matching, "sora/gf/gf_gameframe_counter.cpp"),
             Object(Matching, "sora/gf/gf_keep_fb.cpp"),
             Object(Matching, "sora/gf/gf_memory_util.cpp"),
+            Object(NonMatching, "sora/gf/gf_model_animation.cpp"),
             Object(NonMatching, "sora/gf/gf_pad_system.cpp", extra_cflags=["-RTTI off"]),
             Object(Matching, "sora/gf/gf_pad_queue.cpp"),
             Object(Matching, "sora/gf/gf_pad_thread.cpp", extra_cflags=["-RTTI off"]),
@@ -320,6 +322,7 @@ config.libs = [
             Object(Matching, "sora/gf/gf_monitor.cpp"),
             Object(Matching, "sora/gf/gf_resource_loader.cpp"),
             Object(NonMatching, "sora/mt/mt_vector_old.cpp"),
+            Object(NonMatching, "sora/mt/mt_matrix.cpp"),
             Object(Matching, "sora/mt/mt_prng.cpp", extra_cflags=["-RTTI off"]),
             Object(NonMatching, "sora/mt/mt_trig.cpp"),
             Object(Matching, "sora/mt/mt_prng_log.cpp"),
@@ -335,7 +338,7 @@ config.libs = [
             Object(Matching, "sora/mv/mv_THPAudioDecode.cpp"),
             Object(Matching, "sora/mv/mv_THPRead.cpp"),
             Object(Matching, "sora/cm/cm_controller_default.cpp", extra_cflags=["-RTTI off"]),
-            Object(NonMatching, "sora/cm/cm_controller_menu_fixed.cpp"),
+            Object(Matching, "sora/cm/cm_controller_menu_fixed.cpp"),
             Object(Matching, "sora/cm/cm_controller_melee_fixed.cpp"),
             Object(Matching, "sora/cm/cm_stage_param.cpp"),
             Object(NonMatching, "sora/ty/ty_fig_listmng.cpp"),
@@ -503,7 +506,7 @@ config.libs = [
     {
         "lib": "ft_marth",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
         "objects": [
             Object(NonMatching, "mo_fighter/ft_marth/ft_marth.cpp"),
@@ -661,7 +664,9 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_adv_menu/sora_adv_menu_game_over/mu_adv_game_over.cpp"),
+        ],
     },
     {
         "lib": "sora_adv_menu_name",
@@ -747,7 +752,7 @@ config.libs = [
             Object(Matching, "mo_enemy/sora_enemy/resource/em_resource_module_impl.cpp"),
             Object(Matching, "mo_enemy/sora_enemy/stop/em_stop_module_impl.cpp"),
             Object(Matching, "mo_enemy/sora_enemy/em_extend_param_accesser.cpp"),
-            Object(NonMatching, "mo_enemy/sora_enemy/em_external_value_accesser.cpp"),
+            Object(Matching, "mo_enemy/sora_enemy/em_external_value_accesser.cpp"),
             Object(Matching, "mo_enemy/sora_enemy/em_target_search_unit.cpp"),
             Object(Matching, "mo_enemy/sora_enemy/wnem/wn_em_resource_module_impl.cpp"),
             Object(Matching, "mo_enemy/sora_enemy/wnem/wn_em_heap_module_impl.cpp"),
@@ -1042,7 +1047,10 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_stage/st_battles/st_battlefieldS.cpp"),
+            Object(Matching, "mo_stage/st_battles/gr_battlefieldS.cpp"),
+        ],
     },
     {
         "lib": "st_config",
@@ -1205,14 +1213,22 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_stage/st_greenhill/st_greenhill.cpp"),
+        ],
     },
     {
         "lib": "st_gw",
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_stage/st_gw/gr_gw_scene.cpp"),
+            Object(Matching, "mo_stage/st_gw/gr_gw_scene_chef.cpp"),
+            Object(Matching, "mo_stage/st_gw/gr_gw_scene_lion.cpp"),
+            Object(Matching, "mo_stage/st_gw/gr_gw_scene_oil.cpp"),
+            Object(Matching, "mo_stage/st_gw/gr_gw_fire_etc.cpp"),
+        ],
     },
     {
         "lib": "st_halberd",
@@ -1268,7 +1284,12 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_stage/st_mansion/gr_mansion.cpp"),
+            Object(Matching, "mo_stage/st_mansion/gr_mansion_area_up.cpp"),
+            Object(Matching, "mo_stage/st_mansion/gr_mansion_area_down.cpp"),
+            Object(Matching, "mo_stage/st_mansion/gr_mansion_area_break.cpp"),
+        ],
     },
     {
         "lib": "st_mariopast",
@@ -1384,7 +1405,13 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_stage/st_tengan/st_tengan.cpp"),
+            Object(Matching, "mo_stage/st_tengan/gr_tengan.cpp"),
+            Object(NonMatching, "mo_stage/st_tengan/gr_tengan_bg.cpp"),
+            Object(Matching, "mo_stage/st_tengan/gr_tengan_floor.cpp"),
+            Object(Matching, "mo_stage/st_tengan/gr_tengan_ashiba.cpp"),
+        ],
     },
     {
         "lib": "st_village",
