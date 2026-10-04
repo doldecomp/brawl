@@ -68,6 +68,9 @@ public:
 };
 // static_assert(sizeof(ftPurin) == 0x9A5C, "Class is the wrong size!");
 
+#define FT_BC ftPurinBuildConfig
+#include <ft/builder/ft_builder_noinline.h>
+
 ftPurin::ftPurin(s32 entryId,
                  Heaps::HeapType instHeap,
                  Heaps::HeapType nwModelInstHeap,

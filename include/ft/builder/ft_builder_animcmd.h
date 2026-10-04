@@ -20,6 +20,7 @@ template <typename BC>
 class soAnimCmdModuleBuilder {
     u8 m_data[0xF4];
 public:
+    ~soAnimCmdModuleBuilder() { m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; } // STUB: non-trivial so the dtor call exists
     soAnimCmdModuleBuilder(s16 unitId) { m_data[0] = 0; m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; m_data[6] = 6; m_data[7] = 7; } // STUB
     soAnimCmdModule* getModule() { return (soAnimCmdModule*)m_data; }
 };
@@ -33,5 +34,6 @@ template <typename BC>
 class ftAnimCmdModuleSubBuilder {
     u8 m_data[0x15EC];
 public:
+    ~ftAnimCmdModuleSubBuilder() { m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; } // STUB: non-trivial so the dtor call exists
     ftAnimCmdModuleSubBuilder() { m_data[0] = 0; m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; m_data[6] = 6; m_data[7] = 7; } // STUB
 };

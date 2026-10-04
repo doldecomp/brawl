@@ -24,6 +24,7 @@ template <typename BC>
 class soTeamModuleBuilder {
     u8 m_data[0x74];
 public:
+    ~soTeamModuleBuilder() { m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; } // STUB: non-trivial so the dtor call exists
     soTeamModuleBuilder(s32 team, soModuleAccesser* acc) { m_data[0] = 0; m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; m_data[6] = 6; m_data[7] = 7; } // STUB
     void* getModule() { return m_data + 0x30; }
 };
@@ -44,6 +45,7 @@ template <typename BC>
 class soAreaModuleBuilder {
     u8 m_data[0x374];
 public:
+    ~soAreaModuleBuilder() { m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; } // STUB: non-trivial so the dtor call exists
     soAreaModuleBuilder(soModuleAccesser* acc, u8 areaCategory, soEventObserverRegistrationDesc* regDesc) { m_data[0] = 0; m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; m_data[6] = 6; m_data[7] = 7; } // STUB
     void* getModule() { return m_data + 0x10; }
 };

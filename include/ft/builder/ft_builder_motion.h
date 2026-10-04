@@ -19,6 +19,7 @@ template <typename BC>
 class soMotionModuleBuilder {
     u8 m_data[0x394];
 public:
+    ~soMotionModuleBuilder() { m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; } // STUB: non-trivial so the dtor call exists
     soMotionModuleBuilder(soModuleAccesser* acc, void* motionData) { m_data[0] = 0; m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; m_data[6] = 6; m_data[7] = 7; } // STUB: non-empty so the call is not optimized away
     soMotionModule* getModule() { return (soMotionModule*)(m_data + 0x224); }
 };
