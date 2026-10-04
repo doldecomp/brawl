@@ -2,6 +2,7 @@
 
 #include <mt/mt_vector.h>
 #include <so/kinetic/so_kinetic_energy.h>
+#include <ft/ft_kinetic_energy_controller.h>
 #include <so/so_kinetic_energy_normal.h>
 #include <types.h>
 
@@ -12,10 +13,6 @@
 class ftKineticEnergyMotion : public soKineticEnergyNormal {
 public:
     int m_motionMode; // +0x34
-};
-
-class ftKineticEnergyController : public soKineticEnergyNormal {
-public:
 };
 
 class ftKineticEnergyStop : public soKineticEnergyNormal {

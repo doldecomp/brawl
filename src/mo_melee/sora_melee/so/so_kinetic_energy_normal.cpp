@@ -113,4 +113,4 @@ Vec2f soKineticEnergyNormal::getSpeed() {
     return m_speed;
 }
 
-soKineticEnergyNormal::~soKineticEnergyNormal() { }
+

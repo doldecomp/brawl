@@ -11,6 +11,17 @@ class soModuleAccesser;
 // soKineticEnergyNormal::init / updateEnergy (HYPOTHESIS names).
 class soKineticEnergyNormal : public soKineticEnergy {
 public:
+    soKineticEnergyNormal() {
+        Vec2f::copy(m_speedLimit, Vec2f(-1.0f, -1.0f));
+        Vec2f::copy(m_brake, Vec2f(0.0f, 0.0f));
+        Vec2f::copy(m_speedTarget, Vec2f(-1.0f, -1.0f));
+        Vec2f::copy(m_accel, Vec2f(0.0f, 0.0f));
+        Vec2f::copy(m_speed, Vec2f(0.0f, 0.0f));
+        m_unk30 = false;
+        m_considerGroundFriction = false;
+        m_unk32 = true;
+    }
+
     virtual void updateEnergy(soModuleAccesser* moduleAccesser);
     virtual Vec2f getSpeed();
     virtual Vec3f getRotation();
@@ -23,7 +34,7 @@ public:
     virtual void reflectAccel(Vec3f* accel);
     virtual void onConsiderGroundFriction();
     virtual void offConsiderGroundFriction();
-    virtual ~soKineticEnergyNormal();
+    virtual ~soKineticEnergyNormal() { }
     virtual void init();
 
     Vec2f m_speed;        // +0x08
