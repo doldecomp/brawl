@@ -3,14 +3,20 @@
 #include <types.h>
 
 soCollisionShieldPart::soCollisionShieldPart(u32 category1, u32 category2) : m_targets(6, 0) {
-    clTarget& target0 = m_targets.at(0);
-    target0.m_0 = 1 << category2;
-    clTarget& target1 = m_targets.at(1);
-    target1.m_0 = 1 << category1;
+    {
+        clTarget& target0 = m_targets.at(0);
+        target0.m_0 = 1 << category2;
+    }
+    {
+        clTarget& target1 = m_targets.at(1);
+        target1.m_0 = 1 << category1;
+    }
     if (m_targets.at(0).m_0 & 8) {
-        m_targets.at(5).m_4 = 2;
+        clTarget& target5 = m_targets.at(5);
+        target5.m_4 = 2;
     } else if (m_targets.at(0).m_0 & 0x10) {
-        m_targets.at(5).m_4 = 4;
+        clTarget& target5 = m_targets.at(5);
+        target5.m_4 = 4;
     }
 }
 
