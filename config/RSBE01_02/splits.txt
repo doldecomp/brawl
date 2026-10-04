@@ -377,6 +377,9 @@ sora/st/st_data_container_multi.cpp:
 sora/st/st_data_container_magic.cpp:
 	.sdata      start:0x8059E860 end:0x8059E864
 
+havok/hkClass.cpp:
+	.text       start:0x8027C808 end:0x8027C914
+
 Runtime.PPCEABI.H/__init_cpp_exceptions.cpp:
 	.text       start:0x803F1A08 end:0x803F1A78
 	.ctors      start:0x804064E0 end:0x804064E4 rename:.ctors$10
