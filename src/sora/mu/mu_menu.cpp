@@ -372,10 +372,11 @@ void muMenu::startRumbleController(int controller, int strength, int setting) {
         enabled = fn_8004DA94(g_GameGlobal, controller);
     }
     if (enabled) {
+        gfPadSystem* pad = g_gfPadSystem;
         if (strength > 0) {
-            g_gfPadSystem->startMotor(controller, strength);
+            pad->startMotor(controller, strength);
         } else {
-            g_gfPadSystem->startMotor(controller);
+            pad->startMotor(controller);
         }
     }
 }
