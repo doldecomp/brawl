@@ -162,6 +162,7 @@ gfModelAnimation::gfModelAnimation(ResFile* resFile, ResMdl* resMdl, bool doBind
     }
 }
 
+#pragma scheduling 603
 gfModelAnimation::gfModelAnimation(ResFile* resFile, ResMdl* resMdl, bool doBind, const char* animName, HeapType heapType) {
     int instanceSize;
     MEMAllocator* allocator = gfHeapManager::getMEMAllocator(heapType);
@@ -229,6 +230,7 @@ gfModelAnimation::gfModelAnimation(ResFile* resFile, ResMdl* resMdl, bool doBind
         }
     }
 }
+#pragma scheduling reset
 
 void gfModelAnimation::setLoop(bool shouldLoop) {
     PlayPolicyFunc policy = shouldLoop ? getPolicy(1) : getPolicy(0);
