@@ -61,7 +61,7 @@ static inline void setPolicy(void* obj, u32 policy) {
     *(void**)((u8*)obj + 0x28) = fn;
 }
 
-static inline void setChrAnim(nw4r::g3d::ResAnmChr anim, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
+static inline void setChrAnim(nw4r::g3d::ResAnmChr anim, gfModelAnimation* modelAnim, nw4r::g3d::ResMdl model, Heaps::HeapType heap) {
     int instanceSize;
     MEMAllocator* allocator = gfHeapManager::getMEMAllocator(heap);
     if (anim.IsValid()) {
@@ -76,7 +76,7 @@ static inline void setChrAnim(nw4r::g3d::ResAnmChr anim, nw4r::g3d::ResMdl model
     }
 }
 
-static inline void setVisAnim(nw4r::g3d::ResAnmVis anim, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
+static inline void setVisAnim(nw4r::g3d::ResAnmVis anim, gfModelAnimation* modelAnim, nw4r::g3d::ResMdl model, Heaps::HeapType heap) {
     int instanceSize;
     MEMAllocator* allocator = gfHeapManager::getMEMAllocator(heap);
     if (anim.IsValid()) {
@@ -91,7 +91,7 @@ static inline void setVisAnim(nw4r::g3d::ResAnmVis anim, nw4r::g3d::ResMdl model
     }
 }
 
-static inline void setTexPatAnim(nw4r::g3d::ResAnmTexPat anim, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
+static inline void setTexPatAnim(nw4r::g3d::ResAnmTexPat anim, gfModelAnimation* modelAnim, nw4r::g3d::ResMdl model, Heaps::HeapType heap) {
     int instanceSize;
     if (anim.IsValid()) {
         MEMAllocator* allocator = gfHeapManager::getMEMAllocator(heap);
@@ -106,7 +106,7 @@ static inline void setTexPatAnim(nw4r::g3d::ResAnmTexPat anim, nw4r::g3d::ResMdl
     }
 }
 
-static inline void setTexSrtAnim(nw4r::g3d::ResAnmTexSrt anim, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
+static inline void setTexSrtAnim(nw4r::g3d::ResAnmTexSrt anim, gfModelAnimation* modelAnim, nw4r::g3d::ResMdl model, Heaps::HeapType heap) {
     int instanceSize;
     if (anim.IsValid()) {
         MEMAllocator* allocator = gfHeapManager::getMEMAllocator(heap);
@@ -121,7 +121,7 @@ static inline void setTexSrtAnim(nw4r::g3d::ResAnmTexSrt anim, nw4r::g3d::ResMdl
     }
 }
 
-static inline void setClrAnim(nw4r::g3d::ResAnmClr anim, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
+static inline void setClrAnim(nw4r::g3d::ResAnmClr anim, gfModelAnimation* modelAnim, nw4r::g3d::ResMdl model, Heaps::HeapType heap) {
     int instanceSize;
     if (anim.IsValid()) {
         MEMAllocator* allocator = gfHeapManager::getMEMAllocator(heap);
@@ -154,17 +154,21 @@ static inline void setTexPatAnimIdx(u32 animId, nw4r::g3d::ResMdl model, gfModel
     }
 }
 
+static inline void bindNodeAnimImpl(MuObject* self, nw4r::g3d::ResAnmChr anim) {
+    self->m_modelAnim->unbindNodeAnim(self->m_sceneModel);
+    setChrAnim(anim, self->m_modelAnim, self->m_resMdl, self->m_heapType);
+    self->m_modelAnim->bindNodeAnim(self->m_sceneModel);
+    nw4r::g3d::AnmObjChrRes* o = self->m_modelAnim->m_anmObjChrRes;
+    setPolicy(o, *(u32*)((u8*)o->m_anmChrFile.ptr() + 0x20));
+    nw4r::g3d::ScnMdl* sceneModel = self->m_sceneModel;
+    sceneModel->SetScnObjOption(2, 0);
+    sceneModel->SetScnObjOption(5, 0);
+}
+
 void MuObject::changeNodeAnimN(const char* animName) {
     nw4r::g3d::ResAnmChr anim = ResFile_GetResAnmChrByName(&m_resFile, animName);
     if (anim.IsValid()) {
-        m_modelAnim->unbindNodeAnim(m_sceneModel);
-        setChrAnim(anim, m_resMdl, m_modelAnim, m_heapType);
-        m_modelAnim->bindNodeAnim(m_sceneModel);
-        nw4r::g3d::AnmObjChrRes* o = m_modelAnim->m_anmObjChrRes;
-        setPolicy(o, *(u32*)((u8*)o->m_anmChrFile.ptr() + 0x20));
-        nw4r::g3d::ScnMdl* sceneModel = m_sceneModel;
-        sceneModel->SetScnObjOption(2, 0);
-        sceneModel->SetScnObjOption(5, 0);
+        bindNodeAnimImpl(this, anim);
     }
 }
 
@@ -174,7 +178,7 @@ bool MuObject::changeNodeAnimNIf(const char* animName) {
         return false;
     }
     m_modelAnim->unbindNodeAnim(m_sceneModel);
-    setChrAnim(anim, m_resMdl, m_modelAnim, m_heapType);
+    setChrAnim(anim, m_modelAnim, m_resMdl, m_heapType);
     m_modelAnim->bindNodeAnim(m_sceneModel);
     nw4r::g3d::AnmObjChrRes* o = m_modelAnim->m_anmObjChrRes;
     setPolicy(o, *(u32*)((u8*)o->m_anmChrFile.ptr() + 0x20));
@@ -184,17 +188,21 @@ bool MuObject::changeNodeAnimNIf(const char* animName) {
     return true;
 }
 
+static inline void bindVisAnimImpl(MuObject* self, nw4r::g3d::ResAnmVis anim) {
+    self->m_modelAnim->unbindVisibleAnim(self->m_sceneModel);
+    setVisAnim(anim, self->m_modelAnim, self->m_resMdl, self->m_heapType);
+    self->m_modelAnim->bindVisibleAnim(self->m_sceneModel);
+    nw4r::g3d::AnmObjVisRes* o = self->m_modelAnim->m_anmObjVisRes;
+    setPolicy(o, *(u32*)((u8*)o->m_anmVisFile.ptr() + 0x20));
+    nw4r::g3d::ScnMdl* sceneModel = self->m_sceneModel;
+    sceneModel->SetScnObjOption(2, 0);
+    sceneModel->SetScnObjOption(5, 0);
+}
+
 void MuObject::changeVisAnimN(const char* animName) {
     nw4r::g3d::ResAnmVis anim = ResFile_GetResAnmVisByName(&m_resFile, animName);
     if (anim.IsValid()) {
-        m_modelAnim->unbindVisibleAnim(m_sceneModel);
-        setVisAnim(anim, m_resMdl, m_modelAnim, m_heapType);
-        m_modelAnim->bindVisibleAnim(m_sceneModel);
-        nw4r::g3d::AnmObjVisRes* o = m_modelAnim->m_anmObjVisRes;
-        setPolicy(o, *(u32*)((u8*)o->m_anmVisFile.ptr() + 0x20));
-        nw4r::g3d::ScnMdl* sceneModel = m_sceneModel;
-        sceneModel->SetScnObjOption(2, 0);
-        sceneModel->SetScnObjOption(5, 0);
+        bindVisAnimImpl(this, anim);
     }
 }
 
@@ -204,7 +212,7 @@ bool MuObject::changeVisAnimNIf(const char* animName) {
         return false;
     }
     m_modelAnim->unbindVisibleAnim(m_sceneModel);
-    setVisAnim(anim, m_resMdl, m_modelAnim, m_heapType);
+    setVisAnim(anim, m_modelAnim, m_resMdl, m_heapType);
     m_modelAnim->bindVisibleAnim(m_sceneModel);
     nw4r::g3d::AnmObjVisRes* o = m_modelAnim->m_anmObjVisRes;
     setPolicy(o, *(u32*)((u8*)o->m_anmVisFile.ptr() + 0x20));
@@ -225,15 +233,19 @@ void MuObject::changeTexPatAnim(u32 index) {
     }
 }
 
+static inline void bindTexPatAnimImpl(MuObject* self, nw4r::g3d::ResAnmTexPat anim) {
+    self->m_modelAnim->unbindTexAnim(self->m_sceneModel);
+    setTexPatAnim(anim, self->m_modelAnim, self->m_resMdl, self->m_heapType);
+    self->m_modelAnim->bindTexAnim(self->m_sceneModel);
+    nw4r::g3d::AnmObjTexPatRes* o = self->m_modelAnim->m_anmObjTexPatRes;
+    setPolicy(o, *(u32*)((u8*)o->m_anmTexPatFile.ptr() + 0x34));
+    self->m_sceneModel->SetScnObjOption(3, 0);
+}
+
 void MuObject::changeTexPatAnimN(const char* animName) {
     nw4r::g3d::ResAnmTexPat anim = ResFile_GetResAnmTexPatByName(&m_resFile, animName);
     if (anim.IsValid()) {
-        m_modelAnim->unbindTexAnim(m_sceneModel);
-        setTexPatAnim(anim, m_resMdl, m_modelAnim, m_heapType);
-        m_modelAnim->bindTexAnim(m_sceneModel);
-        nw4r::g3d::AnmObjTexPatRes* o = m_modelAnim->m_anmObjTexPatRes;
-        setPolicy(o, *(u32*)((u8*)o->m_anmTexPatFile.ptr() + 0x34));
-        m_sceneModel->SetScnObjOption(3, 0);
+        bindTexPatAnimImpl(this, anim);
     }
 }
 
@@ -243,7 +255,7 @@ bool MuObject::changeTexPatAnimNIf(const char* animName) {
         return false;
     }
     m_modelAnim->unbindTexAnim(m_sceneModel);
-    setTexPatAnim(anim, m_resMdl, m_modelAnim, m_heapType);
+    setTexPatAnim(anim, m_modelAnim, m_resMdl, m_heapType);
     m_modelAnim->bindTexAnim(m_sceneModel);
     nw4r::g3d::AnmObjTexPatRes* o = m_modelAnim->m_anmObjTexPatRes;
     setPolicy(o, *(u32*)((u8*)o->m_anmTexPatFile.ptr() + 0x34));
@@ -251,15 +263,19 @@ bool MuObject::changeTexPatAnimNIf(const char* animName) {
     return true;
 }
 
+static inline void bindTexSrtAnimImpl(MuObject* self, nw4r::g3d::ResAnmTexSrt anim) {
+    self->m_modelAnim->unbindTexSrtAnim(self->m_sceneModel);
+    setTexSrtAnim(anim, self->m_modelAnim, self->m_resMdl, self->m_heapType);
+    self->m_modelAnim->bindTexSrtAnim(self->m_sceneModel);
+    nw4r::g3d::AnmObjTexSrtRes* o = self->m_modelAnim->m_anmObjTexSrtRes;
+    setPolicy(o, *(u32*)((u8*)o->m_anmTexSrtFile.ptr() + 0x24));
+    self->m_sceneModel->SetScnObjOption(3, 0);
+}
+
 void MuObject::changeTexSrtAnimN(const char* animName) {
     nw4r::g3d::ResAnmTexSrt anim = ResFile_GetResAnmTexSrtByName(&m_resFile, animName);
     if (anim.IsValid()) {
-        m_modelAnim->unbindTexSrtAnim(m_sceneModel);
-        setTexSrtAnim(anim, m_resMdl, m_modelAnim, m_heapType);
-        m_modelAnim->bindTexSrtAnim(m_sceneModel);
-        nw4r::g3d::AnmObjTexSrtRes* o = m_modelAnim->m_anmObjTexSrtRes;
-        setPolicy(o, *(u32*)((u8*)o->m_anmTexSrtFile.ptr() + 0x24));
-        m_sceneModel->SetScnObjOption(3, 0);
+        bindTexSrtAnimImpl(this, anim);
     }
 }
 
@@ -269,7 +285,7 @@ bool MuObject::changeTexSrtAnimNIf(const char* animName) {
         return false;
     }
     m_modelAnim->unbindTexSrtAnim(m_sceneModel);
-    setTexSrtAnim(anim, m_resMdl, m_modelAnim, m_heapType);
+    setTexSrtAnim(anim, m_modelAnim, m_resMdl, m_heapType);
     m_modelAnim->bindTexSrtAnim(m_sceneModel);
     nw4r::g3d::AnmObjTexSrtRes* o = m_modelAnim->m_anmObjTexSrtRes;
     setPolicy(o, *(u32*)((u8*)o->m_anmTexSrtFile.ptr() + 0x24));
@@ -277,15 +293,19 @@ bool MuObject::changeTexSrtAnimNIf(const char* animName) {
     return true;
 }
 
+static inline void bindClrAnimImpl(MuObject* self, nw4r::g3d::ResAnmClr anim) {
+    self->m_modelAnim->unbindMatColAnim(self->m_sceneModel);
+    setClrAnim(anim, self->m_modelAnim, self->m_resMdl, self->m_heapType);
+    self->m_modelAnim->bindMatColAnim(self->m_sceneModel);
+    nw4r::g3d::AnmObjMatClrRes* o = self->m_modelAnim->m_anmObjMatClrRes;
+    setPolicy(o, *(u32*)((u8*)o->m_anmMatClrFile.ptr() + 0x20));
+    self->m_sceneModel->SetScnObjOption(3, 0);
+}
+
 void MuObject::changeClrAnimN(const char* animName) {
     nw4r::g3d::ResAnmClr anim = ResFile_GetResAnmClrByName(&m_resFile, animName);
     if (anim.IsValid()) {
-        m_modelAnim->unbindMatColAnim(m_sceneModel);
-        setClrAnim(anim, m_resMdl, m_modelAnim, m_heapType);
-        m_modelAnim->bindMatColAnim(m_sceneModel);
-        nw4r::g3d::AnmObjMatClrRes* o = m_modelAnim->m_anmObjMatClrRes;
-        setPolicy(o, *(u32*)((u8*)o->m_anmMatClrFile.ptr() + 0x20));
-        m_sceneModel->SetScnObjOption(3, 0);
+        bindClrAnimImpl(this, anim);
     }
 }
 
@@ -295,7 +315,7 @@ bool MuObject::changeClrAnimNIf(const char* animName) {
         return false;
     }
     m_modelAnim->unbindMatColAnim(m_sceneModel);
-    setClrAnim(anim, m_resMdl, m_modelAnim, m_heapType);
+    setClrAnim(anim, m_modelAnim, m_resMdl, m_heapType);
     m_modelAnim->bindMatColAnim(m_sceneModel);
     nw4r::g3d::AnmObjMatClrRes* o = m_modelAnim->m_anmObjMatClrRes;
     setPolicy(o, *(u32*)((u8*)o->m_anmMatClrFile.ptr() + 0x20));
