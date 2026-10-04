@@ -203,7 +203,7 @@ void Message::setCharSpace(float f1, float f2) {
     put(v);
 }
 
-int Message::writeTagClear(u8* dst) {
+int Message::writeTagClear(char* dst) {
     dst[0] = 0x12;
     dst[1] = 0x80;
     return 2;
@@ -521,30 +521,28 @@ void Message::printMsgBuf(FontData::FONT_RESOURCE fontId) {
 
 void Message::writeIndexData(void* msgbin, u32 index) {
     MsgBuf* buf = m_cur;
-    u32* tbl = (u32*)msgbin;
-    u32 off = tbl[index];
-    u32 next = tbl[index + 1];
+    u32 off = *(u32*)((u8*)msgbin + index * 4);
+    u32 next = *(u32*)((u8*)msgbin + (index + 1) * 4);
     int len = next - off;
     memcpy(buf->m_data + buf->m_pos, (char*)msgbin + off, len);
     buf->m_pos += len;
 }
 
 void Message::getPrintIndexData(void* msgbin, u32 index, char** outStr, u32* outLen) {
-    u32* tbl = (u32*)msgbin;
-    u32 off = tbl[index];
-    u32 next = tbl[index + 1];
+    u32 off = *(u32*)((u8*)msgbin + index * 4);
+    u32 next = *(u32*)((u8*)msgbin + (index + 1) * 4);
     *outLen = next - off;
     *outStr = (char*)msgbin + off;
 }
 
-void Message::drawBoxLine(s32 color, s32 lineWidth, s32 zTest, float x1, float y1, float x2, float y2, float z) {
+void Message::drawBoxLine(u32 color, u8 lineWidth, int zTest, float x1, float y1, float x2, float y2, float z) {
     GXSetNumTexGens(0);
     GXSetNumChans(1);
     GXSetNumTevStages(1);
     GXSetChanCtrl(GX_COLOR0A0, 0, GX_SRC_REG, GX_SRC_VTX, GX_LIGHT_NULL, GX_DF_NONE, GX_AF_NONE);
     GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
-    GXSetTevOp(GX_TEVSTAGE0, GX_PASSCLR);
-    GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
+    GXSetTevOp(GX_TEVSTAGE0, (GXTevMode)4);
+    GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, (GXLogicOp)0xf);
     if (zTest != 0) {
         GXSetZMode(1, GX_ALWAYS, 1);
     }
@@ -586,9 +584,9 @@ static void drawCallbackProjection() {
     Mtx44 proj;
     C_MTXOrtho(proj, 0.0f, 480.0f, 0.0f, 640.0f, 0.0f, 1.0f);
     GXSetProjection(proj, GX_ORTHOGRAPHIC);
-    Mtx mtx;
-    PSMTXIdentity(mtx);
-    GXLoadPosMtxImm(mtx, 0);
+    Mtx44 mtx;
+    PSMTXIdentity((f32(*)[4])mtx);
+    GXLoadPosMtxImm((f32(*)[4])mtx, 0);
     GXSetCurrentMtx(0);
 }
 
@@ -604,18 +602,17 @@ bool Message::allocMsgBuf(u32 msgSize, u32 numMsgs, Heaps::HeapType heapType) {
 }
 
 bool Message::attachMsgBuf(u32 index, nw4r::g3d::ScnMdlSimple* scn, const char* nodeName, u8 zCompare, int zUpdate, float scale) {
+    msScnObjCallback* prev = *(msScnObjCallback**)((u8*)scn + 0xd4);
     msScnObjCallback* cb = &m_bufs[index]->m_cb;
-    nw4r::g3d::ScnObj* obj = (nw4r::g3d::ScnObj*)scn;
     if (cb->m_next != NULL) {
         cb->m_next = NULL;
     }
-    msScnObjCallback* prev = *(msScnObjCallback**)((u8*)obj + 0xd4);
     if (prev != NULL) {
         cb->m_next = prev;
     }
-    *(msScnObjCallback**)((u8*)obj + 0xd4) = cb;
-    ScnObj_EnableCallbackTiming(obj, 0x20);
-    ScnObj_EnableCallbackExecOp(obj, 4);
+    *(msScnObjCallback**)((u8*)scn + 0xd4) = cb;
+    ScnObj_EnableCallbackTiming((nw4r::g3d::ScnObj*)scn, 0x20);
+    ScnObj_EnableCallbackExecOp((nw4r::g3d::ScnObj*)scn, 4);
     cb->m_msg = this;
     cb->m_idx = index;
     cb->m_scale = scale;
@@ -625,11 +622,7 @@ bool Message::attachMsgBuf(u32 index, nw4r::g3d::ScnMdlSimple* scn, const char* 
     if (*nodeName != 0) {
         nw4r::g3d::ResMdl resMdl = scn->m_resMdl;
         nw4r::g3d::ResNode node = resMdl.GetResNode(nodeName);
-        if (node.IsValid()) {
-            cb->m_nodeId = node->m_nodeIndex;
-        } else {
-            cb->m_nodeId = 0;
-        }
+        cb->m_nodeId = node.IsValid() ? node->m_nodeIndex : 0;
     } else {
         cb->m_nodeId = 0;
     }
@@ -745,16 +738,16 @@ void msScnObjCallback::ExecCallback_DRAW_XLU(int pass) {
 }
 
 bool Message::appendSubstr(char* dst, const char* src, int skip, int count) {
-    char* d = dst + strlen(dst);
+    dst += strlen(dst);
+    
     while (*src != 0 && skip > 0) {
-        char c = *src;
-        if (!(c & 0x80)) {
+        if (!(*src & 0x80)) {
             skip--;
             src++;
-        } else if ((c & 0xe0) == 0xc0) {
+        } else if ((*src & 0xe0) == 0xc0) {
             skip--;
             src += 2;
-        } else if ((c & 0xf0) == 0xe0) {
+        } else if ((*src & 0xf0) == 0xe0) {
             skip--;
             src += 3;
         }
@@ -763,54 +756,42 @@ bool Message::appendSubstr(char* dst, const char* src, int skip, int count) {
         return false;
     }
     while (count > 0) {
-        char c = *src;
-        if (!(c & 0x80)) {
-            if (c == 0) {
-                *d = 0;
+        if (!(*src & 0x80)) {
+            if (*src == 0) {
+                *dst = 0;
                 return false;
             }
-            *d = c;
-            d++;
+            *dst = *src;
+            dst++;
             count--;
             src++;
-        } else if ((c & 0xe0) == 0xc0) {
-            char c1 = src[1];
+        } else if ((*src & 0xe0) == 0xc0) {
             count--;
-            *d = c;
-            src += 2;
-            d[1] = c1;
-            d += 2;
-        } else if ((c & 0xf0) == 0xe0) {
-            *d = c;
+            *dst++ = *src++;
+            *dst++ = *src++;
+        } else if ((*src & 0xf0) == 0xe0) {
             count--;
-            char c1 = src[1];
-            char c2 = src[2];
-            src += 3;
-            d[1] = c1;
-            d[2] = c2;
-            d += 3;
+            *dst++ = *src++;
+            *dst++ = *src++;
+            *dst++ = *src++;
         }
     }
-    *d = 0;
+    *dst = 0;
     return true;
 }
 
-u32 Message::utf8to16(wchar_t* dst, const char* src) {
+u32 Message::utf8to16(wchar_t* dst, const char* s) {
+    const u8* src = (const u8*)s;
     u32 count = 0;
     while (*src != 0) {
-        u8 c = *src;
-        if (c <= 0x7f) {
-            *dst = c;
-            src++;
-            dst++;
-        } else if ((c >> 5) == 6) {
-            *dst = ((c & 0x1f) << 6) | (src[1] & 0x3f);
+        if (*src <= 0x7f) {
+            *dst++ = *src++;
+        } else if ((*src >> 5) == 6) {
+            *dst++ = ((src[0] & 0x1f) << 6) | (src[1] & 0x3f);
             src += 2;
-            dst++;
-        } else if ((c >> 4) == 0xe) {
-            *dst = ((c & 0xf) << 12) | ((src[1] & 0x3f) << 6) | (src[2] & 0x3f);
+        } else if ((*src >> 4) == 0xe) {
+            *dst++ = ((src[0] & 0xf) << 12) | ((src[1] & 0x3f) << 6) | (src[2] & 0x3f);
             src += 3;
-            dst++;
         }
         count++;
     }
@@ -821,23 +802,20 @@ u32 Message::utf8to16(wchar_t* dst, const char* src) {
 u32 Message::utf16to8(char* dst, const wchar_t* src) {
     u32 count = 0;
     while (*src != 0) {
-        u16 c = *src;
-        if (c <= 0x7f) {
-            *dst = c;
+        if (*src <= 0x7f) {
+            *dst = *src;
             dst++;
             src++;
-        } else if (c <= 0x7ff) {
-            u16 c2 = *src;
+        } else if (*src <= 0x7ff) {
+            dst[0] = 0xc0 | ((*src >> 6) & 0x1f);
+            dst[1] = 0x80 | (*src & 0x3f);
             src++;
-            dst[0] = 0xc0 | ((c >> 6) & 0x1f);
-            dst[1] = 0x80 | (c2 & 0x3f);
             dst += 2;
         } else {
-            u16 c2 = *src;
+            dst[0] = 0xe0 | ((*src >> 12) & 0xf);
+            dst[1] = 0x80 | ((*src >> 6) & 0x3f);
+            dst[2] = 0x80 | (*src & 0x3f);
             src++;
-            dst[0] = 0xe0 | ((c >> 12) & 0xf);
-            dst[1] = 0x80 | ((c2 >> 6) & 0x3f);
-            dst[2] = 0x80 | (c2 & 0x3f);
             dst += 3;
         }
         count++;
@@ -1058,15 +1036,15 @@ void Message::fullToHalf(char* dst, const char* src) {
 }
 
 int Message::halfToFull(char* dst, const char* src) {
-    const u16 table[96] = { 0xbc81, 0x809c, 0xbc83, 0xbc84, 0xbc85, 0xbc86, 0x8098, 0xbc88, 0xbc89, 0xbc8a, 0xbc8b, 0xbc8c, 0x8892, 0xbc8e, 0xbc8f, 0xbc90, 0xbc91, 0xbc92, 0xbc93, 0xbc94, 0xbc95, 0xbc96, 0xbc97, 0xbc98, 0xbc99, 0xbc9a, 0xbc9b, 0xbc9c, 0xbc9d, 0xbc9e, 0xbc9f, 0xbca0, 0xbca1, 0xbca2, 0xbca3, 0xbca4, 0xbca5, 0xbca6, 0xbca7, 0xbca8, 0xbca9, 0xbcaa, 0xbcab, 0xbcac, 0xbcad, 0xbcae, 0xbcaf, 0xbcb0, 0xbcb1, 0xbcb2, 0xbcb3, 0xbcb4, 0xbcb5, 0xbcb6, 0xbcb7, 0xbcb8, 0xbcb9, 0xbcba, 0xbcbb, 0xbfa5, 0xbcbd, 0xbcbe, 0xbcbf, 0xbd80, 0xbd81, 0xbd82, 0xbd83, 0xbd84, 0xbd85, 0xbd86, 0xbd87, 0xbd88, 0xbd89, 0xbd8a, 0xbd8b, 0xbd8c, 0xbd8d, 0xbd8e, 0xbd8f, 0xbd90, 0xbd91, 0xbd92, 0xbd93, 0xbd94, 0xbd95, 0xbd96, 0xbd97, 0xbd98, 0xbd99, 0xbd9a, 0xbd9b, 0xbd9c, 0xbd9d, 0xbd9e, 0x0000, 0x0000 };
+    const u16 table[94] = { 0xbc81, 0x809c, 0xbc83, 0xbc84, 0xbc85, 0xbc86, 0x8098, 0xbc88, 0xbc89, 0xbc8a, 0xbc8b, 0xbc8c, 0x8892, 0xbc8e, 0xbc8f, 0xbc90, 0xbc91, 0xbc92, 0xbc93, 0xbc94, 0xbc95, 0xbc96, 0xbc97, 0xbc98, 0xbc99, 0xbc9a, 0xbc9b, 0xbc9c, 0xbc9d, 0xbc9e, 0xbc9f, 0xbca0, 0xbca1, 0xbca2, 0xbca3, 0xbca4, 0xbca5, 0xbca6, 0xbca7, 0xbca8, 0xbca9, 0xbcaa, 0xbcab, 0xbcac, 0xbcad, 0xbcae, 0xbcaf, 0xbcb0, 0xbcb1, 0xbcb2, 0xbcb3, 0xbcb4, 0xbcb5, 0xbcb6, 0xbcb7, 0xbcb8, 0xbcb9, 0xbcba, 0xbcbb, 0xbfa5, 0xbcbd, 0xbcbe, 0xbcbf, 0xbd80, 0xbd81, 0xbd82, 0xbd83, 0xbd84, 0xbd85, 0xbd86, 0xbd87, 0xbd88, 0xbd89, 0xbd8a, 0xbd8b, 0xbd8c, 0xbd8d, 0xbd8e, 0xbd8f, 0xbd90, 0xbd91, 0xbd92, 0xbd93, 0xbd94, 0xbd95, 0xbd96, 0xbd97, 0xbd98, 0xbd99, 0xbd9a, 0xbd9b, 0xbd9c, 0xbd9d, 0xbd9e };
     const char* start = src;
     do {
-        char c = *src;
-        if (c < 0x21 || c >= 0x7f) {
+        u8 c = *src;
+        if ((s8)c < 0x21 || (s8)c >= 0x7f) {
             *dst++ = c;
         } else {
             u8 lead;
-            switch (c) {
+            switch ((s8)c) {
             case 0x27:
             case 0x22:
             case 0x2d:
@@ -1076,7 +1054,7 @@ int Message::halfToFull(char* dst, const char* src) {
                 lead = 0xef;
                 break;
             }
-            u16 code = table[c - 0x21];
+            u16 code = table[(s8)c - 0x21];
             dst[0] = lead;
             dst[1] = code >> 8;
             dst[2] = code;

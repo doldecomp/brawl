@@ -232,8 +232,8 @@ public:
     static u32 utf8to16(wchar_t* dst, const char* src);
     static u32 utf16to8(char* dst, const wchar_t* src);
     static void getPrintIndexData(void* msgbin, u32 index, char** outStr, u32* outLen);
-    static void drawBoxLine(s32 p1, s32 p2, s32 p3, float f1, float f2, float f3, float f4, float f5);
-    static int writeTagClear(u8* dst);
+    static void drawBoxLine(u32 color, u8 lineWidth, int zTest, float x1, float y1, float x2, float y2, float z);
+    static int writeTagClear(char* dst);
     static bool appendSubstr(char* dst, const char* src, int skip, int count);
     static void fullToHalf(char* dst, const char* src);
     static int halfToFull(char* dst, const char* src);
