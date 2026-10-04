@@ -775,45 +775,29 @@ void gfPadSystem::updateLowWii(gfPadStatus* dest) {
     }
 }
 
+static inline u32 convButtons(u32 b) {
+    u32 r = b & ~0xF00;
+    r |= (-((b >> 8) & 1) & 0x400);
+    r |= (-((b >> 9) & 1) & 0x100);
+    r |= (-((b >> 10) & 1) & 0x800);
+    r |= (-((b >> 11) & 1) & 0x200);
+    return r;
+}
+
 void gfPadStatus::convSysStatusToMenuStatus(gfPadStatus* dest) {
     if (m_controllerType == gfPadType::WII_CLASSIC) {
         *dest = *this;
-        gfPadButtons cur = m_buttonsCurrentFrame;
-        gfPadButtons held = m_buttonsHeld;
-        gfPadButtons pressed = m_buttonsPressedThisFrame;
-        gfPadButtons released = m_buttonsReleasedThisFrame;
-        gfPadButtons pressed2 = m_buttonsPressedThisFrame2;
-        gfPadButtons c = cur;
-        c.m_x = cur.m_a;
-        c.m_a = cur.m_b;
-        c.m_y = cur.m_x;
-        c.m_b = cur.m_y;
-        dest->m_buttonsCurrentFrame = c;
-        dest->m_buttonsCurrentFrame2 = c;
-        gfPadButtons h = held;
-        h.m_x = held.m_a;
-        h.m_a = held.m_b;
-        h.m_y = held.m_x;
-        h.m_b = held.m_y;
-        dest->m_buttonsHeld = h;
-        gfPadButtons p = pressed;
-        p.m_x = pressed.m_a;
-        p.m_a = pressed.m_b;
-        p.m_y = pressed.m_x;
-        p.m_b = pressed.m_y;
-        dest->m_buttonsPressedThisFrame = p;
-        gfPadButtons r = released;
-        r.m_x = released.m_a;
-        r.m_a = released.m_b;
-        r.m_y = released.m_x;
-        r.m_b = released.m_y;
-        dest->m_buttonsReleasedThisFrame = r;
-        gfPadButtons p2 = pressed2;
-        p2.m_x = pressed2.m_a;
-        p2.m_a = pressed2.m_b;
-        p2.m_y = pressed2.m_x;
-        p2.m_b = pressed2.m_y;
-        dest->m_buttonsPressedThisFrame2 = p2;
+        u32 cur = convButtons(m_buttonsCurrentFrame.bits);
+        u32 held = convButtons(m_buttonsHeld.bits);
+        u32 pressed = convButtons(m_buttonsPressedThisFrame.bits);
+        u32 released = convButtons(m_buttonsReleasedThisFrame.bits);
+        u32 pressed2 = convButtons(m_buttonsPressedThisFrame2.bits);
+        dest->m_buttonsCurrentFrame.bits = cur;
+        dest->m_buttonsCurrentFrame2.bits = cur;
+        dest->m_buttonsHeld.bits = held;
+        dest->m_buttonsPressedThisFrame.bits = pressed;
+        dest->m_buttonsReleasedThisFrame.bits = released;
+        dest->m_buttonsPressedThisFrame2.bits = pressed2;
     } else {
         *dest = *this;
     }
@@ -823,40 +807,43 @@ void gfPadSystem::updateSystem() {
     m_flags34.f1 = m_flags34.f2;
     m_flags34.f2 = 0;
     BOOL intr = OSDisableInterrupts();
+    gfPadStatus* sys = m_sysPads;
+    gfPadStatus* dbg = m_debugPads;
     for (u32 i = 0; i < 8; i++) {
-        m_debugPads[i].update(&m_sysPads[i]);
+        dbg->update(sys);
+        dbg++;
+        sys++;
     }
     OSRestoreInterrupts(intr);
+    gfPadStatus* dbg2 = m_debugPads;
+    gfPadStatus* menu = m_menuPads;
     for (u32 i = 0; i < 8; i++) {
-        m_debugPads[i].convSysStatusToMenuStatus(&m_menuPads[i]);
+        dbg2->convSysStatusToMenuStatus(menu);
+        dbg2++;
+        menu++;
     }
-    u8 delay = m_repeatDelay;
-    if (delay <= 1) {
-        delay = 1;
-    }
-    m_repeatDelay = delay < 100 ? delay : 100;
-    u8 bits = m_repeatBits;
-    if (bits <= 1) {
-        bits = 1;
-    }
-    m_repeatBits = bits < 7 ? bits : 7;
+    int t = m_repeatDelay > 1 ? m_repeatDelay : 1;
+    m_repeatDelay = (u8)t < 100 ? t : 100;
+    t = m_repeatBits > 1 ? m_repeatBits : 1;
+    m_repeatBits = (u8)t < 7 ? t : 7;
     for (int i = 0; i < 8; i++) {
+        gfPadStatus* pad = &m_debugPads[i];
+        u8* row = m_repeatCount[i];
         u8 mask = (1 << m_repeatBits) - 1;
         for (int j = 0; j < 32; j++) {
             u32 bit = 1 << j;
-            u8* cnt = &m_repeatCount[i][j];
-            if (m_debugPads[i].m_buttonsCurrentFrame2.bits & bit) {
-                *cnt = *cnt + 1;
+            if (pad->m_buttonsCurrentFrame2.bits & bit) {
+                row[j]++;
             } else {
-                *cnt = 0;
+                row[j] = 0;
             }
-            if (*cnt >= m_repeatDelay) {
-                int diff = *cnt - m_repeatDelay;
+            if (row[j] >= m_repeatDelay) {
+                int diff = row[j] - m_repeatDelay;
                 if (mask == (mask & diff)) {
-                    m_debugPads[i].m_buttonsPressedThisFrame2.bits |= bit;
+                    pad->m_buttonsPressedThisFrame2.bits |= bit;
                 }
                 if (diff >= 0x80) {
-                    *cnt -= 0x80;
+                    row[j] -= 0x80;
                 }
             }
         }
@@ -865,11 +852,9 @@ void gfPadSystem::updateSystem() {
     merge(m_debugPads, 8, m_debugPadMask, &m_debugPadMerged);
     merge(m_menuPads, 8, 0xFF, &m_menuPadMerged);
     for (int i = 0; i < 8; i++) {
-        u16 t = m_padMotorMasks[i];
-        if (t != 0 && t != 0xFFFF) {
-            t = t - 1;
-            m_padMotorMasks[i] = t;
-            if (t == 0 && m_flags35.f6) {
+        if (m_padMotorMasks[i] != 0 && m_padMotorMasks[i] != 0xFFFF) {
+            m_padMotorMasks[i] = m_padMotorMasks[i] - 1;
+            if (m_padMotorMasks[i] == 0 && m_flags35.f6) {
                 if (i < 4) {
                     fn_802162A4(i, 0);
                 } else {
@@ -926,8 +911,8 @@ void gfPadSystem::updateGame() {
     }
     if (m_flags34.f0) {
         for (int i = 0; i < 8; i++) {
-            m_gamePads[i].m_buttonsCurrentFrame.m_z = 0;
-            m_gamePads[i].m_buttonsCurrentFrame2.m_z = 0;
+            m_gamePads[i].m_buttonsCurrentFrame.bits &= ~0x10;
+            m_gamePads[i].m_buttonsCurrentFrame2.bits &= ~0x10;
         }
     }
     merge(m_gamePads, 8, m_gamePadMask, &m_gamePadMerged);
@@ -938,7 +923,7 @@ void gfPadSystem::updateGame() {
 }
 
 void gfPadSystem::maskMotor(u16 mask) {
-    u32 m = m_motorMask & (mask & 0xFF);
+    u32 m = m_motorMask & (u8)mask;
     if (m) {
         for (int i = 0; i < 8; i++) {
             if ((m & (1 << i)) && m_flags35.f6) {
@@ -1072,76 +1057,37 @@ int gfPadSystem::getDebugPadStatus(int padNum, gfPadStatus* dest) {
     return 1;
 }
 
+#define MERGE_STICK(merged, field)                                      a = src->field;                                                     absNew = (s8)a < 0 ? -(s8)a : (s8)a;                                absOld = (s8)merged < 0 ? -(s8)merged : (s8)merged;                if (absOld < absNew) merged = a;
+
 void gfPadSystem::merge(gfPadStatus* src, int numPads, u32 mask, gfPadStatus* dest) {
+    u8 a;
+    s8 absNew;
+    s8 absOld;
+    u8 count = 0;
     u32 cur = 0;
     u32 pressed = 0;
     u32 released = 0;
     u32 held = 0;
     u32 repeat = 0;
-    s8 stickX = 0;
-    s8 stickY = 0;
-    s8 subX = 0;
-    s8 subY = 0;
+    u8 stickX = 0;
+    u8 stickY = 0;
+    u8 subX = 0;
+    u8 subY = 0;
     u8 lTrig = 0;
     u8 rTrig = 0;
     u8 b36 = 0;
     u8 b37 = 0;
-    u8 count = 0;
-    for (int i = 0; i < numPads; i++, src++) {
+    for (u32 i = 0; i < numPads; i++, src++) {
         if (((mask >> i) & 1) && src->m_error == gfPadError::NONE) {
             cur |= src->m_buttonsCurrentFrame2.bits;
             pressed |= src->m_buttonsPressedThisFrame.bits;
             released |= src->m_buttonsReleasedThisFrame.bits;
             held |= src->m_buttonsHeld.bits;
             repeat |= src->m_buttonsPressedThisFrame2.bits;
-            s8 a = src->m_stickX;
-            s8 aa = a;
-            if (aa < 0) {
-                aa = -aa;
-            }
-            s8 ma = stickX;
-            if (ma < 0) {
-                ma = -ma;
-            }
-            if (ma < aa) {
-                stickX = a;
-            }
-            a = src->m_stickY;
-            aa = a;
-            if (aa < 0) {
-                aa = -aa;
-            }
-            ma = stickY;
-            if (ma < 0) {
-                ma = -ma;
-            }
-            if (ma < aa) {
-                stickY = a;
-            }
-            a = src->m_subStickX;
-            aa = a;
-            if (aa < 0) {
-                aa = -aa;
-            }
-            ma = subX;
-            if (ma < 0) {
-                ma = -ma;
-            }
-            if (ma < aa) {
-                subX = a;
-            }
-            a = src->m_subStickY;
-            aa = a;
-            if (aa < 0) {
-                aa = -aa;
-            }
-            ma = subY;
-            if (ma < 0) {
-                ma = -ma;
-            }
-            if (ma < aa) {
-                subY = a;
-            }
+            MERGE_STICK(stickX, m_stickX)
+            MERGE_STICK(stickY, m_stickY)
+            MERGE_STICK(subX, m_subStickX)
+            MERGE_STICK(subY, m_subStickY)
             u8 t = src->m_lTriggerAnalog;
             lTrig = lTrig > t ? lTrig : t;
             t = src->m_rTriggerAnalog;
@@ -1179,10 +1125,12 @@ void gfPadSystem::merge(gfPadStatus* src, int numPads, gfPadStatus* dest) {
 }
 
 void gfPadSystem::disconectWiiControler() {
-    for (int i = 4; i < 8; i++) {
+    int j = 0;
+    for (u32 i = 4; i < 8; i++) {
         if (m_debugPads[i].m_error == gfPadError::NONE) {
-            fn_80219F60(i - 4);
+            fn_80219F60(j);
         }
+        j++;
     }
 }
 
@@ -1213,8 +1161,9 @@ bool gfPadSystem::writeGameDataRequest(int a, int b, int c, int d) {
 }
 
 void gfPadSystem::wpadGameDataCallback(int chan, int data) {
-    g_gfPadSystem->m_gameData = data;
-    g_gfPadSystem->m_flags35.f7 = 1;
+    gfPadSystem* sys = g_gfPadSystem;
+    sys->m_gameData = data;
+    sys->m_flags35.f7 = 1;
 }
 
 void gfPadSystem::clearPadEdgeRepert() {
