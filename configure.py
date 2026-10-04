@@ -828,7 +828,7 @@ config.libs = [
             Object(Matching, "mo_melee/sora_melee/so/anim/so_anim_chr.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/controller/so_controller_module_impl.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_controller_module_link_ref.cpp"),
-            Object(NonMatching, "mo_melee/sora_melee/so/controller/so_controller_impl.cpp"),
+            Object(Matching, "mo_melee/sora_melee/so/controller/so_controller_impl.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_heap_module_impl.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_module_accesser.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_resource_module_impl.cpp"),

@@ -219,7 +219,3 @@ void soControllerModuleLinkRef::resetMainStickX() { }
 void soControllerModuleLinkRef::resetButton() { }
 
 soControllerModuleLinkRef::~soControllerModuleLinkRef() { }
-
-namespace so_controller_module_link_ref {
-    extern const float unused_floats[] = { 0.25f, 0.25f, 0.25f };
-}

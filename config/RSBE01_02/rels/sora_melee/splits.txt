@@ -32,11 +32,13 @@ mo_melee/sora_melee/so/controller/so_controller_module_impl.cpp:
 
 mo_melee/sora_melee/so/so_controller_module_link_ref.cpp:
 	.text       start:0x000598CC end:0x00059FD4
-	.rodata     start:0x00000748 end:0x0000075C
+	.rodata     start:0x00000748 end:0x00000750
 	.data       start:0x00005ED8 end:0x00006050
 
 mo_melee/sora_melee/so/controller/so_controller_impl.cpp:
 	.text       start:0x00059FD4 end:0x0005AB60
+	.rodata     start:0x00000750 end:0x000007B8
+	.data       start:0x00006050 end:0x00006168
 
 mo_melee/sora_melee/so/so_heap_module_impl.cpp:
 	.text       start:0x000649FC end:0x00064A90
