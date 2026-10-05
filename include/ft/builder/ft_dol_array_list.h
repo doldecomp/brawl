@@ -60,6 +60,7 @@ FT_DOL_ARRAY_VECTOR(soInstanceUnitFullProperty<soTransitionTerm>, 17);
 FT_DOL_ARRAY_VECTOR(soInstanceUnitFullProperty<soTransitionTerm>, 25);
 FT_DOL_ARRAY_VECTOR(soTransitionTermGroup, 20);
 FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 289);
+FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 288);
 FT_DOL_ARRAY_VECTOR(s32, 1);
 
 // soArrayContractibleTable<const soStatusData>: the (table, size) constructor and the destructor are calls into sora_melee.

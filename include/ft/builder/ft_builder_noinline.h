@@ -9,10 +9,12 @@
 #error define FT_BC before including ft_builder_noinline.h
 #endif
 
+// MATCH-ONLY: the REL calls the module constructor out of line (it must be compiled outside of the dont_inline region)
+soTransitionModuleImpl::soTransitionModuleImpl(soArray<soTransitionTermGroup>* groups) :
+    m_transitionTermGroupArray(groups), m_groupID(0), m_transitionInfo() { } // 99%: the original keeps a dead store to a stack slot (frame 0x10)
+
 #pragma dont_inline on
 soTransitionInfo::~soTransitionInfo() { } // MATCH-ONLY: out of line in the REL
-soTransitionModuleImpl::soTransitionModuleImpl(soArray<soTransitionTermGroup>* groups) :
-    m_transitionTermGroupArray(groups), m_groupID(0), m_transitionInfo(soTransitionInfo()) { }
 soNullable::soNullable(bool isNull) { m_isNull = isNull; } // MATCH-ONLY: out of line in the REL
 soGeneralWorkAbstract::~soGeneralWorkAbstract() { } // MATCH-ONLY: out of line in the REL
 #pragma dont_inline off

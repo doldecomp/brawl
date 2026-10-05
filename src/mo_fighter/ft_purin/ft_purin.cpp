@@ -44,6 +44,7 @@ typedef soResourceModuleBuildConfigDynamic<0, ftResourceIdAccesserImpl, soResour
 typedef soModelModuleBuildConfig<8, 3, soModelModuleImpl> ftPurinModelModuleBuildConfig;
 
 typedef ftAnimCmdModuleSubBuildConfig<288, 501> ftPurinAnimCmdModuleSubBuildConfig;
+typedef soStatusModuleBuildConfig<288, soGeneralWorkBuildConfig<18, 18, 3>, 274, 71, soTransitionModuleBuildConfig<ftStatusTransitionTypeList> > ftPurinStatusModuleBuildConfig;
 
 class ftPurinBuildConfig : public ftCommonBuildConfig {
 public:
@@ -53,6 +54,7 @@ public:
     typedef ftPurinResourceModuleBuildConfig ResourceModuleBuildConfig;
     typedef ftPurinAnimCmdModuleSubBuildConfig AnimCmdModuleSubBuildConfig;
     typedef ftPurinModelModuleBuildConfig ModelModuleBuildConfig;
+    typedef ftPurinStatusModuleBuildConfig StatusModuleBuildConfig;
 };
 
 class ftPurin : public ftFighterBuilder<ftPurinBuildConfig> {
