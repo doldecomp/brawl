@@ -389,6 +389,14 @@ havok/hkReferencedObjectClass.cpp:
 	.rodata     start:0x8040E9F8 end:0x8040EA58
 	.bss        start:0x80532340 end:0x80532368
 
+havok/hkBaseSystem.cpp:
+	.text       start:0x8027B5D0 end:0x8027C808
+	.ctors      start:0x804065DC end:0x804065E0
+	.data       start:0x80486058 end:0x804861D0
+	.bss        start:0x80532368 end:0x80532378
+	.sdata      start:0x8059EF28 end:0x8059EF38
+	.sbss       start:0x805A0EA0 end:0x805A0EC0
+
 havok/hkClass.cpp:
 	.text       start:0x8027C808 end:0x8027C914
 

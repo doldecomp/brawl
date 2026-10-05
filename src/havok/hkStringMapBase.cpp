@@ -8,9 +8,12 @@ hkStringMapBase::hkStringMapBase() {
     m_hashMod = 15;
 }
 
+#pragma push
+#pragma opt_lifetimes off
 hkStringMapBase::~hkStringMapBase() {
-    hkMemory::getInstance().deallocateChunk(m_elem, (m_hashMod + 1) * 3 * 4, 0x15);
+    hkMemory::getInstance().deallocateChunk(m_elem, (m_hashMod + 1) * 3 << 2, 0x15);
 }
+#pragma pop
 
 int hkStringMapBase::getIterator() const {
     int i;
@@ -109,8 +112,9 @@ unsigned long hkStringMapBase::getWithDefault(const char* key, unsigned long def
 }
 
 void hkStringMapBase::resizeTable(int newCapacity) {
+    int oldCap;
     unsigned long* oldElem = m_elem;
-    int oldCap = m_hashMod + 1;
+    oldCap = m_hashMod + 1;
     m_elem = (unsigned long*)hkMemory::getInstance().allocateChunk(newCapacity * 12, 0x15);
     hkString::memSet(m_elem, 0xFF, newCapacity * 4);
     m_numElems = 0;

@@ -383,6 +383,7 @@ config.libs = [
         "objects": [
             Object(Matching, "havok/hkBaseObjectClass.cpp"),
             Object(Matching, "havok/hkReferencedObjectClass.cpp"),
+            Object(NonMatching, "havok/hkBaseSystem.cpp", extra_cflags=["-str reuse,noreadonly", "-sdata 4"]),
             Object(Matching, "havok/hkClass.cpp"),
             Object(Matching, "havok/hkClassClass.cpp"),
             Object(Matching, "havok/hkClassEnumClass.cpp"),
