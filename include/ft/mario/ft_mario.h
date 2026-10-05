@@ -43,9 +43,20 @@ public:
 };
 
 class ftMario : public ftFighterBuilder<ftMarioBuildConfig> {
+    u8 unk2DBC0[0x2DBE8 - 0x2DBC0];
 public:
     ftMario(s32 entryId,
             Heaps::HeapType instHeap,
             Heaps::HeapType nwModelInstHeap,
             Heaps::HeapType nwMotionInstHeap);
+};
+
+// Dr. Mario: same class, created through its own class info
+class ftMarioD : public ftMario {
+public:
+    ftMarioD(s32 entryId,
+             Heaps::HeapType instHeap,
+             Heaps::HeapType nwModelInstHeap,
+             Heaps::HeapType nwMotionInstHeap) :
+        ftMario(entryId, instHeap, nwModelInstHeap, nwMotionInstHeap) { }
 };

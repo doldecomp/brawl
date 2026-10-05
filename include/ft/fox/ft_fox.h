@@ -45,6 +45,7 @@ public:
 };
 
 class ftFox : public ftFighterBuilder<ftFoxBuildConfig> {
+    u8 unk1CC20[0x1CD98 - 0x1CC20];
 public:
     ftFox(s32 entryId,
             Heaps::HeapType instHeap,

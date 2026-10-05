@@ -45,6 +45,7 @@ public:
 };
 
 class ftFalco : public ftFighterBuilder<ftFalcoBuildConfig> {
+    u8 unk1D06C[0x1D0E4 - 0x1D06C];
 public:
     ftFalco(s32 entryId,
             Heaps::HeapType instHeap,

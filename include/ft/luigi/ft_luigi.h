@@ -43,6 +43,7 @@ public:
 };
 
 class ftLuigi : public ftFighterBuilder<ftLuigiBuildConfig> {
+    u8 unkE1E4[0xE208 - 0xE1E4];
 public:
     ftLuigi(s32 entryId,
             Heaps::HeapType instHeap,

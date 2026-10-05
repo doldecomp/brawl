@@ -1,9 +1,14 @@
 #include <ft/builder/ft_dol_array_list.h>
 #include <ft/ft_class_info_impl.h>
 #include <ft/falco/ft_falco.h>
+#include <ft/falco/ft_falco_extend_param_accesser.h>
 
 #define FT_BC ftFalcoBuildConfig
 #include <ft/builder/ft_builder_noinline.h>
+
+ftFalcoExtendParamAccesser g_ftFalcoExtendParamAccesser;
+
+ftClassInfoImpl<Fighter_Falco, ftFalco> g_ftClassInfoFalco;
 
 ftFalco::ftFalco(s32 entryId,
                  Heaps::HeapType instHeap,
