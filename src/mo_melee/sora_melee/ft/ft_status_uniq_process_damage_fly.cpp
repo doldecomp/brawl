@@ -168,7 +168,7 @@ void ftStatusUniqProcessDamageFly::execFixPos(soModuleAccesser* moduleAccesser) 
             attackModule->setSize(soValueAccesser::getConstantFloat(moduleAccesser, 0xbe8, 0), 0);
         }
         moduleAccesser->getDamageModule().getDamageLog();
-        soKineticEnergyNormal* normal = dynamic_cast<soKineticEnergyNormal*>(moduleAccesser->getKineticModule().getEnergy(4));
+        soKineticEnergyNormal* normal = &dynamic_cast<soKineticEnergyNormal&>(*moduleAccesser->getKineticModule().getEnergy(4));
         float max = soValueAccesser::getConstantFloat(moduleAccesser, 0xcec, 0);
         float min = soValueAccesser::getConstantFloat(moduleAccesser, 0xced, 0);
         Vec2f speed = normal->getSpeed();
@@ -195,10 +195,10 @@ void ftStatusUniqProcessDamageFly::execFixPos(soModuleAccesser* moduleAccesser) 
 void ftStatusUniqProcessDamageFly::checkAttack(soModuleAccesser* moduleAccesser, void* collisionLog, float unk) {
     soCollisionLog* log = (soCollisionLog*)collisionLog;
     if (log->m_taskCategory == 10) {
-        soKineticEnergyNormal* normal = dynamic_cast<soKineticEnergyNormal*>(moduleAccesser->getKineticModule().getEnergy(4));
+        soKineticEnergyNormal* normal = &dynamic_cast<soKineticEnergyNormal&>(*moduleAccesser->getKineticModule().getEnergy(4));
         Vec2f speed = normal->getSpeed();
         Vec2f own = speed * soValueAccesser::getConstantFloat(moduleAccesser, 0xcee, 0);
-        StageObject* other = dynamic_cast<StageObject*>(gfTaskScheduler::getInstance()->getTaskById(log->m_taskCategory, log->m_taskId));
+        StageObject* other = &dynamic_cast<StageObject&>(*gfTaskScheduler::getInstance()->getTaskById(log->m_taskCategory, log->m_taskId));
         float myWeight = soValueAccesser::getConstantFloat(moduleAccesser, 0xbe1, 0);
         float ratio = myWeight / (myWeight + soExternalValueAccesser::getConstantFloat(other, 0xbe1));
         float t = 0.5f + (ratio - 0.5f) * soValueAccesser::getConstantFloat(moduleAccesser, 0xcef, 0);
