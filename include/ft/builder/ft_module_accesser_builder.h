@@ -42,7 +42,7 @@ public:
     typedef soCollisionReflectorModuleBuildConfig<3, 20, soCollisionShieldEventPresenterReflector, soCollisionShieldModuleImpl>
         CollisionReflectorModuleBuildConfig;
     typedef soCollisionCatchModuleBuildConfig<soCollisionCatchModuleImpl> CollisionCatchModuleBuildConfig;
-    typedef soMotionModuleBuildConfig<soMotionModuleImpl> MotionModuleBuildConfig;
+    typedef soMotionModuleBuildConfig<501, soMotionModuleImpl, 2, 1, soTransitionModuleBuildConfig<ftMotionTransitionTypeList>, soMotionAnimObjCacheModuleBuildConfig<5, soMotionAnimObjCacheModuleImpl> > MotionModuleBuildConfig;
     typedef soTeamModuleBuildConfig<soTeamModuleImpl> TeamModuleBuildConfig;
     typedef soAnimCmdModuleBuildConfig<11, soAnimCmdModuleImpl> AnimCmdModuleBuildConfig;
     typedef soStatusModuleBuildConfig<289, soGeneralWorkBuildConfig<26, 14, 7>, 274, 71, soTransitionModuleBuildConfig<ftStatusTransitionTypeList> > StatusModuleBuildConfig;
@@ -205,7 +205,7 @@ public:
         m_motionBuilder(&m_moduleAccsr, fbd.getMotionData()),
         m_postureModuleBuilder(&m_moduleAccsr, &g_soEventObserverRegistrationDescNull),
         m_groundModuleBuilder(&m_moduleAccsr, fbd.getGroundConditionChecker()),
-        m_situationModuleBuilder(m_moduleAccsr.getEventManageModule().getManageId(), &m_moduleAccsr, &g_soEventObserverRegistrationDescNull),
+        m_situationModuleBuilder(ftGetManageId(&m_moduleAccsr), &m_moduleAccsr, &g_soEventObserverRegistrationDescNull),
         m_teamBuilder(fbd.getTeam(), &m_moduleAccsr),
         m_attackModuleBuilder(&m_moduleAccsr, owner->m_taskId, owner->m_taskCategory, &g_soEventObserverRegistrationDescNull),
         m_hitModuleBuilder(&m_moduleAccsr, owner->m_taskId, owner->m_taskCategory, &g_soEventObserverRegistrationDescNull),
@@ -219,12 +219,12 @@ public:
         m_turnModuleBuilder(&m_moduleAccsr),
         m_shakeModuleBuilder(&m_moduleAccsr, fbd.getShakeData()),
         m_soundModuleBuilder(&m_moduleAccsr, fbd.getSoundIdExchanger(), &g_soEventObserverRegistrationDescNull),
-        m_linkModuleBuilder(m_moduleAccsr.getEventManageModule().getManageId()),
+        m_linkModuleBuilder(ftGetManageId(&m_moduleAccsr)),
         m_visibilityModuleBuilder(&m_moduleAccsr, fbd.getVisibilityData()),
-        m_controllerModuleBuilder(&m_moduleAccsr, m_moduleAccsr.getEventManageModule().getManageId()),
+        m_controllerModuleBuilder(&m_moduleAccsr, ftGetManageId(&m_moduleAccsr)),
         m_cameraModuleBuilder(&m_moduleAccsr, (soSet<soCameraRange>*)fbd.getCameraRangeSet(), (soSet<soCameraClipSphere>*)fbd.getCameraClipSphereSet(), &g_soEventObserverRegistrationDescNull),
         m_workManageModuleBuilder(&m_moduleAccsr, fbd.getParamAccesser()),
-        m_animCmdBuilder(m_moduleAccsr.getEventManageModule().getManageId()),
+        m_animCmdBuilder(ftGetManageId(&m_moduleAccsr)),
         m_statusBuilder(&m_moduleAccsr, fbd.getStatusData(), fbd.getPreCheckAnimCmdData()),
         m_kineticBuilder(&m_moduleAccsr),
         m_generalWorkBuilder(),
@@ -252,6 +252,16 @@ public:
     soArrayContractibleTable<const soStatusData> unkTable;
     ftAnimCmdModuleSubBuilder<typename BC::AnimCmdModuleSubBuildConfig> unkAnimCmdModuleSubBuilder;
 
-    ftModuleAccesserBuilder(const ftFighterBuildData& fbd, StageObject* owner) : soModuleAccesserBuilder<BC>(fbd, owner) {
+    ftModuleAccesserBuilder(const ftFighterBuildData& fbd, StageObject* owner) :
+        soModuleAccesserBuilder<BC>(fbd, owner),
+        unkTable(*(const soStatusData**)(((u8**)&fbd)[3] + 0x18), 0xF), // HYPOTHESIS: fbd + 0xC is the ftData pointer
+        unkAnimCmdModuleSubBuilder(&this->m_moduleAccsr, fbd) {
+        soArrayUtility::pushRange<const acAnimCmdConv*>(unkAnimCmdModuleSubBuilder.getDisguiseUnit()->getEntryList(0), (const acAnimCmdConv* const*)fbd.getAnimCmdData(0, 0), 0x112);
+        soArrayUtility::pushRange<const acAnimCmdConv*>(unkAnimCmdModuleSubBuilder.getDisguiseUnit()->getEntryList(1), (const acAnimCmdConv* const*)fbd.getAnimCmdData(0, 1), 0x112);
+        soArrayUtility::pushRange<const acAnimCmdConv*>(unkAnimCmdModuleSubBuilder.getDisguiseUnit()->getEntryList(0), *(const acAnimCmdConv* const**)(((u8**)&fbd)[3] + 0x24), 0xF);
+        soArrayUtility::pushRange<const acAnimCmdConv*>(unkAnimCmdModuleSubBuilder.getDisguiseUnit()->getEntryList(1), *(const acAnimCmdConv* const**)(((u8**)&fbd)[3] + 0x28), 0xF);
+        unkAnimCmdModuleSubBuilder.getDisguiseUnit()->setupDisguiseList(0, (soAnimCmdDisguiseListEntry*)fbd.getAnimCmdDisguiseList(false, 0));
+        unkAnimCmdModuleSubBuilder.getDisguiseUnit()->setupDisguiseList(1, (soAnimCmdDisguiseListEntry*)fbd.getAnimCmdDisguiseList(false, 1));
+        this->m_moduleAccsr.getStatusModule().connectStatusDataList(&unkTable);
     }
 };
