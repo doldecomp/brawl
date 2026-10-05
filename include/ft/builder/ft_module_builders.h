@@ -378,16 +378,36 @@ public:
 template <typename T>
 class soPhysicsModuleBuildConfig {
 public:
+    enum { IkCap = 2 };
+    typedef T ModuleType;
+};
+
+// physics module with a different IK handle capacity (0: no handles)
+template <s32 N, typename T>
+class soPhysicsModuleBuildConfigCap {
+public:
+    enum { IkCap = N };
     typedef T ModuleType;
 };
 
 template <typename BC>
-class soPhysicsModuleBuilder : public soArraySelectHolder<1, soArrayVector<soPhysicsIKHandle, 2>, soArrayNull<soPhysicsIKHandle> > {
+class soPhysicsModuleBuilder : public soArraySelectHolder<1, soArrayVector<soPhysicsIKHandle, BC::IkCap>, soArrayNull<soPhysicsIKHandle> > {
     typename BC::ModuleType m_physicsModule;
 public:
     soPhysicsModuleBuilder(soModuleAccesser* acc, void* ikData) :
-        soArraySelectHolder<1, soArrayVector<soPhysicsIKHandle, 2>, soArrayNull<soPhysicsIKHandle> >(2, 0), m_physicsModule(acc, ikData, this->get(), 1) { }
+        soArraySelectHolder<1, soArrayVector<soPhysicsIKHandle, BC::IkCap>, soArrayNull<soPhysicsIKHandle> >(BC::IkCap, 0), m_physicsModule(acc, ikData, this->get(), 1) { }
     typename BC::ModuleType* getModule() { return &m_physicsModule; }
+};
+
+// no IK handles: the module takes the shared null array
+template <typename T>
+class soPhysicsModuleBuilder<soPhysicsModuleBuildConfigCap<0, T> > {
+    u32 m_unk0;
+    T m_physicsModule;
+public:
+    soPhysicsModuleBuilder(soModuleAccesser* acc, void* ikData) :
+        m_physicsModule(acc, ikData, &getNullArray<soPhysicsIKHandle>(), 1) { }
+    T* getModule() { return &m_physicsModule; }
 };
 
 ////////////////////////////////////////

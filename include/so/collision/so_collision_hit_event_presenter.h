@@ -20,7 +20,11 @@ public:
 #else
     virtual void addObserver(short param1, s8 param2);
 #endif
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventCollisionHit(float power, soCollisionAttackData*, u32 index, int, soModuleAccesser* moduleAccesser, soCollisionLog*) { }
+#else
     virtual void notifyEventCollisionHit(float power, soCollisionAttackData*, u32 index, int, soModuleAccesser* moduleAccesser, soCollisionLog*);
+#endif
     virtual void notifyEventCollisionHit2nd(float posX, float collisionLr, soCollisionAttackModule*, soCollisionLog*, u32 groupIndex, soModuleAccesser* moduleAccesser, bool) { }
     virtual void notifyEventChangeCollisionHit(int index, soModuleAccesser* moduleAccesser);
 };
