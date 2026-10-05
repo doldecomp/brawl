@@ -94,8 +94,9 @@ void Message::printf(const char* format, ...) {
     va_list args;
     va_start(args, format);
     char* buf = (char*)__alloca(GetBufferSize());
+    MsgBuf* cur;
     int len = vsnprintf(buf, GetBufferSize(), format, args);
-    MsgBuf* cur = m_cur;
+    cur = m_cur;
     memcpy(cur->m_data + cur->m_pos, buf, len);
     cur->m_pos += len;
 }
