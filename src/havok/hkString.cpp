@@ -16,11 +16,14 @@ char hkString::toLower(char c) {
 }
 #pragma dont_inline reset
 
+#pragma dont_inline on
 int hkString::vsnprintf(char* buf, int len, const char* fmt, va_list args) {
     va_list copy;
     memCpy(&copy, args, sizeof(va_list));
     return ::vsnprintf(buf, len, fmt, copy);
 }
+
+#pragma dont_inline reset
 
 int hkString::snprintf(char* buf, int len, const char* fmt, ...) {
     va_list args;
