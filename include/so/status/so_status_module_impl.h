@@ -60,7 +60,8 @@ public:
         return false;
     }
     virtual void leaveStop(soModuleAccesser* moduleAccesser, int, bool) { }
-    virtual bool checkTransitionPrecede(soModuleAccesser* moduleAccesser, int*) {
+    // HYPOTHESIS: (accesser, last transition info, target status); the BrawlHeaders copy has (accesser, int*).
+    virtual bool checkTransitionPrecede(soModuleAccesser* moduleAccesser, void* transitionInfo, int target) {
         return true;
     }
 };

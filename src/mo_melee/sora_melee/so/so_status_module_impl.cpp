@@ -102,6 +102,61 @@ bool soStatusModuleImpl::isCollisionAttackOccer() {
     return m_isCollisionAttackOccer;
 }
 
+bool soStatusModuleImpl::checkTransition(soModuleAccesser* moduleAccesser) {
+    s32 target = -1;
+    moduleAccesser->getControllerModule().setPrev(0);
+    static soGeneralTermCache cache;
+    cache.clearAll();
+    u16 attr = 0;
+    bool established = m_transitionModule->checkEstablish(moduleAccesser, (u32*)&target, -1, &attr, &cache) == 1;
+    if (established) {
+        if (target <= -1) {
+            return false;
+        }
+        if (!moduleAccesser->getStageObject().checkTransitionStatus(target)) {
+            return false;
+        }
+        if (m_transitionModule->getLastTransitionInfo()->_unk08 & 1) {
+            moduleAccesser->getControllerModule().clearLog();
+        }
+        changeStatusRequest(target, moduleAccesser);
+        return true;
+    }
+    s32 logNum = moduleAccesser->getControllerModule().getLogNum();
+    if (logNum > 0) {
+        target = -1;
+        for (s32 i = logNum; i > 0; i--) {
+            cache.clearController();
+            moduleAccesser->getControllerModule().setPrev(i);
+            attr = 1;
+            bool loopEstablished = m_transitionModule->checkEstablish(moduleAccesser, (u32*)&target, -1, &attr, &cache) == 1;
+            if (loopEstablished) {
+                bool precede = true;
+                if (target <= -1) {
+                    return false;
+                }
+                s32 status = m_statusKind;
+                if (status >= 0 && status < m_statusUniqProcessArr->size()) {
+                    soStatusUniqProcess* proc = m_statusUniqProcessArr->at(status);
+                    if (proc != 0) {
+                        precede = proc->checkTransitionPrecede(moduleAccesser, m_transitionModule->getLastTransitionInfo(), target);
+                    }
+                }
+                if (precede == true) {
+                    if (!moduleAccesser->getStageObject().checkTransitionStatus(target)) {
+                        return false;
+                    }
+                    moduleAccesser->getControllerModule().clearLog();
+                    changeStatusRequest(target, moduleAccesser);
+                    return true;
+                }
+            }
+        }
+        moduleAccesser->getControllerModule().setPrev(0);
+    }
+    return false;
+}
+
 // HYPOTHESIS: soStatusData starts with three masks selecting which flag/int/float work values survive a status change.
 void soStatusModuleImpl::succeedStatusWork(const soStatusData* statusData) {
     const u32* masks = (const u32*)statusData;
