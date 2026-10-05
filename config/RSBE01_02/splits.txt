@@ -422,6 +422,11 @@ havok/hkClassVersion1Class.cpp:
 	.bss        start:0x80532410 end:0x80532438
 	.sdata2     start:0x805A3CB0 end:0x805A3CC0
 
+havok/hkSocket.cpp:
+	.text       start:0x80280C14 end:0x80280C20
+	.ctors      start:0x804065FC end:0x80406600
+	.sbss       start:0x805A0EE0 end:0x805A0EE8
+
 havok/hkAabbClass.cpp:
 	.text       start:0x80281F4C end:0x80281FB0
 	.ctors      start:0x80406604 end:0x80406608
@@ -510,6 +515,15 @@ havok/hkConvexVerticesShapeClass.cpp:
 	.rodata     start:0x80410650 end:0x80410778
 	.bss        start:0x805327A0 end:0x805327E8
 	.sdata2     start:0x805A40C8 end:0x805A40D8
+
+havok/hkCylinderShapeClass.cpp:
+	extab       start:0x8000851C end:0x80008524
+	extabindex  start:0x8000B2FC end:0x8000B308
+	.text       start:0x802D4688 end:0x802D46F4
+	.ctors      start:0x8040667C end:0x80406680
+	.rodata     start:0x804107A8 end:0x804109A8
+	.bss        start:0x805327F8 end:0x80532820
+	.sdata2     start:0x805A4118 end:0x805A4128
 
 havok/hkShapeClass.cpp:
 	extab       start:0x80008554 end:0x8000855C
