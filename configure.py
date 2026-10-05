@@ -1496,7 +1496,7 @@ config.libs = [
         "objects": [
             Object(NonMatching, "mo_stage/st_tengan/st_tengan.cpp"),
             Object(Matching, "mo_stage/st_tengan/gr_tengan.cpp"),
-            Object(NonMatching, "mo_stage/st_tengan/gr_tengan_bg.cpp"),
+            Object(Matching, "mo_stage/st_tengan/gr_tengan_bg.cpp"),
             Object(Matching, "mo_stage/st_tengan/gr_tengan_floor.cpp"),
             Object(Matching, "mo_stage/st_tengan/gr_tengan_ashiba.cpp"),
         ],
