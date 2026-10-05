@@ -136,6 +136,14 @@ public:
     soStatusCollisionLogCopy m_collisionLog;               // +0x80
     void succeedStatusWork(const soStatusData* statusData);
 
+#ifdef FT_MODULE_BUILDER
+    // constructor lives in sora_melee; parameter types are HYPOTHESES from the builder (soStatusModuleBuilder)
+    soStatusModuleImpl(soModuleAccesser* moduleAccesser, soArrayContractibleTable<const soStatusData>* statusTable,
+                       soArray<soStatusUniqProcess*>* uniqProcs, soGeneralWorkAbstract* generalWork,
+                       soTransitionModule* transitionModule, void* changeRequestQueue, void* preCheckAnimCmds,
+                       int numStatusKinds, int unk);
+#endif
+
     virtual void activate(soModuleAccesser* moduleAccesser);
     virtual void deactivate(soModuleAccesser* moduleAccesser);
     virtual bool changeStatusRequest(int status, soModuleAccesser* moduleAccesser);

@@ -49,9 +49,13 @@ public:
         m_manageID = -1;
     }
 
+#ifdef FT_MODULE_BUILDER
+    ~soEventObserver(); // MATCH-ONLY: the fighter RELs call the sora_melee instance
+#else
     ~soEventObserver() {
         removeObserver(m_manageID);
     }
+#endif
 
     void addObserverSub(s32 manageId, T* obsvr, s8 p3) {
         bool check4 = false;

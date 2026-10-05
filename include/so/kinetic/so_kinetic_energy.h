@@ -81,6 +81,10 @@ public:
     virtual void reflectAccel(Vec3f* accel);
     virtual void onConsiderGroundFriction();
     virtual void offConsiderGroundFriction();
+#ifdef FT_MODULE_BUILDER
+    virtual ~soKineticEnergy(); // MATCH-ONLY: out of line in the fighter RELs (ft_builder_noinline.h)
+#else
     virtual ~soKineticEnergy() { }
+#endif
 };
 static_assert(sizeof(soKineticEnergy) == 8, "Class is wrong size!");

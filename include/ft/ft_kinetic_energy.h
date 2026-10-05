@@ -12,11 +12,24 @@
 
 class ftKineticEnergyMotion : public soKineticEnergyNormal {
 public:
+#ifdef FT_MODULE_BUILDER
+    ftKineticEnergyMotion(); // sora_melee
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual ~ftKineticEnergyMotion() { }
+#endif
     int m_motionMode; // +0x34
+    u8 m_unk38[0x18];
 };
 
 class ftKineticEnergyStop : public soKineticEnergyNormal {
 public:
+#ifdef FT_MODULE_BUILDER
+    ftKineticEnergyStop(); // sora_melee
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual ~ftKineticEnergyStop() { }
+#endif
     void setBrake(Vec2f* v) { m_brakeX = v->m_x; m_brakeY = v->m_y; }
     float m_brakeX;
     float m_brakeY;
@@ -24,13 +37,60 @@ public:
 
 class ftKineticEnergyDamage : public ftKineticEnergyStop {
 public:
+#ifdef FT_MODULE_BUILDER
+    ftKineticEnergyDamage() { }
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual ~ftKineticEnergyDamage() { }
+#endif
 };
 
 class ftKineticEnergyGravity : public soKineticEnergy {
 public:
+#ifdef FT_MODULE_BUILDER
+    ftKineticEnergyGravity(); // sora_melee
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual ~ftKineticEnergyGravity() { }
+#endif
     u8 m_pad[8];
     float m_gravity;
     float m_fallSpeedMax;
+    u8 m_unk18[0x10];
+};
+
+// HYPOTHESIS: the real layouts are unknown, only the sizes are (from the soKineticMediatorImpl pool layout).
+class soKineticEnergyWindNormal : public soKineticEnergyNormal {
+public:
+#ifdef FT_MODULE_BUILDER
+    soKineticEnergyWindNormal(); // sora_melee
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual ~soKineticEnergyWindNormal() { }
+#endif
+    u8 m_unk34[0xc];
+};
+
+class soKineticEnergyGroundMovement : public soKineticEnergy {
+public:
+#ifdef FT_MODULE_BUILDER
+    soKineticEnergyGroundMovement(); // sora_melee
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual ~soKineticEnergyGroundMovement() { }
+#endif
+    u8 m_unk08[0x28];
+};
+
+class soKineticEnergyJostle : public soKineticEnergy {
+public:
+#ifdef FT_MODULE_BUILDER
+    soKineticEnergyJostle(); // sora_melee
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual ~soKineticEnergyJostle() { }
+#endif
+    u8 m_unk08[0xc];
 };
 
 #include <so/so_module_accesser.h>
