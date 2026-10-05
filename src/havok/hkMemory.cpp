@@ -12,13 +12,13 @@ void (*g_hkFree)(void* p) = hkRevolutionFree;
 
 hkMemory::hkMemory() {
     m_referenceCount = 1;
-    unk10[0] = 0;
-    unk10[1] = 0;
-    unk10[2] = 0;
-    unk10[3] = 0;
-    unk10[4] = 0;
-    unk10[5] = 0;
-    unk10[6] = 0;
+    m_stats[0] = 0;
+    m_stats[1] = 0;
+    m_stats[2] = 0;
+    m_stats[3] = 0;
+    m_stats[4] = 0;
+    m_stats[5] = 0;
+    m_stats[6] = 0;
     unk4 = 0;
     unk8 = 0x7FFFFFFF;
 }

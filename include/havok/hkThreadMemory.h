@@ -31,6 +31,24 @@ struct hkThreadMemory {
 
     void addReference();
     void removeReference();
+    // Stack allocation from the chained stack area (16 byte granularity).
+    void* allocateStack(int nbytes) {
+        int size = (nbytes + 0x10) & ~0xF;
+        char* p = m_stackTop;
+        char* next = p + size;
+        if (next <= m_stackEnd) {
+            m_stackTop = next;
+            return p;
+        }
+        return onStackOverflow(size);
+    }
+    void deallocateStack(void* p) {
+        m_stackTop = (char*)p;
+        if (p == m_stackBase) {
+            onStackUnderflow();
+        }
+    }
+
     void onAllocate();
     void onDeallocate();
     void* allocateChunk(int nbytes, int cl);
