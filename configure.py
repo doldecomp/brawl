@@ -691,9 +691,11 @@ config.libs = [
     {
         "lib": "ft_pikmin",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_pikmin/ft_pikmin.cpp"),
+        ],
     },
     {
         "lib": "ft_pit",
@@ -707,9 +709,11 @@ config.libs = [
     {
         "lib": "ft_poke",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_poke/ft_poke_lizardon.cpp"),
+        ],
     },
     {
         "lib": "ft_purin",

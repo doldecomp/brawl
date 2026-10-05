@@ -11,6 +11,13 @@ global_destructor_chain.c:
 	.dtors      start:0x00000000 end:0x00000008
 	.bss        start:0x00000000 end:0x00000004
 
+mo_fighter/ft_pikmin/ft_pikmin.cpp:
+	.text       start:0x00000070 end:0x000100F0
+	.ctors      start:0x00000000 end:0x00000004
+	.rodata     start:0x00000000 end:0x000001B4
+	.data       start:0x00000000 end:0x0000C1D0
+	.bss        start:0x00000008 end:0x00000390
+
 mo_fighter/mo_fighter.cpp:
 	.text       start:0x0002DDD8 end:0x0002DE74
 	.data       start:0x0000C1D0 end:0x0000C1DF
