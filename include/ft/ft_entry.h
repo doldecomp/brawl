@@ -102,28 +102,88 @@ public:
 #endif
     virtual void notifyEventSetDamage(float);
     virtual void notifyEventBeat();
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventDeadPartner(int index) { }
+#else
     virtual void notifyEventDeadPartner(int index);
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventPartnerResourcePrepared() { }
+#else
     virtual void notifyEventPartnerResourcePrepared();
+#endif
     virtual void notifyEventChangeAdvUnit();
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventWarp() { }
+#else
     virtual void notifyEventWarp();
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventPokemonStart(int) { }
+#else
     virtual void notifyEventPokemonStart(int);
+#endif
     virtual void notifyEventPokemonRequestChange(Vec3f*, float*);
     virtual void notifyEventPokemonTrainerUpdate();
     virtual void notifyEventPokemonCollect();
     virtual void notifyEventPokemonChangeCancel();
     virtual void notifyEventPokemonSpecial(int, int);
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventPokemonAppeal() { }
+#else
     virtual void notifyEventPokemonAppeal();
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventSetRumble(int, int) { }
+#else
     virtual void notifyEventSetRumble(int, int);
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventStopRumble(int) { }
+#else
     virtual void notifyEventStopRumble(int);
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventPokemonRebirthEnd() { }
+#else
     virtual void notifyEventPokemonRebirthEnd();
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventPokemonAttack() { }
+#else
     virtual void notifyEventPokemonAttack();
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventPokemonInflict() { }
+#else
     virtual void notifyEventPokemonInflict();
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventPokemonDamage() { }
+#else
     virtual void notifyEventPokemonDamage();
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventPokeTrainerReplace(u8) { }
+#else
     virtual void notifyEventPokeTrainerReplace(u8);
+#endif
     virtual void notifyEventPikminFinalAttack(float, int);
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventKirbyResourceLoaded(int index) { }
+#else
     virtual void notifyEventKirbyResourceLoaded(int index);
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventKirbyResourceUnLoaded(int index) { }
+#else
     virtual void notifyEventKirbyResourceUnLoaded(int index);
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventExitFighter(int, int) { }
+#else
     virtual void notifyEventExitFighter(int, int);
+#endif
     char _spacer1[2];
 };
 static_assert(sizeof(ftEntryEventObserver) == 12, "Class is wrong size!");

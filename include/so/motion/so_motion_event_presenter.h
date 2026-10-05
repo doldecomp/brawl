@@ -17,6 +17,10 @@ public:
 #else
     virtual void addObserver(short param1, s8 param2);
 #endif
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventChangeMotion(int, int, void*, soModuleAccesser* moduleAccesser) { }
+#else
     virtual void notifyEventChangeMotion(int, int, void*, soModuleAccesser* moduleAccesser);
+#endif
 };
 static_assert(sizeof(soMotionEventObserver) == 12, "Class is wrong size!");
