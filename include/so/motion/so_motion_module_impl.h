@@ -78,7 +78,8 @@ public:
     virtual float get2ndFrame();
     virtual int get2ndKind();
     virtual bool is2ndEnd();
-    virtual void addPartialAnimChr(float, float, void*, void*, int, int, int);
+    // HYPOTHESIS: (frame, rate, part set kind, motion kind, blend frames?, ?, ?); glide uses (0.0, 1.0, 1, Glide_Wing, param, 0, 0).
+    virtual void addPartialAnimChr(float frame, float rate, int partKind, int kind, int, int, int);
     virtual void removePartialAnimChr(int);
     virtual void compRemovePartialAnimChr(int);
     virtual void detachPartialAnimChr(u32, bool);
@@ -245,7 +246,8 @@ public:
     virtual float get2ndFrame();
     virtual int get2ndKind();
     virtual bool is2ndEnd();
-    virtual void addPartialAnimChr(float, float, void*, void*, int, int, int);
+    // HYPOTHESIS: (frame, rate, part set kind, motion kind, blend frames?, ?, ?); glide uses (0.0, 1.0, 1, Glide_Wing, param, 0, 0).
+    virtual void addPartialAnimChr(float frame, float rate, int partKind, int kind, int, int, int);
     virtual void removePartialAnimChr(int);
     virtual void compRemovePartialAnimChr(int);
     virtual void detachPartialAnimChr(u32, bool);

@@ -13,4 +13,6 @@ public:
     static Vec2f limitSpeed(Vec2f* speed, Vec2f* limit);
     static Vec2f projectionNormalFollow(Vec2f* vec, Vec2f* normal);
     static Vec2f projectionGroundSpeed(Vec2f* speed, soModuleAccesser* moduleAccesser);
+    // HYPOTHESIS: resets the energy with the given index and enables it.
+    static void resetEnableEnergy(int energyIndex, soModuleAccesser* moduleAccesser, int resetMode, Vec2f* speed, Vec3f* rotation);
 };

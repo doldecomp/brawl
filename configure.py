@@ -1021,6 +1021,7 @@ config.libs = [
             Object(Matching, "mo_melee/sora_melee/ft/ft_extend_param_accesser.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/ft/ft_info.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/ft/ft_kinetic_energy_controller.cpp"),
+            Object(NonMatching, "mo_melee/sora_melee/ft/ft_status_uniq_process_glide.cpp"),
             Object(Matching, "mo_melee/sora_melee/ft/ft_status_uniq_process_guard.cpp"),
             Object(Matching, "mo_melee/sora_melee/ft/ft_status_uniq_process_guard_damage.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/ft/ft_status_uniq_process_damage.cpp"),

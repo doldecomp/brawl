@@ -139,6 +139,13 @@ mo_melee/sora_melee/ft/ft_kinetic_energy_controller.cpp:
 	.rodata     start:0x00001F50 end:0x00001F70
 	.data       start:0x0002E258 end:0x0002E388
 
+mo_melee/sora_melee/ft/ft_status_uniq_process_glide.cpp:
+	.text       start:0x00167EF4 end:0x00168AA8
+	.ctors      start:0x000000C0 end:0x000000C4
+	.rodata     start:0x00002078 end:0x000020A8
+	.data       start:0x0002EBB8 end:0x0002EC28
+	.bss        start:0x00004918 end:0x00004928
+
 mo_melee/sora_melee/ft/ft_status_uniq_process_guard.cpp:
 	.text       start:0x0016A838 end:0x0016A904
 	.ctors      start:0x000000E4 end:0x000000E8
