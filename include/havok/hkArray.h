@@ -2,7 +2,7 @@
 
 #include <havok/hkMemory.h>
 
-// Allocator entry point used by hkArray (per-thread memory object; this is a direct (non-virtual) call).
+// Per-thread memory object used by arrays (direct, non-virtual calls).
 struct hkThreadMemory {
     void* allocateChunk(int nbytes, int cl);
     void deallocateChunk(void* p, int nbytes, int cl);
@@ -12,36 +12,47 @@ struct hkThreadMemory {
 
 enum { HK_MEMORY_CLASS_ARRAY = 0x15 };
 
-// Havok 4.0 dynamic array storage: {data, size, capacityAndFlags}.
-// MATCH-ONLY: callers that need the deallocation inlined at each exit use this base directly and call
-// clearAndDeallocate() by hand; MWCC never inlines a destructor of a local, but the original code has the
-// deallocation inlined.
-template <typename T>
+// Untyped array storage {data, size, capacityAndFlags}; the typed hkArray<T> derives from it.
 struct hkArrayBase {
-    enum { DONT_DEALLOCATE_FLAG = 0x80000000 };
+    enum { DONT_DEALLOCATE_FLAG = 0x80000000, CAPACITY_MASK = 0x3FFFFFFF };
 
-    T* m_data;                // 0x00
+    void* m_data;             // 0x00
     int m_size;               // 0x04
     int m_capacityAndFlags;   // 0x08
 
+    int getSize() const { return m_size; }
+};
 
-    void clearAndDeallocate() {
-        if ((m_capacityAndFlags & DONT_DEALLOCATE_FLAG) == 0) {
+struct hkArrayUtil {
+    static void _reserve(hkArrayBase* array, int numElem, int sizeElem);
+    static void _reserveMore(hkArrayBase* array, int sizeElem);
+    static void _reduce(hkArrayBase* array, int numElem, void* data, int sizeElem);
+};
+
+// Typed array. The destructor is a real (out-of-line) destructor.
+template <typename T>
+struct hkArray : hkArrayBase {
+    hkArray() {
+        m_data = 0;
+        m_size = 0;
+        m_capacityAndFlags = DONT_DEALLOCATE_FLAG;
+    }
+    // The flag test lives in its own inline function: this keeps the capacity load from being
+    // shared with the size computation, as in the original code.
+    bool mustDeallocate() const { return (m_capacityAndFlags & DONT_DEALLOCATE_FLAG) == 0; }
+    ~hkArray() {
+        if (mustDeallocate()) {
             HK_THREAD_MEMORY()->deallocateChunk(m_data, m_capacityAndFlags * sizeof(T), HK_MEMORY_CLASS_ARRAY);
         }
     }
 
-    int getSize() const { return m_size; }
-    T& operator[](int i) { return m_data[i]; }
-    const T& operator[](int i) const { return m_data[i]; }
-};
+    T& operator[](int i) { return ((T*)m_data)[i]; }
+    const T& operator[](int i) const { return ((const T*)m_data)[i]; }
 
-template <typename T>
-struct hkArray : hkArrayBase<T> {
-    hkArray() {
-        this->m_data = 0;
-        this->m_size = 0;
-        this->m_capacityAndFlags = hkArrayBase<T>::DONT_DEALLOCATE_FLAG;
+    void pushBack(const T& t) {
+        if (m_size == (m_capacityAndFlags & CAPACITY_MASK)) {
+            hkArrayUtil::_reserveMore(this, sizeof(T));
+        }
+        ((T*)m_data)[m_size++] = t;
     }
-    ~hkArray() { this->clearAndDeallocate(); }
 };

@@ -24,10 +24,10 @@ struct hkVersionRegistry {
     struct Updater {
         int unk0;  // 0x00
         int unk4;  // 0x04
-        hkResult (*m_updateFunction)(hkArrayBase<hkVariant>& objects, hkObjectUpdateTracker& tracker); // 0x08
+        hkResult (*m_updateFunction)(hkArray<hkVariant>& objects, hkObjectUpdateTracker& tracker); // 0x08
     };
 
-    hkResult getVersionPath(const char* versionFrom, const char* versionTo, hkArrayBase<const Updater*>& pathOut) const;
+    hkResult getVersionPath(const char* versionFrom, const char* versionTo, hkArray<const Updater*>& pathOut) const;
 };
 
 // Abstract source of loaded objects.
@@ -36,14 +36,14 @@ struct hkPackfileReader : hkReferencedObject {
     virtual void unk14() = 0;
     virtual void unk18() = 0;
     virtual void unk1C() = 0;
-    virtual hkArrayBase<hkVariant>& getLoadedObjects() = 0;         // 0x20
+    virtual hkArray<hkVariant>& getLoadedObjects() = 0;         // 0x20
     virtual hkObjectUpdateTracker& getUpdateTracker() = 0;      // 0x24
     virtual const char* getOriginalContentsVersion() = 0;       // 0x28
 };
 
 struct hkVersionUtil {
     static const char* getCurrentVersion();
-    static hkResult updateBetweenVersions(hkArrayBase<hkVariant>& objectsInOut, hkObjectUpdateTracker& tracker,
+    static hkResult updateBetweenVersions(hkArray<hkVariant>& objectsInOut, hkObjectUpdateTracker& tracker,
                                           const hkVersionRegistry& reg, const char* versionFrom,
                                           const char* versionTo = 0);
     static hkResult updateToCurrentVersion(hkPackfileReader& reader, const hkVersionRegistry& reg);

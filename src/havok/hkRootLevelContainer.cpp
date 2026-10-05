@@ -16,7 +16,7 @@ void* hkRootLevelContainer::findObjectByType(const char* typeName, const void* p
     for (; i < m_namedVariants.m_size; offset += sizeof(hkRootLevelContainerNamedVariant), i++) {
         e = (const hkRootLevelContainerNamedVariant*)((char*)m_namedVariants.m_data + offset);
         if (hkString::strCmp(typeName, e->getTypeName()) == 0) {
-            return m_namedVariants.m_data[i].m_variant.m_object;
+            return ((hkRootLevelContainerNamedVariant*)m_namedVariants.m_data)[i].m_variant.m_object;
         }
     }
     return 0;

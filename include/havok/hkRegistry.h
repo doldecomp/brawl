@@ -66,7 +66,7 @@ struct hkRootLevelContainerNamedVariant {
 };
 
 struct hkRootLevelContainer {
-    hkArrayBase<hkRootLevelContainerNamedVariant> m_namedVariants; // 0x00
+    hkArrayBase m_namedVariants; // 0x00
 
     void* findObjectByType(const char* typeName, const void* prevObject = 0) const;
 };
