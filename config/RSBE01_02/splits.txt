@@ -946,12 +946,22 @@ havok/hkxVertexFormatClass.cpp:
 	.bss        start:0x80533688 end:0x805336B0
 	.sdata2     start:0x805A4960 end:0x805A4968
 
+havok/hkRootLevelContainer.cpp:
+	.text       start:0x803335A4 end:0x80333698
+
 havok/hkRootLevelContainerClass.cpp:
 	.text       start:0x80333698 end:0x80333750
 	.ctors      start:0x804067B8 end:0x804067BC
 	.rodata     start:0x804155C0 end:0x80415668
 	.bss        start:0x805336C0 end:0x80533708
 	.sdata2     start:0x805A4968 end:0x805A4978
+
+havok/hkVtableClassRegistry.cpp:
+	.text       start:0x803340B8 end:0x8033413C
+
+havok/hkVersionRegistry.cpp:
+	.text       start:0x8033413C end:0x80334BF8
+	.ctors      start:0x804067C0 end:0x804067C4
 
 havok/hkVersionUtil.cpp:
 	.text       start:0x80334BF8 end:0x80334DE4

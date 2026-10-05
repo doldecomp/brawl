@@ -2,6 +2,7 @@
 
 #include <havok/hkArray.h>
 #include <havok/hkClass.h>
+#include <havok/hkString.h>
 
 struct hkVariant {
     void* m_object;          // 0x00
