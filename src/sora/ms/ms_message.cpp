@@ -679,10 +679,10 @@ void Message::getPrintRect(float* rect, const u8* p) {
                 continue;
             }
             case 0x18: {
-                u8 a = p[1];
-                u8 b = p[2];
-                u32 aLow = a & 3;
+                int a = p[1];
+                short b = p[2];
                 u32 bLow = b & 3;
+                u32 aLow = a & 3;
                 SetFlags((GetFlags() & ~(((b << 4) & 0x300) + (bLow + ((b << 2) & 0x30)))) | (((a << 4) & 0x300) + (aLow + ((a << 2) & 0x30))));
                 if (bLow != 0 && aLow == 0) {
                     SetCursorX(0.0f);
