@@ -33,41 +33,8 @@ soInsideEventManageModuleBuilder<ftKirbyInsideEventManageModuleBuildConfig, ftIn
 extern "C" {
 
 u8 fn_96_28D0(u8* p) { return *(u8*)(p + 0x4); }
-int fn_96_BC64(u8* p) { return *(int*)(p + 0x110); }
 int fn_96_BC6C(u8* p) { return *(int*)(p + 0x28); }
 int fn_96_C17C(u8* p) { return *(int*)(p + 0xc0); }
-u8 fn_96_F018(u8* p) { return *(u8*)(p + 0x44); }
-void fn_96_F130() {}
-void fn_96_F134() {}
-void fn_96_F138() {}
-void fn_96_F13C() {}
-void fn_96_F140() {}
-void fn_96_F144() {}
-void fn_96_F148() {}
-void fn_96_F14C() {}
-void fn_96_F158() {}
-void fn_96_F15C() {}
-void fn_96_F160() {}
-void fn_96_F164() {}
-void fn_96_F190() {}
-void fn_96_F194() {}
-void fn_96_F198() {}
-void fn_96_F19C() {}
-void fn_96_F1A0() {}
-void fn_96_F1BC() {}
-void fn_96_F1C0() {}
-void fn_96_F1C4() {}
-void fn_96_F1D8() {}
-void fn_96_F1DC() {}
-void fn_96_F1E0() {}
-void fn_96_F1E4() {}
-void fn_96_F204() {}
-void fn_96_F208() {}
-void fn_96_F20C() {}
-void fn_96_F210() {}
-u8* fn_96_F2D4(u8* p) { return p + 0x458; }
-u8* fn_96_F2DC(u8* p) { return p + 0x3c8; }
-u8* fn_96_F2E4(u8* p) { return p + 0x8; }
 int fn_96_F3AC(u8* p) { return *(int*)(p + 0x20); }
 int fn_96_F488(u8* p) { return *(int*)(p + 0x18); }
 int fn_96_115E8() { return 12; }

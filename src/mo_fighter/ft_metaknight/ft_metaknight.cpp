@@ -33,42 +33,9 @@ soInsideEventManageModuleBuilder<ftMetaknightInsideEventManageModuleBuildConfig,
 extern "C" {
 
 u8 fn_111_5F38(u8* p) { return *(u8*)(p + 0x4); }
-u8 fn_111_8474(u8* p) { return *(u8*)(p + 0x44); }
-void fn_111_8580() {}
-void fn_111_8584() {}
-void fn_111_8588() {}
-void fn_111_858C() {}
-void fn_111_8590() {}
-void fn_111_8594() {}
-void fn_111_8598() {}
-void fn_111_859C() {}
-void fn_111_85A0() {}
-void fn_111_85A4() {}
-void fn_111_85A8() {}
-void fn_111_85AC() {}
-void fn_111_85B0() {}
-void fn_111_85BC() {}
-void fn_111_85C0() {}
-void fn_111_85C4() {}
-void fn_111_85C8() {}
-void fn_111_85F4() {}
-void fn_111_85F8() {}
-void fn_111_85FC() {}
-void fn_111_8600() {}
-void fn_111_8604() {}
-int fn_111_8608(u8* p) { return *(int*)(p + 0x110); }
-void fn_111_8628() {}
-void fn_111_862C() {}
-void fn_111_8630() {}
-void fn_111_8644() {}
-void fn_111_8648() {}
-void fn_111_864C() {}
 void fn_111_8650() {}
 void fn_111_8654() {}
 void fn_111_8658() {}
-u8* fn_111_871C(u8* p) { return p + 0x458; }
-u8* fn_111_8724(u8* p) { return p + 0x3c8; }
-u8* fn_111_872C(u8* p) { return p + 0x8; }
 int fn_111_87CC(u8* p) { return *(int*)(p + 0x20); }
 int fn_111_88A8(u8* p) { return *(int*)(p + 0x18); }
 void fn_111_9800(u8* p, u8 v) { *(u8*)(p + 0x20bc) = v; }

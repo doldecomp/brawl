@@ -33,41 +33,8 @@ soInsideEventManageModuleBuilder<ftCaptainInsideEventManageModuleBuildConfig, ft
 extern "C" {
 
 u8 fn_100_6C60(u8* p) { return *(u8*)(p + 0x4); }
-u8 fn_100_948C(u8* p) { return *(u8*)(p + 0x44); }
-void fn_100_95A0() {}
-void fn_100_95A4() {}
-void fn_100_95A8() {}
-void fn_100_95AC() {}
-void fn_100_95B0() {}
-void fn_100_95B4() {}
-void fn_100_95B8() {}
-void fn_100_95BC() {}
-void fn_100_95C0() {}
-void fn_100_95C4() {}
-void fn_100_95C8() {}
-void fn_100_95CC() {}
-void fn_100_95D8() {}
-void fn_100_95DC() {}
-void fn_100_95E0() {}
-void fn_100_95E4() {}
-void fn_100_9610() {}
-void fn_100_9614() {}
-void fn_100_9618() {}
-void fn_100_961C() {}
-void fn_100_9620() {}
-int fn_100_9624(u8* p) { return *(int*)(p + 0x110); }
-void fn_100_9644() {}
-void fn_100_9648() {}
-void fn_100_965C() {}
-void fn_100_9660() {}
-void fn_100_9664() {}
-void fn_100_9668() {}
-void fn_100_966C() {}
 void fn_100_9670() {}
 void fn_100_9674() {}
-u8* fn_100_9738(u8* p) { return p + 0x458; }
-u8* fn_100_9740(u8* p) { return p + 0x3c8; }
-u8* fn_100_9748(u8* p) { return p + 0x8; }
 int fn_100_97E8(u8* p) { return *(int*)(p + 0x20); }
 int fn_100_98C4(u8* p) { return *(int*)(p + 0x18); }
 void fn_100_A9D8(u8* p, u8 v) { *(u8*)(p + 0x405c) = v; }
