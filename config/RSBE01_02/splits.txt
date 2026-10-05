@@ -377,6 +377,438 @@ sora/st/st_data_container_multi.cpp:
 sora/st/st_data_container_magic.cpp:
 	.sdata      start:0x8059E860 end:0x8059E864
 
+havok/hkBaseObjectClass.cpp:
+	.text       start:0x8027B510 end:0x8027B568
+	.ctors      start:0x804065D4 end:0x804065D8
+	.rodata     start:0x8040E9E8 end:0x8040E9F8
+	.bss        start:0x80532318 end:0x80532340
+
+havok/hkReferencedObjectClass.cpp:
+	.text       start:0x8027B568 end:0x8027B5D0
+	.ctors      start:0x804065D8 end:0x804065DC
+	.rodata     start:0x8040E9F8 end:0x8040EA58
+	.bss        start:0x80532340 end:0x80532368
+
+havok/hkClass.cpp:
+	.text       start:0x8027C808 end:0x8027C914
+
+havok/hkClassClass.cpp:
+	.text       start:0x8027C914 end:0x8027C97C
+	.ctors      start:0x804065E0 end:0x804065E4
+	.rodata     start:0x8040EA58 end:0x8040EB70
+	.bss        start:0x80532378 end:0x805323A0
+	.sdata2     start:0x805A3B90 end:0x805A3BA8
+
+havok/hkClassEnumClass.cpp:
+	.text       start:0x8027C97C end:0x8027CA38
+	.ctors      start:0x804065E4 end:0x804065E8
+	.rodata     start:0x8040EB70 end:0x8040EBE0
+	.bss        start:0x805323A0 end:0x805323E8
+	.sdata2     start:0x805A3BA8 end:0x805A3BC0
+
+havok/hkClassMemberClass.cpp:
+	.text       start:0x8027CC2C end:0x8027CCA0
+	.ctors      start:0x804065E8 end:0x804065EC
+	.rodata     start:0x8040EE50 end:0x8040F218
+	.data       start:0x80486250 end:0x804862F0
+	.bss        start:0x805323E8 end:0x80532410
+	.sdata      start:0x8059EF38 end:0x8059EF40
+	.sdata2     start:0x805A3C28 end:0x805A3CB0
+
+havok/hkClassVersion1Class.cpp:
+	.text       start:0x8027CCA0 end:0x8027CD04
+	.ctors      start:0x804065EC end:0x804065F0
+	.rodata     start:0x8040F218 end:0x8040F300
+	.bss        start:0x80532410 end:0x80532438
+	.sdata2     start:0x805A3CB0 end:0x805A3CC0
+
+havok/hkAabbClass.cpp:
+	.text       start:0x80281F4C end:0x80281FB0
+	.ctors      start:0x80406604 end:0x80406608
+	.rodata     start:0x8040F6B8 end:0x8040F6E8
+	.bss        start:0x805324A8 end:0x805324D0
+	.sdata2     start:0x805A3CC0 end:0x805A3CC8
+
+havok/hkMotionStateClass.cpp:
+	.text       start:0x80282040 end:0x802820A4
+	.ctors      start:0x80406608 end:0x8040660C
+	.rodata     start:0x8040F6E8 end:0x8040F868
+	.bss        start:0x805324D0 end:0x80532500
+
+havok/hkCdBodyClass.cpp:
+	extab       start:0x800075F4 end:0x800075FC
+	extabindex  start:0x8000A5A0 end:0x8000A5AC
+	.text       start:0x802B7934 end:0x802B7998
+	.ctors      start:0x80406628 end:0x8040662C
+	.rodata     start:0x8040FDC0 end:0x8040FE30
+	.bss        start:0x80532560 end:0x80532588
+	.sdata2     start:0x805A3F60 end:0x805A3F78
+
+havok/hkCollidableClass.cpp:
+	extab       start:0x800075FC end:0x80007604
+	extabindex  start:0x8000A5AC end:0x8000A5B8
+	.text       start:0x802B7998 end:0x802B7A00
+	.ctors      start:0x8040662C end:0x80406630
+	.rodata     start:0x8040FE30 end:0x8040FEB8
+	.bss        start:0x80532588 end:0x805325B0
+
+havok/hkGroupFilterClass.cpp:
+	extab       start:0x800082B0 end:0x800082B8
+	extabindex  start:0x8000AF90 end:0x8000AF9C
+	.text       start:0x802CD5A8 end:0x802CD610
+	.ctors      start:0x8040663C end:0x80406640
+	.rodata     start:0x804101B8 end:0x80410220
+	.bss        start:0x80532600 end:0x80532628
+
+havok/hkCollisionFilterClass.cpp:
+	extab       start:0x800082B8 end:0x800082C0
+	extabindex  start:0x8000AF9C end:0x8000AFA8
+	.text       start:0x802CD610 end:0x802CD66C
+	.ctors      start:0x80406640 end:0x80406644
+	.rodata     start:0x80410220 end:0x80410238
+	.bss        start:0x80532628 end:0x80532650
+
+havok/hkBoxShapeClass.cpp:
+	extab       start:0x80008318 end:0x80008320
+	extabindex  start:0x8000B02C end:0x8000B038
+	.text       start:0x802CE588 end:0x802CE5F0
+	.ctors      start:0x80406650 end:0x80406654
+	.rodata     start:0x804103A0 end:0x804103D0
+	.bss        start:0x80532698 end:0x805326C0
+
+havok/hkCapsuleShapeClass.cpp:
+	extab       start:0x800083B0 end:0x800083B8
+	extabindex  start:0x8000B0F8 end:0x8000B104
+	.text       start:0x802D0144 end:0x802D01B0
+	.ctors      start:0x8040665C end:0x80406660
+	.rodata     start:0x80410428 end:0x804104B8
+	.bss        start:0x805326E0 end:0x80532708
+	.sdata2     start:0x805A4088 end:0x805A4098
+
+havok/hkConvexShapeClass.cpp:
+	extab       start:0x800083E8 end:0x800083F0
+	extabindex  start:0x8000B14C end:0x8000B158
+	.text       start:0x802D0A2C end:0x802D0A94
+	.ctors      start:0x80406664 end:0x80406668
+	.rodata     start:0x80410558 end:0x80410580
+	.bss        start:0x80532730 end:0x80532758
+	.sdata2     start:0x805A40A8 end:0x805A40B0
+
+havok/hkConvexTranslateShapeClass.cpp:
+	extab       start:0x80008458 end:0x80008460
+	extabindex  start:0x8000B1F4 end:0x8000B200
+	.text       start:0x802D1520 end:0x802D1588
+	.ctors      start:0x8040666C end:0x80406670
+	.rodata     start:0x804105C0 end:0x80410618
+	.bss        start:0x80532768 end:0x80532790
+
+havok/hkConvexVerticesShapeClass.cpp:
+	extab       start:0x800084A0 end:0x800084A8
+	extabindex  start:0x8000B260 end:0x8000B26C
+	.text       start:0x802D256C end:0x802D2628
+	.ctors      start:0x80406674 end:0x80406678
+	.rodata     start:0x80410650 end:0x80410778
+	.bss        start:0x805327A0 end:0x805327E8
+	.sdata2     start:0x805A40C8 end:0x805A40D8
+
+havok/hkShapeClass.cpp:
+	extab       start:0x80008554 end:0x8000855C
+	extabindex  start:0x8000B350 end:0x8000B35C
+	.text       start:0x802D4C7C end:0x802D4CE4
+	.ctors      start:0x80406684 end:0x80406688
+	.rodata     start:0x804109B8 end:0x804109E0
+	.bss        start:0x80532830 end:0x80532858
+
+havok/hkShapeContainerClass.cpp:
+	extab       start:0x80008574 end:0x8000857C
+	extabindex  start:0x8000B380 end:0x8000B38C
+	.text       start:0x802D4E0C end:0x802D4EC0
+	.ctors      start:0x8040668C end:0x80406690
+	.rodata     start:0x804109F8 end:0x80410A40
+	.bss        start:0x80532868 end:0x805328B0
+
+havok/hkSphereShapeClass.cpp:
+	extab       start:0x8000860C end:0x80008614
+	extabindex  start:0x8000B464 end:0x8000B470
+	.text       start:0x802D6454 end:0x802D64B0
+	.ctors      start:0x8040669C end:0x804066A0
+	.rodata     start:0x80410F88 end:0x80410F98
+	.bss        start:0x80532918 end:0x80532940
+
+havok/hkSphereRepShapeClass.cpp:
+	extab       start:0x80008614 end:0x8000861C
+	extabindex  start:0x8000B470 end:0x8000B47C
+	.text       start:0x802D64B0 end:0x802D650C
+	.ctors      start:0x804066A0 end:0x804066A4
+	.rodata     start:0x80410F98 end:0x80410FB0
+	.bss        start:0x80532940 end:0x80532968
+
+havok/hkActionClass.cpp:
+	.text       start:0x802D7578 end:0x802D75E0
+	.ctors      start:0x804066A8 end:0x804066AC
+	.rodata     start:0x80410FE0 end:0x80411050
+	.bss        start:0x80532978 end:0x805329A0
+	.sdata2     start:0x805A4198 end:0x805A41B0
+
+havok/hkMaterialClass.cpp:
+	.text       start:0x802D94A8 end:0x802D9518
+	.ctors      start:0x804066AC end:0x804066B0
+	.rodata     start:0x80411068 end:0x80411148
+	.data       start:0x80487928 end:0x80487968
+	.bss        start:0x805329A0 end:0x805329C8
+	.sdata      start:0x8059EFD0 end:0x8059EFD8
+
+havok/hkPropertyClass.cpp:
+	.text       start:0x802D9518 end:0x802D95D0
+	.ctors      start:0x804066B0 end:0x804066B4
+	.rodata     start:0x80411148 end:0x804111C8
+	.bss        start:0x805329C8 end:0x80532A10
+	.sdata2     start:0x805A41E8 end:0x805A4200
+
+havok/hkGenericConstraintDataClass.cpp:
+	.text       start:0x802DD570 end:0x802DD5D8
+	.ctors      start:0x804066C8 end:0x804066CC
+	.rodata     start:0x80412220 end:0x80412260
+	.bss        start:0x80532E70 end:0x80532E98
+	.sdata2     start:0x805A4290 end:0x805A42A0
+
+havok/hkGenericConstraintSchemeClass.cpp:
+	.text       start:0x802DD5D8 end:0x802DD63C
+	.ctors      start:0x804066CC end:0x804066D0
+	.rodata     start:0x80412260 end:0x80412300
+	.bss        start:0x80532E98 end:0x80532EC0
+	.sdata2     start:0x805A42A0 end:0x805A42B8
+
+havok/hkConstraintInfoClass.cpp:
+	.text       start:0x802DE690 end:0x802DE6F4
+	.ctors      start:0x804066D4 end:0x804066D8
+	.rodata     start:0x80412638 end:0x804126F0
+	.bss        start:0x80532EE8 end:0x80532F10
+
+havok/hkConstraintInstanceClass.cpp:
+	.text       start:0x802DE99C end:0x802DEA10
+	.ctors      start:0x804066DC end:0x804066E0
+	.rodata     start:0x80412708 end:0x804128B8
+	.data       start:0x80487BD8 end:0x80487C90
+	.bss        start:0x80532F20 end:0x80532F48
+	.sdata      start:0x8059EFE0 end:0x8059EFE8
+	.sdata2     start:0x805A42E0 end:0x805A42F8
+
+havok/hkConstraintMotorClass.cpp:
+	.text       start:0x802DEA10 end:0x802DEA84
+	.ctors      start:0x804066E0 end:0x804066E4
+	.rodata     start:0x804128B8 end:0x80412960
+	.data       start:0x80487C90 end:0x80487CA8
+	.bss        start:0x80532F48 end:0x80532F70
+	.sdata      start:0x8059EFE8 end:0x8059EFF0
+	.sdata2     start:0x805A42F8 end:0x805A4300
+
+havok/hkEntityClass.cpp:
+	.text       start:0x802E1FCC end:0x802E2038
+	.ctors      start:0x804066E8 end:0x804066EC
+	.rodata     start:0x80412A28 end:0x80412CA8
+	.bss        start:0x80532F80 end:0x80532FA8
+	.sdata2     start:0x805A4330 end:0x805A4348
+
+havok/hkEntityDeactivatorClass.cpp:
+	.text       start:0x802E2038 end:0x802E2094
+	.ctors      start:0x804066EC end:0x804066F0
+	.rodata     start:0x80412CA8 end:0x80412CC0
+	.bss        start:0x80532FA8 end:0x80532FD0
+
+havok/hkRigidBodyClass.cpp:
+	.text       start:0x802E3724 end:0x802E3780
+	.ctors      start:0x804066F8 end:0x804066FC
+	.rodata     start:0x80412CF0 end:0x80412D00
+	.bss        start:0x80533008 end:0x80533030
+
+havok/hkRigidBodyDeactivatorClass.cpp:
+	.text       start:0x802E3780 end:0x802E37E0
+	.ctors      start:0x804066FC end:0x80406700
+	.rodata     start:0x80412D00 end:0x80412DA8
+	.bss        start:0x80533030 end:0x80533058
+
+havok/hkSpatialRigidBodyDeactivatorClass.cpp:
+	.text       start:0x802E3C18 end:0x802E3CD4
+	.ctors      start:0x80406704 end:0x80406708
+	.rodata     start:0x80412DC8 end:0x80412F78
+	.bss        start:0x80533068 end:0x805330B0
+
+havok/hkMotionClass.cpp:
+	.text       start:0x802E46B0 end:0x802E4724
+	.ctors      start:0x80406708 end:0x8040670C
+	.rodata     start:0x80412F78 end:0x80413110
+	.data       start:0x80487FB8 end:0x80488020
+	.bss        start:0x805330B0 end:0x805330D8
+	.sdata      start:0x8059EFF0 end:0x8059EFF8
+	.sdata2     start:0x805A43B8 end:0x805A43C0
+
+havok/hkKeyframedRigidMotionClass.cpp:
+	.text       start:0x802E5A28 end:0x802E5AE0
+	.ctors      start:0x8040671C end:0x80406720
+	.rodata     start:0x80413170 end:0x804131E8
+	.bss        start:0x80533128 end:0x80533170
+
+havok/hkPhantomClass.cpp:
+	.text       start:0x802E90B4 end:0x802E911C
+	.ctors      start:0x8040672C end:0x80406730
+	.rodata     start:0x80413268 end:0x804132C8
+	.bss        start:0x805331A0 end:0x805331C8
+
+havok/hkPhysicsSystemClass.cpp:
+	.text       start:0x802E9B90 end:0x802E9BFC
+	.ctors      start:0x80406734 end:0x80406738
+	.rodata     start:0x804132D8 end:0x804133C8
+	.bss        start:0x805331D8 end:0x80533200
+	.sdata2     start:0x805A4410 end:0x805A4428
+
+havok/hkWorldCinfoClass.cpp:
+	.text       start:0x802F03A8 end:0x802F0438
+	.ctors      start:0x80406740 end:0x80406744
+	.rodata     start:0x80413758 end:0x80413E38
+	.data       start:0x804883C8 end:0x804885E8
+	.bss        start:0x80533210 end:0x80533238
+	.sdata      start:0x8059F000 end:0x8059F010
+	.sdata2     start:0x805A44D0 end:0x805A44D8
+
+havok/hkWorldObjectClass.cpp:
+	.text       start:0x802F06A8 end:0x802F0714
+	.ctors      start:0x80406744 end:0x80406748
+	.rodata     start:0x80413E58 end:0x80413FC0
+	.bss        start:0x80533238 end:0x80533260
+	.sdata2     start:0x805A44D8 end:0x805A44E8
+
+havok/hkPhysicsDataClass.cpp:
+	.text       start:0x8032D42C end:0x8032D494
+	.ctors      start:0x80406768 end:0x8040676C
+	.rodata     start:0x804146E0 end:0x80414728
+	.bss        start:0x80533310 end:0x80533338
+	.sdata2     start:0x805A4878 end:0x805A4880
+
+havok/hkAnnotationTrackClass.cpp:
+	extab       start:0x80009138 end:0x80009140
+	extabindex  start:0x8000BFA4 end:0x8000BFB0
+	.text       start:0x8032D524 end:0x8032D5E0
+	.ctors      start:0x80406770 end:0x80406774
+	.rodata     start:0x804147C0 end:0x80414850
+	.bss        start:0x80533360 end:0x805333A8
+	.sdata2     start:0x805A4888 end:0x805A48A0
+
+havok/hkSkeletalAnimationClass.cpp:
+	extab       start:0x80009140 end:0x80009148
+	extabindex  start:0x8000BFB0 end:0x8000BFBC
+	.text       start:0x8032D5E0 end:0x8032D648
+	.ctors      start:0x80406774 end:0x80406778
+	.rodata     start:0x80414850 end:0x80414900
+	.bss        start:0x805333A8 end:0x805333D0
+
+havok/hkMeshBindingClass.cpp:
+	extab       start:0x80009148 end:0x80009150
+	extabindex  start:0x8000BFBC end:0x8000BFC8
+	.text       start:0x8032D648 end:0x8032D700
+	.ctors      start:0x80406778 end:0x8040677C
+	.rodata     start:0x80414900 end:0x804149C0
+	.bss        start:0x805333D0 end:0x80533418
+	.sdata2     start:0x805A48A0 end:0x805A48B0
+
+havok/hkAnimationContainerClass.cpp:
+	extab       start:0x80009150 end:0x80009158
+	extabindex  start:0x8000BFC8 end:0x8000BFD4
+	.text       start:0x8032D700 end:0x8032D764
+	.ctors      start:0x8040677C end:0x80406780
+	.rodata     start:0x804149C0 end:0x80414A70
+	.bss        start:0x80533418 end:0x80533440
+	.sdata2     start:0x805A48B0 end:0x805A48B8
+
+havok/hkAnimatedReferenceFrameClass.cpp:
+	extab       start:0x80009190 end:0x80009198
+	extabindex  start:0x8000C028 end:0x8000C034
+	.text       start:0x8032E890 end:0x8032E8EC
+	.ctors      start:0x80406788 end:0x8040678C
+	.rodata     start:0x80414D88 end:0x80414DA8
+	.bss        start:0x805334D8 end:0x80533500
+
+havok/hkBoneAttachmentClass.cpp:
+	extab       start:0x80009198 end:0x800091A0
+	extabindex  start:0x8000C034 end:0x8000C040
+	.text       start:0x8032E8EC end:0x8032E950
+	.ctors      start:0x8040678C end:0x80406790
+	.rodata     start:0x80414DA8 end:0x80414E40
+	.bss        start:0x80533500 end:0x80533528
+	.sdata2     start:0x805A4918 end:0x805A4920
+
+havok/hkBoneClass.cpp:
+	extab       start:0x800091A0 end:0x800091A8
+	extabindex  start:0x8000C040 end:0x8000C04C
+	.text       start:0x8032E950 end:0x8032E9B4
+	.ctors      start:0x80406790 end:0x80406794
+	.rodata     start:0x80414E40 end:0x80414E80
+	.bss        start:0x80533528 end:0x80533550
+	.sdata2     start:0x805A4920 end:0x805A4928
+
+havok/hkSkeletonClass.cpp:
+	extab       start:0x800091D8 end:0x800091E0
+	extabindex  start:0x8000C094 end:0x8000C0A0
+	.text       start:0x8032F0A8 end:0x8032F10C
+	.ctors      start:0x80406794 end:0x80406798
+	.rodata     start:0x80414E80 end:0x80414F00
+	.bss        start:0x80533550 end:0x80533578
+	.sdata2     start:0x805A4928 end:0x805A4938
+
+havok/hkxMaterialClass.cpp:
+	extab       start:0x8000921C end:0x80009224
+	extabindex  start:0x8000C0C4 end:0x8000C0D0
+	.text       start:0x8032F454 end:0x8032F514
+	.ctors      start:0x8040679C end:0x804067A0
+	.rodata     start:0x80414F78 end:0x80415178
+	.bss        start:0x805335A0 end:0x805335E8
+	.sdata2     start:0x805A4938 end:0x805A4950
+
+havok/hkxIndexBufferClass.cpp:
+	extab       start:0x80009224 end:0x8000922C
+	extabindex  start:0x8000C0D0 end:0x8000C0DC
+	.text       start:0x8032F514 end:0x8032F584
+	.ctors      start:0x804067A0 end:0x804067A4
+	.rodata     start:0x80415178 end:0x80415268
+	.data       start:0x80488E18 end:0x80488E80
+	.bss        start:0x805335E8 end:0x80533610
+	.sdata      start:0x8059F040 end:0x8059F048
+	.sdata2     start:0x805A4950 end:0x805A4958
+
+havok/hkxMeshClass.cpp:
+	extab       start:0x8000922C end:0x80009234
+	extabindex  start:0x8000C0DC end:0x8000C0E8
+	.text       start:0x8032F584 end:0x8032F5E8
+	.ctors      start:0x804067A4 end:0x804067A8
+	.rodata     start:0x80415268 end:0x80415290
+	.bss        start:0x80533610 end:0x80533638
+
+havok/hkxMeshSectionClass.cpp:
+	extab       start:0x80009234 end:0x8000923C
+	extabindex  start:0x8000C0E8 end:0x8000C0F4
+	.text       start:0x8032F5E8 end:0x8032F64C
+	.ctors      start:0x804067A8 end:0x804067AC
+	.rodata     start:0x80415290 end:0x80415308
+	.bss        start:0x80533638 end:0x80533660
+
+havok/hkxVertexBufferClass.cpp:
+	extab       start:0x8000923C end:0x80009244
+	extabindex  start:0x8000C0F4 end:0x8000C100
+	.text       start:0x8032F64C end:0x8032F6B0
+	.ctors      start:0x804067AC end:0x804067B0
+	.rodata     start:0x80415308 end:0x80415350
+	.bss        start:0x80533660 end:0x80533688
+	.sdata2     start:0x805A4958 end:0x805A4960
+
+havok/hkxVertexFormatClass.cpp:
+	extab       start:0x80009244 end:0x8000924C
+	extabindex  start:0x8000C100 end:0x8000C10C
+	.text       start:0x8032F6B0 end:0x8032F714
+	.ctors      start:0x804067B0 end:0x804067B4
+	.rodata     start:0x80415350 end:0x80415518
+	.bss        start:0x80533688 end:0x805336B0
+	.sdata2     start:0x805A4960 end:0x805A4968
+
 Runtime.PPCEABI.H/__init_cpp_exceptions.cpp:
 	.text       start:0x803F1A08 end:0x803F1A78
 	.ctors      start:0x804064E0 end:0x804064E4 rename:.ctors$10

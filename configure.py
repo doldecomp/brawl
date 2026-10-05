@@ -254,6 +254,9 @@ cflags_fighter = ["-O2,s" if flag == "-O4,p" else flag for flag in cflags_rel] +
 cflags_sora_enemy = ["-O2,s" if flag == "-O4,p" else flag for flag in cflags_rel]
 cflags_st_starfox = [*cflags_rel, "-inline on,noauto"]
 
+# Havok middleware (embedded in the main DOL): no RTTI, string literals in .rodata
+cflags_havok = [*cflags_common, "-RTTI off", "-str reuse,readonly"]
+
 config.linker_version = "GC/3.0a5.2"
 
 Matching = True  # Object matches and should be linked
@@ -371,6 +374,72 @@ config.libs = [
             Object(Matching, "sora/st/st_data_container_magic.cpp"),
         ],
     },
+    # HAVOK-BEGIN
+    {
+        "lib": "havok",
+        "mw_version": config.linker_version,
+        "cflags": cflags_havok,
+        "host": False,
+        "objects": [
+            Object(Matching, "havok/hkBaseObjectClass.cpp"),
+            Object(Matching, "havok/hkReferencedObjectClass.cpp"),
+            Object(Matching, "havok/hkClass.cpp"),
+            Object(Matching, "havok/hkClassClass.cpp"),
+            Object(Matching, "havok/hkClassEnumClass.cpp"),
+            Object(Matching, "havok/hkClassMemberClass.cpp"),
+            Object(Matching, "havok/hkClassVersion1Class.cpp"),
+            Object(Matching, "havok/hkAabbClass.cpp"),
+            Object(Matching, "havok/hkMotionStateClass.cpp"),
+            Object(Matching, "havok/hkCdBodyClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkCollidableClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkGroupFilterClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkCollisionFilterClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkBoxShapeClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkCapsuleShapeClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkConvexShapeClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkConvexTranslateShapeClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkConvexVerticesShapeClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkShapeClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkShapeContainerClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkSphereShapeClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkSphereRepShapeClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkActionClass.cpp"),
+            Object(Matching, "havok/hkMaterialClass.cpp"),
+            Object(Matching, "havok/hkPropertyClass.cpp"),
+            Object(Matching, "havok/hkGenericConstraintDataClass.cpp"),
+            Object(Matching, "havok/hkGenericConstraintSchemeClass.cpp"),
+            Object(Matching, "havok/hkConstraintInfoClass.cpp"),
+            Object(Matching, "havok/hkConstraintInstanceClass.cpp"),
+            Object(Matching, "havok/hkConstraintMotorClass.cpp"),
+            Object(Matching, "havok/hkEntityClass.cpp"),
+            Object(Matching, "havok/hkEntityDeactivatorClass.cpp"),
+            Object(Matching, "havok/hkRigidBodyClass.cpp"),
+            Object(Matching, "havok/hkRigidBodyDeactivatorClass.cpp"),
+            Object(Matching, "havok/hkSpatialRigidBodyDeactivatorClass.cpp"),
+            Object(Matching, "havok/hkMotionClass.cpp"),
+            Object(Matching, "havok/hkKeyframedRigidMotionClass.cpp"),
+            Object(Matching, "havok/hkPhantomClass.cpp"),
+            Object(Matching, "havok/hkPhysicsSystemClass.cpp"),
+            Object(Matching, "havok/hkWorldCinfoClass.cpp"),
+            Object(Matching, "havok/hkWorldObjectClass.cpp"),
+            Object(Matching, "havok/hkPhysicsDataClass.cpp"),
+            Object(Matching, "havok/hkAnnotationTrackClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkSkeletalAnimationClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkMeshBindingClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkAnimationContainerClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkAnimatedReferenceFrameClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkBoneAttachmentClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkBoneClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkSkeletonClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkxMaterialClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkxIndexBufferClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkxMeshClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkxMeshSectionClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkxVertexBufferClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkxVertexFormatClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+        ],
+    },
+    # HAVOK-END
     # Common REL units
     {
         "lib": "REL",
