@@ -285,7 +285,8 @@ int muMenu::exchangeSelchkind2SelCharVoice(int selchkind) {
 }
 
 int muMenu::exchangeSelchkind2SelCharNarrationSndID(int selchkind, int, int) {
-    return lbl_804556D8[lbl_80455458[selchkind].stockchkind].voice;
+    muStockInfo& stock = lbl_804556D8[lbl_80455458[selchkind].stockchkind];
+    return stock.voice;
 }
 
 int muMenu::exchangeSelCharVoice2SelCharVoiceLengthE(int voice) {
