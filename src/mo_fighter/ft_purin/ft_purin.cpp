@@ -46,8 +46,17 @@ typedef soModelModuleBuildConfig<8, 3, soModelModuleImpl> ftPurinModelModuleBuil
 typedef ftAnimCmdModuleSubBuildConfig<288, 501> ftPurinAnimCmdModuleSubBuildConfig;
 typedef soStatusModuleBuildConfig<288, soGeneralWorkBuildConfig<18, 18, 3>, 274, 71, soTransitionModuleBuildConfig<ftStatusTransitionTypeList> > ftPurinStatusModuleBuildConfig;
 
+typedef soCollisionShieldModuleBuildConfigGroups<2, 1, 1, soCollisionShieldEventPresenterShield, soCollisionShieldModuleImpl> ftPurinCollisionShieldModuleBuildConfig;
+typedef soLinkModuleBuildConfigCap<6, soLinkModuleImpl> ftPurinLinkModuleBuildConfig;
+typedef soPhysicsModuleBuildConfigCap<0, soPhysicsModuleImpl> ftPurinPhysicsModuleBuildConfig;
+typedef ftOpaqueGenerateArticleManageModuleBuilder<0x1760, Fighter_Purin> ftPurinGenerateArticleManageModuleBuilder;
+
 class ftPurinBuildConfig : public ftCommonBuildConfig {
 public:
+    typedef ftPurinGenerateArticleManageModuleBuilder GenerateArticleManageModuleBuilder;
+    typedef ftPurinCollisionShieldModuleBuildConfig CollisionShieldModuleBuildConfig;
+    typedef ftPurinLinkModuleBuildConfig LinkModuleBuildConfig;
+    typedef ftPurinPhysicsModuleBuildConfig PhysicsModuleBuildConfig;
     typedef ftPurinInsideEventManageModuleBuildConfig InsideEventManageModuleBuildConfig;
     typedef ftPurinHeapModuleBuildConfig HeapModuleBuildConfig;
     typedef ftPurinParamCustomizeModuleBuildConfig ParamCustomizeModuleBuildConfig;

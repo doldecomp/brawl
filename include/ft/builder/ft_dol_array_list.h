@@ -24,6 +24,7 @@ class BaseItem;
 #include <so/posture/so_posture_module_impl.h>
 #include <so/transition/so_transition_module_impl.h>
 #include <so/status/so_status_module_impl.h>
+#include <so/area/so_area_module_impl.h>
 
 FT_DOL_ARRAY_VECTOR(soInterpolation<Vec3f>, 1);
 FT_DOL_ARRAY_VECTOR(soCollisionAttackPart, 5);
@@ -34,7 +35,9 @@ FT_DOL_ARRAY_VECTOR(soCollisionGroup, 1);
 FT_DOL_ARRAY_VECTOR(soCollisionHitGroup, 1);
 FT_DOL_ARRAY_VECTOR(soGroundShapeImpl, 1);
 FT_DOL_ARRAY_VECTOR(soCameraSubject, 1);
-FT_DOL_ARRAY_VECTOR(soModelNodeSetUp, 8);
+FT_DOL_ARRAY_VECTOR(soAreaWind, 1);
+FT_DOL_ARRAY_VECTOR(soAreaContactLog, 16);
+FT_DOL_ARRAY_VECTOR(soAreaInstance, 9);
 FT_DOL_ARRAY_VECTOR(soShakeTerm, 4);
 FT_DOL_ARRAY_VECTOR(soControllerImpl, 10);
 FT_DOL_ARRAY_VECTOR(soControllerClatter, 2);
@@ -131,4 +134,26 @@ public:
     virtual void getAttributeArray(soAttributeFlag targetAttr, soArray<soKineticEnergy**>& arr);
     virtual soAttributeFlag getAttribute(s32 id) const;
     virtual void getPriorityArray(soArray<soKineticEnergy**>& arr);
+};
+
+// soArrayNull<soPhysicsIKHandle>: constructor and destructor are calls into sora_melee (used for the shared null array)
+template <>
+class soArrayNull<soPhysicsIKHandle> : public soArray<soPhysicsIKHandle> {
+public:
+    virtual bool isNull() const;
+    virtual soPhysicsIKHandle& at(s32 index);
+    virtual const soPhysicsIKHandle& at(s32 index) const;
+    virtual s32 size() const;
+    virtual ~soArrayNull();
+    virtual void shift();
+    virtual void pop();
+    virtual void clear();
+    virtual void unshift(const soPhysicsIKHandle&);
+    virtual void push(const soPhysicsIKHandle&);
+    virtual void insert(s32, const soPhysicsIKHandle&);
+    virtual void erase(s32);
+    virtual s32 capacity() const;
+    virtual bool isFull() const;
+    virtual void set(s32 startingIndex, const soPhysicsIKHandle& element, s32 numIndicesToSet);
+    soArrayNull();
 };

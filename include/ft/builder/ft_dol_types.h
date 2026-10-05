@@ -9,7 +9,6 @@
 #include <types.h>
 
 struct clTarget;
-class soTeamModuleImpl;
 class soKineticModuleGenericImpl;
 class soModuleAccesser;
 class soEventObserverRegistrationDesc;
@@ -132,4 +131,30 @@ FT_DOL_POLY_END;
 
 FT_DOL_POLY_BEGIN(ftGlowModuleImpl, 0x180);
     ftGlowModuleImpl(soModuleAccesser* acc);
+FT_DOL_POLY_END;
+
+// ---- team / area modules ----------------------------------------------------------------------------------
+class ftTeam {
+public:
+    ftTeam(int entryId); // sora_melee
+    virtual void unkKeyFunction(); // keeps the vtable out of the REL (the constructor in sora_melee sets it)
+    virtual ~ftTeam(); // MATCH-ONLY: out of line in the RELs (ft_builder_noinline.h)
+    u8 m_unk04[0x10];
+};
+
+class ftTeamIndirect : public ftTeam {
+public:
+    ftTeamIndirect(int entryId) : ftTeam(entryId), m_unk14(-1) { }
+    virtual void unkKeyFunction2(); // sora_melee
+    virtual ~ftTeamIndirect(); // MATCH-ONLY: out of line in the RELs (ft_builder_noinline.h)
+    int m_unk14;
+};
+
+FT_DOL_POLY_BEGIN(soTeamModuleImpl, 0x44);
+    soTeamModuleImpl(ftTeam* a, ftTeam* b, ftTeamIndirect* c, soModuleAccesser* acc, void* nullTeam);
+FT_DOL_POLY_END;
+
+FT_DOL_POLY_BEGIN(ftAreaModuleImpl, 0x68);
+    ftAreaModuleImpl(soModuleAccesser* acc, u8 category, void* instances, void* contactLogs, void* checker, void* winds,
+                     soEventObserverRegistrationDesc* regDesc, int unk8);
 FT_DOL_POLY_END;

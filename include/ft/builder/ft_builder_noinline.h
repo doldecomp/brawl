@@ -21,6 +21,8 @@ void ftKeepObserverVtables(s16 id) {
 }
 
 #pragma dont_inline on
+ftTeam::~ftTeam() { }
+ftTeamIndirect::~ftTeamIndirect() { }
 ftSound3dGeneratorAccesserImpl::~ftSound3dGeneratorAccesserImpl() { } // MATCH-ONLY: out of line in the REL
 soTransitionInfo::~soTransitionInfo() { } // MATCH-ONLY: out of line in the REL
 soNullable::soNullable(bool isNull) { m_isNull = isNull; } // MATCH-ONLY: out of line in the REL
@@ -32,6 +34,7 @@ soGeneralWorkAbstract::~soGeneralWorkAbstract() { } // MATCH-ONLY: out of line i
 soGeneralWorkSimple::soGeneralWorkSimple(s32* ints, u32 numInts, float* floats, u32 numFloats, u32* flags, u32 numFlags) :
     soGeneralWorkAbstract(false), m_intWorks(ints), m_intWorkSize(numInts), m_floatWorks(floats), m_floatWorkSize(numFloats),
     m_flagWorks(flags), m_flagWorkSize(numFlags) { }
+
 
 #pragma dont_inline on
 template soDamageModuleBuilder<FT_BC::DamageModuleBuildConfig>::soDamageModuleBuilder(soModuleAccesser*, soEventObserverRegistrationDesc*);
