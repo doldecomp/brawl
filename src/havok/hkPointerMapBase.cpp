@@ -71,13 +71,13 @@ void hkPointerMapBase<T>::remove(int index) {
     m_numElems--;
     m_elem[index] = 0;
     int mask = m_hashMod;
-    int i = mask & (mask + index);
+    T i = mask & (mask + index);
     while (m_elem[i] != 0) {
         i = mask & (mask + i);
     }
-    T start = (i + 1) & mask;
     T hole = index;
     T j = (index + 1) & mask;
+    T start = (i + 1) & mask;
     while (m_elem[j] != 0) {
         T key = m_elem[j];
         T h = mask & ((key >> 4) * 0x9E3779B1);
@@ -177,7 +177,9 @@ template void hkPointerMapBase<unsigned long>::resizeTable(int);
 
 template hkPointerMapBase<unsigned long long>::hkPointerMapBase();
 template hkPointerMapBase<unsigned long long>::~hkPointerMapBase();
+#pragma dont_inline on
 template void hkPointerMapBase<unsigned long long>::insert(unsigned long long, unsigned long long);
+#pragma dont_inline reset
 #pragma dont_inline on
 template int hkPointerMapBase<unsigned long long>::findKey(unsigned long long) const;
 #pragma dont_inline reset

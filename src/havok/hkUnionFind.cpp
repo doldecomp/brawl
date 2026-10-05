@@ -59,8 +59,10 @@ void hkUnionFind::addEdge(int a, int b) {
 }
 
 void hkUnionFind::collapseTree() {
-    int* p = parentData(m_parents);
-    int* end = p + m_parents->m_size;
+    int* end;
+    int* p;
+    p = parentData(m_parents);
+    end = p + m_parents->m_size;
     for (; p != end; p++) {
         if (*p >= 0) {
             while (parentData(m_parents)[*p] >= 0) {
