@@ -8,6 +8,7 @@
 // constructor.
 
 #include <ft/builder/ft_dol_types.h>
+#include <ft/builder/ft_builder_status.h>
 #include <ft/ft_fighter_build_data.h>
 #include <ac/ac_cmd_interpreter.h>
 #include <so/anim/so_anim_cmd_module_impl.h>
@@ -72,9 +73,7 @@ static_assert(sizeof(soInstanceManagerFullPropertyVector<soAnimCmdControlUnit, 1
     };                                                                                         \
     static_assert(sizeof(soArrayContractibleTable<T>) == 0x10, "Class is wrong size!")
 
-typedef const soStatusData soStatusDataConst;
 FT_DOL_CONTRACTIBLE_TABLE(acAnimCmdConvPtr);
-FT_DOL_CONTRACTIBLE_TABLE(soStatusDataConst);
 
 // MATCH-ONLY: the null array (constructor, destructor in sora_melee) behind the REL-local singleton below.
 template <>
@@ -130,14 +129,7 @@ void soArrayUtility::pushRange<acAnimCmdConvPtr>(soArray<acAnimCmdConvPtr>* arra
 }
 #pragma dont_inline off
 
-// Selects the array stored in the holder (Sel == 1) or the singleton null array (Sel == 0).
-template <int Sel, class ArrayT, class NullHolder>
-class soArraySelectHolder {
-public:
-    ArrayT m_array;
-    soArraySelectHolder() : m_array(0) { }
-    ~soArraySelectHolder() { }
-};
+// soArraySelectHolder: see ft_builder_status.h
 
 typedef soSingletonHolder<soArrayNull<const acAnimCmdConv*> > soAnimCmdNullArrayHolder;
 

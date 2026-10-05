@@ -21,9 +21,10 @@ public:
 
 template <s32 I, typename V, typename Null>
 class soArraySelectHolder {
-    V m_array;
 public:
+    V m_array;
     soArraySelectHolder() : m_array(0) { }
+    ~soArraySelectHolder() { }
     V* get() { return &m_array; }
 };
 

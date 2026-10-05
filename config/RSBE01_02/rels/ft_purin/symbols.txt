@@ -103,8 +103,8 @@ __dt__214soArrayPool<14soIntToType<2>,181soLineHierarchy<80soTypeList<14soIntToT
 __dt__183soArrayPool<14soIntToType<6>,150soLineHierarchy<49soTypeList<14soIntToType<1>,18soTypeListNullType>,11soArrayPool,65soArrayPoolRoot<46soInstanceUnitFullProperty<16soTransitionTerm>>>>Fv = .text:0x00004824; // type:function size:0x70
 __dt__150soLineHierarchy<49soTypeList<14soIntToType<1>,18soTypeListNullType>,11soArrayPool,65soArrayPoolRoot<46soInstanceUnitFullProperty<16soTransitionTerm>>>Fv = .text:0x00004894; // type:function size:0x60
 __dt__57soGeneralWorkBuilder<33soGeneralWorkBuildConfig<18,18,3>>Fv = .text:0x000048F4; // type:function size:0x60
-fn_124_4954 = .text:0x00004954; // type:function size:0x6C
-fn_124_49C0 = .text:0x000049C0; // type:function size:0x70
+__dt__78soAnimCmdModuleBuilder<52soAnimCmdModuleBuildConfig<11,19soAnimCmdModuleImpl>>Fv = .text:0x00004954; // type:function size:0x6C
+__dt__62soInstanceManagerFullPropertyVector<20soAnimCmdControlUnit,11>Fv = .text:0x000049C0; // type:function size:0x70
 fn_124_4A30 = .text:0x00004A30; // type:function size:0x74
 fn_124_4AA4 = .text:0x00004AA4; // type:function size:0x80
 fn_124_4B24 = .text:0x00004B24; // type:function size:0x5C
@@ -163,7 +163,7 @@ __ct__69soSoundModuleBuilder<45soSoundModuleBuildConfig<17soSoundModuleImpl>>FP1
 fn_124_6790 = .text:0x00006790; // type:function size:0x54
 __ct__84soControllerModuleBuilder<55soControllerModuleBuildConfig<22ftControllerModuleImpl>>FP16soModuleAccessers = .text:0x000067E4; // type:function size:0x70
 fn_124_6854 = .text:0x00006854; // type:function size:0x6C
-fn_124_68C0 = .text:0x000068C0; // type:function size:0x44
+__ct__78soAnimCmdModuleBuilder<52soAnimCmdModuleBuildConfig<11,19soAnimCmdModuleImpl>>Fs = .text:0x000068C0; // type:function size:0x44
 __ct__794soStatusModuleBuilder<768soStatusModuleBuildConfig<288,33soGeneralWorkBuildConfig<18,18,3>,274,71,691soTransitionModuleBuildConfig<657soTypeList<15soIntToType<25>,624soTypeList<14soIntToType<6>,592soTypeList<14soIntToType<2>,560soTypeList<14soIntToType<1>,528soTypeList<15soIntToType<17>,495soTypeList<14soIntToType<3>,463soTypeList<14soIntToType<1>,431soTypeList<14soIntToType<2>,399soTypeList<14soIntToType<8>,367soTypeList<14soIntToType<2>,335soTypeList<14soIntToType<1>,303soTypeList<14soIntToType<6>,271soTypeList<14soIntToType<3>,239soTypeList<14soIntToType<1>,207soTypeList<14soIntToType<1>,175soTypeList<14soIntToType<2>,143soTypeList<14soIntToType<3>,111soTypeList<14soIntToType<2>,80soTypeList<14soIntToType<6>,49soTypeList<14soIntToType<1>,18soTypeListNullType>>>>>>>>>>>>>>>>>>>>>>>FP16soModuleAccesserPC12soStatusDataPv = .text:0x00006904; // type:function size:0x388
 __ct__19soGeneralWorkSimpleFPlUlPfUlPUlUl = .text:0x00006C8C; // type:function size:0x80
 fn_124_6D0C = .text:0x00006D0C; // type:function size:0xB0
