@@ -44,8 +44,7 @@ void ftStatusUniqProcessDamageFly::initNormalDamageCommon(soModuleAccesser* modu
     ftStatusUniqProcessDamage::initNormalDamageCommon(moduleAccesser);
     float threshold = soValueAccesser::getConstantFloat(moduleAccesser, 0xcd1, 0);
     int effectHandle;
-    const Vec2f& speed = moduleAccesser->getKineticModule().getEnergy(4)->getSpeed();
-    if (calcLength(speed) < threshold) {
+    if (calcLength(moduleAccesser->getKineticModule().getEnergy(4)->getSpeed()) < threshold) {
         effectHandle = -1;
     } else {
         soEffectModule& effect = moduleAccesser->getEffectModule();
