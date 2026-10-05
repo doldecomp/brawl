@@ -646,7 +646,8 @@ void soDamageModuleImpl::heal(float healAmount, u32 damageIndex) {
         healAmount = -current;
     }
     if (healAmount + (current + m_damageArray->at(damageIndex).m_damageAdd_) < 0.0f) {
-        healAmount = -current - m_damageArray->at(damageIndex).m_damageAdd_;
+        float& add = m_damageArray->at(damageIndex).m_damageAdd_;
+        healAmount = -current - add;
     }
     addDamage(healAmount, damageIndex);
 }
