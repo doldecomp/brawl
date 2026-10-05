@@ -21,9 +21,9 @@ void ftKeepObserverVtables(s16 id) {
 }
 
 #pragma dont_inline on
+ftSound3dGeneratorAccesserImpl::~ftSound3dGeneratorAccesserImpl() { } // MATCH-ONLY: out of line in the REL
 soTransitionInfo::~soTransitionInfo() { } // MATCH-ONLY: out of line in the REL
 soNullable::soNullable(bool isNull) { m_isNull = isNull; } // MATCH-ONLY: out of line in the REL
-ftSound3dGeneratorAccesserImpl::~ftSound3dGeneratorAccesserImpl() { } // MATCH-ONLY: out of line in the REL
 soKineticEnergy::~soKineticEnergy() { } // MATCH-ONLY: out of line in the REL
 soGeneralWorkAbstract::~soGeneralWorkAbstract() { } // MATCH-ONLY: out of line in the REL
 #pragma dont_inline off
