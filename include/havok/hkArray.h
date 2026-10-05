@@ -28,6 +28,13 @@ struct hkArrayUtil {
 // Typed dynamic array on top of hkArrayBase (storage comes from the thread memory).
 template <typename T>
 struct hkArray : hkArrayBase {
+    static void* operator new(unsigned long nbytes) {
+        return hkMemory::getInstance().allocateChunk(nbytes, 0x15);
+    }
+    static void operator delete(void* p) {
+        hkMemory::getInstance().deallocateChunk(p, sizeof(hkArray<T>), 0x15);
+    }
+
     hkArray() {
         m_data = 0;
         m_size = 0;

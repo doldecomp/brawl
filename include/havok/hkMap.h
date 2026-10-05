@@ -29,6 +29,7 @@ template <typename K, typename V>
 struct hkPointerMap {
     hkPointerMapBase<hkUlong> m_impl;
     void insert(K key, V value) { m_impl.insert((hkUlong)key, (hkUlong)value); }
+    hkResult remove(K key) { return m_impl.remove((hkUlong)key); }
 };
 
 // A key is present when its slot index is within the table (inline in the original).

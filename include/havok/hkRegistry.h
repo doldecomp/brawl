@@ -32,7 +32,7 @@ struct hkFinishLoadedObjectRegistry : hkReferencedObject {
     HK_DECLARE_REF_ALLOCATOR(0x13)
 
     virtual void registerTypeInfo(const hkTypeInfo* info);                    // 0x10
-    virtual void finishLoadedObject(void* object, const char* className) const; // 0x14
+    virtual const hkTypeInfo* finishLoadedObject(void* object, const char* className) const; // 0x14
     virtual void merge(hkFinishLoadedObjectRegistry& other);                  // 0x18
 };
 

@@ -33,7 +33,7 @@ struct hkPackfileData : hkReferencedObject {
 
     hkPackfileData();
     virtual ~hkPackfileData();
-    virtual const char* getName();                                                   // 0x10
+    virtual const char* getName() { return m_name; }                                 // 0x10
     virtual void callDestructors();                                                  // 0x14
     virtual void getImportsExports(hkArray<Export>& exports, hkArray<Import>& imports); // 0x18
 

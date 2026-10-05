@@ -1040,6 +1040,9 @@ havok/hkxVertexFormatClass.cpp:
 	.bss        start:0x80533688 end:0x805336B0
 	.sdata2     start:0x805A4960 end:0x805A4968
 
+havok/hkBinaryPackfileReader.cpp:
+	.text       start:0x8032F714 end:0x80331DD8
+
 havok/hkPackfileData.cpp:
 	.text       start:0x80331DD8 end:0x8033259C
 	.data       start:0x80488F30 end:0x80488F50

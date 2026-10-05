@@ -13,12 +13,12 @@ struct hkVariant {
 
 // Receives allocation/pointer bookkeeping while loaded objects are rewritten.
 struct hkObjectUpdateTracker : hkReferencedObject {
-    virtual void addAllocation(void* p, int nbytes) = 0;                 // 0x10
+    virtual void addAllocation(void* p) = 0;                             // 0x10
     virtual void addChunk(void* p, int nbytes, int cl) = 0;              // 0x14
     virtual void objectPointedBy(void* newObject, void* fromWhere) = 0;  // 0x18
     virtual void replaceObject(void* oldObject, void* newObject, const hkClass* newClass) = 0; // 0x1C
     virtual void addFinish(void* newObject, const char* className) = 0;  // 0x20
-    virtual void removeFinish(void* oldObject) = 0;                      // 0x24
+    virtual hkResult removeFinish(void* oldObject) = 0;                  // 0x24
 };
 
 struct hkClassNameRegistry;
