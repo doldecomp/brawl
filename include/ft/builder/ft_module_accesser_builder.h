@@ -25,6 +25,30 @@ struct ftUnknownBuilderPart {
     u8 m_data[N];
 };
 
+extern char g_soGenerateArticleManageModuleNull[];
+
+// soGenerateArticleManageModuleBuilder of a fighter without articles: an empty class. As a member it still takes
+// 4 bytes (empty class padded to the alignment of the next member), which is what the original layout has.
+// Fighters with articles select their own (large) builder through BuildConfig::GenerateArticleManageModuleBuilder.
+class ftNullGenerateArticleManageModuleBuilder {
+public:
+    ftNullGenerateArticleManageModuleBuilder(soModuleAccesser*) { }
+    void* getModule() { return g_soGenerateArticleManageModuleNull; }
+};
+
+// soGenerateArticleManageModuleBuilder<...> of a fighter with articles (weapons): not reconstructed yet. The storage has the
+// right size, the module (the last 0x3C bytes) is what the module accesser points at. The constructor and destructor are
+// out of line in the fighter REL (declared only; Id keeps the symbols of the fighters apart).
+template <u32 Size, s32 Id>
+class ftOpaqueGenerateArticleManageModuleBuilder {
+    u8 m_data[Size - 0x3C];
+    u8 m_module[0x3C];
+public:
+    ftOpaqueGenerateArticleManageModuleBuilder(soModuleAccesser* acc);
+    ~ftOpaqueGenerateArticleManageModuleBuilder();
+    void* getModule() { return m_module; }
+};
+
 ////////////////////////////////////////
 // default build configuration shared by all fighters (override per character if it differs)
 ////////////////////////////////////////
@@ -73,6 +97,7 @@ public:
     typedef soEffectModuleBuildConfig<soEffectModuleImpl> EffectModuleBuildConfig;
     typedef soPhysicsModuleBuildConfig<soPhysicsModuleImpl> PhysicsModuleBuildConfig;
     typedef soItemManageModuleBuildConfig<soItemManageModuleImpl> ItemManageModuleBuildConfig;
+    typedef ftNullGenerateArticleManageModuleBuilder GenerateArticleManageModuleBuilder;
 };
 
 extern char g_soCollisionAbsorberModuleNull[];
@@ -120,6 +145,7 @@ public:
     soStatusModuleBuilder<typename BC::StatusModuleBuildConfig> m_statusBuilder;                                                           // +0x48D8
     soKineticModuleBuilder<typename BC::KineticModuleBuildConfig> m_kineticBuilder;                                                          // +0x5790
     soGeneralWorkBuilder<typename BC::GeneralWorkBuildConfig> m_generalWorkBuilder;                                                      // +0x5A98
+    typename BC::GenerateArticleManageModuleBuilder m_generateArticleBuilder; // after m_generalWorkBuilder (before m_effectModuleBuilder)
     soEffectModuleBuilder<typename BC::EffectModuleBuildConfig> m_effectModuleBuilder;                     // +0x5C80
     soComboModuleBuilder<typename BC::ComboModuleBuildConfig> m_comboModuleBuilder;                                                              // +0x5E24
     soAreaModuleBuilder<typename BC::AreaModuleBuildConfig> m_areaBuilder;                                                             // +0x5E54
@@ -170,7 +196,7 @@ public:
             (void*)g_soSwitchDecideModuleNull,
             (soKineticModule*)m_kineticBuilder.getModule(),
             (soEventManageModule*)((u8*)&unk194 + 0xB8), // soInsideEventManageModuleBuilder::m_module (specialization has no getModule())
-            (void*)g_soGenerateArticleManageModuleNull,
+            (void*)m_generateArticleBuilder.getModule(),
             (soEffectModule*)m_effectModuleBuilder.getModule(),
             (void*)m_comboModuleBuilder.getModule(),
             (soAreaModule*)m_areaBuilder.getModule(),
@@ -228,6 +254,7 @@ public:
         m_statusBuilder(&m_moduleAccsr, fbd.getStatusData(), fbd.getPreCheckAnimCmdData()),
         m_kineticBuilder(&m_moduleAccsr),
         m_generalWorkBuilder(),
+        m_generateArticleBuilder(&m_moduleAccsr),
         m_effectModuleBuilder(&m_moduleAccsr, fbd.getEffectNodeData(), fbd.getEffectEmitData(), fbd.getEffectCommonData(), fbd.getEffectScreenData(), &g_soEventObserverRegistrationDescNull),
         m_comboModuleBuilder(&m_moduleAccsr),
         m_areaBuilder(&m_moduleAccsr, fbd.getAreaCategory(), &g_soEventObserverRegistrationDescNull),

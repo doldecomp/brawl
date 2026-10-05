@@ -487,16 +487,20 @@ config.libs = [
     {
         "lib": "ft_falco",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_falco/ft_falco.cpp"),
+        ],
     },
     {
         "lib": "ft_fox",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_fox/ft_fox.cpp"),
+        ],
     },
     {
         "lib": "ft_gamewatch",
@@ -564,16 +568,20 @@ config.libs = [
     {
         "lib": "ft_luigi",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_luigi/ft_luigi.cpp"),
+        ],
     },
     {
         "lib": "ft_mario",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_mario/ft_mario.cpp"),
+        ],
     },
     {
         "lib": "ft_marth",

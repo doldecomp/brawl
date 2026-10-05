@@ -190,7 +190,16 @@ public:
 template <s32 Kind, s32 NumParts, typename Presenter, typename T>
 class soCollisionShieldModuleBuildConfig {
 public:
-    enum { PartKind = Kind, PartCapacity = NumParts };
+    enum { PartKind = Kind, PartCapacity = NumParts, GroupCapacity = 2 };
+    typedef Presenter PresenterType;
+    typedef T ModuleType;
+};
+
+// Same with another number of shield/collision groups.
+template <s32 Kind, s32 NumParts, s32 Groups, typename Presenter, typename T>
+class soCollisionShieldModuleBuildConfigGroups {
+public:
+    enum { PartKind = Kind, PartCapacity = NumParts, GroupCapacity = Groups };
     typedef Presenter PresenterType;
     typedef T ModuleType;
 };
@@ -198,14 +207,14 @@ public:
 template <typename BC>
 class soCollisionShieldModuleBuilder {
     soArrayVector<soCollisionShieldPart, BC::PartCapacity> m_parts;
-    soArrayVector<soCollisionShieldGroup, 2> m_shieldGroups;
-    soArrayVector<soCollisionGroup, 2> m_groups;
+    soArrayVector<soCollisionShieldGroup, BC::GroupCapacity> m_shieldGroups;
+    soArrayVector<soCollisionGroup, BC::GroupCapacity> m_groups;
     typename BC::PresenterType m_presenter;
     typename BC::ModuleType m_shieldModule;
 public:
     soCollisionShieldModuleBuilder(soModuleAccesser* acc, int taskId, gfTask::Category category) :
         m_parts(BC::PartCapacity, soCollisionShieldPart(soCollision::Category_Fighter, BC::PartKind), 0),
-        m_shieldGroups(2, 0), m_groups(2, 0), m_presenter(acc),
+        m_shieldGroups(BC::GroupCapacity, 0), m_groups(BC::GroupCapacity, 0), m_presenter(acc),
         m_shieldModule(acc, taskId, category, &m_parts, &m_groups, &m_shieldGroups, &m_presenter, BC::PartKind, true) { }
     typename BC::ModuleType* getModule() { return &m_shieldModule; }
 };
@@ -214,7 +223,16 @@ public:
 template <s32 Kind, s32 NumParts, typename Presenter, typename T>
 class soCollisionReflectorModuleBuildConfig {
 public:
-    enum { PartKind = Kind, PartCapacity = NumParts };
+    enum { PartKind = Kind, PartCapacity = NumParts, GroupCapacity = 2 };
+    typedef Presenter PresenterType;
+    typedef T ModuleType;
+};
+
+// Same with another number of shield/collision groups.
+template <s32 Kind, s32 NumParts, s32 Groups, typename Presenter, typename T>
+class soCollisionReflectorModuleBuildConfigGroups {
+public:
+    enum { PartKind = Kind, PartCapacity = NumParts, GroupCapacity = Groups };
     typedef Presenter PresenterType;
     typedef T ModuleType;
 };
@@ -222,15 +240,15 @@ public:
 template <typename BC>
 class soCollisionReflectorModuleBuilder {
     soArrayVector<soCollisionShieldPart, BC::PartCapacity> m_parts;
-    soArrayVector<soCollisionShieldGroup, 2> m_shieldGroups;
-    soArrayVector<soCollisionGroup, 2> m_groups;
+    soArrayVector<soCollisionShieldGroup, BC::GroupCapacity> m_shieldGroups;
+    soArrayVector<soCollisionGroup, BC::GroupCapacity> m_groups;
     typename BC::PresenterType m_presenter;
     typename BC::ModuleType m_shieldModule;
     u8 unkTail[4];
 public:
     soCollisionReflectorModuleBuilder(soModuleAccesser* acc, int taskId, gfTask::Category category) :
         m_parts(BC::PartCapacity, soCollisionShieldPart(soCollision::Category_Fighter, BC::PartKind), 0),
-        m_shieldGroups(2, 0), m_groups(2, 0), m_presenter(acc),
+        m_shieldGroups(BC::GroupCapacity, 0), m_groups(BC::GroupCapacity, 0), m_presenter(acc),
         m_shieldModule(acc, taskId, category, &m_parts, &m_groups, &m_shieldGroups, &m_presenter, BC::PartKind, true) { }
     typename BC::ModuleType* getModule() { return &m_shieldModule; }
 };
@@ -243,15 +261,24 @@ public:
 template <typename T>
 class soLinkModuleBuildConfig {
 public:
+    enum { ConnectionCap = 7 };
+    typedef T ModuleType;
+};
+
+// Same with another capacity (the original has the capacity as its first template argument).
+template <s32 Cap, typename T>
+class soLinkModuleBuildConfigCap {
+public:
+    enum { ConnectionCap = Cap };
     typedef T ModuleType;
 };
 
 template <typename BC>
 class soLinkModuleBuilder {
-    soArrayVector<soLinkConnection, 7> m_connections;
+    soArrayVector<soLinkConnection, BC::ConnectionCap> m_connections;
     typename BC::ModuleType m_linkModule;
 public:
-    soLinkModuleBuilder(s32 unitId) : m_connections(7, 0), m_linkModule(unitId, &m_connections) { }
+    soLinkModuleBuilder(s32 unitId) : m_connections(BC::ConnectionCap, 0), m_linkModule(unitId, &m_connections) { }
     typename BC::ModuleType* getModule() { return &m_linkModule; }
 };
 

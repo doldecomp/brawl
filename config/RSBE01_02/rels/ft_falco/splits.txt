@@ -11,6 +11,13 @@ global_destructor_chain.c:
 	.dtors      start:0x00000000 end:0x00000008
 	.bss        start:0x00000000 end:0x00000004
 
+mo_fighter/ft_falco/ft_falco.cpp:
+	.text       start:0x00000070 end:0x0000E500
+	.ctors      start:0x00000000 end:0x00000004
+	.rodata     start:0x00000000 end:0x00000028
+	.data       start:0x00000000 end:0x00007B58
+	.bss        start:0x00000008 end:0x00000250
+
 mo_fighter/mo_fighter.cpp:
 	.text       start:0x00010FE4 end:0x00011080
 	.data       start:0x00007B58 end:0x00007B67
