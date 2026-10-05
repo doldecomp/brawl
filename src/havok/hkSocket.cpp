@@ -1,14 +1,9 @@
-// HYPOTHESIS: names follow Havok's hkSocket platform init/quit bookkeeping (init flag + quit callback)
-// MATCH-ONLY: hkBool needs a constructor so the false initializer is emitted as a sinit
-struct hkBool {
-    char m_bool;
-    hkBool(bool b) : m_bool(b) {}
+// HYPOTHESIS: platform socket layer state (unused on this platform; only the
+// static-init flag survives in the binary).
+struct hkSocketState {
+    bool m_initialized;
+    hkSocketState() : m_initialized(false) {}
 };
 
-struct hkSocket {
-    static void (*s_platformNetQuit)();
-    static hkBool s_platformNetInitialized;
-};
-
-void (*hkSocket::s_platformNetQuit)() = 0;
-hkBool hkSocket::s_platformNetInitialized(false);
+void* g_hkSocketUnk = 0;
+hkSocketState g_hkSocketState;
