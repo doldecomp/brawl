@@ -118,6 +118,23 @@ static inline float vec2Angle(const Vec2f& a, const Vec2f& b) {
     return angle;
 }
 
+// HYPOTHESIS: reconstructed interfaces of the team module (untyped in the headers); only the slots called here are known.
+class soTeamInfoLocal {
+public:
+    virtual void unk08();
+    virtual void unk0c();
+    virtual int getTeamNo();
+};
+
+class soTeamModuleLocal {
+public:
+    virtual void unk08();
+    virtual void unk0c();
+    virtual void unk10();
+    virtual void unk14();
+    virtual soTeamInfoLocal* getTeamInfo();
+};
+
 void soDamageModuleImpl::activate(float damage) {
     initDamage(damage);
     m_isDamageLock = false;
@@ -193,6 +210,64 @@ void soDamageModuleImpl::setInfo() {
             }
         }
     }
+}
+
+bool soDamageModuleImpl::check(bool damageChecked) {
+    bool result = damageChecked;
+    if (m_sleep == 1) {
+        return false;
+    }
+    int size = m_damageArray->size();
+    for (int i = 0; i < size; i++) {
+        soDamage* damage = &m_damageArray->at(i);
+        float damageAdd = damage->m_damageAdd;
+        if (m_isDamageLock == 0) {
+            storeDamage(damageAdd, damage);
+        }
+        if (damageAdd > 0.0f || damage->m_reaction > 0.0f || damage->m_isFlinchFlag == 1) {
+            if (damageChecked == 0) {
+                result = onDamage(i);
+            }
+            if (m_isDamageLock == 0) {
+                soInstanceManagerFullProperty<soDamageEventObserver*>* observerList = soEventPresenter<soDamageEventObserver>::getObserverList();
+                int count = observerList->size();
+                for (int j = 0; j < count; j++) {
+                    observerList->atIndex(j)->notifyEventOnDamage(damage, result, m_moduleAccesser);
+                }
+            }
+            if ((u32)*(int*)&_160[0] != 0xFFFFFFFF) {
+                m_moduleAccesser->getCollisionAttackModule().setIndirectInfo(*(int*)&_160[0], *(int*)&_160[4]);
+            }
+            if (result == 0 && !((getAttackDataWord(&damage->m_attackData, 0x38) >> 5) & 1)) {
+                if (m_moduleAccesser->getSituationModule().getKind() == 0) {
+                    clearAttackerInfo();
+                }
+            }
+        }
+        if (0.0f != damage->m_damageAdd_) {
+            storeDamage(damage->m_damageAdd_, damage);
+            soInstanceManagerFullProperty<soDamageEventObserver*>* observerList = soEventPresenter<soDamageEventObserver>::getObserverList();
+            int count = observerList->size();
+            for (int j = 0; j < count; j++) {
+                observerList->atIndex(j)->notifyEventAddDamage(damage, m_moduleAccesser);
+            }
+            damage->m_damageAdd_ = 0.0f;
+        }
+    }
+    if (result == 0 && isCheckGroundDamage() == 1) {
+        if (m_moduleAccesser->getCollisionHitModule().getTotalStatus(0) == 0) {
+            soCollisionAttackData attackData;
+            int touchedId = -1;
+            int touchKind = 0;
+            if (m_moduleAccesser->getGroundModule().getTouchAttackData(&attackData, &touchKind, &touchedId, 0) == 1) {
+                soTeamModuleLocal* teamModule = reinterpret_cast<soTeamModuleLocal*>(m_moduleAccesser->m_enumerationStart->m_teamModule);
+                if (touchedId != teamModule->getTeamInfo()->getTeamNo()) {
+                    result = setGroundDamage(touchKind, &attackData);
+                }
+            }
+        }
+    }
+    return result;
 }
 
 void soDamageEventObserver::notifyEventOnDamage(soDamage* damage, bool unk, soModuleAccesser* moduleAccesser) {
