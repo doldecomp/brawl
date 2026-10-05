@@ -1,13 +1,14 @@
 #pragma once
 
-#include <havok/hkBase.h>
+#include <havok/hkMemory.h>
 
 // Allocator entry point used by hkArray (per-thread memory object; this is a direct (non-virtual) call).
 struct hkThreadMemory {
     void* allocateChunk(int nbytes, int cl);
     void deallocateChunk(void* p, int nbytes, int cl);
 };
-extern hkThreadMemory* g_hkMemoryRowTable; // HYPOTHESIS: really the thread-memory singleton pointer
+// HYPOTHESIS: g_hkMemoryRowTable is really the per-thread memory object pointer (see hkMemory.h)
+#define HK_THREAD_MEMORY() ((hkThreadMemory*)g_hkMemoryRowTable)
 
 enum { HK_MEMORY_CLASS_ARRAY = 0x15 };
 
@@ -26,7 +27,7 @@ struct hkArrayBase {
 
     void clearAndDeallocate() {
         if ((m_capacityAndFlags & DONT_DEALLOCATE_FLAG) == 0) {
-            g_hkMemoryRowTable->deallocateChunk(m_data, m_capacityAndFlags * sizeof(T), HK_MEMORY_CLASS_ARRAY);
+            HK_THREAD_MEMORY()->deallocateChunk(m_data, m_capacityAndFlags * sizeof(T), HK_MEMORY_CLASS_ARRAY);
         }
     }
 

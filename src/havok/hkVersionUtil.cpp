@@ -21,12 +21,12 @@ hkResult hkVersionUtil::updateBetweenVersions(hkArrayBase<hkVariant>& objectsInO
             path.m_data[i]->m_updateFunction(objectsInOut, tracker);
         }
         if ((path.m_capacityAndFlags & 0x80000000) == 0) {
-            g_hkMemoryRowTable->deallocateChunk(path.m_data, path.m_capacityAndFlags << 2, HK_MEMORY_CLASS_ARRAY);
+            HK_THREAD_MEMORY()->deallocateChunk(path.m_data, path.m_capacityAndFlags << 2, HK_MEMORY_CLASS_ARRAY);
         }
         return HK_SUCCESS;
     }
     if ((path.m_capacityAndFlags & 0x80000000) == 0) {
-        g_hkMemoryRowTable->deallocateChunk(path.m_data, path.m_capacityAndFlags << 2, HK_MEMORY_CLASS_ARRAY);
+        HK_THREAD_MEMORY()->deallocateChunk(path.m_data, path.m_capacityAndFlags << 2, HK_MEMORY_CLASS_ARRAY);
     }
     return HK_FAILURE;
 }
