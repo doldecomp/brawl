@@ -1,7 +1,14 @@
 #include <havok/hkMemory.h>
+#include <havok/hkThreadMemory.h>
 #include <revolution/MEM.h>
 
 extern MEMAllocator g_hkRevolutionAllocator;
+
+void* hkRevolutionMalloc(int size, int alignment);
+void hkRevolutionFree(void* p);
+
+void* (*g_hkMalloc)(int size, int alignment) = hkRevolutionMalloc;
+void (*g_hkFree)(void* p) = hkRevolutionFree;
 
 hkMemory::hkMemory() {
     m_referenceCount = 1;
@@ -50,11 +57,11 @@ hkBool hkMemory::isOk() const {
 }
 
 void* hkMemory::allocateChunkByRow(int row, int cl) {
-    return allocateChunk(g_hkMemoryRowTable->m_rowSize[row], cl);
+    return allocateChunk(hkThreadMemory::s_instance->m_rowToSize[row], cl);
 }
 
 void hkMemory::deallocateChunkByRow(void* p, int row, int cl) {
-    deallocateChunk(p, g_hkMemoryRowTable->m_rowSize[row], cl);
+    deallocateChunk(p, hkThreadMemory::s_instance->m_rowToSize[row], cl);
 }
 
 bool hkMemory::isAllocateChunkByRowSupported() {

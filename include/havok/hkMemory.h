@@ -8,11 +8,8 @@ enum {
     HK_MEMORY_CLASS_STREAM = 0x18,
 };
 
-struct hkMemoryRowTable {
-    u8 unk0[0xB0];
-    int m_rowSize[1]; // 0xB0 (HYPOTHESIS: size in bytes for each allocation row)
-};
-extern hkMemoryRowTable* g_hkMemoryRowTable;
+extern void* (*g_hkMalloc)(int size, int alignment);
+extern void (*g_hkFree)(void* p);
 
 // Abstract allocator interface (vtable has no destructor in slot 2: layout is
 // allocate*, chunk*, runtime blocks, statistics, then the destructor last).

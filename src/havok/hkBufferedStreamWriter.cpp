@@ -53,9 +53,9 @@ int hkBufferedStreamWriter::flushBuffer() {
 #pragma dont_inline reset
 
 int hkBufferedStreamWriter::write(const void* buf, int nbytes) {
-    const char* src = (const char*)buf;
-    int remaining = nbytes;
     int space = m_capacity - m_current;
+    int remaining = nbytes;
+    const char* src = (const char*)buf;
     while (remaining > space) {
         hkString::memCpy(m_buf + m_current, src, space);
         src += space;
@@ -89,6 +89,9 @@ hkBool hkBufferedStreamWriter::isOk() const {
     return ok;
 }
 
+// MATCH-ONLY: scheduling
+#pragma push
+#pragma scheduling off
 hkBool hkBufferedStreamWriter::seekTellSupported() const {
     hkBool r;
     if (m_stream) {
@@ -98,6 +101,7 @@ hkBool hkBufferedStreamWriter::seekTellSupported() const {
     }
     return r;
 }
+#pragma pop
 
 hkResult hkBufferedStreamWriter::seek(int offset, int whence) {
     if (m_stream) {

@@ -39,13 +39,18 @@ void hkBufferedStreamReader::prepareBufferForRefill() {
             b.m_markPos = -1;
             b.m_markLimit = -1;
         } else if (mark > 0) {
-            int rem = lead % 512;
-            int pad = rem != 0 ? 512 - rem : 0;
-            hkString::memMove(b.m_buf + pad, b.m_buf + mark, lead);
-            b.m_markPos = pad;
-            int aligned = (lead / 512 + (rem != 0)) * 512;
-            b.m_current = aligned;
-            b.m_end = aligned;
+            {
+                int rem = lead % 512;
+                // MATCH-ONLY: temporaries pin register allocation
+                __typeof__(mark)& tmp0 = mark;
+                int pad = rem != 0 ? 512 - rem : 0;
+                hkString::memMove(b.m_buf + (int)pad, b.m_buf + tmp0, lead);
+                __typeof__(rem) tmp1 = rem;
+                int aligned = (lead / 512 + (tmp1 != 0)) * 512;
+                b.m_markPos = pad;
+                b.m_current = aligned;
+                b.m_end = aligned;
+            }
         }
     }
 }
@@ -69,10 +74,11 @@ hkResult hkBufferedStreamReader::refillBuffer() {
 }
 
 int hkBufferedStreamReader::read(void* buf, int nbytes) {
-    char* dst = (char*)buf;
     int remaining = nbytes;
-    int avail = m_buffer.m_end - m_buffer.m_current;
-    while (remaining > avail) {
+    int avail;
+    char* dst = (char*)buf;
+    avail = m_buffer.m_end - m_buffer.m_current;
+    for (; remaining > avail;) {
         hkString::memCpy(dst, m_buffer.m_buf + m_buffer.m_current, avail);
         dst += avail;
         remaining -= avail;
@@ -101,6 +107,9 @@ int hkBufferedStreamReader::skip(int nbytes) {
     return nbytes;
 }
 
+// MATCH-ONLY: scheduling
+#pragma push
+#pragma scheduling off
 hkBool hkBufferedStreamReader::isOk() const {
     bool ok = true;
     if (m_buffer.m_current == m_buffer.m_end) {
@@ -110,6 +119,7 @@ hkBool hkBufferedStreamReader::isOk() const {
     }
     return hkBool(ok);
 }
+#pragma pop
 
 hkBool hkBufferedStreamReader::markSupported() const {
     return hkBool(m_buffer.m_bufSize != 0);

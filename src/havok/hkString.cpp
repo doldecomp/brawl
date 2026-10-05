@@ -104,9 +104,11 @@ hkString::Rep* hkString::Rep::create(int length) {
 }
 
 hkBool hkString::beginsWith(const char* prefix) const {
-    int i = 0;
+    long i = 0;
     while (*prefix != 0) {
-        if (i >= ((int*)m_string)[-3] || m_string[i] != *prefix) {
+        // MATCH-ONLY: reference temporary pins the load order
+        __typeof__(m_string[i])& tmp0 = m_string[i];
+        if (i >= ((int*)m_string)[-3] || tmp0 != *prefix) {
             return hkBool(false);
         }
         i++;
