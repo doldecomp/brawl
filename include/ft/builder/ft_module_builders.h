@@ -7,6 +7,7 @@
 // Naming follows Brawl (soXModuleBuildConfig<...> / soXModuleBuilder<BC>).
 
 #include <ft/builder/ft_dol_array_list.h>
+#include <ft/builder/ft_dol_holders.h>
 #include <ft/builder/ft_dol_types.h>
 #include <so/so_array.h>
 #include <so/so_module_accesser.h>
@@ -46,27 +47,94 @@ struct ftBuilderModule<soCollisionHitModuleBuilder<soCollisionHitModuleBuildConf
 
 
 ////////////////////////////////////////
+// Flattened versions of the BrawlHeaders posture/attack/hit builders: in the fighter RELs the destructor of the
+// builder contains the member destructors directly (the build config class has no destructor of its own).
+////////////////////////////////////////
+
+template <u32 N, class M>
+class soPostureModuleBuilder<soPostureModuleBuildConfig<N, M> > : public soArraySelectHolder<1, soArrayVector<soInterpolation<Vec3f>, N>, soArrayNull<soInterpolation<Vec3f> > > {
+    M m_postureModule;
+public:
+    soPostureModuleBuilder(soModuleAccesser* acc, soEventObserverRegistrationDesc* registrationDesc) :
+        soArraySelectHolder<1, soArrayVector<soInterpolation<Vec3f>, N>, soArrayNull<soInterpolation<Vec3f> > >(N, 0),
+        m_postureModule(acc, this->get(), registrationDesc) {
+        this->getModule()->initRot();
+    }
+    soPostureModule* getModule() { return &m_postureModule; }
+};
+
+template <soCollision::Category Cat, u32 P, u32 A, class M, u32 G, bool b1, bool b2>
+class soCollisionAttackModuleBuilder<soCollisionAttackModuleBuildConfig<Cat, P, A, M, G, b1, b2> > {
+    soArrayVector<soCollisionAttackPart, P> m_attackPartArrayVector;
+    soArrayVector<soCollisionGroup, G> m_collisionGroupArrayVector;
+    soArrayVector<soCollisionAttackAbsolute, A> m_attackAbsoluteArrayVector;
+    M m_attackModule;
+public:
+    soCollisionAttackModuleBuilder(soModuleAccesser* moduleAccesser, int taskId, u8 taskCategory,
+                                   soEventObserverRegistrationDesc* registrationDesc) :
+        m_attackPartArrayVector(P, soCollisionAttackPart(Cat, b1), 0),
+        m_collisionGroupArrayVector(G, 0),
+        m_attackAbsoluteArrayVector(A, 0),
+        m_attackModule(moduleAccesser, taskId, (gfTask::Category)taskCategory, &m_attackPartArrayVector, &m_collisionGroupArrayVector,
+                       &m_attackAbsoluteArrayVector, registrationDesc, b2) { }
+    soCollisionAttackModule* getModule() { return &m_attackModule; }
+};
+
+template <soCollision::Category Cat, u32 P, u32 G, class M, u32 Mask, bool b1>
+class soCollisionHitModuleBuilder<soCollisionHitModuleBuildConfig<Cat, P, G, M, Mask, b1> > {
+    soArrayVector<soCollisionHitPart, P> m_hitPartArrayVector;
+    soArrayVector<soCollisionGroup, G> m_collisionGroupArrayVector;
+    soArrayVector<soCollisionHitGroup, G> m_hitGroupArrayVector;
+    M m_hitModule;
+public:
+    soCollisionHitModuleBuilder(soModuleAccesser* moduleAccesser, int taskId, u8 taskCategory,
+                                soEventObserverRegistrationDesc* registrationDesc) :
+        m_hitPartArrayVector(P, soCollisionHitPart(Cat, Mask), 0),
+        m_collisionGroupArrayVector(G, 0),
+        m_hitGroupArrayVector(G, 0),
+        m_hitModule(moduleAccesser, taskId, (gfTask::Category)taskCategory, &m_hitPartArrayVector, &m_collisionGroupArrayVector,
+                    &m_hitGroupArrayVector, registrationDesc, b1) { }
+    soCollisionHitModule* getModule() { return &m_hitModule; }
+};
+
+// soModelModuleBuilder: the virtual node array is wrapped (out-of-line destructor in the fighter RELs).
+template <u32 S, u32 N, typename T>
+class soModelModuleBuilder<soModelModuleBuildConfig<S, N, T> > {
+    soArrayVector<soModelNodeSetUp, S> m_nodeSetUps;
+    soArraySelectHolder<1, soArrayVector<soModelVirtualNode, N>, soArrayNull<soModelVirtualNode> > m_virtualNodes;
+    T m_modelModule;
+public:
+    static T* getModule(soModelModuleBuilder* b) {
+        return &b->m_modelModule;
+    }
+
+    soModelModuleBuilder(soModuleAccesser* acc, void* extendNodeTbl, soEventObserverRegistrationDesc* regDesc, float modelScale) :
+        m_nodeSetUps(S),
+        m_virtualNodes(N),
+        m_modelModule(acc, &m_nodeSetUps, extendNodeTbl, m_virtualNodes.get(), regDesc, modelScale) { }
+};
+
+////////////////////////////////////////
 // soGroundModuleBuilder
 ////////////////////////////////////////
 
 
 template <s32 ShapeCap, typename T>
 class soGroundModuleBuildConfig {
-    soArrayVector<soGroundShapeImpl, ShapeCap> m_shapes;
-    T m_groundModule;
 public:
-    soGroundModuleBuildConfig(soModuleAccesser* acc, soGroundConditionChecker* checker) :
-        m_shapes(1, 0),
-        m_groundModule(acc, &m_shapes, checker, &g_soEventObserverRegistrationDescNull) { }
-    T* getModule() { return &m_groundModule; }
+    enum { ShapeCapacity = ShapeCap };
+    typedef T ModuleType;
 };
 
 template <typename BC>
 class soGroundModuleBuilder {
-    BC m_buildConfig;
+    soArrayVector<soGroundShapeImpl, BC::ShapeCapacity> m_shapes;
+    typename BC::ModuleType m_groundModule;
 public:
-    soGroundModuleBuilder(soModuleAccesser* acc, soGroundConditionChecker* checker) : m_buildConfig(acc, checker) { }
-    soGroundModule* getModule() { return m_buildConfig.getModule(); }
+    soGroundModuleBuilder(soModuleAccesser* acc, soGroundConditionChecker* checker) :
+        m_shapes(1, 0),
+        m_groundModule(acc, &m_shapes, checker, &g_soEventObserverRegistrationDescNull) { }
+    soGroundModule* getModule() { return &m_groundModule; }
 };
 
 ////////////////////////////////////////
@@ -81,13 +149,12 @@ public:
 };
 
 template <typename BC>
-class soCameraModuleBuilder {
-    soArrayVector<soCameraSubject, 1> m_subjects;
+class soCameraModuleBuilder : public soArraySelectHolder<1, soArrayVector<soCameraSubject, 1>, soArrayNull<soCameraSubject> > {
     typename BC::ModuleType m_cameraModule;
 public:
     soCameraModuleBuilder(soModuleAccesser* acc, soSet<soCameraRange>* rangeSet, soSet<soCameraClipSphere>* clipSet,
                           soEventObserverRegistrationDesc* regDesc) :
-        m_subjects(1, 0), m_cameraModule(acc, &m_subjects, rangeSet, clipSet, regDesc) { }
+        soArraySelectHolder<1, soArrayVector<soCameraSubject, 1>, soArrayNull<soCameraSubject> >(1, 0), m_cameraModule(acc, this->get(), rangeSet, clipSet, regDesc) { }
     typename BC::ModuleType* getModule() { return &m_cameraModule; }
 };
 
@@ -104,12 +171,11 @@ public:
 };
 
 template <typename BC>
-class soShakeModuleBuilder {
-    soArrayVector<soShakeTerm, BC::TermCapacity> m_terms;
+class soShakeModuleBuilder : public soArraySelectHolder<1, soArrayVector<soShakeTerm, BC::TermCapacity>, soArrayNull<soShakeTerm> > {
     typename BC::ModuleType m_shakeModule;
 public:
     soShakeModuleBuilder(soModuleAccesser* acc, void* shakeData) :
-        m_terms(4, 0), m_shakeModule(acc, &m_terms, shakeData) { }
+        soArraySelectHolder<1, soArrayVector<soShakeTerm, BC::TermCapacity>, soArrayNull<soShakeTerm> >(4, 0), m_shakeModule(acc, this->get(), shakeData) { }
     typename BC::ModuleType* getModule() { return &m_shakeModule; }
 };
 
@@ -125,13 +191,13 @@ public:
 };
 
 template <typename BC>
-class soControllerModuleBuilder {
-    soArrayVector<soControllerImpl, 10> m_controllers;
-    soArrayVector<soControllerClatter, 2> m_clatters;
+class soControllerModuleBuilder : public soArraySelectHolder<1, soArrayVector<soControllerImpl, 10>, soArrayNull<soControllerImpl> > {
+    soArraySelectHolder<1, soArrayVector<soControllerClatter, 2>, soArrayNull<soControllerClatter> > m_clatters;
     typename BC::ModuleType m_controllerModule;
 public:
     soControllerModuleBuilder(soModuleAccesser* acc, s16 unitId) :
-        m_controllers(10, 0), m_clatters(2, 0), m_controllerModule(acc, unitId, &m_controllers, &m_clatters) { }
+        soArraySelectHolder<1, soArrayVector<soControllerImpl, 10>, soArrayNull<soControllerImpl> >(10, 0), m_clatters(2, 0),
+        m_controllerModule(acc, unitId, this->get(), m_clatters.get()) { }
     typename BC::ModuleType* getModule() { return &m_controllerModule; }
 };
 
@@ -150,12 +216,11 @@ extern char g_soDamageModuleNullA[];
 extern char g_soDamageModuleNullB[];
 
 template <typename BC>
-class soDamageModuleBuilder {
-    soArrayVector<soDamage, 1> m_damages;
+class soDamageModuleBuilder : public soArraySelectHolder<1, soArrayVector<soDamage, 1>, soArrayNull<soDamage> > {
     typename BC::ModuleType m_damageModule;
 public:
     soDamageModuleBuilder(soModuleAccesser* acc, soEventObserverRegistrationDesc* regDesc) :
-        m_damages(1, 0), m_damageModule(acc, &m_damages, g_soDamageModuleNullA, g_soDamageModuleNullB, regDesc) { }
+        soArraySelectHolder<1, soArrayVector<soDamage, 1>, soArrayNull<soDamage> >(1, 0), m_damageModule(acc, this->get(), g_soDamageModuleNullA, g_soDamageModuleNullB, regDesc) { }
     typename BC::ModuleType* getModule() { return &m_damageModule; }
 };
 
@@ -267,12 +332,11 @@ public:
 };
 
 template <typename BC>
-class soPhysicsModuleBuilder {
-    soArrayVector<soPhysicsIKHandle, 2> m_ikHandles;
+class soPhysicsModuleBuilder : public soArraySelectHolder<1, soArrayVector<soPhysicsIKHandle, 2>, soArrayNull<soPhysicsIKHandle> > {
     typename BC::ModuleType m_physicsModule;
 public:
     soPhysicsModuleBuilder(soModuleAccesser* acc, void* ikData) :
-        m_ikHandles(2, 0), m_physicsModule(acc, ikData, &m_ikHandles, 1) { }
+        soArraySelectHolder<1, soArrayVector<soPhysicsIKHandle, 2>, soArrayNull<soPhysicsIKHandle> >(2, 0), m_physicsModule(acc, ikData, this->get(), 1) { }
     typename BC::ModuleType* getModule() { return &m_physicsModule; }
 };
 
@@ -291,13 +355,12 @@ extern char g_soItemManageNullA[];
 extern char g_soItemManageNullB[];
 
 template <typename BC>
-class soItemManageModuleBuilder {
-    soArrayVector<soItemInfo, 3> m_items;
-    soArrayVector<soItemInfo, 4> m_items2;
+class soItemManageModuleBuilder : public soArraySelectHolder<1, soArrayVector<soItemInfo, 3>, soArrayNull<soItemInfo> > {
+    soArraySelectHolder<1, soArrayVector<soItemInfo, 4>, soArrayNull<soItemInfo> > m_items2;
     typename BC::ModuleType m_itemModule;
 public:
     soItemManageModuleBuilder(soModuleAccesser* acc, void* itemNodeData) :
-        m_items(3, 0), m_items2(), m_itemModule(acc, &m_items, &m_items2, itemNodeData, g_soItemManageNullA, g_soItemManageNullB) { }
+        soArraySelectHolder<1, soArrayVector<soItemInfo, 3>, soArrayNull<soItemInfo> >(3, 0), m_items2(), m_itemModule(acc, this->get(), m_items2.get(), itemNodeData, g_soItemManageNullA, g_soItemManageNullB) { }
     typename BC::ModuleType* getModule() { return &m_itemModule; }
 };
 
@@ -313,17 +376,16 @@ public:
 };
 
 template <typename BC>
-class soEffectModuleBuilder {
-    soArrayVector<soEffectContinual, 1> m_continuals;
-    soArrayVector<soEffectTime, 1> m_times;
-    soArrayVector<efScreenHandle, 1> m_screens;
+class soEffectModuleBuilder : public soArraySelectHolder<1, soArrayVector<soEffectContinual, 1>, soArrayNull<soEffectContinual> > {
+    soArraySelectHolder<1, soArrayVector<soEffectTime, 1>, soArrayNull<soEffectTime> > m_times;
+    soArraySelectHolder<1, soArrayVector<efScreenHandle, 1>, soArrayNull<efScreenHandle> > m_screens;
     soArrayVector<u32, 1> m_u32s;
     typename BC::ModuleType m_effectModule;
 public:
     soEffectModuleBuilder(soModuleAccesser* acc, void* nodeData, void* emitData, void* commonData, void* screenData,
                           soEventObserverRegistrationDesc* regDesc) :
-        m_continuals(1, 0), m_times(1, 0), m_screens(1, 0), m_u32s(1, 0, 0),
-        m_effectModule(acc, &m_continuals, nodeData, &m_u32s, &m_times, emitData, regDesc, commonData, 10, screenData, &m_screens) { }
+        soArraySelectHolder<1, soArrayVector<soEffectContinual, 1>, soArrayNull<soEffectContinual> >(1, 0), m_times(1, 0), m_screens(1, 0), m_u32s(1, 0, 0),
+        m_effectModule(acc, this->get(), nodeData, &m_u32s, m_times.get(), emitData, regDesc, commonData, 10, screenData, m_screens.get()) { }
     typename BC::ModuleType* getModule() { return &m_effectModule; }
 };
 
@@ -342,7 +404,7 @@ public:
             m_instances[i].initialize();
         }
     }
-    virtual ~ftSound3dGeneratorAccesserImpl() { }
+    virtual ~ftSound3dGeneratorAccesserImpl(); // MATCH-ONLY: out of line (ft_builder_noinline.h)
     virtual void activate(Vec3f* pos) {
         for (s32 i = 0; i < 2; i++) {
             allocateInstance(&m_instances[i], pos);

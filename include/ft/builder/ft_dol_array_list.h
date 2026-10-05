@@ -34,6 +34,7 @@ FT_DOL_ARRAY_VECTOR(soCollisionGroup, 1);
 FT_DOL_ARRAY_VECTOR(soCollisionHitGroup, 1);
 FT_DOL_ARRAY_VECTOR(soGroundShapeImpl, 1);
 FT_DOL_ARRAY_VECTOR(soCameraSubject, 1);
+FT_DOL_ARRAY_VECTOR(soModelNodeSetUp, 8);
 FT_DOL_ARRAY_VECTOR(soShakeTerm, 4);
 FT_DOL_ARRAY_VECTOR(soControllerImpl, 10);
 FT_DOL_ARRAY_VECTOR(soControllerClatter, 2);

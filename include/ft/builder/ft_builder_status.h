@@ -4,6 +4,7 @@
 // ftMarth fn_106_6224 (ctor) / fn_106_3394 (dtor); the soStatusModuleImpl is at +0xE08.
 //   soStatusModuleBuilder(soModuleAccesser*, fbd.getStatusData(), fbd.getPreCheckAnimCmdData())
 
+#include <ft/builder/ft_dol_holders.h>
 #include <ft/builder/ft_builder_general_work.h>
 #include <ft/builder/ft_builder_transition.h>
 #include <ft/builder/ft_dol_types.h>
@@ -17,14 +18,6 @@ public:
     enum { StatusKindCap = StatusKinds, DataCount = StatusDataCount, Unk = Unk71 };
     typedef GeneralWorkConfig GeneralWorkBuildConfig;
     typedef TransitionConfig TransitionBuildConfig;
-};
-
-template <s32 I, typename V, typename Null>
-class soArraySelectHolder {
-    V m_array;
-public:
-    soArraySelectHolder() : m_array(0) { }
-    V* get() { return &m_array; }
 };
 
 template <typename V>
