@@ -13,9 +13,17 @@
 soTransitionModuleImpl::soTransitionModuleImpl(soArray<soTransitionTermGroup>* groups) :
     m_transitionTermGroupArray(groups), m_groupID(0), m_transitionInfo() { } // 99%: the original keeps a dead store to a stack slot (frame 0x10)
 
+// MATCH-ONLY: the original REL emits the vtables of these observers (their addObserver is a REL function); the code that
+// needs them is not reconstructed yet, so keep them alive with a dummy user.
+void ftKeepObserverVtables(s16 id) {
+    soAnimCmdEventObserver animCmd(id);
+    soSituationEventObserver situation(id);
+}
+
 #pragma dont_inline on
 soTransitionInfo::~soTransitionInfo() { } // MATCH-ONLY: out of line in the REL
 soNullable::soNullable(bool isNull) { m_isNull = isNull; } // MATCH-ONLY: out of line in the REL
+soKineticEnergy::~soKineticEnergy() { } // MATCH-ONLY: out of line in the REL
 soGeneralWorkAbstract::~soGeneralWorkAbstract() { } // MATCH-ONLY: out of line in the REL
 #pragma dont_inline off
 

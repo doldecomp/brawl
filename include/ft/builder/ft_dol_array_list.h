@@ -82,3 +82,32 @@ public:
     virtual bool isNull() const;
     virtual const soStatusData& atSub(s32 index) const;
 };
+
+// ---- kinetic energy manager (constructor in sora_melee) -----------------------------------------------------
+#include <so/kinetic/so_kinetic_module_impl.h>
+FT_DOL_ARRAY_VECTOR(soInstanceUnitFullProperty<soKineticEnergy*>, 12);
+
+template <>
+class soInstanceManagerFullPropertyVector<soKineticEnergy*, 12> : public soInstanceManagerFullProperty<soKineticEnergy*> {
+    soArrayVector<soInstanceUnitFullProperty<soKineticEnergy*>, 12> m_arrayVector; // 0x10
+    bool m_unk1;
+public:
+    soInstanceManagerFullPropertyVector(bool p1);
+    ~soInstanceManagerFullPropertyVector() { }
+    virtual soKineticEnergy*& at(s32 id);
+    virtual soKineticEnergy*& atIndex(s32 idx);
+    virtual s32 getId(s32 idx);
+    virtual u32 size() const;
+    virtual bool isContain(s32 id) const;
+    virtual void erase(s32 id);
+    virtual void clear();
+    virtual void set(soKineticEnergy* const& elm, s32 id);
+    virtual s32 add(soKineticEnergy*& elm, s32 id, soAttributeFlag attr, s16 p4);
+    virtual u32 capacity();
+    virtual soKineticEnergy*& atIndexFast(s32 idx);
+    virtual soInstanceUnitFullProperty<soKineticEnergy*>& atUnitIndexFast(s32 idx);
+    virtual s32 getIndex(s32 id) const;
+    virtual void getAttributeArray(soAttributeFlag targetAttr, soArray<soKineticEnergy**>& arr);
+    virtual soAttributeFlag getAttribute(s32 id) const;
+    virtual void getPriorityArray(soArray<soKineticEnergy**>& arr);
+};
