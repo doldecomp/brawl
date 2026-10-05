@@ -45,7 +45,7 @@ public:
     typedef soMotionModuleBuildConfig<soMotionModuleImpl> MotionModuleBuildConfig;
     typedef soTeamModuleBuildConfig<soTeamModuleImpl> TeamModuleBuildConfig;
     typedef soAnimCmdModuleBuildConfig<soAnimCmdModuleImpl> AnimCmdModuleBuildConfig;
-    typedef soStatusModuleBuildConfig<soStatusModuleImpl> StatusModuleBuildConfig;
+    typedef soStatusModuleBuildConfig<289, soGeneralWorkBuildConfig<26, 14, 7>, 274, 71, soTransitionModuleBuildConfig<ftStatusTransitionTypeList> > StatusModuleBuildConfig;
     typedef soKineticModuleBuildConfig<soKineticModuleGenericImpl> KineticModuleBuildConfig;
     typedef soGeneralWorkBuildConfig<77, 32, 3> GeneralWorkBuildConfig;
     typedef soComboModuleBuildConfig<ftComboModuleImpl> ComboModuleBuildConfig;

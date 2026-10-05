@@ -1,26 +1,60 @@
 #pragma once
 
-// soStatusModuleBuilder<soStatusModuleBuildConfig<289, soGeneralWorkBuildConfig<26,14,7>, ...>> (0xEB8 bytes):
+// soStatusModuleBuilder<soStatusModuleBuildConfig<StatusKinds, GeneralWork, 274, 71, Transition>> (0xEB8 bytes):
 // ftMarth fn_106_6224 (ctor) / fn_106_3394 (dtor); the soStatusModuleImpl is at +0xE08.
 //   soStatusModuleBuilder(soModuleAccesser*, fbd.getStatusData(), fbd.getPreCheckAnimCmdData())
-// soGeneralWorkBuilder<soGeneralWorkBuildConfig<77,32,3>> (0x1E8 bytes): fn_106_6AAC (ctor) / fn_106_314C (dtor), default constructed.
-// STUB: storage only.
 
 #include <ft/builder/ft_builder_general_work.h>
+#include <ft/builder/ft_builder_transition.h>
 #include <ft/builder/ft_dol_types.h>
+#include <so/status/so_status_module_impl.h>
 #include <types.h>
 
-template <typename T>
+// HYPOTHESIS: unk274 is the status data count, unk71 is unknown.
+template <s32 StatusKinds, typename GeneralWorkConfig, s32 StatusDataCount, s32 Unk71, typename TransitionConfig>
 class soStatusModuleBuildConfig {
 public:
-    typedef T ModuleType;
+    enum { StatusKindCap = StatusKinds, DataCount = StatusDataCount, Unk = Unk71 };
+    typedef GeneralWorkConfig GeneralWorkBuildConfig;
+    typedef TransitionConfig TransitionBuildConfig;
+};
+
+template <s32 I, typename V, typename Null>
+class soArraySelectHolder {
+    V m_array;
+public:
+    soArraySelectHolder() : m_array(0) { }
+    V* get() { return &m_array; }
+};
+
+template <typename V>
+class soArrayQueueImpl {
+    V* m_array;
+    V m_vector;
+public:
+    soArrayQueueImpl(const s32& initial) : m_array(&m_vector), m_vector(1, initial, 0) {
+        soArray<s32>* array = &m_vector;
+        array->capacity();
+    }
 };
 
 template <typename BC>
 class soStatusModuleBuilder {
-    u8 m_data[0xEB8];
+    soArrayContractibleTable<const soStatusData> m_statusTable;                                           // +0x0
+    soGeneralWorkBuilder<typename BC::GeneralWorkBuildConfig> m_generalWorkBuilder;                       // +0x10
+    soTransitionModuleBuilder<typename BC::TransitionBuildConfig> m_transitionBuilder;                    // +0xF0
+    soArraySelectHolder<1, soArrayVector<soStatusUniqProcess*, BC::StatusKindCap>, soArrayNull<soStatusUniqProcess*> > m_uniqProcs; // +0x964
+    soArrayQueueImpl<soArrayVector<s32, 1> > m_changeRequests;                                            // +0xDF4
+    soStatusModuleImpl m_module;                                                                          // +0xE08
+    u32 unkEB4;
 public:
-    ~soStatusModuleBuilder() { m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; } // STUB: non-trivial so the dtor call exists
-    soStatusModuleBuilder(soModuleAccesser* acc, void* statusData, void* preCheckData) { m_data[0] = 0; m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; m_data[6] = 6; m_data[7] = 7; } // STUB
-    soStatusModule* getModule() { return (soStatusModule*)(m_data + 0xE08); }
+    soStatusModuleBuilder(soModuleAccesser* acc, const soStatusData* statusData, void* preCheckData) :
+        m_statusTable(statusData, BC::DataCount),
+        m_generalWorkBuilder(),
+        m_transitionBuilder(),
+        m_uniqProcs(),
+        m_changeRequests(-1),
+        m_module(acc, &m_statusTable, (soArray<soStatusUniqProcess*>*)m_uniqProcs.get(), m_generalWorkBuilder.getModule(),
+                 m_transitionBuilder.getModule(), &m_changeRequests, preCheckData, BC::StatusKindCap, 1) { }
+    soStatusModule* getModule() { return &m_module; }
 };

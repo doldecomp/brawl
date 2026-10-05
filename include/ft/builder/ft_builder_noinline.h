@@ -10,6 +10,9 @@
 #endif
 
 #pragma dont_inline on
+soTransitionInfo::~soTransitionInfo() { } // MATCH-ONLY: out of line in the REL
+soTransitionModuleImpl::soTransitionModuleImpl(soArray<soTransitionTermGroup>* groups) :
+    m_transitionTermGroupArray(groups), m_groupID(0), m_transitionInfo(soTransitionInfo()) { }
 soNullable::soNullable(bool isNull) { m_isNull = isNull; } // MATCH-ONLY: out of line in the REL
 soGeneralWorkAbstract::~soGeneralWorkAbstract() { } // MATCH-ONLY: out of line in the REL
 #pragma dont_inline off
@@ -41,7 +44,7 @@ template soItemManageModuleBuilder<FT_BC::ItemManageModuleBuildConfig>::soItemMa
 template soMotionModuleBuilder<FT_BC::MotionModuleBuildConfig>::soMotionModuleBuilder(soModuleAccesser*, void*);
 template soTeamModuleBuilder<FT_BC::TeamModuleBuildConfig>::soTeamModuleBuilder(s32, soModuleAccesser*);
 template soAnimCmdModuleBuilder<FT_BC::AnimCmdModuleBuildConfig>::soAnimCmdModuleBuilder(s16);
-template soStatusModuleBuilder<FT_BC::StatusModuleBuildConfig>::soStatusModuleBuilder(soModuleAccesser*, void*, void*);
+template soStatusModuleBuilder<FT_BC::StatusModuleBuildConfig>::soStatusModuleBuilder(soModuleAccesser*, const soStatusData*, void*);
 template soKineticModuleBuilder<FT_BC::KineticModuleBuildConfig>::soKineticModuleBuilder(soModuleAccesser*);
 template soGeneralWorkBuilder<FT_BC::GeneralWorkBuildConfig>::soGeneralWorkBuilder();
 template soAreaModuleBuilder<FT_BC::AreaModuleBuildConfig>::soAreaModuleBuilder(soModuleAccesser*, u8, soEventObserverRegistrationDesc*);

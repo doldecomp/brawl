@@ -22,6 +22,8 @@ class BaseItem;
 #include <so/item/so_item_pick_transactor_impl.h>
 #include <ef/ef_screen_handle.h>
 #include <so/posture/so_posture_module_impl.h>
+#include <so/transition/so_transition_module_impl.h>
+#include <so/status/so_status_module_impl.h>
 
 FT_DOL_ARRAY_VECTOR(soInterpolation<Vec3f>, 1);
 FT_DOL_ARRAY_VECTOR(soCollisionAttackPart, 5);
@@ -49,3 +51,33 @@ FT_DOL_ARRAY_VECTOR(soEffectContinual, 1);
 FT_DOL_ARRAY_VECTOR(soEffectTime, 1);
 FT_DOL_ARRAY_VECTOR(efScreenHandle, 1);
 FT_DOL_ARRAY_VECTOR(u32, 1);
+FT_DOL_ARRAY_VECTOR(soInstanceUnitFullProperty<soTransitionTerm>, 1);
+FT_DOL_ARRAY_VECTOR(soInstanceUnitFullProperty<soTransitionTerm>, 2);
+FT_DOL_ARRAY_VECTOR(soInstanceUnitFullProperty<soTransitionTerm>, 3);
+FT_DOL_ARRAY_VECTOR(soInstanceUnitFullProperty<soTransitionTerm>, 6);
+FT_DOL_ARRAY_VECTOR(soInstanceUnitFullProperty<soTransitionTerm>, 8);
+FT_DOL_ARRAY_VECTOR(soInstanceUnitFullProperty<soTransitionTerm>, 17);
+FT_DOL_ARRAY_VECTOR(soInstanceUnitFullProperty<soTransitionTerm>, 25);
+FT_DOL_ARRAY_VECTOR(soTransitionTermGroup, 20);
+FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 289);
+FT_DOL_ARRAY_VECTOR(s32, 1);
+
+// soArrayContractibleTable<const soStatusData>: the (table, size) constructor and the destructor are calls into sora_melee.
+template <>
+class soArrayContractibleTable<const soStatusData> : public soArrayContractible<const soStatusData>,
+                                                     public soConnectable<soArrayContractibleTable<const soStatusData> > {
+    const soStatusData* m_elements;
+    s32 m_size;
+public:
+    soArrayContractibleTable() : m_elements(nullptr), m_size(0) { }
+    soArrayContractibleTable(const soStatusData* elements, s32 size);
+    virtual ~soArrayContractibleTable();
+    virtual const soStatusData& at(s32 index);
+    virtual const soStatusData& at(s32 index) const;
+    virtual void shift();
+    virtual void pop();
+    virtual void clear();
+    virtual s32 size() const;
+    virtual bool isNull() const;
+    virtual const soStatusData& atSub(s32 index) const;
+};
