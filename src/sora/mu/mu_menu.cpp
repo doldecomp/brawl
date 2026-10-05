@@ -189,7 +189,7 @@ int muMenu::findCharTeamColorNo(int selchkind, int teamColor, int colorNo) {
     const u8* colors = lbl_80455458[selchkind].colors;
     const u8* c = colors + colorNo * 2;
     for (; colorNo < getNumCharColor(selchkind, 0, 0); colorNo++) {
-        if (want == *c) {
+        if ((int)want == (int)*c) {
             break;
         }
         c += 2;
