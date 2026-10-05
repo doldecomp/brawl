@@ -454,6 +454,7 @@ config.libs = [
             Object(Matching, "havok/hkxMeshSectionClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
             Object(Matching, "havok/hkxVertexBufferClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
             Object(Matching, "havok/hkxVertexFormatClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkPackfileReader.cpp", extra_cflags=["-inline noauto"]),
             Object(NonMatching, "havok/hkBuiltinTypeRegistry.cpp", extra_cflags=["-inline noauto"]),
             Object(Matching, "havok/hkRootLevelContainer.cpp", extra_cflags=["-inline noauto"]),
             Object(Matching, "havok/hkRootLevelContainerClass.cpp"),

@@ -30,15 +30,19 @@ struct hkVersionRegistry {
     hkResult getVersionPath(const char* versionFrom, const char* versionTo, hkArray<const Updater*>& pathOut) const;
 };
 
+struct hkFinishLoadedObjectRegistry;
+struct hkStreamReader;
+
 // Abstract source of loaded objects.
 struct hkPackfileReader : hkReferencedObject {
-    virtual void unk10() = 0;
-    virtual void unk14() = 0;
-    virtual void unk18() = 0;
-    virtual void unk1C() = 0;
-    virtual hkArray<hkVariant>& getLoadedObjects() = 0;         // 0x20
-    virtual hkObjectUpdateTracker& getUpdateTracker() = 0;      // 0x24
-    virtual const char* getOriginalContentsVersion() = 0;       // 0x28
+    virtual hkResult loadEntireFile(hkStreamReader* reader) = 0;                                       // 0x10
+    virtual void* getContentsWithRegistry(const char* expectedClassName,
+                                          hkFinishLoadedObjectRegistry* registry) = 0;                  // 0x14
+    virtual void* getContents(const char* expectedClassName);                                          // 0x18
+    virtual const char* getContentsClassName() = 0;                                                    // 0x1C
+    virtual hkArray<hkVariant>& getLoadedObjects() = 0;                                                // 0x20
+    virtual hkObjectUpdateTracker& getUpdateTracker() = 0;                                             // 0x24
+    virtual const char* getOriginalContentsVersion() = 0;                                              // 0x28
 };
 
 struct hkVersionUtil {
