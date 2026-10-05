@@ -1,14 +1,12 @@
 Super Smash Bros. Brawl  
-[![Build Status]][actions] [![Code Progress]][progress] [![Data Progress]][progress] [![Discord Badge]][discord]
+[![Build Status]][actions] [![Code Progress]][progress] [![Data Progress]][progress]
 =============
 
 [Build Status]: https://github.com/doldecomp/brawl/actions/workflows/build.yml/badge.svg
 [actions]: https://github.com/doldecomp/brawl/actions/workflows/build.yml
-[Code Progress]: https://decomp.dev/doldecomp/brawl.svg?mode=shield&measure=code&label=Code
-[Data Progress]: https://decomp.dev/doldecomp/brawl.svg?mode=shield&measure=data&label=Data
-[progress]: https://decomp.dev/doldecomp/brawl
-[Discord Badge]: https://img.shields.io/discord/727908905392275526?color=%237289DA&logo=discord&logoColor=%23FFFFFF
-[discord]: https://discord.gg/hKx3FJJgrV
+[Code Progress]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhumboldt123%2Fbrawl%2Fmain%2F.github%2Fbadges%2Fcode.json
+[Data Progress]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhumboldt123%2Fbrawl%2Fmain%2F.github%2Fbadges%2Fdata.json
+[progress]: https://github.com/humboldt123/brawl
 
 A work-in-progress decompilation of Super Smash Bros. Brawl.
 
