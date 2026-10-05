@@ -113,6 +113,8 @@ FT_DOL_ARRAY_VECTOR(soAreaInstance, 11);
 FT_DOL_ARRAY_VECTOR(soItemInfo, 7);
 // ft_gamewatch
 FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 313);
+// ft_pit
+FT_DOL_ARRAY_VECTOR(soCollisionShieldGroup, 4);
 
 // soArrayContractibleTable<const soStatusData>: the (table, size) constructor and the destructor are calls into sora_melee.
 template <>

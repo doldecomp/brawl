@@ -693,37 +693,47 @@ config.libs = [
     {
         "lib": "ft_peach",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_peach/ft_peach.cpp"),
+        ],
     },
     {
         "lib": "ft_pikachu",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_pikachu/ft_pikachu.cpp"),
+        ],
     },
     {
         "lib": "ft_pikmin",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_pikmin/ft_pikmin.cpp"),
+        ],
     },
     {
         "lib": "ft_pit",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_pit/ft_pit.cpp"),
+        ],
     },
     {
         "lib": "ft_poke",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_poke/ft_poke_lizardon.cpp"),
+        ],
     },
     {
         "lib": "ft_purin",

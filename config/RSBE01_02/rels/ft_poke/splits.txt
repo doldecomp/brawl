@@ -11,6 +11,13 @@ global_destructor_chain.c:
 	.dtors      start:0x00000000 end:0x00000008
 	.bss        start:0x00000000 end:0x00000004
 
+mo_fighter/ft_poke/ft_poke_lizardon.cpp:
+	.text       start:0x00000070 end:0x0000DD40
+	.ctors      start:0x00000000 end:0x00000004
+	.rodata     start:0x00000000 end:0x000000D4
+	.data       start:0x00000000 end:0x0000C638
+	.bss        start:0x00000008 end:0x0000068C
+
 mo_fighter/mo_fighter.cpp:
 	.text       start:0x00026738 end:0x000267D4
 	.data       start:0x0000C638 end:0x0000C647
