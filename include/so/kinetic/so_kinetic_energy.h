@@ -68,8 +68,6 @@ public:
         Outside_Damage_Reserved = 0x3
     };
 
-    soKineticEnergy() { enable(); }
-
     virtual void updateEnergy(soModuleAccesser* moduleAccesser);
     virtual Vec2f getSpeed();
     virtual Vec3f getSpeed3f();

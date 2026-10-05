@@ -58,14 +58,19 @@ void soKineticEnergyNormal::mulAccel(Vec3f* accel) {
     m_accel.m_y *= mul.m_y;
 }
 
+// Reflects v about the normal n (out = v - 2 n (n . v)).
+static inline void reflectVec(Vec2f& out, const Vec2f& v, const Vec2f& n) {
+    out = v - n * 2.0f * (n.m_x * v.m_x + n.m_y * v.m_y);
+}
+
 void soKineticEnergyNormal::reflectSpeed(Vec3f* normal) {
     Vec2f n = *normal->xy();
-    m_speed -= n * 2.0f * (n.m_x * m_speed.m_x + n.m_y * m_speed.m_y);
+    reflectVec(m_speed, m_speed, n);
 }
 
 void soKineticEnergyNormal::reflectAccel(Vec3f* normal) {
     Vec2f n = *normal->xy();
-    m_accel -= n * 2.0f * (n.m_x * m_accel.m_x + n.m_y * m_accel.m_y);
+    reflectVec(m_accel, m_accel, n);
 }
 
 void soKineticEnergyNormal::clearRotSpeed() { }
@@ -75,7 +80,10 @@ void soKineticEnergyNormal::clearSpeed() {
 }
 
 void soKineticEnergyNormal::resetEnergy(int, Vec2f* speed, Vec3f*, soModuleAccesser*) {
-    m_speed = *speed;
+    float y = speed->m_y;
+    float x = speed->m_x;
+    m_speed.m_x = x;
+    m_speed.m_y = y;
 }
 
 void soKineticEnergyNormal::init() {

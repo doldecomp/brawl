@@ -12,11 +12,17 @@ class soModuleAccesser;
 class soKineticEnergyNormal : public soKineticEnergy {
 public:
     soKineticEnergyNormal() {
-        Vec2f::copy(m_speedLimit, Vec2f(-1.0f, -1.0f));
-        Vec2f::copy(m_brake, Vec2f(0.0f, 0.0f));
-        Vec2f::copy(m_speedTarget, Vec2f(-1.0f, -1.0f));
-        Vec2f::copy(m_accel, Vec2f(0.0f, 0.0f));
-        Vec2f::copy(m_speed, Vec2f(0.0f, 0.0f));
+        // MATCH-ONLY: the original builds all default vectors first and then copies them member by member.
+        Vec2f limit(-1.0f, -1.0f);
+        Vec2f brake(0.0f, 0.0f);
+        Vec2f target(-1.0f, -1.0f);
+        Vec2f accel(0.0f, 0.0f);
+        Vec2f speed(0.0f, 0.0f);
+        Vec2f::copy(m_speed, speed);
+        Vec2f::copy(m_accel, accel);
+        Vec2f::copy(m_speedTarget, target);
+        Vec2f::copy(m_brake, brake);
+        Vec2f::copy(m_speedLimit, limit);
         m_unk30 = false;
         m_considerGroundFriction = false;
         m_unk32 = true;
