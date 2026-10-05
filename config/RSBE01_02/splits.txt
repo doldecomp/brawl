@@ -422,6 +422,12 @@ havok/hkClassVersion1Class.cpp:
 	.bss        start:0x80532410 end:0x80532438
 	.sdata2     start:0x805A3CB0 end:0x805A3CC0
 
+havok/hkStreamReader.cpp:
+	.text       start:0x80280C20 end:0x80280CD4
+
+havok/hkStreamWriter.cpp:
+	.text       start:0x80280CD4 end:0x80280CEC
+
 havok/hkAabbClass.cpp:
 	.text       start:0x80281F4C end:0x80281FB0
 	.ctors      start:0x80406604 end:0x80406608

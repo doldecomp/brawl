@@ -388,6 +388,8 @@ config.libs = [
             Object(Matching, "havok/hkClassEnumClass.cpp"),
             Object(Matching, "havok/hkClassMemberClass.cpp"),
             Object(Matching, "havok/hkClassVersion1Class.cpp"),
+            Object(Matching, "havok/hkStreamReader.cpp"),
+            Object(Matching, "havok/hkStreamWriter.cpp"),
             Object(Matching, "havok/hkAabbClass.cpp"),
             Object(Matching, "havok/hkMotionStateClass.cpp"),
             Object(Matching, "havok/hkCdBodyClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
