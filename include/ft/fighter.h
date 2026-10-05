@@ -1396,7 +1396,11 @@ public:
 #else
     virtual bool isObserv(char unk1);
 #endif
+#ifdef FT_MODULE_BUILDER
+    virtual bool notifyEventAnimCmd(acAnimCmd* acmd, soModuleAccesser* moduleAccesser, s32 unk3); // overrides the soAnimCmdEventObserver one (the BrawlHeaders signature uses int)
+#else
     virtual bool notifyEventAnimCmd(acAnimCmd* acmd, soModuleAccesser* moduleAccesser, int unk3);
+#endif
     virtual void notifyEventLink(soLinkEventArgs *eventInfo, soModuleAccesser* moduleAccesser, StageObject*, int unk4);
     virtual void updateRoughPos();
 
