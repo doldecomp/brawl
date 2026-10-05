@@ -46,7 +46,7 @@ public:
 };
 
 class ftGanon : public ftFighterBuilder<ftGanonBuildConfig> {
-    u8 unkC984[0xC9A8 - 0xC984];
+    u8 unkTail[0xC9A8 - sizeof(ftFighterBuilder<ftGanonBuildConfig>)];
 public:
     ftGanon(s32 entryId,
             Heaps::HeapType instHeap,

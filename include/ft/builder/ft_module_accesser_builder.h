@@ -120,6 +120,12 @@ extern char g_soTerritoryModuleNull[];
 extern char g_soTargetSearchModuleNull[];
 extern char g_soReflectModuleNull[];
 
+// The absorber module of a fighter: the null module, unless the reflector builder carries an absorber builder (see ftGameWatch).
+template <typename B>
+struct ftAbsorberModuleOf {
+    static void* get(B*) { return g_soCollisionAbsorberModuleNull; }
+};
+
 template <class BC>
 class soModuleAccesserBuilder : public utUnCopyable {
 public:
@@ -185,7 +191,7 @@ public:
             (soCollisionHitModule*)ftBuilderModule<__typeof__(m_hitModuleBuilder)>::get(&m_hitModuleBuilder),
             (soCollisionShieldModule*)m_shieldModuleBuilder.getModule(),
             (soCollisionShieldModule*)m_reflectorModuleBuilder.getModule(),
-            (soCollisionShieldModule*)g_soCollisionAbsorberModuleNull,
+            (soCollisionShieldModule*)ftAbsorberModuleOf<__typeof__(m_reflectorModuleBuilder)>::get(&m_reflectorModuleBuilder),
             (void*)m_collisionCatchModuleBuilder.getModule(),
             (soCollisionSearchModule*)m_searchBuilder.getModule(),
             (soDamageModule*)m_damageModuleBuilder.getModule(),

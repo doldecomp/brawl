@@ -92,6 +92,18 @@ FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 448);
 FT_DOL_ARRAY_VECTOR(soLinkConnection, 8);
 FT_DOL_ARRAY_VECTOR(soCollisionShieldPart, 9);
 
+// ft_donkey
+FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 309);
+FT_DOL_ARRAY_VECTOR(soPartialAnim, 4);
+// ft_diddy
+FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 303);
+// ft_dedede
+FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 314);
+FT_DOL_ARRAY_VECTOR(soAreaInstance, 11);
+FT_DOL_ARRAY_VECTOR(soItemInfo, 7);
+// ft_gamewatch
+FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 313);
+
 // soArrayContractibleTable<const soStatusData>: the (table, size) constructor and the destructor are calls into sora_melee.
 template <>
 class soArrayContractibleTable<const soStatusData> : public soArrayContractible<const soStatusData>,

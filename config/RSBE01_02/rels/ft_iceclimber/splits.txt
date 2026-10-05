@@ -11,6 +11,13 @@ global_destructor_chain.c:
 	.dtors      start:0x00000000 end:0x00000008
 	.bss        start:0x00000000 end:0x00000004
 
+mo_fighter/ft_iceclimber/ft_iceclimber.cpp:
+	.text       start:0x00000070 end:0x00012FD8
+	.ctors      start:0x00000000 end:0x00000004
+	.rodata     start:0x00000000 end:0x00000138
+	.data       start:0x00000000 end:0x0000A548
+	.bss        start:0x00000008 end:0x0000050C
+
 mo_fighter/mo_fighter.cpp:
 	.text       start:0x000210B0 end:0x0002114C
 	.data       start:0x0000A548 end:0x0000A557

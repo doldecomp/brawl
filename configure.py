@@ -517,23 +517,29 @@ config.libs = [
     {
         "lib": "ft_dedede",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_dedede/ft_dedede.cpp"),
+        ],
     },
     {
         "lib": "ft_diddy",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_diddy/ft_diddy.cpp"),
+        ],
     },
     {
         "lib": "ft_donkey",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_donkey/ft_donkey.cpp"),
+        ],
     },
     {
         "lib": "ft_falco",
@@ -556,9 +562,11 @@ config.libs = [
     {
         "lib": "ft_gamewatch",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_gamewatch/ft_gamewatch.cpp"),
+        ],
     },
     {
         "lib": "ft_ganon",
@@ -572,9 +580,11 @@ config.libs = [
     {
         "lib": "ft_iceclimber",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_iceclimber/ft_iceclimber.cpp"),
+        ],
     },
     {
         "lib": "ft_ike",

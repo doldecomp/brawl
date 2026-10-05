@@ -46,7 +46,7 @@ public:
 };
 
 class ftLink : public ftFighterBuilder<ftLinkBuildConfig> {
-    u8 unk1A338[0x1A360 - 0x1A338];
+    u8 unkTail[0x1A360 - sizeof(ftFighterBuilder<ftLinkBuildConfig>)];
 public:
     ftLink(s32 entryId,
             Heaps::HeapType instHeap,

@@ -46,7 +46,7 @@ public:
 };
 
 class ftToonLink : public ftFighterBuilder<ftToonLinkBuildConfig> {
-    u8 unk1A374[0x1A39C - 0x1A374];
+    u8 unkTail[0x1A39C - sizeof(ftFighterBuilder<ftToonLinkBuildConfig>)];
 public:
     ftToonLink(s32 entryId,
             Heaps::HeapType instHeap,

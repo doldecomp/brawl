@@ -52,7 +52,7 @@ public:
 };
 
 class ftZelda : public ftFighterBuilder<ftZeldaBuildConfig> {
-    u8 unk18650[0x18678 - 0x18650];
+    u8 unkTail[0x18678 - sizeof(ftFighterBuilder<ftZeldaBuildConfig>)];
 public:
     ftZelda(s32 entryId,
             Heaps::HeapType instHeap,
