@@ -31,10 +31,15 @@ struct hkPointerMapBase {
     int m_numElems;    // 0x04
     int m_hashMod;     // 0x08
 
+    typedef int Iterator;
+
     hkPointerMapBase();
     ~hkPointerMapBase();
 
     void insert(K key, K value);
+    Iterator findKey(K key) const;
+    hkBool isValid(Iterator it) const { return (K)it <= (K)m_hashMod; }
+    hkBool hasKey(K key) const { return isValid(findKey(key)); }
 };
 
 // Typed wrappers (the base does the work; the wrapper only adds type safety).

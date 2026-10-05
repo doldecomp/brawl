@@ -966,6 +966,10 @@ havok/hkRootLevelContainerClass.cpp:
 	.bss        start:0x805336C0 end:0x80533708
 	.sdata2     start:0x805A4968 end:0x805A4978
 
+havok/hkStructureLayout.cpp:
+	.text       start:0x80333750 end:0x803340B8
+	.ctors      start:0x804067BC end:0x804067C0
+
 havok/hkVtableClassRegistry.cpp:
 	.text       start:0x803340B8 end:0x8033413C
 

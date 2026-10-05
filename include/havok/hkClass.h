@@ -51,6 +51,11 @@ struct hkClassMember {
     u16 m_cArraySize;          // 0x0E
     u16 m_flags;               // 0x10
     u16 m_offset;              // 0x12
+
+    const hkClass* getStructClass() const;
+    int getCstyleArraySize() const;
+    int getSizeInBytes() const;
+    int getAlignment() const;
 };
 
 // One named constant of a reflected enum (0x8 bytes)

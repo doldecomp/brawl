@@ -49,6 +49,34 @@ struct hkArray : hkArrayBase {
     T& operator[](int i) { return ((T*)m_data)[i]; }
     const T& operator[](int i) const { return ((const T*)m_data)[i]; }
 
+    // Wraps caller-owned storage (never deallocated).
+    hkArray(T* ptr, int size, int capacity) {
+        m_data = ptr;
+        m_size = size;
+        m_capacityAndFlags = capacity | DONT_DEALLOCATE_FLAG;
+    }
+
+    int getCapacity() const { return m_capacityAndFlags & CAPACITY_MASK; }
+
+    void reserve(int n) {
+        if (n > getCapacity()) {
+            reserveSmart(n);
+        }
+    }
+    void reserveSmart(int n) {
+        if (getCapacity() < n) {
+            int c = getCapacity() * 2;
+            int m = n;
+            if (n < c) {
+                m = c;
+            }
+            hkArrayUtil::_reserve(this, m, sizeof(T));
+        }
+    }
+
+    void insertAt(int i, const T& t);
+    void insertAt(int i, const hkArray<T>& other);
+
     void pushBack(const T& t) {
         if (m_size == (m_capacityAndFlags & CAPACITY_MASK)) {
             hkArrayUtil::_reserveMore(this, sizeof(T));
@@ -56,3 +84,29 @@ struct hkArray : hkArrayBase {
         ((T*)m_data)[m_size++] = t;
     }
 };
+
+// Out-of-line template members (not inline: they are instantiated as separate functions).
+template <typename T>
+void hkArray<T>::insertAt(int i, const T& t) {
+    hkArray<T> one((T*)&t, 1, 1);
+    insertAt(i, one);
+}
+
+template <typename T>
+void hkArray<T>::insertAt(int i, const hkArray<T>& other) {
+    int n = other.m_size;
+    int newSize = n + m_size;
+    int numToMove = m_size - i;
+    reserve(newSize);
+    T* src = (T*)m_data + i;
+    T* dst = src + n;
+    for (int k = numToMove - 1; k >= 0; k--) {
+        dst[k] = src[k];
+    }
+    const T* from = (const T*)other.m_data;
+    T* to = (T*)m_data + i;
+    for (int k = n - 1; k >= 0; k--) {
+        to[k] = from[k];
+    }
+    m_size = newSize;
+}

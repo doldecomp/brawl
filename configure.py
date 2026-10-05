@@ -458,6 +458,7 @@ config.libs = [
             Object(NonMatching, "havok/hkBuiltinTypeRegistry.cpp", extra_cflags=["-inline noauto"]),
             Object(Matching, "havok/hkRootLevelContainer.cpp", extra_cflags=["-inline noauto"]),
             Object(Matching, "havok/hkRootLevelContainerClass.cpp"),
+            Object(NonMatching, "havok/hkStructureLayout.cpp", extra_cflags=["-inline noauto"]),
             Object(Matching, "havok/hkVtableClassRegistry.cpp", extra_cflags=["-inline noauto"]),
             Object(NonMatching, "havok/hkVersionRegistry.cpp"),
             Object(Matching, "havok/hkVersionUtil.cpp", extra_cflags=["-inline noauto"]),
