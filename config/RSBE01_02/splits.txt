@@ -527,6 +527,17 @@ havok/hkShapeContainerClass.cpp:
 	.rodata     start:0x804109F8 end:0x80410A40
 	.bss        start:0x80532868 end:0x805328B0
 
+havok/hkMeshShapeClass.cpp:
+	extab       start:0x800085D4 end:0x800085DC
+	extabindex  start:0x8000B410 end:0x8000B41C
+	.text       start:0x802D5CBC end:0x802D5D88
+	.ctors      start:0x80406694 end:0x80406698
+	.rodata     start:0x80410CA8 end:0x80410F60
+	.data       start:0x804876E0 end:0x804877E8
+	.bss        start:0x805328C0 end:0x80532908
+	.sdata      start:0x8059EFC0 end:0x8059EFC8
+	.sdata2     start:0x805A4148 end:0x805A4160
+
 havok/hkSphereShapeClass.cpp:
 	extab       start:0x8000860C end:0x80008614
 	extabindex  start:0x8000B464 end:0x8000B470

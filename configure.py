@@ -401,6 +401,7 @@ config.libs = [
             Object(Matching, "havok/hkConvexVerticesShapeClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
             Object(Matching, "havok/hkShapeClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
             Object(Matching, "havok/hkShapeContainerClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(NonMatching, "havok/hkMeshShapeClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
             Object(Matching, "havok/hkSphereShapeClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
             Object(Matching, "havok/hkSphereRepShapeClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
             Object(Matching, "havok/hkActionClass.cpp"),
