@@ -46,7 +46,7 @@ public:
     virtual float getWeightReactionMul(soModuleAccesser* moduleAccesser) { return 1.0f; }
     virtual float getDamageMul(soModuleAccesser* moduleAccesser) = 0;
     virtual void checkCheer(float reaction, float angle, soModuleAccesser* moduleAccesser, soDamageLog* damageLog) = 0;
-    virtual void getDamageForReaction(soModuleAccesser* moduleAccesser) = 0;
+    virtual float getDamageForReaction(float damage, soModuleAccesser* moduleAccesser) = 0;
     virtual bool checkNoReaction(soModuleAccesser* moduleAccesser, soDamage* damage) = 0;
     virtual int checkDownDamage(float reaction, float speed, soModuleAccesser* moduleAccesser) = 0;
     virtual bool isBindStatus(soModuleAccesser* moduleAccesser) = 0;
@@ -78,7 +78,7 @@ public:
     virtual float getReactionMul(soModuleAccesser* moduleAccesser);
     virtual float getDamageMul(soModuleAccesser* moduleAccesser);
     virtual void checkCheer(float reaction, float angle, soModuleAccesser* moduleAccesser, soDamageLog* damageLog);
-    virtual void getDamageForReaction(soModuleAccesser* moduleAccesser);
+    virtual float getDamageForReaction(float damage, soModuleAccesser* moduleAccesser);
     virtual bool checkNoReaction(soModuleAccesser* moduleAccesser, soDamage* damage);
     virtual int checkDownDamage(float reaction, float speed, soModuleAccesser* moduleAccesser);
     virtual bool isBindStatus(soModuleAccesser* moduleAccesser);

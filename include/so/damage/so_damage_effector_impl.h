@@ -3,6 +3,7 @@
 #include <StaticAssert.h>
 #include <so/so_null.h>
 #include <so/collision/so_collision_attack_part.h>
+#include <so/collision/so_collision_log.h>
 #include <mt/mt_vector.h>
 #include <types.h>
 
@@ -16,12 +17,12 @@ class soDamageEffector : public soNull, public soNullable {
 public:
     virtual ~soDamageEffector() { }
     virtual void reqShake(soModuleAccesser* moduleAccesser, int situation, Vec2f* normal, soCollisionAttackData* attackData, int hitStopFrame);
-    virtual void reqCommonEffect();
+    virtual void reqCommonEffect(float power, float reaction, soModuleAccesser* moduleAccesser, soCollisionAttackData* attackData, soCollisionLog* collisionLog);
     virtual void reqUniqEffect(soModuleAccesser* moduleAccesser, int level, soCollisionAttackData* attackData);
-    virtual void reqInvincibleEffect();
+    virtual void reqInvincibleEffect(soModuleAccesser* moduleAccesser, soCollisionLog* collisionLog);
     virtual void reqDamageEffectParam(float damageAdd, float reaction, soModuleAccesser* moduleAccesser, soCollisionAttackData* attackData);
     virtual void reqDamageGroundBeatDownEffect(soModuleAccesser* moduleAccesser, Vec2f* normal);
     virtual void reqQuake(float frameReaction, soModuleAccesser* moduleAccesser, int level);
     virtual void reqStop();
-    virtual void reqTipEffect();
+    virtual void reqTipEffect(soModuleAccesser* moduleAccesser, soCollisionLog* collisionLog);
 };

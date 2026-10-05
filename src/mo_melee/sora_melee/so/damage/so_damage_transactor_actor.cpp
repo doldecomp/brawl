@@ -483,7 +483,8 @@ bool soDamageTransactorActor::checkNoReaction(soModuleAccesser* moduleAccesser, 
     return true;
 }
 
-void soDamageTransactorActor::getDamageForReaction(soModuleAccesser* moduleAccesser) {
+float soDamageTransactorActor::getDamageForReaction(float damage, soModuleAccesser* moduleAccesser) {
+    return damage;
 }
 
 float soDamageTransactorActor::getDamageMul(soModuleAccesser* moduleAccesser) {

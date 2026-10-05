@@ -54,7 +54,7 @@ public:
     virtual void setReactionFix(u32 index, int reactionFix, bool);
     virtual int getReactionAdd(u32 index, bool);
     virtual void setReactionAdd(u32 index, int reactionAdd, bool);
-    virtual float getReactionMul();
+    virtual float getReactionMul(u32 index);
     virtual void setPosX(u32 index, float posX);
     virtual float getPosX(u32 index, bool);
     virtual float getPosX();
@@ -154,7 +154,7 @@ public:
     virtual void setReactionFix(u32 index, int reactionFix, bool);
     virtual int getReactionAdd(u32 index, bool);
     virtual void setReactionAdd(u32 index, int reactionAdd, bool);
-    virtual float getReactionMul();
+    virtual float getReactionMul(u32 index);
     virtual void setPosX(u32 index, float posX);
     virtual float getPosX(u32 index, bool);
     virtual float getPosX();

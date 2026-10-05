@@ -5,6 +5,8 @@
 #include <gf/gf_task.h>
 #include <types.h>
 
+class StageObject;
+
 class soDamageAttackerInfo {
 public:
     gfTask::Category m_directTaskCategory : 8;
@@ -26,5 +28,7 @@ public:
     void clear();
     void update();
     void copy(soDamageAttackerInfo* dst);
+    void set(u32 defenderTaskId, StageObject* attacker);
+    void setIndirect(u32 defenderTaskId, StageObject* attacker, StageObject* indirectAttacker);
 };
 static_assert(sizeof(soDamageAttackerInfo) == 40, "Class is wrong size!");
