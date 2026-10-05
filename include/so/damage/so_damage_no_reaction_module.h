@@ -16,6 +16,7 @@ public:
     char _30[2];
 
 public:
+    soDamageNoReactionModule(int mode);
     void set(float unk1, float unk2, bool is2nd, int mode);
     void resetModeStatus();
     void setMode(int mode);

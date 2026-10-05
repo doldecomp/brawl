@@ -135,6 +135,49 @@ public:
     virtual soTeamInfoLocal* getTeamInfo();
 };
 
+soDamageModuleImpl::soDamageModuleImpl(soModuleAccesser* moduleAccesser, soArray<soDamage>* damageArray, soDamageEffector* effector, soDamageTransactor* transactor, soEventObserverRegistrationDesc* registrationDesc)
+    : soCollisionHitEventObserver(registrationDesc->checkCollisionHit() == 1 ? moduleAccesser->getEventManageModule().getManageId() : -1, -1),
+      soStatusEventObserver(registrationDesc->checkStatus() == 1 ? moduleAccesser->getEventManageModule().getManageId() : -1, -1),
+      m_moduleAccesser(moduleAccesser), m_damageArray(damageArray), m_noReactionModule(0), m_effector(effector), m_transactor(transactor) {
+    // HYPOTHESIS: soEventPresenter<soDamageEventObserver> is initialised inline here (manage id, unit id 6, cached observer list)
+    short manageId = registrationDesc->checkDamage() == 1 ? moduleAccesser->getEventManageModule().getManageId() : -1;
+    soEventPresenter<soDamageEventObserver>::m_manageID = manageId;
+    soEventPresenter<soDamageEventObserver>::m_unitID = 6;
+    soEventPresenter<soDamageEventObserver>::m_obsrvrList = NULL;
+    if (manageId > 0 && manageId > -1) {
+        if (soEventSystem::getInstance()->getInstanceManager().isContain(manageId)) {
+            if (soEventSystem::getInstance()->getManager(soEventPresenter<soDamageEventObserver>::m_manageID)->getObserverCapacity(soEventPresenter<soDamageEventObserver>::m_unitID) == 0) {
+                soEventPresenter<soDamageEventObserver>::m_obsrvrList = NULL;
+            } else {
+                soInstanceManagerFullProperty<soDamageEventObserver*>* list;
+                soEventManager* manager = soEventSystem::getInstance()->getManager(soEventPresenter<soDamageEventObserver>::m_manageID);
+                if (manager->getObserverCapacity(soEventPresenter<soDamageEventObserver>::m_unitID) == 0) {
+                    list = NULL;
+                } else {
+                    soEventUnitWrapper<soDamageEventObserver>* wrapper = dynamic_cast<soEventUnitWrapper<soDamageEventObserver>*>(manager->getEventUnit(soEventPresenter<soDamageEventObserver>::m_unitID));
+                    if (wrapper == NULL) {
+                        list = NULL;
+                    } else {
+                        list = wrapper->getObserverListSub();
+                    }
+                }
+                soEventPresenter<soDamageEventObserver>::m_obsrvrList = list;
+            }
+        }
+    }
+    soAnimCmdEventObserver::initialize(registrationDesc->checkAnimCmd() == 1 ? moduleAccesser->getEventManageModule().getManageId() : -1, -1);
+    m_damageMul = 1.0f;
+    m_reactionMul = 1.0f;
+    m_reactionMul2nd = 1.0f;
+    *(int*)&_160[0] = -1;
+    m_isDamageLock = false;
+    m_sleep = false;
+    int size = m_damageArray->size();
+    for (int i = 0; i < size; i++) {
+        m_damageArray->at(i).m_reaction = 0.0f;
+    }
+}
+
 void soDamageModuleImpl::activate(float damage) {
     initDamage(damage);
     m_isDamageLock = false;

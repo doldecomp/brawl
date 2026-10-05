@@ -12,6 +12,8 @@ class soCollisionAttackModule;
 class soCollisionHitEventObserver : public soEventObserver<soCollisionHitEventObserver> {
 public:
     soCollisionHitEventObserver(short unitID) : soEventObserver<soCollisionHitEventObserver>(unitID) {};
+    // (manageId, p2) constructor added by agent/damage
+    soCollisionHitEventObserver(short manageId, s8 p2) : soEventObserver<soCollisionHitEventObserver>(0x0) { initialize(manageId, p2); }
 
     virtual void addObserver(short param1, s8 param2);
     virtual void notifyEventCollisionHit(float power, soCollisionAttackData*, u32 index, int, soModuleAccesser* moduleAccesser, soCollisionLog*);
