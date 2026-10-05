@@ -24,6 +24,7 @@ class soArraySelectHolder {
 public:
     V m_array;
     soArraySelectHolder() : m_array(0) { }
+    soArraySelectHolder(s32 size, s32 unk) : m_array(size, unk) { }
     ~soArraySelectHolder() { }
     V* get() { return &m_array; }
 };

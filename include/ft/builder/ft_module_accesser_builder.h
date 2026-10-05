@@ -42,7 +42,7 @@ public:
     typedef soCollisionReflectorModuleBuildConfig<3, 20, soCollisionShieldEventPresenterReflector, soCollisionShieldModuleImpl>
         CollisionReflectorModuleBuildConfig;
     typedef soCollisionCatchModuleBuildConfig<soCollisionCatchModuleImpl> CollisionCatchModuleBuildConfig;
-    typedef soMotionModuleBuildConfig<soMotionModuleImpl> MotionModuleBuildConfig;
+    typedef soMotionModuleBuildConfig<501, soMotionModuleImpl, 2, 1, soTransitionModuleBuildConfig<ftMotionTransitionTypeList>, soMotionAnimObjCacheModuleBuildConfig<5, soMotionAnimObjCacheModuleImpl> > MotionModuleBuildConfig;
     typedef soTeamModuleBuildConfig<soTeamModuleImpl> TeamModuleBuildConfig;
     typedef soAnimCmdModuleBuildConfig<11, soAnimCmdModuleImpl> AnimCmdModuleBuildConfig;
     typedef soStatusModuleBuildConfig<289, soGeneralWorkBuildConfig<26, 14, 7>, 274, 71, soTransitionModuleBuildConfig<ftStatusTransitionTypeList> > StatusModuleBuildConfig;
