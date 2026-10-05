@@ -1,0 +1,12 @@
+#ifndef NEW_H
+#define NEW_H
+
+#include "ansi_params.h"
+
+inline void* operator new(unsigned long, void* ptr) _MSL_THROW { 
+    return ptr; 
+}
+
+void operator delete[](void *ptr) _MSL_THROW;
+
+#endif // NEW_H

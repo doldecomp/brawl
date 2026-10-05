@@ -377,6 +377,298 @@ sora/st/st_data_container_multi.cpp:
 sora/st/st_data_container_magic.cpp:
 	.sdata      start:0x8059E860 end:0x8059E864
 
+nw4r/ut/ut_binaryFileFormat.cpp:
+	.text       start:0x8015C3A4 end:0x8015C418
+
+nw4r/ut/ut_CharStrmReader.cpp:
+	.text       start:0x8015C418 end:0x8015C528
+
+nw4r/ut/ut_Font.cpp:
+	.text       start:0x8015D8DC end:0x8015D984
+	.data       start:0x80464678 end:0x804646A8
+
+nw4r/ut/ut_ResFont.cpp:
+	.text       start:0x8015E5EC end:0x8015E8F4
+	.data       start:0x804647D0 end:0x8046482C
+
+nw4r/lyt/lyt_resourceAccessor.cpp:
+	.text       start:0x8018BCB0 end:0x8018BD08
+	.data       start:0x804659D0 end:0x804659E4
+
+RVL_SDK/base/PPCArch.c:
+	.text       start:0x801D5068 end:0x801D51D8
+	.data       start:0x80466E30 end:0x80466E68
+
+RVL_SDK/os/OSAlarm.c:
+	.text       start:0x801D6640 end:0x801D6E24
+	.data       start:0x80467258 end:0x80467268
+	.sbss       start:0x805A0678 end:0x805A0680
+
+RVL_SDK/os/OSAlloc.c:
+	.text       start:0x801D6E24 end:0x801D712C
+	.sdata      start:0x8059E9B0 end:0x8059E9B4
+	.sbss       start:0x805A0680 end:0x805A0690
+
+RVL_SDK/os/OSArena.c:
+	.text       start:0x801D712C end:0x801D71C0
+	.sdata      start:0x8059E9B8 end:0x8059E9C0
+	.sbss       start:0x805A0690 end:0x805A0698
+
+RVL_SDK/os/OSAudioSystem.c:
+	.text       start:0x801D71F4 end:0x801D76A8
+	.data       start:0x80467268 end:0x804672E8
+
+RVL_SDK/os/OSError.c:
+	.text       start:0x801D8600 end:0x801D8D34
+	.data       start:0x80467700 end:0x80467A1C
+	.bss        start:0x804DD190 end:0x804DD1D4
+	.sdata      start:0x8059E9C0 end:0x8059E9C8
+
+RVL_SDK/os/OSInterrupt.c:
+	.text       start:0x801DCF10 end:0x801DD694
+	.data       start:0x80468950 end:0x80468980
+	.sbss       start:0x805A06C0 end:0x805A06D4
+
+RVL_SDK/os/OSLink.c:
+	.text       start:0x801DE07C end:0x801DE094
+
+RVL_SDK/os/OSMessage.c:
+	.text       start:0x801DE094 end:0x801DE368
+
+RVL_SDK/os/OSMutex.c:
+	.text       start:0x801DEB7C end:0x801DEE80
+
+RVL_SDK/os/OSReboot.c:
+	.text       start:0x801DEF64 end:0x801DEFE4
+	.sbss       start:0x805A06D8 end:0x805A06E0
+
+RVL_SDK/os/OSRtc.c:
+	.text       start:0x801DF848 end:0x801E02D4
+	.bss        start:0x804DD500 end:0x804DD554
+
+RVL_SDK/os/OSSync.c:
+	.text       start:0x801E03FC end:0x801E047C
+
+RVL_SDK/os/OSUtf.c:
+	.text       start:0x801E21E8 end:0x801E2420
+	.data       start:0x80468CC8 end:0x80474B08
+
+RVL_SDK/os/OSIpc.c:
+	.text       start:0x801E2420 end:0x801E2448
+	.sdata      start:0x8059E9F8 end:0x8059E9FC
+	.sbss       start:0x805A0700 end:0x805A0704
+
+RVL_SDK/os/OSPlayRecord.c:
+	.text       start:0x801E2ADC end:0x801E31D4
+	.data       start:0x80474BD0 end:0x80474C18
+	.bss        start:0x804DE020 end:0x804DE218
+	.sdata      start:0x8059EA00 end:0x8059EA04
+	.sbss       start:0x805A0730 end:0x805A0750
+
+RVL_SDK/os/OSStateFlags.c:
+	.text       start:0x801E31D4 end:0x801E33E0
+	.data       start:0x80474C18 end:0x80474C40
+	.bss        start:0x804DE220 end:0x804DE240
+
+RVL_SDK/os/OSNet.c:
+	.text       start:0x801E33E0 end:0x801E3494
+	.data       start:0x80474C40 end:0x80474CE8
+
+RVL_SDK/os/OSNandbootInfo.c:
+	.text       start:0x801E3494 end:0x801E369C
+	.data       start:0x80474DA8 end:0x80474DC4
+
+RVL_SDK/os/OSPlayTime.c:
+	.text       start:0x801E38A8 end:0x801E4140
+	.data       start:0x80474DC8 end:0x80474E08
+	.bss        start:0x804DE240 end:0x804DE270
+	.sdata      start:0x8059EA08 end:0x8059EA10
+	.sbss       start:0x805A0750 end:0x805A0768
+	.sdata2     start:0x805A3740 end:0x805A3750
+
+RVL_SDK/os/__ppc_eabi_init.c:
+	.text       start:0x801E4140 end:0x801E41F4
+
+RVL_SDK/exi/EXIUart.c:
+	.text       start:0x801E5A88 end:0x801E5DBC
+	.sbss       start:0x805A0770 end:0x805A0780
+
+RVL_SDK/si/SISamplingRate.c:
+	.text       start:0x801E74C8 end:0x801E75A8
+	.data       start:0x80474EC0 end:0x80474F54
+	.sbss       start:0x805A0790 end:0x805A0794
+
+RVL_SDK/db/db.c:
+	.text       start:0x801E75A8 end:0x801E7690
+	.data       start:0x80474F58 end:0x80474F70
+	.sbss       start:0x805A0798 end:0x805A07A0
+
+RVL_SDK/vi/i2c.c:
+	.text       start:0x801EA098 end:0x801EAAB4
+	.sdata      start:0x8059EA40 end:0x8059EA44
+	.sbss       start:0x805A0850 end:0x805A0854
+
+RVL_SDK/gx/GXTev.c:
+	.text       start:0x801F3B9C end:0x801F421C
+	.data       start:0x804764B8 end:0x8047652C
+
+RVL_SDK/dvd/dvdqueue.c:
+	.text       start:0x801FB6CC end:0x801FB924
+	.bss        start:0x804E43F0 end:0x804E4410
+
+RVL_SDK/dvd/dvderror.c:
+	.text       start:0x801FB924 end:0x801FC228
+	.data       start:0x80476B18 end:0x80476B44
+	.bss        start:0x804E4420 end:0x804E4680
+	.sbss       start:0x805A0998 end:0x805A09A4
+
+RVL_SDK/dvd/dvdidutils.c:
+	.text       start:0x801FC228 end:0x801FC318
+
+RVL_SDK/ax/AXVPB.c:
+	.text       start:0x80201EF8 end:0x80201F38
+
+RVL_SDK/axfx/AXFXHooks.c:
+	.text       start:0x80203CD4 end:0x80203D0C
+	.sdata      start:0x8059EB20 end:0x8059EB28
+
+RVL_SDK/mem/mem_heapCommon.c:
+	.text       start:0x80203D0C end:0x80204178
+	.bss        start:0x804E8A58 end:0x804E8A80
+	.sbss       start:0x805A0B58 end:0x805A0B5C
+
+RVL_SDK/mem/mem_expHeap.c:
+	.text       start:0x80204178 end:0x802049BC
+
+RVL_SDK/mem/mem_list.c:
+	.text       start:0x80204EB4 end:0x80204FC8
+
+RVL_SDK/dsp/dsp_debug.c:
+	.text       start:0x80209A98 end:0x80209AE8
+
+RVL_SDK/nand/NANDOpenClose.c:
+	.text       start:0x8020B8A8 end:0x8020C6CC
+	.data       start:0x8047C090 end:0x8047C0A8
+	.sdata      start:0x8059EB38 end:0x8059EB48
+	.sbss       start:0x805A0BA0 end:0x805A0BA4
+
+RVL_SDK/nand/NANDLogging.c:
+	.text       start:0x8020DB1C end:0x8020E0EC
+	.data       start:0x8047C2C0 end:0x8047C304
+	.bss        start:0x804ED080 end:0x804ED380
+	.sdata      start:0x8059EB78 end:0x8059EB7C
+	.sbss       start:0x805A0BB0 end:0x805A0BB8
+
+RVL_SDK/arc/arc.c:
+	.text       start:0x80210708 end:0x80211080
+	.data       start:0x8047C538 end:0x8047C5A4
+	.sdata      start:0x8059ECB0 end:0x8059ECB8
+
+RVL_SDK/ipc/ipcMain.c:
+	.text       start:0x80211A2C end:0x80211AF8
+	.sbss       start:0x805A0BD8 end:0x805A0BEC
+
+RVL_SDK/ipc/ipcclt.c:
+	.text       start:0x80211AF8 end:0x80213468
+	.bss        start:0x804F6540 end:0x804F65E0
+	.sdata      start:0x8059ECC8 end:0x8059ECD0
+	.sbss       start:0x805A0BF0 end:0x805A0C00
+
+RVL_SDK/wpad/WPADEncrypt.c:
+	.text       start:0x8022391C end:0x802249C4
+	.data       start:0x8047CEC0 end:0x8047E1E8
+	.sbss       start:0x805A0C98 end:0x805A0C9C
+
+RVL_SDK/wpad/debug_msg.c:
+	.text       start:0x8022550C end:0x8022555C
+
+RVL_SDK/euart/euart.c:
+	.text       start:0x802284C4 end:0x80228834
+	.sbss       start:0x805A0CC0 end:0x805A0CD0
+
+RVL_SDK/wud/WUDHidHost.c:
+	.text       start:0x8022E32C end:0x8022E928
+	.data       start:0x8047F830 end:0x8047FAB0
+
+RVL_SDK/wud/debug_msg.c:
+	.text       start:0x8022E928 end:0x8022E978
+
+RVL_SDK/bte/bte_hcisu.c:
+	.text       start:0x80231844 end:0x802318FC
+	.sbss       start:0x805A0D18 end:0x805A0D20
+
+RVL_SDK/bte/bte_init.c:
+	.text       start:0x802318FC end:0x80231928
+
+RVL_SDK/bte/bte_logmsg.c:
+	.text       start:0x80231928 end:0x80231A8C
+	.bss        start:0x80527FC0 end:0x80528790
+	.sdata      start:0x8059EDD8 end:0x8059EDDC
+
+RVL_SDK/bte/btu_task1.c:
+	.text       start:0x80231BE4 end:0x80232034
+	.bss        start:0x805297D0 end:0x80529854
+	.sdata      start:0x8059EDE8 end:0x8059EDF0
+	.sbss       start:0x805A0D28 end:0x805A0D30
+
+RVL_SDK/bte/ptim.c:
+	.text       start:0x802325A0 end:0x80232780
+
+RVL_SDK/bte/bta_dm_main.c:
+	.text       start:0x80234F6C end:0x802350CC
+	.rodata     start:0x8040D7E0 end:0x8040D908
+	.bss        start:0x80529918 end:0x80529A98
+
+RVL_SDK/bte/bta_dm_pm.c:
+	.text       start:0x802350CC end:0x80235AE8
+	.data       start:0x8047FDE0 end:0x8047FE2C
+	.bss        start:0x80529A98 end:0x80529AC8
+
+RVL_SDK/bte/bta_hh_act.c:
+	.text       start:0x80235AE8 end:0x80237230
+	.data       start:0x8047FE30 end:0x80480328
+	.sdata      start:0x8059EDF0 end:0x8059EDF4
+
+RVL_SDK/bte/bta_hh_main.c:
+	.text       start:0x80237600 end:0x80237B54
+	.rodata     start:0x8040D908 end:0x8040D98C
+	.data       start:0x80480358 end:0x80480638
+	.bss        start:0x80529AC8 end:0x80529CF8
+
+RVL_SDK/bte/btm_main.c:
+	.text       start:0x8023D864 end:0x8023D8C0
+	.bss        start:0x80529CF8 end:0x8052C4BC
+
+RVL_SDK/bte/hidh_conn.c:
+	.text       start:0x802482C4 end:0x8024A304
+	.rodata     start:0x8040D9C0 end:0x8040D9E8
+	.data       start:0x80482490 end:0x80482874
+
+RVL_SDK/bte/l2c_csm.c:
+	.text       start:0x8024AED0 end:0x8024C3AC
+	.data       start:0x80483008 end:0x80483840
+
+RVL_SDK/bte/rfc_mx_fsm.c:
+	.text       start:0x80252784 end:0x802533C8
+	.data       start:0x80484450 end:0x80484708
+
+RVL_SDK/bte/rfc_port_fsm.c:
+	.text       start:0x802533C8 end:0x80254568
+	.data       start:0x80484708 end:0x80484A30
+
+RVL_SDK/bte/rfc_utils.c:
+	.text       start:0x802560DC end:0x802568BC
+	.rodata     start:0x8040D9E8 end:0x8040DAE8
+	.data       start:0x80484B08 end:0x80484B94
+
+RVL_SDK/bte/sdp_discovery.c:
+	.text       start:0x802583F0 end:0x80259668
+	.data       start:0x80484C80 end:0x80484DDC
+
+RVL_SDK/bte/sdp_server.c:
+	.text       start:0x8025A1D4 end:0x8025AEE4
+	.data       start:0x80485140 end:0x80485180
+
 havok/hkBaseObjectClass.cpp:
 	.text       start:0x8027B510 end:0x8027B568
 	.ctors      start:0x804065D4 end:0x804065D8
@@ -1087,9 +1379,193 @@ havok/hkVersionUtil.cpp:
 	.text       start:0x80334BF8 end:0x80334DE4
 	.rodata     start:0x804156D0 end:0x804156E0
 
+Runtime.PPCEABI.H/__va_arg.c:
+	.text       start:0x803F065C end:0x803F0724
+
 Runtime.PPCEABI.H/__init_cpp_exceptions.cpp:
 	.text       start:0x803F1A08 end:0x803F1A78
 	.ctors      start:0x804064E0 end:0x804064E4 rename:.ctors$10
 	.dtors      start:0x804067E0 end:0x804067E4 rename:.dtors$10
 	.dtors      start:0x804067E4 end:0x804067E8 rename:.dtors$15
 	.sdata      start:0x8059FF48 end:0x8059FF50
+
+MSL_C/arith.c:
+	.text       start:0x803F5060 end:0x803F5070
+
+MSL_C/mem_funcs.c:
+	.text       start:0x803F619C end:0x803F646C
+
+MSL_C/misc_io.c:
+	.text       start:0x803F6568 end:0x803F6578
+
+MSL_C/wchar_io.c:
+	.text       start:0x803FC828 end:0x803FC8AC
+
+MSL_C/extras.c:
+	.text       start:0x803FC9FC end:0x803FCB50
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/e_acos.c:
+	.text       start:0x803FCB54 end:0x803FCE18
+	.sdata2     start:0x805A4C00 end:0x805A4C88
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/e_asin.c:
+	.text       start:0x803FCE18 end:0x803FD0B0
+	.sdata2     start:0x805A4C88 end:0x805A4D10
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/e_atan2.c:
+	.text       start:0x803FD0B0 end:0x803FD320
+	.sdata2     start:0x805A4D10 end:0x805A4D68
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/e_fmod.c:
+	.text       start:0x803FD320 end:0x803FD650
+	.rodata     start:0x80420150 end:0x80420160
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/e_log.c:
+	.text       start:0x803FD650 end:0x803FD904
+	.sbss       start:0x805A12F8 end:0x805A1300
+	.sdata2     start:0x805A4D68 end:0x805A4DE8
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/e_log10.c:
+	.text       start:0x803FD904 end:0x803FDA18
+	.sbss       start:0x805A1300 end:0x805A1308
+	.sdata2     start:0x805A4DE8 end:0x805A4E18
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/e_pow.c:
+	.text       start:0x803FDA18 end:0x803FE260
+	.rodata     start:0x80420160 end:0x80420190
+	.sdata2     start:0x805A4E18 end:0x805A4F28
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/e_rem_pio2.c:
+	.text       start:0x803FE260 end:0x803FE5F8
+	.rodata     start:0x80420190 end:0x80420318
+	.sdata2     start:0x805A4F28 end:0x805A4F80
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/k_cos.c:
+	.text       start:0x803FE5F8 end:0x803FE708
+	.sdata2     start:0x805A4F80 end:0x805A4FC8
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/k_rem_pio2.c:
+	.text       start:0x803FE708 end:0x803FFE14
+	.rodata     start:0x80420318 end:0x80420368
+	.sdata2     start:0x805A4FC8 end:0x805A5008
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/k_sin.c:
+	.text       start:0x803FFE14 end:0x803FFED4
+	.sdata2     start:0x805A5008 end:0x805A5040
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/k_tan.c:
+	.text       start:0x803FFED4 end:0x8040012C
+	.rodata     start:0x80420368 end:0x804203D0
+	.sdata2     start:0x805A5040 end:0x805A5078
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/s_atan.c:
+	.text       start:0x8040012C end:0x8040036C
+	.rodata     start:0x804203D0 end:0x80420468
+	.sdata2     start:0x805A5078 end:0x805A50A0
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/s_ceil.c:
+	.text       start:0x8040036C end:0x804004AC
+	.sdata2     start:0x805A50A0 end:0x805A50B0
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/s_copysign.c:
+	.text       start:0x804004AC end:0x804004D8
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/s_cos.c:
+	.text       start:0x804004D8 end:0x804005AC
+	.sdata2     start:0x805A50B0 end:0x805A50B8
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/s_floor.c:
+	.text       start:0x804005AC end:0x804006F0
+	.sdata2     start:0x805A50B8 end:0x805A50C8
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/s_frexp.c:
+	.text       start:0x804006F0 end:0x80400778
+	.sdata2     start:0x805A50C8 end:0x805A50D0
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/s_ldexp.c:
+	.text       start:0x80400778 end:0x804008E4
+	.sdata2     start:0x805A50D0 end:0x805A50F8
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/s_sin.c:
+	.text       start:0x804009E0 end:0x80400AB8
+	.sdata2     start:0x805A50F8 end:0x805A5100
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/s_tan.c:
+	.text       start:0x80400AB8 end:0x80400B30
+	.sdata2     start:0x805A5100 end:0x805A5108
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/w_acos.c:
+	.text       start:0x80400B30 end:0x80400B34
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/w_asin.c:
+	.text       start:0x80400B34 end:0x80400B38
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/w_atan2.c:
+	.text       start:0x80400B38 end:0x80400B3C
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/w_fmod.c:
+	.text       start:0x80400B3C end:0x80400B40
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/w_log10.c:
+	.text       start:0x80400B40 end:0x80400B44
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/w_pow.c:
+	.text       start:0x80400B44 end:0x80400B48
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/e_sqrt.c:
+	.text       start:0x80400B48 end:0x80400D90
+	.sdata2     start:0x805A5108 end:0x805A5110
+
+MSL_C/PPC_EABI/SRC/math_ppc.c:
+	.text       start:0x80400D90 end:0x80400D94
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/w_sqrt.c:
+	.text       start:0x80400D94 end:0x80400D98
+
+MetroTRK/debugger/embedded/MetroTRK/Portable/mainloop.c:
+	.text       start:0x80400D98 end:0x80400E90
+
+MetroTRK/debugger/embedded/MetroTRK/Portable/nubevent.c:
+	.text       start:0x80400E90 end:0x804010B8
+	.bss        start:0x80599F48 end:0x80599F70
+
+MetroTRK/debugger/embedded/MetroTRK/Portable/msg.c:
+	.text       start:0x8040123C end:0x80401268
+
+MetroTRK/debugger/embedded/MetroTRK/Os/dolphin/usr_put.c:
+	.text       start:0x80401C50 end:0x80401CDC
+
+MetroTRK/debugger/embedded/MetroTRK/Portable/dispatch.c:
+	.text       start:0x80401CDC end:0x80401E24
+	.data       start:0x804946F8 end:0x80494764
+
+MetroTRK/debugger/embedded/MetroTRK/Portable/support.c:
+	.text       start:0x80402F00 end:0x804035B4
+
+MetroTRK/debugger/embedded/MetroTRK/Portable/mutex_TRK.c:
+	.text       start:0x804035B4 end:0x804035CC
+
+MetroTRK/debugger/embedded/MetroTRK/Portable/notify.c:
+	.text       start:0x804035CC end:0x80403664
+
+MetroTRK/debugger/embedded/MetroTRK/Processor/ppc/Generic/flush_cache.c:
+	.text       start:0x80403664 end:0x8040369C
+
+MetroTRK/debugger/embedded/MetroTRK/Portable/string_TRK.c:
+	.text       start:0x80403754 end:0x80403770
+
+MetroTRK/debugger/embedded/MetroTRK/Processor/ppc/Generic/mpc_7xx_603e.c:
+	.text       start:0x804051B0 end:0x80405520
+
+MetroTRK/debugger/embedded/MetroTRK/Os/dolphin/targcont.c:
+	.text       start:0x80405EB8 end:0x80405EEC
+
+MetroTRK/debugger/embedded/MetroTRK/Os/dolphin/target_options.c:
+	.text       start:0x80405EEC end:0x80405F08
+	.bss        start:0x8059BEE0 end:0x8059BEE4
+
+MetroTRK/gamedev/cust_connection/utils/common/CircleBuffer.c:
+	.text       start:0x80406210 end:0x80406478
+
+MetroTRK/gamedev/cust_connection/utils/gc/MWCriticalSection_gc.c:
+	.text       start:0x80406478 end:0x804064D0
