@@ -37,22 +37,6 @@ public:
     T* getModule() { return m_catchBuilder.getModule(); }
 };
 
-// Physics module builder with another IK handle capacity.
-template <s32 IKCap, typename T>
-class soPhysicsModuleBuildConfigCap {
-public:
-    typedef T ModuleType;
-};
-
-template <s32 IKCap, typename T>
-class soPhysicsModuleBuilder<soPhysicsModuleBuildConfigCap<IKCap, T> > : public soArraySelectHolder<1, soArrayVector<soPhysicsIKHandle, IKCap>, soArrayNull<soPhysicsIKHandle> > {
-    T m_physicsModule;
-public:
-    soPhysicsModuleBuilder(soModuleAccesser* acc, void* ikData) :
-        soArraySelectHolder<1, soArrayVector<soPhysicsIKHandle, IKCap>, soArrayNull<soPhysicsIKHandle> >(IKCap, 0), m_physicsModule(acc, ikData, this->get(), 1) { }
-    T* getModule() { return &m_physicsModule; }
-};
-
 // Item manage module builder with other capacities.
 template <s32 CapA, s32 CapB, typename T>
 class soItemManageModuleBuildConfigCaps {
