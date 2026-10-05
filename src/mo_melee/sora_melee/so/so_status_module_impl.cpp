@@ -233,7 +233,7 @@ bool soStatusModuleImpl::notifyEventAnimCmd(acAnimCmd* animCmd, soModuleAccesser
     case 14: {
         u8 option = animCmd->getOption();
         soArrayContractibleTable<const acCmdArgConv> args = animCmd->getArgList();
-        return m_transitionModule->notifyEventAnimCmd(kCommandKinds[animCmd->getType()], &args, &option, moduleAccesser);
+        return m_transitionModule->notifyEventAnimCmd(kCommandKinds[animCmd->getType()], *(soArrayContractibleTable<acCmdArgConv>*)&args, &option, moduleAccesser);
     }
     case 13: {
         soArrayContractibleTable<const acCmdArgConv> args = animCmd->getArgList();

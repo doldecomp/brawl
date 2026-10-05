@@ -67,6 +67,15 @@ class soArrayContractibleTable : public soArrayContractible<T>,
     s32 m_size;
 public:
     soArrayContractibleTable() : m_elements(nullptr), m_size(0) { }
+    // HYPOTHESIS: explicit copy constructor (with the same null-elements -> size 0 fixup as the
+    // (T*, s32) constructor); seen inlined at the start of soTransitionModuleImpl::notifyEventAnimCmd
+    // and in soGeneralTerm::getArgList.
+    soArrayContractibleTable(const soArrayContractibleTable& other)
+        : soConnectable<soArrayContractibleTable<T> >(other), m_elements(other.m_elements), m_size(other.m_size) {
+        if (!other.m_elements) {
+            m_size = 0;
+        }
+    }
     soArrayContractibleTable(T* elmnts, s32 size) : m_elements(elmnts), m_size(size) {
         if (!elmnts) {
             this->m_size = 0;

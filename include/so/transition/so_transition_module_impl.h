@@ -1,10 +1,8 @@
 #pragma once
 
-// NOTE: shadows the BrawlHeaders copy: soGeneralTermCache has an out-of-line constructor/destructor
-// (used for the function-local static in soStatusModuleImpl::checkTransition).
-
 #include <StaticAssert.h>
 #include <ac/ac_anim_cmd_impl.h>
+#include <so/so_enable.h>
 #include <so/so_instance_manager.h>
 #include <types.h>
 
@@ -13,6 +11,9 @@ class soModuleAccesser;
 class soGeneralTerm {
 public:
     soArrayContractibleTable<acCmdArgConv> m_animCmdTable;
+
+    // MATCH-ONLY: out-of-line copy constructor (so_general_term.cpp); defined elsewhere in the REL.
+    soGeneralTerm(const soGeneralTerm& other);
 };
 static_assert(sizeof(soGeneralTerm) == 0x10, "Class is wrong size!");
 
@@ -112,23 +113,25 @@ static_assert(sizeof(soTransitionTerm) == 0x8, "Class is wrong size!");
 
 class soTransitionTermGroup {
 public:
-    u8 _unk00[4];
+    soEnable m_enable;
+    u8 _pad01[3];
     soInstanceManagerFullPropertyEccentric<soTransitionTerm> m_transitionTermInstanceManager;
     int m_unitID;
 
     // Checks if any of the terms within this group currently have all of their soGeneralTerms satisfied.
-    int checkEstablish(soModuleAccesser* moduleAccesser, u32* targetKindOut, int* termIDOut, u32* returnWord, u16* attrMask, soGeneralTermCache* generalTermCache);
+    u32 checkEstablish(soModuleAccesser* moduleAccesser, u32* targetKindOut, int* termIDOut, u32* returnWord, u16* attrMask, soGeneralTermCache* generalTermCache);
     // Creates a new empty term with the specified Unit ID, resetting any existing term if necessary.
     int addTerm(int unitId, u32, soTransitionTerm* termIn, u16*);
     // Calls addGeneralTerm on registered transitionTerm whose UnitID matches the supplied value (or the last registered, if -1 is supplied).
-    void addGeneralTerm(int unitID, soGeneralTerm* termIn);
+    void addGeneralTerm(int unitID, soGeneralTerm termIn);
     // Calls addGeneralTerm on registered transitionTerm whoes ID matches m_unitID (or the last, if that value is -1);
-    void addGeneralTermLastTerm(soGeneralTerm* termIn);
+    void addGeneralTermLastTerm(soGeneralTerm termIn);
     void enableTerm(int unitId);
     void unableTerm(int unitId);
     void clearTransitionTermAll();
     void enableTermAll();
     void unableTermAll();
+    bool isFull();
 };
 static_assert(sizeof(soTransitionTermGroup) == 0x14, "Class is wrong size!");
 
@@ -143,13 +146,13 @@ public:
     virtual void enableTermGroup(int groupID);
     virtual void unableTermGroup(int groupID);
     virtual bool isEnableTermGroup(int groupID);
-    virtual void addTerm(int groupID, int, int unitID, int, u16* option);
+    virtual int addTerm(int groupID, soTransitionTerm* term, int unitID, u32 targetKind, u16* option);
     virtual void addGeneralTerm(int groupID, int unitID, soGeneralTerm* term);
     virtual void addGeneralTermLastTerm(int groupID, soGeneralTerm* term);
     virtual void clearTransitionTermAll(int groupID);
-    virtual bool notifyEventAnimCmd(int commandType, void* commandArgList, u8* option, soModuleAccesser* accesser);
+    virtual int notifyEventAnimCmd(int commandType, soArrayContractibleTable<acCmdArgConv> commandArgList, u8* option, soModuleAccesser* accesser);
     virtual soTransitionInfo* getLastTransitionInfo();
-    virtual ~soTransitionModule();
+    virtual ~soTransitionModule() { }
 };
 
 class soTransitionModuleImpl : public soTransitionModule {
@@ -165,11 +168,11 @@ public:
     virtual void enableTermGroup(int groupID);
     virtual void unableTermGroup(int groupID);
     virtual bool isEnableTermGroup(int groupID);
-    virtual void addTerm(int groupID, int, int unitID, int, u16* option);
+    virtual int addTerm(int groupID, soTransitionTerm* term, int unitID, u32 targetKind, u16* option);
     virtual void addGeneralTerm(int groupID, int unitID, soGeneralTerm* term);
     virtual void addGeneralTermLastTerm(int groupID, soGeneralTerm* term);
     virtual void clearTransitionTermAll(int groupID);
-    virtual bool notifyEventAnimCmd(int commandType, void* commandArgList, u8* option, soModuleAccesser* accesser);
+    virtual int notifyEventAnimCmd(int commandType, soArrayContractibleTable<acCmdArgConv> commandArgList, u8* option, soModuleAccesser* accesser);
     virtual soTransitionInfo* getLastTransitionInfo();
     virtual ~soTransitionModuleImpl();
 };
