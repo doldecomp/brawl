@@ -374,8 +374,8 @@ void gfTaskScheduler::changeTaskPriorityRequest(u32 id, u8 priority) {
     gfTask* task = getTask(id);
     if (task) {
         UnkTaskRequest x(false);
-        x.m_category = task->m_taskCategory;
         x.m_taskId = task->m_taskId;
+        x.m_category = task->m_taskCategory;
         x.m_priority = priority;
         m_pendingPrioUpdates[m_numPendingPrioUpdates] = x;
         m_numPendingPrioUpdates++;
