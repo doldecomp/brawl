@@ -953,6 +953,10 @@ havok/hkRootLevelContainerClass.cpp:
 	.bss        start:0x805336C0 end:0x80533708
 	.sdata2     start:0x805A4968 end:0x805A4978
 
+havok/hkVersionUtil.cpp:
+	.text       start:0x80334BF8 end:0x80334DE4
+	.rodata     start:0x804156D0 end:0x804156E0
+
 Runtime.PPCEABI.H/__init_cpp_exceptions.cpp:
 	.text       start:0x803F1A08 end:0x803F1A78
 	.ctors      start:0x804064E0 end:0x804064E4 rename:.ctors$10

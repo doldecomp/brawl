@@ -455,6 +455,7 @@ config.libs = [
             Object(Matching, "havok/hkxVertexBufferClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
             Object(Matching, "havok/hkxVertexFormatClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
             Object(Matching, "havok/hkRootLevelContainerClass.cpp"),
+            Object(NonMatching, "havok/hkVersionUtil.cpp"),
         ],
     },
     # HAVOK-END
