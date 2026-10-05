@@ -156,7 +156,8 @@ void ftStatusUniqProcessDamageFly::execFixPosCounter(soModuleAccesser* moduleAcc
     if (ftUtil::checkCloudThroughOut(moduleAccesser) == 1) {
         int frame = moduleAccesser->getWorkManageModule().getInt(0x10000038);
         float mul = soValueAccesser::getConstantFloat(moduleAccesser, 0xcdc, 0);
-        moduleAccesser->getWorkManageModule().setInt((int)((float)frame * mul), 0x10000038);
+        int newFrame = (int)((float)frame * mul);
+        moduleAccesser->getWorkManageModule().setInt(newFrame, 0x10000038);
     }
 }
 

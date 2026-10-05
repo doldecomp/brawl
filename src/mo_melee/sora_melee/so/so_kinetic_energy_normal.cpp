@@ -80,8 +80,11 @@ void soKineticEnergyNormal::clearSpeed() {
 }
 
 void soKineticEnergyNormal::resetEnergy(int, Vec2f* speed, Vec3f*, soModuleAccesser*) {
-    float y = speed->m_y;
-    float x = speed->m_x;
+    // MATCH-ONLY: the extra copy of x forces the original load order (x before y).
+    float y;
+    float tmp = speed->m_x;
+    y = speed->m_y;
+    float x = tmp;
     m_speed.m_x = x;
     m_speed.m_y = y;
 }
