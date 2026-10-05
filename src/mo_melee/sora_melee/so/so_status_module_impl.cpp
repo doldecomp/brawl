@@ -5,6 +5,14 @@
 #include <so/status/so_status_module_impl.h>
 #include <types.h>
 
+// MATCH-ONLY: explicit instantiations stand in for the vtable of the soArrayVector<s32, 8> member
+// (emitted by the not yet decompiled constructor in the original).
+template class soArrayVector<s32, 8>;
+template class soArrayVectorAbstract<s32>;
+template class soArray<s32>;
+template class soArrayContractible<s32>;
+template class soArrayFixed<s32>;
+
 int soStatusModuleImpl::getStatusKind() {
     return m_statusKind;
 }
@@ -156,6 +164,55 @@ bool soStatusModuleImpl::checkTransition(soModuleAccesser* moduleAccesser) {
     }
     return false;
 }
+
+static inline acCmdArg makeCmdArg(const acCmdArgConv* conv) {
+    acCmdArg arg;
+    arg.setDataPtr(conv);
+    arg.setNull(false);
+    return arg;
+}
+
+bool soStatusModuleImpl::notifyEventAnimCmd(acAnimCmd* animCmd, soModuleAccesser* moduleAccesser, s32 unk3) {
+    s32 group = animCmd->getGroup();
+    if (!isObserv(group)) {
+        return false;
+    }
+    if (animCmd->getType() <= -1 || animCmd->getType() >= 0xf) {
+        return false;
+    }
+    // HYPOTHESIS: maps the status anim cmd type to the transition module command kind.
+    static const int kCommandKinds[15] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -1, 13};
+    switch (animCmd->getType()) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+    case 11:
+    case 12:
+    case 14: {
+        u8 option = animCmd->getOption();
+        soArrayContractibleTable<const acCmdArgConv> args = animCmd->getArgList();
+        return m_transitionModule->notifyEventAnimCmd(kCommandKinds[animCmd->getType()], &args, &option, moduleAccesser);
+    }
+    case 13: {
+        soArrayContractibleTable<const acCmdArgConv> args = animCmd->getArgList();
+        const soArrayFixed<const acCmdArgConv>& argBase = args;
+        acCmdArg arg2 = makeCmdArg(&argBase.at(0));
+        m_nextStatusKind = arg2.getIntData();
+        return true;
+    }
+    }
+    return false;
+}
+
+soStatusModuleImpl::~soStatusModuleImpl() { }
 
 // HYPOTHESIS: soStatusData starts with three masks selecting which flag/int/float work values survive a status change.
 void soStatusModuleImpl::succeedStatusWork(const soStatusData* statusData) {
@@ -401,8 +458,3 @@ void soStatusModuleImpl::changeStatusForce(int status, soModuleAccesser* moduleA
     changeStatusSub(this, status, moduleAccesser);
 }
 
-template class soArrayVector<s32, 8>;
-template class soArrayVectorAbstract<s32>;
-template class soArray<s32>;
-template class soArrayContractible<s32>;
-template class soArrayFixed<s32>;

@@ -111,7 +111,7 @@ public:
     virtual void changeStatusForce(int status, soModuleAccesser* moduleAccesser);
     virtual void unableTransitionTerm(int, int);
     virtual void setUniqProc(u32 index, soStatusUniqProcess* uniqProc);
-    virtual ~soStatusModule();
+    virtual ~soStatusModule() { }
     virtual void changeStatus(int status, soModuleAccesser* moduleAccesser);
 };
 static_assert(sizeof(soStatusModule) == 8, "Class is wrong size!");
@@ -175,9 +175,8 @@ public:
     virtual ~soStatusModuleImpl();
     virtual void changeStatus(int status, soModuleAccesser* moduleAccesser);
 
-    virtual bool notifyEventCollisionAttackCheck(u32 flags);
     virtual bool isObserv(char unk1);
-    virtual bool notifyEventAnimCmd(acAnimCmd* acmd, soModuleAccesser* moduleAccesser, int unk3);
+    virtual bool notifyEventAnimCmd(acAnimCmd* acmd, soModuleAccesser* moduleAccesser, s32 unk3);
     virtual void notifyEventCollisionAttack(float power, soCollisionLog* collisionLog, soModuleAccesser* moduleAccesser);;
 };
 static_assert(sizeof(soStatusModuleImpl) == 0xAC, "Class is wrong size!");

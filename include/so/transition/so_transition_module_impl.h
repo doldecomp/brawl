@@ -147,7 +147,7 @@ public:
     virtual void addGeneralTerm(int groupID, int unitID, soGeneralTerm* term);
     virtual void addGeneralTermLastTerm(int groupID, soGeneralTerm* term);
     virtual void clearTransitionTermAll(int groupID);
-    virtual int notifyEventAnimCmd(int commandType, void* commandArgList, u8* option, soModuleAccesser* accesser);
+    virtual bool notifyEventAnimCmd(int commandType, void* commandArgList, u8* option, soModuleAccesser* accesser);
     virtual soTransitionInfo* getLastTransitionInfo();
     virtual ~soTransitionModule();
 };
@@ -169,7 +169,7 @@ public:
     virtual void addGeneralTerm(int groupID, int unitID, soGeneralTerm* term);
     virtual void addGeneralTermLastTerm(int groupID, soGeneralTerm* term);
     virtual void clearTransitionTermAll(int groupID);
-    virtual int notifyEventAnimCmd(int commandType, void* commandArgList, u8* option, soModuleAccesser* accesser);
+    virtual bool notifyEventAnimCmd(int commandType, void* commandArgList, u8* option, soModuleAccesser* accesser);
     virtual soTransitionInfo* getLastTransitionInfo();
     virtual ~soTransitionModuleImpl();
 };
