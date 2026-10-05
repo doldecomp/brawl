@@ -30,7 +30,7 @@ public:
 };
 
 class ftMarth : public ftFighterBuilder<ftMarthBuildConfig> {
-    u8 unk8554[0x8574 - 0x8554];
+    u8 unk8548[0x8574 - 0x8548];
 public:
     ftMarth(s32 entryId,
             Heaps::HeapType instHeap,
