@@ -3,8 +3,14 @@
 #include <ft/gamewatch/ft_gamewatch.h>
 #include <ft/gamewatch/ft_gamewatch_extend_param_accesser.h>
 
+#define FT_NO_REFLECTOR_INSTANTIATION
 #define FT_BC ftGameWatchBuildConfig
 #include <ft/builder/ft_builder_noinline.h>
+
+#pragma dont_inline on
+template soCollisionShieldModuleBuilder<ftGameWatchCollisionReflectorBaseModuleBuildConfig>::soCollisionShieldModuleBuilder(soModuleAccesser*, int, gfTask::Category);
+template soCollisionShieldModuleBuilder<ftGameWatchCollisionAbsorberModuleBuildConfig>::soCollisionShieldModuleBuilder(soModuleAccesser*, int, gfTask::Category);
+#pragma dont_inline off
 
 ftGameWatchExtendParamAccesser g_ftGameWatchExtendParamAccesser;
 

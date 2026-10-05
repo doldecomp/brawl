@@ -123,6 +123,10 @@ FT_DOL_POLY_BEGIN(soCollisionShieldEventPresenterReflector, 0x10);
     soCollisionShieldEventPresenterReflector(soModuleAccesser* acc);
 FT_DOL_POLY_END;
 
+FT_DOL_POLY_BEGIN(soCollisionShieldEventPresenterAbsorber, 0x10);
+    soCollisionShieldEventPresenterAbsorber(soModuleAccesser* acc);
+FT_DOL_POLY_END;
+
 // ---- modules of the misc builders (ft_builder_misc.h) ------------------------------------------
 FT_DOL_POLY_BEGIN(ftComboModuleImpl, 0x30);
     ftComboModuleImpl(soModuleAccesser* acc);

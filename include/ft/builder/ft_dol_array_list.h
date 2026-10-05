@@ -92,6 +92,13 @@ FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 448);
 FT_DOL_ARRAY_VECTOR(soLinkConnection, 8);
 FT_DOL_ARRAY_VECTOR(soCollisionShieldPart, 9);
 
+// ft_ike
+FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 295);
+FT_DOL_ARRAY_VECTOR(soCollisionSearchPart, 2);
+
+// ft_lucas
+FT_DOL_ARRAY_VECTOR(soCollisionShieldPart, 14);
+
 // soModelModuleBuilder<8, 3>
 FT_DOL_ARRAY_VECTOR(soModelNodeSetUp, 8);
 FT_DOL_ARRAY_VECTOR(soModelVirtualNode, 3);

@@ -589,9 +589,11 @@ config.libs = [
     {
         "lib": "ft_ike",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_ike/ft_ike.cpp"),
+        ],
     },
     {
         "lib": "ft_kirby",
@@ -605,9 +607,11 @@ config.libs = [
     {
         "lib": "ft_koopa",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_koopa/ft_koopa.cpp"),
+        ],
     },
     {
         "lib": "ft_link",
@@ -621,16 +625,20 @@ config.libs = [
     {
         "lib": "ft_lucario",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_lucario/ft_lucario.cpp"),
+        ],
     },
     {
         "lib": "ft_lucas",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_lucas/ft_lucas.cpp"),
+        ],
     },
     {
         "lib": "ft_luigi",
@@ -676,9 +684,11 @@ config.libs = [
     {
         "lib": "ft_ness",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_ness/ft_ness.cpp"),
+        ],
     },
     {
         "lib": "ft_peach",

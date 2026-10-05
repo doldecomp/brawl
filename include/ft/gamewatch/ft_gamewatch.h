@@ -5,40 +5,6 @@
 #include <types.h>
 
 ////////////////////////////////////////
-// GameWatch-only builder variants
-////////////////////////////////////////
-
-FT_DOL_POLY_BEGIN(soCollisionShieldEventPresenterAbsorber, 0x10);
-    soCollisionShieldEventPresenterAbsorber(soModuleAccesser* acc);
-FT_DOL_POLY_END;
-
-// GameWatch has a soCollisionAbsorberModuleBuilder (1 part, 1 group; the shield builder with another presenter and part kind) after the
-// reflector builder, which has no member slot of its own in soModuleAccesserBuilder. HYPOTHESIS: the 4 bytes after the reflector builder
-// of the other fighters are the empty absorber builder; here it is folded into the reflector builder's storage (the ctor order is the same).
-template <typename R, typename A>
-class soCollisionReflectorModuleBuildConfigWithAbsorber {
-public:
-    typedef R ReflectorBuildConfig;
-    typedef A AbsorberBuildConfig;
-};
-
-template <typename R, typename A>
-class soCollisionReflectorModuleBuilder<soCollisionReflectorModuleBuildConfigWithAbsorber<R, A> > {
-    soCollisionShieldModuleBuilder<R> m_reflectorBuilder;
-    soCollisionShieldModuleBuilder<A> m_absorberBuilder;
-public:
-    soCollisionReflectorModuleBuilder(soModuleAccesser* acc, int taskId, gfTask::Category category) :
-        m_reflectorBuilder(acc, taskId, category), m_absorberBuilder(acc, taskId, category) { }
-    typename R::ModuleType* getModule() { return m_reflectorBuilder.getModule(); }
-    typename A::ModuleType* getAbsorberModule() { return m_absorberBuilder.getModule(); }
-};
-
-template <typename R, typename A>
-struct ftAbsorberModuleOf<soCollisionReflectorModuleBuilder<soCollisionReflectorModuleBuildConfigWithAbsorber<R, A> > > {
-    static void* get(soCollisionReflectorModuleBuilder<soCollisionReflectorModuleBuildConfigWithAbsorber<R, A> >* b) { return b->getAbsorberModule(); }
-};
-
-////////////////////////////////////////
 // GameWatch Build Configuration
 ////////////////////////////////////////
 
@@ -53,9 +19,10 @@ typedef soModelModuleBuildConfig<8, 3, soModelModuleImpl> ftGameWatchModelModule
 typedef ftAnimCmdModuleSubBuildConfig<313, 514> ftGameWatchAnimCmdModuleSubBuildConfig;
 typedef soMotionModuleBuildConfig<514, soMotionModuleImpl, 2, 1, soTransitionModuleBuildConfig<ftMotionTransitionTypeList>, soMotionAnimObjCacheModuleBuildConfig<5, soMotionAnimObjCacheModuleImpl> > ftGameWatchMotionModuleBuildConfig;
 typedef soCollisionShieldModuleBuildConfigGroups<2, 1, 1, soCollisionShieldEventPresenterShield, soCollisionShieldModuleImpl> ftGameWatchCollisionShieldModuleBuildConfig;
-typedef soCollisionShieldModuleBuildConfigGroups<3, 20, 2, soCollisionShieldEventPresenterReflector, soCollisionShieldModuleImpl> ftGameWatchReflectorOnlyBuildConfig;
-typedef soCollisionShieldModuleBuildConfigGroups<4, 1, 1, soCollisionShieldEventPresenterAbsorber, soCollisionShieldModuleImpl> ftGameWatchAbsorberBuildConfig;
-typedef soCollisionReflectorModuleBuildConfigWithAbsorber<ftGameWatchReflectorOnlyBuildConfig, ftGameWatchAbsorberBuildConfig> ftGameWatchCollisionReflectorModuleBuildConfig;
+typedef soCollisionReflectorModuleBuildConfigGroups<3, 20, 2, soCollisionShieldEventPresenterReflector, soCollisionShieldModuleImpl> ftGameWatchCollisionReflectorBaseModuleBuildConfig;
+// HYPOTHESIS: the absorber builder (part kind 4) follows the reflector builder
+typedef soCollisionShieldModuleBuildConfigGroups<4, 1, 1, soCollisionShieldEventPresenterAbsorber, soCollisionShieldModuleImpl> ftGameWatchCollisionAbsorberModuleBuildConfig;
+typedef soCollisionReflectorModuleBuildConfigWithAbsorber<ftGameWatchCollisionReflectorBaseModuleBuildConfig, ftGameWatchCollisionAbsorberModuleBuildConfig> ftGameWatchCollisionReflectorModuleBuildConfig;
 typedef soLinkModuleBuildConfigCap<6, soLinkModuleImpl> ftGameWatchLinkModuleBuildConfig;
 typedef soStatusModuleBuildConfig<313, soGeneralWorkBuildConfig<18, 14, 2>, 274, 71, soTransitionModuleBuildConfig<ftStatusTransitionTypeList> > ftGameWatchStatusModuleBuildConfig;
 

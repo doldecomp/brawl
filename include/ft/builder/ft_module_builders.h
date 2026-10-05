@@ -270,6 +270,25 @@ public:
     typename BC::ModuleType* getModule() { return &m_searchModule; }
 };
 
+// Same with another number of search parts (Ike).
+template <u32 Parts, typename T>
+class soCollisionSearchModuleBuildConfigParts {
+public:
+    typedef T ModuleType;
+};
+
+template <u32 Parts, typename T>
+class soCollisionSearchModuleBuilder<soCollisionSearchModuleBuildConfigParts<Parts, T> > {
+    soArrayVector<soCollisionSearchPart, Parts> m_parts;
+    soArrayVector<soCollisionGroup, 1> m_groups;
+    T m_searchModule;
+public:
+    soCollisionSearchModuleBuilder(soModuleAccesser* acc, int taskId, gfTask::Category category) :
+        m_parts(Parts, soCollisionSearchPart(soCollision::Category_Fighter), 0),
+        m_groups(1, 0), m_searchModule(acc, taskId, category, &m_parts, true) { }
+    T* getModule() { return &m_searchModule; }
+};
+
 ////////////////////////////////////////
 // soCollisionShieldModuleBuilder (shield / reflector)
 ////////////////////////////////////////
@@ -339,6 +358,41 @@ public:
         m_shieldGroups(BC::GroupCapacity, 0), m_groups(BC::GroupCapacity, 0), m_presenter(acc),
         m_shieldModule(acc, taskId, category, &m_parts, &m_groups, &m_shieldGroups, &m_presenter, BC::PartKind, true) { }
     typename BC::ModuleType* getModule() { return &m_shieldModule; }
+};
+
+// The collision absorber builder (Lucas and Ness) follows the reflector builder; it has no slot of its own in
+// soModuleAccesserBuilder, so it is folded into the reflector builder's storage (like Kirby's collision search builder
+// inside the collision catch builder). It is the shield builder with the absorber presenter and part kind 4. The reflector
+// builder of these fighters is a plain shield builder with the reflector presenter (no padding after it).
+template <typename ReflectorBC, typename AbsorberBC>
+class soCollisionReflectorModuleBuildConfigWithAbsorber {
+public:
+    typedef ReflectorBC ReflectorConfig;
+    typedef AbsorberBC AbsorberConfig;
+};
+
+template <typename ReflectorBC, typename AbsorberBC>
+class soCollisionReflectorModuleBuilder<soCollisionReflectorModuleBuildConfigWithAbsorber<ReflectorBC, AbsorberBC> > {
+    soCollisionShieldModuleBuilder<ReflectorBC> m_reflector;
+    soCollisionShieldModuleBuilder<AbsorberBC> m_absorber;
+public:
+    soCollisionReflectorModuleBuilder(soModuleAccesser* acc, int taskId, gfTask::Category category) :
+        m_reflector(acc, taskId, category), m_absorber(acc, taskId, category) { }
+    typename ReflectorBC::ModuleType* getModule() { return m_reflector.getModule(); }
+    typename AbsorberBC::ModuleType* getAbsorberModule() { return m_absorber.getModule(); }
+};
+
+// The absorber module of the module accesser: the null module unless the absorber is folded into the reflector builder.
+extern char g_soCollisionAbsorberModuleNull[];
+template <typename RBC>
+struct ftReflectorBase {
+    static soCollisionShieldModule* getAbsorber(soCollisionReflectorModuleBuilder<RBC>*) { return (soCollisionShieldModule*)g_soCollisionAbsorberModuleNull; }
+};
+template <typename R, typename A>
+struct ftReflectorBase<soCollisionReflectorModuleBuildConfigWithAbsorber<R, A> > {
+    static soCollisionShieldModule* getAbsorber(soCollisionReflectorModuleBuilder<soCollisionReflectorModuleBuildConfigWithAbsorber<R, A> >* b) {
+        return (soCollisionShieldModule*)b->getAbsorberModule();
+    }
 };
 
 ////////////////////////////////////////
