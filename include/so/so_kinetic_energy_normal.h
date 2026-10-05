@@ -53,3 +53,41 @@ public:
     bool m_unk32;         // +0x32
 };
 static_assert(sizeof(soKineticEnergyNormal) == 0x34, "Class is wrong size!");
+
+#ifdef FT_MODULE_BUILDER
+// MATCH-ONLY: in the fighter RELs these virtual functions are weak copies (the original header defined them inline);
+// sora_melee has the out-of-line versions in so_kinetic_energy_normal.cpp.
+inline void soKineticEnergyNormal::clearRotSpeed() { }
+
+inline void soKineticEnergyNormal::clearSpeed() {
+    m_speed = Vec2f(0.0f, 0.0f);
+}
+
+inline void soKineticEnergyNormal::init() {
+    Vec2f zero(0.0f, 0.0f);
+    m_speed = m_accel = m_brake = zero;
+    Vec2f negOne(-1.0f, -1.0f);
+    m_speedTarget = m_speedLimit = negOne;
+    m_considerGroundFriction = false;
+    m_unk30 = false;
+    m_unk32 = true;
+}
+
+inline void soKineticEnergyNormal::offConsiderGroundFriction() {
+    m_considerGroundFriction = false;
+}
+
+inline void soKineticEnergyNormal::onConsiderGroundFriction() {
+    m_considerGroundFriction = true;
+}
+
+#pragma dont_inline on
+inline Vec3f soKineticEnergyNormal::getRotation() {
+    return Vec3f(0.0f, 0.0f, 0.0f);
+}
+#pragma dont_inline off
+
+inline Vec2f soKineticEnergyNormal::getSpeed() {
+    return m_speed;
+}
+#endif

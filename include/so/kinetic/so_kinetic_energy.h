@@ -88,3 +88,14 @@ public:
 #endif
 };
 static_assert(sizeof(soKineticEnergy) == 8, "Class is wrong size!");
+
+#ifdef FT_MODULE_BUILDER
+// MATCH-ONLY: weak copy in the fighter RELs.
+inline Vec3f soKineticEnergy::getSpeed3f() {
+    Vec2f speed = getSpeed();
+    Vec3f result;
+    *result.xy() = speed;
+    result.m_z = 0.0f;
+    return result;
+}
+#endif
