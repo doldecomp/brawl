@@ -255,7 +255,7 @@ cflags_sora_enemy = ["-O2,s" if flag == "-O4,p" else flag for flag in cflags_rel
 cflags_st_starfox = [*cflags_rel, "-inline on,noauto"]
 
 # Havok middleware (embedded in the main DOL): no RTTI, string literals in .rodata
-cflags_havok = [*cflags_common, "-RTTI off", "-str reuse,readonly"]
+cflags_havok = [*cflags_common, "-RTTI off", "-str reuse,readonly", "-use_lmw_stmw on"]
 
 config.linker_version = "GC/3.0a5.2"
 
@@ -383,11 +383,33 @@ config.libs = [
         "objects": [
             Object(Matching, "havok/hkBaseObjectClass.cpp"),
             Object(Matching, "havok/hkReferencedObjectClass.cpp"),
+            Object(NonMatching, "havok/hkBaseSystem.cpp", extra_cflags=["-str reuse,noreadonly", "-sdata 4"]),
             Object(Matching, "havok/hkClass.cpp"),
             Object(Matching, "havok/hkClassClass.cpp"),
             Object(Matching, "havok/hkClassEnumClass.cpp"),
             Object(Matching, "havok/hkClassMemberClass.cpp"),
             Object(Matching, "havok/hkClassVersion1Class.cpp"),
+            Object(Matching, "havok/hkError.cpp"),
+            Object(NonMatching, "havok/hkArray.cpp"),
+            Object(NonMatching, "havok/hkPointerMapBase.cpp"),
+            Object(NonMatching, "havok/hkStringMapBase.cpp"),
+            Object(NonMatching, "havok/hkMemory.cpp"),
+            Object(Matching, "havok/hkScratchpad.cpp"),
+            Object(Matching, "havok/hkStackTracer.cpp"),
+            Object(NonMatching, "havok/hkThreadMemory.cpp"),
+            Object(NonMatching, "havok/hkPoolMemory.cpp"),
+            Object(Matching, "havok/hkMonitorStream.cpp"),
+            Object(NonMatching, "havok/hkUnionFind.cpp"),
+            Object(Matching, "havok/hkSystemClock.cpp"),
+            Object(Matching, "havok/hkIstream.cpp"),
+            Object(Matching, "havok/hkOstream.cpp"),
+            Object(Matching, "havok/hkSocket.cpp"),
+            Object(Matching, "havok/hkStreamReader.cpp"),
+            Object(Matching, "havok/hkStreamWriter.cpp"),
+            Object(Matching, "havok/hkBufferedStreamReader.cpp"),
+            Object(NonMatching, "havok/hkBufferedStreamWriter.cpp"),
+            Object(Matching, "havok/hkString.cpp"),
+            Object(Matching, "havok/hkMultiThreadLock.cpp"),
             Object(Matching, "havok/hkAabbClass.cpp"),
             Object(Matching, "havok/hkMotionStateClass.cpp"),
             Object(Matching, "havok/hkCdBodyClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
@@ -1504,7 +1526,7 @@ config.libs = [
         "objects": [
             Object(NonMatching, "mo_stage/st_tengan/st_tengan.cpp"),
             Object(Matching, "mo_stage/st_tengan/gr_tengan.cpp"),
-            Object(NonMatching, "mo_stage/st_tengan/gr_tengan_bg.cpp"),
+            Object(Matching, "mo_stage/st_tengan/gr_tengan_bg.cpp"),
             Object(Matching, "mo_stage/st_tengan/gr_tengan_floor.cpp"),
             Object(Matching, "mo_stage/st_tengan/gr_tengan_ashiba.cpp"),
         ],

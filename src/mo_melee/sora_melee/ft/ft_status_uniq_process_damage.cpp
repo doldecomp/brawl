@@ -345,8 +345,8 @@ void ftStatusUniqProcessDamage::leaveStop(soModuleAccesser* moduleAccesser, int 
     }
 }
 
-bool ftStatusUniqProcessDamage::checkTransitionPrecede(soModuleAccesser* moduleAccesser, int* statusKind) {
-    int kind = *statusKind;
+bool ftStatusUniqProcessDamage::checkTransitionPrecede(soModuleAccesser* moduleAccesser, void* transitionInfo, int target) {
+    int kind = *(int*)transitionInfo;
     if (kind == 0xc || (u32)(kind - 0xe) <= 1) {
         return false;
     }

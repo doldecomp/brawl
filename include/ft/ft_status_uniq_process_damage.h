@@ -16,7 +16,7 @@ public:
     virtual void execStatus(soModuleAccesser* moduleAccesser);
     virtual void execStop(soModuleAccesser* moduleAccesser);
     virtual void leaveStop(soModuleAccesser* moduleAccesser, int unk, bool isHitStopEnd);
-    virtual bool checkTransitionPrecede(soModuleAccesser* moduleAccesser, int* statusKind);
+    virtual bool checkTransitionPrecede(soModuleAccesser* moduleAccesser, void* transitionInfo, int target);
 
     virtual void initNormalDamage(soModuleAccesser* moduleAccesser);
     virtual void execNormalDamage(soModuleAccesser* moduleAccesser);

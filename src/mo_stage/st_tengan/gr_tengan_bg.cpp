@@ -32,5 +32,5 @@ void grTenganBg::update(float deltaFrame)
         getNodePosition(&posAshibaWork[2],0,"ashibaA_Up1");
         getNodePosition(&posAshibaWork[3],0,"ashibaA_Down1");
     }
-    grGimmick::update(deltaFrame);
+    grTengan::update(deltaFrame);
 }
