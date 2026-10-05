@@ -27,9 +27,56 @@ public:
     void* m_mediator; // +0x2c (HYPOTHESIS)
 };
 
+// sora_melee: the fighter specific part of the mediator work. HYPOTHESIS: parameter types.
+class ftKineticTransactor {
+public:
+    static void changeKinetic(soModuleAccesser* acc, void* pools);
+    static void addSpeed(void* speed, void* pools, soModuleAccesser* acc);
+    static void addSpeedOutside(int type, void* speed, void* pools, soModuleAccesser* acc);
+    static void notifyEventChangeStatus(void* a, void* b, void* c, void* d);
+    template <typename E>
+    static void updateEnergy(E* energy, soModuleAccesser* acc) {
+        if (energy->isEnable() != true) {
+            return;
+        }
+        if (energy->isSuspend()) {
+            return;
+        }
+        return energy->updateEnergy(acc);
+    }
+};
+
+class soKineticTransactHelper {
+public:
+    static void checkClearSpeed(soKineticEnergy* energy);
+};
+
+// HYPOTHESIS: the energy attribute mask as seen by the mediator (signed 16 bit, user destructor).
+struct soKineticAttributeMask {
+    s16 m_mask;
+    soKineticAttributeMask(s16 mask) : m_mask(mask) { }
+    ~soKineticAttributeMask() { }
+};
+
+template <typename Transactor>
+class soKineticUpdateEnergyHolderHelper {
+public:
+    soKineticAttributeMask m_flag;
+    soKineticUpdateEnergyHolderHelper(soKineticAttributeMask flag) : m_flag(flag) { }
+};
+
+// Interface of the mediator (vtable at the start of soKineticMediatorImpl); there is no virtual destructor.
 class soKineticMediator {
 public:
-    virtual ~soKineticMediator() { }
+    virtual void changeKinetic(soModuleAccesser* acc) = 0;
+    virtual void updateEnergy(soModuleAccesser* acc) = 0;
+    virtual void updateEnergy1(soModuleAccesser* acc, soKineticAttributeMask flag) = 0;
+    virtual void updateEnergy2(soArray<soKineticEnergy**>* energies, soModuleAccesser* acc) = 0;
+    virtual void postUpdateEnergy() = 0;
+    virtual void addSpeed(void* speed, soModuleAccesser* acc) = 0;
+    virtual void addSpeedOutside(int type, void* speed, soModuleAccesser* acc) = 0;
+    virtual void notifyEventChangeStatus(void* a, void* b, void* c, void* d) = 0;
+    virtual int getMediateNum() = 0;
 };
 
 // ---- instance pool machinery ---------------------------------------------------------------------------
@@ -47,6 +94,7 @@ struct soKineticEnergyInitInfo {
 template <typename E, typename Next, typename InitInfo>
 class soKineticEnergyHolder {
 public:
+    enum { Attribute = InitInfo::EnergyAttribute };
     virtual ~soKineticEnergyHolder() { }
 private:
     E m_energy;
@@ -61,22 +109,35 @@ public:
 template <typename E>
 class soInstancePoolSubNull {
 public:
+    template <typename Helper>
+    int forEachHolderModuleAccesser(Helper helper, soModuleAccesser* acc) {
+        return 0;
+    }
 };
 
 template <typename Info, typename Holder>
 class soInstancePoolSub {
 public:
-    virtual typename Info::Type* getInstanceAt(int index) {
-        if (index == 0) {
-            return m_holder.getEnergy();
-        }
-        return 0;
-    }
+    virtual ~soInstancePoolSub() { }
 private:
     soInstancePoolSubNull<typename Info::Type> m_next;
     Holder m_holder;
 public:
     soInstancePoolSub(soModuleAccesser* acc) : m_holder(acc) { }
+    typename Info::Type* getInstanceAt(int index) {
+        if (index == 0) {
+            return m_holder.getEnergy();
+        }
+        return 0;
+    }
+    template <typename Helper>
+    int forEachHolderModuleAccesser(Helper helper, soModuleAccesser* acc) {
+        typename Info::Type* energy = m_holder.getEnergy();
+        if ((helper.m_flag.m_mask & Holder::Attribute) && energy->isEnable() == true && !energy->isSuspend()) {
+            ftKineticTransactor::updateEnergy(energy, acc);
+        }
+        return m_next.forEachHolderModuleAccesser(helper, acc);
+    }
 };
 
 class soInstancePoolRoot {
@@ -90,6 +151,7 @@ class soInstancePool : public Base {
     soInstancePoolSub<Info, Holder> m_sub;
 public:
     soInstancePool(soModuleAccesser* acc) : Base(acc), m_sub(acc) { }
+    soInstancePoolSub<Info, Holder>& getSub() { return m_sub; }
 
 };
 
@@ -123,11 +185,51 @@ FT_KINETIC_POOL(ftKineticPoolWind, soKineticEnergyWindNormal, 5, 4, ftKineticPoo
 FT_KINETIC_POOL(ftKineticPoolGround, soKineticEnergyGroundMovement, 6, 8, ftKineticPoolWind);
 FT_KINETIC_POOL(ftKineticPoolJostle, soKineticEnergyJostle, 7, 4, ftKineticPoolGround);
 
+#define FT_KINETIC_EACH_POOL(M) M(Jostle) M(Ground) M(Wind) M(Damage) M(Stop) M(Controller) M(Gravity) M(Motion)
+#define FT_KINETIC_SUB(L) static_cast<ftKineticPool##L##Pool&>(m_pools).getSub()
+
+#define FT_KINETIC_FOR_EACH(L) FT_KINETIC_SUB(L).forEachHolderModuleAccesser(helper, acc);
+
 class ftKineticMediatorImpl : public soKineticMediator {
     ftKineticPoolJostle m_pools; // +0x4
 public:
-    ftKineticMediatorImpl(soModuleAccesser* acc) : soKineticMediator(), m_pools(acc) { }
+    ftKineticMediatorImpl(soModuleAccesser* acc) : m_pools(acc) { }
     ~ftKineticMediatorImpl() { }
+
+#define FT_KINETIC_CLEAR(L)                                                                                               for (int i = 0; i < 1; i++) {                                                                                             soKineticTransactHelper::checkClearSpeed(FT_KINETIC_SUB(L).getInstanceAt(i));                                      }
+    virtual void changeKinetic(soModuleAccesser* acc) {
+        ftKineticTransactor::changeKinetic(acc, &m_pools);
+        FT_KINETIC_EACH_POOL(FT_KINETIC_CLEAR)
+    }
+
+#define FT_KINETIC_UPDATE(L)                                                                                              for (int i = 0; i < 1; i++) {                                                                                             ftKineticPool##L##Info::Type* energy = FT_KINETIC_SUB(L).getInstanceAt(i);                                             if (energy->isEnable() == true && !energy->isSuspend()) {                                                                  ftKineticTransactor::updateEnergy(energy, acc);                                                                    }                                                                                                                  }
+    virtual void updateEnergy(soModuleAccesser* acc) {
+        FT_KINETIC_EACH_POOL(FT_KINETIC_UPDATE)
+    }
+
+    virtual void updateEnergy1(soModuleAccesser* acc, soKineticAttributeMask flag) {
+        soKineticUpdateEnergyHolderHelper<ftKineticTransactor> helper(flag);
+        FT_KINETIC_EACH_POOL(FT_KINETIC_FOR_EACH)
+    }
+
+    virtual void updateEnergy2(soArray<soKineticEnergy**>* energies, soModuleAccesser* acc) {
+        for (int i = 0; i < energies->size(); i++) {
+            soKineticEnergy* energy = **&energies->at(i);
+            if (energy->isEnable() != false && energy->isSuspend() != true) {
+                if (energy->isEnable() == true && energy->isSuspend() == false) {
+                    if (energy->isEnable() == true && energy->isSuspend() == false) {
+                        energy->updateEnergy(acc);
+                    }
+                }
+            }
+        }
+    }
+
+    virtual void postUpdateEnergy() { }
+    virtual void addSpeed(void* speed, soModuleAccesser* acc) { ftKineticTransactor::addSpeed(speed, &m_pools, acc); }
+    virtual void addSpeedOutside(int type, void* speed, soModuleAccesser* acc) { ftKineticTransactor::addSpeedOutside(type, speed, &m_pools, acc); }
+    virtual void notifyEventChangeStatus(void* a, void* b, void* c, void* d) { ftKineticTransactor::notifyEventChangeStatus(a, b, c, d); }
+    virtual int getMediateNum() { return 8; }
 };
 
 template <typename T>
