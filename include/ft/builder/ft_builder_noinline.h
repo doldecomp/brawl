@@ -10,6 +10,16 @@
 #endif
 
 #pragma dont_inline on
+soNullable::soNullable(bool isNull) { m_isNull = isNull; } // MATCH-ONLY: out of line in the REL
+soGeneralWorkAbstract::~soGeneralWorkAbstract() { } // MATCH-ONLY: out of line in the REL
+#pragma dont_inline off
+
+// MATCH-ONLY: the REL calls soGeneralWorkSimple's work area constructor out of line (defined here, not in the class).
+soGeneralWorkSimple::soGeneralWorkSimple(s32* ints, u32 numInts, float* floats, u32 numFloats, u32* flags, u32 numFlags) :
+    soGeneralWorkAbstract(false), m_intWorks(ints), m_intWorkSize(numInts), m_floatWorks(floats), m_floatWorkSize(numFloats),
+    m_flagWorks(flags), m_flagWorkSize(numFlags) { }
+
+#pragma dont_inline on
 template soDamageModuleBuilder<FT_BC::DamageModuleBuildConfig>::soDamageModuleBuilder(soModuleAccesser*, soEventObserverRegistrationDesc*);
 template soCameraModuleBuilder<FT_BC::CameraModuleBuildConfig>::soCameraModuleBuilder(soModuleAccesser*, soSet<soCameraRange>*, soSet<soCameraClipSphere>*, soEventObserverRegistrationDesc*);
 template soResourceModuleBuilder<FT_BC::ResourceModuleBuildConfig>::soResourceModuleBuilder(u32, u32, u8, soModuleAccesser*);

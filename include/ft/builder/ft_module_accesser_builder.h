@@ -6,6 +6,7 @@
 
 #include <ft/builder/ft_module_builders.h>
 #include <ft/builder/ft_builder_motion.h>
+#include <ft/builder/ft_builder_general_work.h>
 #include <ft/builder/ft_builder_status.h>
 #include <ft/builder/ft_builder_kinetic.h>
 #include <ft/builder/ft_builder_animcmd.h>
@@ -46,7 +47,7 @@ public:
     typedef soAnimCmdModuleBuildConfig<soAnimCmdModuleImpl> AnimCmdModuleBuildConfig;
     typedef soStatusModuleBuildConfig<soStatusModuleImpl> StatusModuleBuildConfig;
     typedef soKineticModuleBuildConfig<soKineticModuleGenericImpl> KineticModuleBuildConfig;
-    typedef soGeneralWorkBuildConfig<soGeneralWorkSimple> GeneralWorkBuildConfig;
+    typedef soGeneralWorkBuildConfig<77, 32, 3> GeneralWorkBuildConfig;
     typedef soComboModuleBuildConfig<ftComboModuleImpl> ComboModuleBuildConfig;
     typedef soAreaModuleBuildConfig<soAreaModuleImpl> AreaModuleBuildConfig;
     typedef soColorBlendModuleBuildConfig<10, 1, soColorBlendModuleImpl> ColorBlendModuleBuildConfig;

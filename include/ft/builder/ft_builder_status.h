@@ -6,6 +6,7 @@
 // soGeneralWorkBuilder<soGeneralWorkBuildConfig<77,32,3>> (0x1E8 bytes): fn_106_6AAC (ctor) / fn_106_314C (dtor), default constructed.
 // STUB: storage only.
 
+#include <ft/builder/ft_builder_general_work.h>
 #include <ft/builder/ft_dol_types.h>
 #include <types.h>
 
@@ -22,18 +23,4 @@ public:
     ~soStatusModuleBuilder() { m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; } // STUB: non-trivial so the dtor call exists
     soStatusModuleBuilder(soModuleAccesser* acc, void* statusData, void* preCheckData) { m_data[0] = 0; m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; m_data[6] = 6; m_data[7] = 7; } // STUB
     soStatusModule* getModule() { return (soStatusModule*)(m_data + 0xE08); }
-};
-
-template <typename T>
-class soGeneralWorkBuildConfig {
-public:
-    typedef T ModuleType;
-};
-
-template <typename BC>
-class soGeneralWorkBuilder {
-    u8 m_data[0x1E8];
-public:
-    ~soGeneralWorkBuilder() { m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; } // STUB: non-trivial so the dtor call exists
-    soGeneralWorkBuilder() { m_data[0] = 0; m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; m_data[6] = 6; m_data[7] = 7; } // STUB
 };
