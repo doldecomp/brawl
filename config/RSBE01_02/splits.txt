@@ -406,6 +406,15 @@ havok/hkClassEnumClass.cpp:
 	.bss        start:0x805323A0 end:0x805323E8
 	.sdata2     start:0x805A3BA8 end:0x805A3BC0
 
+havok/hkClassMemberClass.cpp:
+	.text       start:0x8027CC2C end:0x8027CCA0
+	.ctors      start:0x804065E8 end:0x804065EC
+	.rodata     start:0x8040EE50 end:0x8040F218
+	.data       start:0x80486250 end:0x804862F0
+	.bss        start:0x805323E8 end:0x80532410
+	.sdata      start:0x8059EF38 end:0x8059EF40
+	.sdata2     start:0x805A3C28 end:0x805A3CB0
+
 havok/hkClassVersion1Class.cpp:
 	.text       start:0x8027CCA0 end:0x8027CD04
 	.ctors      start:0x804065EC end:0x804065F0
@@ -541,6 +550,14 @@ havok/hkActionClass.cpp:
 	.bss        start:0x80532978 end:0x805329A0
 	.sdata2     start:0x805A4198 end:0x805A41B0
 
+havok/hkMaterialClass.cpp:
+	.text       start:0x802D94A8 end:0x802D9518
+	.ctors      start:0x804066AC end:0x804066B0
+	.rodata     start:0x80411068 end:0x80411148
+	.data       start:0x80487928 end:0x80487968
+	.bss        start:0x805329A0 end:0x805329C8
+	.sdata      start:0x8059EFD0 end:0x8059EFD8
+
 havok/hkPropertyClass.cpp:
 	.text       start:0x802D9518 end:0x802D95D0
 	.ctors      start:0x804066B0 end:0x804066B4
@@ -560,6 +577,24 @@ havok/hkConstraintInfoClass.cpp:
 	.ctors      start:0x804066D4 end:0x804066D8
 	.rodata     start:0x80412638 end:0x804126F0
 	.bss        start:0x80532EE8 end:0x80532F10
+
+havok/hkConstraintInstanceClass.cpp:
+	.text       start:0x802DE99C end:0x802DEA10
+	.ctors      start:0x804066DC end:0x804066E0
+	.rodata     start:0x80412708 end:0x804128B8
+	.data       start:0x80487BD8 end:0x80487C90
+	.bss        start:0x80532F20 end:0x80532F48
+	.sdata      start:0x8059EFE0 end:0x8059EFE8
+	.sdata2     start:0x805A42E0 end:0x805A42F8
+
+havok/hkConstraintMotorClass.cpp:
+	.text       start:0x802DEA10 end:0x802DEA84
+	.ctors      start:0x804066E0 end:0x804066E4
+	.rodata     start:0x804128B8 end:0x80412960
+	.data       start:0x80487C90 end:0x80487CA8
+	.bss        start:0x80532F48 end:0x80532F70
+	.sdata      start:0x8059EFE8 end:0x8059EFF0
+	.sdata2     start:0x805A42F8 end:0x805A4300
 
 havok/hkEntityDeactivatorClass.cpp:
 	.text       start:0x802E2038 end:0x802E2094
@@ -584,6 +619,15 @@ havok/hkSpatialRigidBodyDeactivatorClass.cpp:
 	.ctors      start:0x80406704 end:0x80406708
 	.rodata     start:0x80412DC8 end:0x80412F78
 	.bss        start:0x80533068 end:0x805330B0
+
+havok/hkMotionClass.cpp:
+	.text       start:0x802E46B0 end:0x802E4724
+	.ctors      start:0x80406708 end:0x8040670C
+	.rodata     start:0x80412F78 end:0x80413110
+	.data       start:0x80487FB8 end:0x80488020
+	.bss        start:0x805330B0 end:0x805330D8
+	.sdata      start:0x8059EFF0 end:0x8059EFF8
+	.sdata2     start:0x805A43B8 end:0x805A43C0
 
 havok/hkKeyframedRigidMotionClass.cpp:
 	.text       start:0x802E5A28 end:0x802E5AE0
@@ -689,6 +733,17 @@ havok/hkxMaterialClass.cpp:
 	.rodata     start:0x80414F78 end:0x80415178
 	.bss        start:0x805335A0 end:0x805335E8
 	.sdata2     start:0x805A4938 end:0x805A4950
+
+havok/hkxIndexBufferClass.cpp:
+	extab       start:0x80009224 end:0x8000922C
+	extabindex  start:0x8000C0D0 end:0x8000C0DC
+	.text       start:0x8032F514 end:0x8032F584
+	.ctors      start:0x804067A0 end:0x804067A4
+	.rodata     start:0x80415178 end:0x80415268
+	.data       start:0x80488E18 end:0x80488E80
+	.bss        start:0x805335E8 end:0x80533610
+	.sdata      start:0x8059F040 end:0x8059F048
+	.sdata2     start:0x805A4950 end:0x805A4958
 
 havok/hkxMeshClass.cpp:
 	extab       start:0x8000922C end:0x80009234
