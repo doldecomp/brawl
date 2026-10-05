@@ -1139,7 +1139,9 @@ int Message::stripTags(const u8* src, int len, int unused, u8* dst) {
                 memcpy(dst, tmp, n);
                 p += len1;
                 dst += n;
-                n = stripTags(p, len2, 0xffff, tmp);
+                // MATCH-ONLY: temporary changes the len1/len2 register assignment
+                int n2 = stripTags(p, len2, 0xffff, tmp);
+                n = n2;
                 lenPtr[1] = n;
                 memcpy(dst, tmp, n);
                 p += len2;
