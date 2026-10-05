@@ -11,6 +11,8 @@ class soAnimCmdEventObserver : public soEventObserver<soAnimCmdEventObserver> {
 public:
     soAnimCmdEventObserver(short unitID) : soEventObserver<soAnimCmdEventObserver>(unitID) {};
     soAnimCmdEventObserver();
+    // NOTE: shadows the BrawlHeaders copy; (manageId, p2) constructor added by agent/damage
+    soAnimCmdEventObserver(short manageId, s8 p2) : soEventObserver<soAnimCmdEventObserver>(0x5) { initialize(manageId, p2); }
     // HYPOTHESIS: constructor that also registers with the given manager (seen in soControllerModuleImpl ctor).
     soAnimCmdEventObserver(s16 unitID, s16 manageID) : soEventObserver<soAnimCmdEventObserver>(unitID) { addObserver(manageID, -1); }
 

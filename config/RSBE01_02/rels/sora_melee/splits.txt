@@ -27,6 +27,10 @@ mo_melee/sora_melee/so/anim/so_anim_chr.cpp:
 	.text       start:0x0001F2D0 end:0x0001F980
 	.rodata     start:0x00000360 end:0x00000370
 
+mo_melee/sora_melee/so/collision/so_collision_hit_module_impl.cpp:
+	.text       start:0x00045510 end:0x00046588
+	.data       start:0x00003BC0 end:0x00003CC0
+
 mo_melee/sora_melee/so/so_collision_shield_part.cpp:
 	.text       start:0x00046588 end:0x00046A74
 	.rodata     start:0x000004C8 end:0x000004E0
@@ -45,6 +49,16 @@ mo_melee/sora_melee/so/controller/so_controller_impl.cpp:
 	.text       start:0x00059FD4 end:0x0005AB60
 	.rodata     start:0x00000750 end:0x000007B8
 	.data       start:0x00006050 end:0x00006168
+
+mo_melee/sora_melee/so/damage/so_damage_module_impl.cpp:
+	.text       start:0x0005C7AC end:0x000605AC
+	.rodata     start:0x000007F0 end:0x00000868
+	.data       start:0x00006550 end:0x000068A0
+
+mo_melee/sora_melee/so/damage/so_damage_transactor_actor.cpp:
+	.text       start:0x00061EE8 end:0x00063438
+	.rodata     start:0x000008B8 end:0x000008DC
+	.data       start:0x00007100 end:0x000071A0
 
 mo_melee/sora_melee/so/so_heap_module_impl.cpp:
 	.text       start:0x000649FC end:0x00064A90
@@ -124,6 +138,20 @@ mo_melee/sora_melee/ft/ft_status_uniq_process_guard_damage.cpp:
 	.rodata     start:0x00002110 end:0x00002120
 	.data       start:0x0002F018 end:0x0002F098
 	.bss        start:0x000049C8 end:0x000049E0
+
+mo_melee/sora_melee/ft/ft_status_uniq_process_damage.cpp:
+	.text       start:0x0016AD18 end:0x0016C75C
+	.ctors      start:0x000000EC end:0x000000F0
+	.rodata     start:0x00002120 end:0x00002160
+	.data       start:0x0002F098 end:0x0002F118
+	.bss        start:0x000049E0 end:0x000049F0
+
+mo_melee/sora_melee/ft/ft_status_uniq_process_damage_fly.cpp:
+	.text       start:0x0016C924 end:0x0016D8A8
+	.ctors      start:0x000000F4 end:0x000000F8
+	.rodata     start:0x00002198 end:0x000021C8
+	.data       start:0x0002F1A8 end:0x0002F238
+	.bss        start:0x00004A00 end:0x00004A10
 
 mo_melee/sora_melee/ft/ft_fighter_build_data.cpp:
 	.text       start:0x00192D4C end:0x00193378
