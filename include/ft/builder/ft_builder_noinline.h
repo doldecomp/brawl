@@ -46,7 +46,9 @@ template soGroundModuleBuilder<FT_BC::GroundModuleBuildConfig>::soGroundModuleBu
 template soCollisionAttackModuleBuilder<FT_BC::CollisionAttackModuleBuildConfig>::soCollisionAttackModuleBuilder(soModuleAccesser*, int, u8, soEventObserverRegistrationDesc*);
 template soCollisionHitModuleBuilder<FT_BC::CollisionHitModuleBuildConfig>::soCollisionHitModuleBuilder(soModuleAccesser*, int, u8, soEventObserverRegistrationDesc*);
 template soCollisionShieldModuleBuilder<FT_BC::CollisionShieldModuleBuildConfig>::soCollisionShieldModuleBuilder(soModuleAccesser*, int, gfTask::Category);
+#ifndef FT_NO_REFLECTOR_INSTANTIATION // the builder with the folded in absorber instantiates its builders itself
 template soCollisionReflectorModuleBuilder<FT_BC::CollisionReflectorModuleBuildConfig>::soCollisionReflectorModuleBuilder(soModuleAccesser*, int, gfTask::Category);
+#endif
 template soCollisionCatchModuleBuilder<FT_BC::CollisionCatchModuleBuildConfig>::soCollisionCatchModuleBuilder(soModuleAccesser*, int, gfTask::Category, soEventObserverRegistrationDesc*);
 template soShakeModuleBuilder<FT_BC::ShakeModuleBuildConfig>::soShakeModuleBuilder(soModuleAccesser*, void*);
 template soSoundModuleBuilder<FT_BC::SoundModuleBuildConfig>::soSoundModuleBuilder(soModuleAccesser*, soSoundIdExchanger*, soEventObserverRegistrationDesc*);

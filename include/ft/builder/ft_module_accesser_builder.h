@@ -185,7 +185,7 @@ public:
             (soCollisionHitModule*)ftBuilderModule<__typeof__(m_hitModuleBuilder)>::get(&m_hitModuleBuilder),
             (soCollisionShieldModule*)m_shieldModuleBuilder.getModule(),
             (soCollisionShieldModule*)m_reflectorModuleBuilder.getModule(),
-            (soCollisionShieldModule*)g_soCollisionAbsorberModuleNull,
+            ftReflectorBase<typename BC::CollisionReflectorModuleBuildConfig>::getAbsorber(&m_reflectorModuleBuilder),
             (void*)m_collisionCatchModuleBuilder.getModule(),
             (soCollisionSearchModule*)m_searchBuilder.getModule(),
             (soDamageModule*)m_damageModuleBuilder.getModule(),
