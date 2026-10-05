@@ -25,6 +25,10 @@ typedef soLinkModuleBuildConfigCap<6, soLinkModuleImpl> ftZeldaLinkModuleBuildCo
 typedef soStatusModuleBuildConfig<284, soGeneralWorkBuildConfig<34, 14, 2>, 274, 71, soTransitionModuleBuildConfig<ftStatusTransitionTypeList> > ftZeldaStatusModuleBuildConfig;
 typedef soCollisionSearchModuleBuilder<soCollisionSearchModuleBuildConfig<soCollisionSearchModuleImpl> > ftZeldaCollisionSearchModuleBuilder;
 
+// HYPOTHESIS: this fighter has its own kinetic transactor (changeKinetic is in a later translation unit)
+FT_KINETIC_TRANSACTOR(ftZeldaKineticTransactor);
+typedef soKineticModuleBuildConfigMediator<soKineticModuleGenericImpl, ftKineticMediatorImplT<ftZeldaKineticTransactor, ftKineticTransactor> > ftZeldaKineticModuleBuildConfig;
+
 // HYPOTHESIS: soGenerateArticleManageModuleBuilder (weapon pools), not reconstructed yet
 typedef ftOpaqueGenerateArticleManageModuleBuilder<0xFF40, Fighter_Zelda> ftZeldaGenerateArticleManageModuleBuilder;
 
@@ -43,6 +47,7 @@ public:
     typedef ftZeldaLinkModuleBuildConfig LinkModuleBuildConfig;
     typedef ftZeldaStatusModuleBuildConfig StatusModuleBuildConfig;
     typedef ftZeldaCollisionSearchModuleBuilder CollisionSearchModuleBuilder;
+    typedef ftZeldaKineticModuleBuildConfig KineticModuleBuildConfig;
     typedef ftZeldaGenerateArticleManageModuleBuilder GenerateArticleManageModuleBuilder;
 };
 

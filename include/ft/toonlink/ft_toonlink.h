@@ -22,6 +22,10 @@ typedef soLinkModuleBuildConfigCap<6, soLinkModuleImpl> ftToonLinkLinkModuleBuil
 typedef soStatusModuleBuildConfig<284, soGeneralWorkBuildConfig<18, 14, 2>, 274, 71, soTransitionModuleBuildConfig<ftStatusTransitionTypeList> > ftToonLinkStatusModuleBuildConfig;
 typedef soCollisionSearchModuleBuilder<soCollisionSearchModuleBuildConfig<soCollisionSearchModuleImpl> > ftToonLinkCollisionSearchModuleBuilder;
 
+// HYPOTHESIS: this fighter has its own kinetic transactor (changeKinetic is in a later translation unit)
+FT_KINETIC_TRANSACTOR(ftToonLinkKineticTransactor);
+typedef soKineticModuleBuildConfigMediator<soKineticModuleGenericImpl, ftKineticMediatorImplT<ftToonLinkKineticTransactor> > ftToonLinkKineticModuleBuildConfig;
+
 // HYPOTHESIS: soGenerateArticleManageModuleBuilder (weapon pools), not reconstructed yet
 typedef ftOpaqueGenerateArticleManageModuleBuilder<0x11CE4, Fighter_ToonLink> ftToonLinkGenerateArticleManageModuleBuilder;
 
@@ -37,6 +41,7 @@ public:
     typedef ftToonLinkLinkModuleBuildConfig LinkModuleBuildConfig;
     typedef ftToonLinkStatusModuleBuildConfig StatusModuleBuildConfig;
     typedef ftToonLinkCollisionSearchModuleBuilder CollisionSearchModuleBuilder;
+    typedef ftToonLinkKineticModuleBuildConfig KineticModuleBuildConfig;
     typedef ftToonLinkGenerateArticleManageModuleBuilder GenerateArticleManageModuleBuilder;
 };
 

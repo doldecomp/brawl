@@ -61,6 +61,7 @@ struct soKineticAttributeMask {
 template <typename Transactor>
 class soKineticUpdateEnergyHolderHelper {
 public:
+    typedef Transactor TransactorType;
     soKineticAttributeMask m_flag;
     soKineticUpdateEnergyHolderHelper(soKineticAttributeMask flag) : m_flag(flag) { }
 };
@@ -134,7 +135,7 @@ public:
     int forEachHolderModuleAccesser(Helper helper, soModuleAccesser* acc) {
         typename Info::Type* energy = m_holder.getEnergy();
         if ((helper.m_flag.m_mask & Holder::Attribute) && energy->isEnable() == true && !energy->isSuspend()) {
-            ftKineticTransactor::updateEnergy(energy, acc);
+            Helper::TransactorType::updateEnergy(energy, acc);
         }
         return m_next.forEachHolderModuleAccesser(helper, acc);
     }
@@ -232,17 +233,76 @@ public:
     virtual int getMediateNum() { return 8; }
 };
 
+// ftXxxKineticTransactor of a fighter (changeKinetic is in the fighter REL, the rest is the ftKineticTransactor in sora_melee).
+#define FT_KINETIC_TRANSACTOR(Name)                                                                                       class Name : public ftKineticTransactor {                                                                                 public:                                                                                                                       static void changeKinetic(soModuleAccesser* acc, void* pools);                                                         template <typename E>                                                                                                   static void updateEnergy(E* energy, soModuleAccesser* acc) {                                                                if (energy->isEnable() != true) {                                                                                           return;                                                                                                             }                                                                                                                       if (energy->isSuspend()) {                                                                                                  return;                                                                                                             }                                                                                                                       return energy->updateEnergy(acc);                                                                                   }                                                                                                                   }
+
+// The mediator of the fighters with their own ftXxxKineticTransactor (derived from ftKineticTransactor, with its own
+// changeKinetic and updateEnergy<E> instances). Same code as ftKineticMediatorImpl.
+template <typename Transactor, typename UpdateTransactor = Transactor>
+class ftKineticMediatorImplT : public soKineticMediator {
+    ftKineticPoolJostle m_pools; // +0x4
+public:
+    ftKineticMediatorImplT(soModuleAccesser* acc) : m_pools(acc) { }
+    ~ftKineticMediatorImplT() { }
+
+#undef FT_KINETIC_CLEAR
+#define FT_KINETIC_CLEAR(L)                                                                                               for (int i = 0; i < 1; i++) {                                                                                             soKineticTransactHelper::checkClearSpeed(FT_KINETIC_SUB(L).getInstanceAt(i));                                      }
+    virtual void changeKinetic(soModuleAccesser* acc) {
+        Transactor::changeKinetic(acc, &m_pools);
+        FT_KINETIC_EACH_POOL(FT_KINETIC_CLEAR)
+    }
+
+#undef FT_KINETIC_UPDATE
+#define FT_KINETIC_UPDATE(L)                                                                                              for (int i = 0; i < 1; i++) {                                                                                             ftKineticPool##L##Info::Type* energy = FT_KINETIC_SUB(L).getInstanceAt(i);                                             if (energy->isEnable() == true && !energy->isSuspend()) {                                                                  UpdateTransactor::updateEnergy(energy, acc);                                                                    }                                                                                                                  }
+    virtual void updateEnergy(soModuleAccesser* acc) {
+        FT_KINETIC_EACH_POOL(FT_KINETIC_UPDATE)
+    }
+
+    virtual void updateEnergy1(soModuleAccesser* acc, soKineticAttributeMask flag) {
+        soKineticUpdateEnergyHolderHelper<UpdateTransactor> helper(flag);
+        FT_KINETIC_EACH_POOL(FT_KINETIC_FOR_EACH)
+    }
+
+    virtual void updateEnergy2(soArray<soKineticEnergy**>* energies, soModuleAccesser* acc) {
+        for (int i = 0; i < energies->size(); i++) {
+            soKineticEnergy* energy = **&energies->at(i);
+            if (energy->isEnable() != false && energy->isSuspend() != true) {
+                if (energy->isEnable() == true && energy->isSuspend() == false) {
+                    if (energy->isEnable() == true && energy->isSuspend() == false) {
+                        energy->updateEnergy(acc);
+                    }
+                }
+            }
+        }
+    }
+
+    virtual void postUpdateEnergy() { }
+    virtual void addSpeed(void* speed, soModuleAccesser* acc) { UpdateTransactor::addSpeed(speed, &m_pools, acc); }
+    virtual void addSpeedOutside(int type, void* speed, soModuleAccesser* acc) { UpdateTransactor::addSpeedOutside(type, speed, &m_pools, acc); }
+    virtual void notifyEventChangeStatus(void* a, void* b, void* c, void* d) { UpdateTransactor::notifyEventChangeStatus(a, b, c, d); }
+    virtual int getMediateNum() { return 8; }
+};
+
 template <typename T>
 class soKineticModuleBuildConfig {
 public:
     typedef T ModuleType;
+    typedef ftKineticMediatorImpl MediatorType;
+};
+
+// Same with a fighter specific mediator (ftKineticMediatorImplT<ftXxxKineticTransactor>).
+template <typename T, typename M>
+class soKineticModuleBuildConfigMediator {
+public:
+    typedef T ModuleType;
+    typedef M MediatorType;
 };
 
 template <typename BC>
 class soKineticModuleBuilder {
     typename BC::ModuleType m_module;     // +0x0
     ftKineticEnergyManager m_manager;     // +0x30
-    ftKineticMediatorImpl m_mediator;     // +0xE0
+    typename BC::MediatorType m_mediator; // +0xE0
 public:
     soKineticModuleBuilder(soModuleAccesser* acc) :
         m_module(acc, &m_manager, &m_mediator), m_manager(false), m_mediator(acc) { }

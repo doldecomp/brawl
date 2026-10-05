@@ -22,6 +22,10 @@ typedef soCollisionShieldModuleBuildConfigGroups<2, 1, 1, soCollisionShieldEvent
 typedef soLinkModuleBuildConfigCap<6, soLinkModuleImpl> ftGanonLinkModuleBuildConfig;
 typedef soStatusModuleBuildConfig<290, soGeneralWorkBuildConfig<18, 14, 2>, 274, 71, soTransitionModuleBuildConfig<ftStatusTransitionTypeList> > ftGanonStatusModuleBuildConfig;
 
+// HYPOTHESIS: this fighter has its own kinetic transactor (changeKinetic is in a later translation unit)
+FT_KINETIC_TRANSACTOR(ftGanonKineticTransactor);
+typedef soKineticModuleBuildConfigMediator<soKineticModuleGenericImpl, ftKineticMediatorImplT<ftGanonKineticTransactor> > ftGanonKineticModuleBuildConfig;
+
 // HYPOTHESIS: soGenerateArticleManageModuleBuilder (weapon pools), not reconstructed yet
 typedef ftOpaqueGenerateArticleManageModuleBuilder<0x4630, Fighter_Ganon> ftGanonGenerateArticleManageModuleBuilder;
 
@@ -37,6 +41,7 @@ public:
     typedef ftGanonCollisionShieldModuleBuildConfig CollisionShieldModuleBuildConfig;
     typedef ftGanonLinkModuleBuildConfig LinkModuleBuildConfig;
     typedef ftGanonStatusModuleBuildConfig StatusModuleBuildConfig;
+    typedef ftGanonKineticModuleBuildConfig KineticModuleBuildConfig;
     typedef ftGanonGenerateArticleManageModuleBuilder GenerateArticleManageModuleBuilder;
 };
 
