@@ -269,12 +269,13 @@ public:
     void setupDisguiseList(int index, soAnimCmdDisguiseListEntry* list) {
         soArray<const acAnimCmdConv*>* entries = getEntryList(index);
         if (entries->isNull() != true && list != nullptr) {
-            s32 i = 0;
-            while (i < entries->size()) {
+            for (s32 i = 0;; i++) {
+                if (i >= entries->capacity())
+                    break;
                 if (list[i].index < 0)
                     break;
-                entries->at(list[i].index) = list[i].value;
-                i++;
+                const acAnimCmdConv* conv = list[i].value;
+                entries->at(list[i].index) = conv;
             }
         }
     }

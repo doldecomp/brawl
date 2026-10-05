@@ -1,6 +1,6 @@
 __register_global_object = .text:0x00000000; // type:function size:0x1C scope:global
 __destroy_global_chain = .text:0x0000001C; // type:function size:0x54 scope:global
-fn_106_70 = .text:0x00000070; // type:function size:0x18E0
+__ct__7ftMarthFlQ25Heaps8HeapTypeQ25Heaps8HeapTypeQ25Heaps8HeapType = .text:0x00000070; // type:function size:0x18E0
 fn_106_1950 = .text:0x00001950; // type:function size:0x98
 fn_106_19E8 = .text:0x000019E8; // type:function size:0xB8
 __dt__27ftVirtualNodeMatrixPoolImplFv = .text:0x00001AA0; // type:function size:0x5C
