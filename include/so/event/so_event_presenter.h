@@ -49,9 +49,13 @@ public:
         m_manageID = -1;
     }
 
+#ifdef FT_MODULE_BUILDER
+    ~soEventObserver(); // MATCH-ONLY: the fighter RELs call the sora_melee instance
+#else
     ~soEventObserver() {
         removeObserver(m_manageID);
     }
+#endif
 
     void addObserverSub(s32 manageId, T* obsvr, s8 p3) {
         bool check4 = false;
@@ -182,12 +186,46 @@ class soEventPresenter {
         return getObserverListHelper2();
     }
 
+    // HYPOTHESIS: variant of the lookup that stores the list through a local (seen in the soAnimCmdInterpreter constructor)
+    bool getObserverListHelper2Local() {
+        soEventManager* mgr;
+        s16 uid = m_unitID;
+        mgr = soEventSystem::getInstance()->getManager(m_manageID);
+        soInstanceManagerFullProperty<T*>* list = nullptr;
+        if (mgr->getObserverCapacity(uid) == 0) {
+            list = nullptr;
+        } else {
+            soEventUnitWrapper<T>* evtUnitWrapper =
+                dynamic_cast<soEventUnitWrapper<T>* >(mgr->getEventUnit(uid));
+            if (evtUnitWrapper)
+                list = evtUnitWrapper->getObserverListSub();
+        }
+        m_obsrvrList = list;
+        return list != nullptr;
+    }
+
+    bool getObserverListHelperLocal() {
+        if (m_manageID <= -1 || !checkManageId())
+            return false;
+        if (soEventSystem::getInstance()->getManager(m_manageID)->getObserverCapacity(m_unitID) == 0) {
+            m_obsrvrList = nullptr;
+            return false;
+        }
+        return getObserverListHelper2Local();
+    }
+
 public:
     // NOTE: shadows the BrawlHeaders copy; constructors added by agent/damage
     soEventPresenter() { }
     soEventPresenter(s16 manageId, s16 unitId) : m_manageID(manageId), m_unitID(unitId), m_obsrvrList(nullptr) {
         if (manageId > 0) {
             getObserverListHelper();
+        }
+    }
+    // HYPOTHESIS: constructor with the list lookup storing through a local (soAnimCmdInterpreter)
+    soEventPresenter(s16 manageId, s16 unitId, bool useLocalLookup) : m_manageID(manageId), m_unitID(unitId), m_obsrvrList(nullptr) {
+        if (manageId > 0) {
+            getObserverListHelperLocal();
         }
     }
     virtual ~soEventPresenter() { }

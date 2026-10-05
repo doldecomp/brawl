@@ -7,6 +7,7 @@
 class soEnable {
     u8 m_isEnable : 1;
 public:
+    soEnable() { m_isEnable = true; }
     bool isEnable() const { return m_isEnable; }
     void enable() { m_isEnable = true; }
     void disable() { m_isEnable = false; }

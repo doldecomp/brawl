@@ -144,8 +144,8 @@ void ftStatusUniqProcessDamageFly::correctDamageVector(soModuleAccesser* moduleA
     Vec2f result;
     result.m_y = length * (float)sin(angle);
     result.m_x = length * (float)cos(angle);
-    ((Vec2f*)&normal.m_normalData[0])->m_x = result.m_x;
-    ((Vec2f*)&normal.m_normalData[0])->m_y = result.m_y;
+    normal.m_speed.m_x = result.m_x;
+    normal.m_speed.m_y = result.m_y;
 }
 
 void ftStatusUniqProcessDamageFly::execNormalDamage(soModuleAccesser* moduleAccesser) {
@@ -207,8 +207,8 @@ void ftStatusUniqProcessDamageFly::checkAttack(soModuleAccesser* moduleAccesser,
         soExternalValueAccesser::getKineticModule(other)->addSpeedOutside(soKineticEnergy::Outside_Damage_Reserved, &share3);
         Vec2f remain = own * (1.0f - t);
         Vec2f result = speed - remain;
-        ((Vec2f*)&normal->m_normalData[0])->m_x = result.m_x;
-        ((Vec2f*)&normal->m_normalData[0])->m_y = result.m_y;
+        normal->m_speed.m_x = result.m_x;
+        normal->m_speed.m_y = result.m_y;
     }
 }
 

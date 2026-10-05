@@ -35,6 +35,8 @@ extern soGeneralTermManager g_soGeneralTermManager;
 class soGeneralTermCache
 {
 public:
+    soGeneralTermCache();
+    ~soGeneralTermCache();
     u32 m_flags;
     u32 m_flags2;
     u32 m_buttonOnMask;
@@ -59,6 +61,10 @@ public:
     int m_groupId;
     int m_unitId;
     u32 _unk08;
+#ifdef FT_MODULE_BUILDER
+    soTransitionInfo() : m_groupId(-1), m_unitId(-1), _unk08(0) { }
+    ~soTransitionInfo(); // MATCH-ONLY: out of line in the fighter RELs (ft_builder_noinline.h)
+#endif
 };
 static_assert(sizeof(soTransitionInfo) == 0xC, "Class is wrong size!");
 
@@ -116,6 +122,12 @@ public:
     soInstanceManagerFullPropertyEccentric<soTransitionTerm> m_transitionTermInstanceManager;
     int m_unitID;
 
+#ifdef FT_MODULE_BUILDER
+    // constructor / destructor live in sora_melee
+    soTransitionTermGroup(soArray<soInstanceUnitFullProperty<soTransitionTerm> >* terms);
+    ~soTransitionTermGroup();
+#endif
+
     // Checks if any of the terms within this group currently have all of their soGeneralTerms satisfied.
     u32 checkEstablish(soModuleAccesser* moduleAccesser, u32* targetKindOut, int* termIDOut, u32* returnWord, u16* attrMask, soGeneralTermCache* generalTermCache);
     // Creates a new empty term with the specified Unit ID, resetting any existing term if necessary.
@@ -158,6 +170,11 @@ public:
     soArray<soTransitionTermGroup>* m_transitionTermGroupArray;
     int m_groupID;
     soTransitionInfo m_transitionInfo;
+#ifdef FT_MODULE_BUILDER
+    // inlined into the builders
+    soTransitionModuleImpl(soArray<soTransitionTermGroup>* groups); // out of line (ft_builder_noinline.h)
+    soArray<soTransitionTermGroup>* getGroups() { return m_transitionTermGroupArray; }
+#endif
     virtual int checkEstablish(soModuleAccesser* accesser, u32* targetKindOut, int groupID, u16* attrMask, soGeneralTermCache* generalTermCache);
     virtual void enableTerm(int unitID, int groupID);
     virtual void unableTerm(int unitID, int groupID);
@@ -172,6 +189,10 @@ public:
     virtual void clearTransitionTermAll(int groupID);
     virtual int notifyEventAnimCmd(int commandType, soArrayContractibleTable<acCmdArgConv> commandArgList, u8* option, soModuleAccesser* accesser);
     virtual soTransitionInfo* getLastTransitionInfo();
+#ifdef FT_MODULE_BUILDER
+    virtual ~soTransitionModuleImpl() { }
+#else
     virtual ~soTransitionModuleImpl();
+#endif
 };
 static_assert(sizeof(soTransitionModuleImpl) == 0x18, "Class is wrong size!");
