@@ -331,7 +331,8 @@ hkResult hkBinaryPackfileReader::loadFileHeader(hkStreamReader* reader, void* bu
     m_startOffset = reader->seekTellSupported() ? reader->tell() : 0;
     if (buffer == 0) {
         buffer = hkMemory::getInstance().allocate(0x40, 5);
-        m_data->m_memory.pushBack(buffer);
+        hkPackfileData* d = m_data;
+        d->m_memory.pushBack(buffer);
     }
     hkPackfileHeader magic;
     if (reader->read(buffer, 0x40) == 0x40) {
@@ -348,7 +349,8 @@ hkResult hkBinaryPackfileReader::loadFileHeader(hkStreamReader* reader, void* bu
 hkResult hkBinaryPackfileReader::loadSectionHeadersNoSeek(hkStreamReader* reader, void* buffer) {
     if (buffer == 0) {
         buffer = hkMemory::getInstance().allocate(m_header->m_numSections * sizeof(hkPackfileSectionHeader), 5);
-        m_data->m_memory.pushBack(buffer);
+        hkPackfileData* d = m_data;
+        d->m_memory.pushBack(buffer);
     }
     int size = m_header->m_numSections * sizeof(hkPackfileSectionHeader);
     if (size == reader->read(buffer, size)) {
@@ -375,7 +377,8 @@ hkResult hkBinaryPackfileReader::loadSectionNoSeek(hkStreamReader* reader, int s
     int size = h->m_endOffset;
     if (buffer == 0) {
         buffer = hkMemory::getInstance().allocate(size, 5);
-        m_data->m_memory.pushBack(buffer);
+        hkPackfileData* d = m_data;
+        d->m_memory.pushBack(buffer);
     }
     if (size == reader->read(buffer, size)) {
         char* data = (char*)buffer;
@@ -544,12 +547,14 @@ void hkPackfileObjectUpdateTracker::replaceObject(void* oldObject, void* newObje
 }
 
 void hkPackfileObjectUpdateTracker::addChunk(void* p, int nbytes, int cl) {
+    hkPackfileData* d = m_packfileData;
     hkPackfileData::Allocation a = {p, nbytes, cl};
-    m_packfileData->m_allocations.pushBack(a);
+    d->m_allocations.pushBack(a);
 }
 
 void hkPackfileObjectUpdateTracker::addAllocation(void* p) {
-    m_packfileData->m_memory.pushBack(p);
+    hkPackfileData* d = m_packfileData;
+    d->m_memory.pushBack(p);
 }
 
 void hkClassNameRegistry::merge(hkClassNameRegistry& other) {
@@ -602,14 +607,14 @@ int hkPointerMultiMap<Value>::removeByIndex(void* key, int index) {
 template <typename Value>
 int hkPointerMultiMap<Value>::getFreeIndex() {
     int idx = m_freeList;
-    if (idx == -1) {
+    if (idx != -1) {
+        m_freeList = m_elements[idx].m_next;
+    } else {
         idx = m_elements.m_size;
         if (m_elements.m_size == (m_elements.m_capacityAndFlags & hkArrayBase::CAPACITY_MASK)) {
             hkArrayUtil::_reserveMore(&m_elements, sizeof(Entry));
         }
         m_elements.m_size++;
-    } else {
-        m_freeList = m_elements[idx].m_next;
     }
     return idx;
 }
@@ -617,14 +622,14 @@ int hkPointerMultiMap<Value>::getFreeIndex() {
 namespace {
 
 int extractAndAdvanceInt(const char* base, int& offset) {
-    int v = *(const int*)(base + offset);
-    offset += 4;
-    return v;
+    int cur = offset;
+    offset = cur + 4;
+    return *(const int*)(base + cur);
 }
 
 const char* extractAndAdvanceString(const char* base, int& offset) {
-    const char* s = base + offset;
     int len = 0;
+    const char* s = base + offset;
     for (const char* c = s; *c != 0; c++) {
         len++;
     }
@@ -645,10 +650,9 @@ void hkPackfileSectionHeader::getExports(void* sectionData, hkArray<hkPackfileDa
             break;
         }
         const char* name = extractAndAdvanceString(table, offset);
-        hkPackfileData::Export e;
+        hkPackfileData::Export& e = exports.expandOne();
         e.m_name = name;
         e.m_object = (char*)sectionData + dataOffset;
-        exports.pushBack(e);
     }
 }
 
@@ -661,9 +665,8 @@ void hkPackfileSectionHeader::getImports(void* sectionData, hkArray<hkPackfileDa
             break;
         }
         const char* name = extractAndAdvanceString(table, offset);
-        hkPackfileData::Import e;
+        hkPackfileData::Import& e = imports.expandOne();
         e.m_name = name;
         e.m_object = (char*)sectionData + dataOffset;
-        imports.pushBack(e);
     }
 }

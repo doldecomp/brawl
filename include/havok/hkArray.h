@@ -115,6 +115,14 @@ struct hkArray : hkArrayBase {
     const T& operator[](int i) const {
         return ((const T*)m_data)[i];
     }
+    // Appends an uninitialised element and returns it.
+    T& expandOne() {
+        if (m_size == (m_capacityAndFlags & CAPACITY_MASK)) {
+            hkArrayUtil::_reserveMore(this, sizeof(T));
+        }
+        return ((T*)m_data)[m_size++];
+    }
+
     void pushBack(const T& t) {
         if (m_size == (m_capacityAndFlags & CAPACITY_MASK)) {
             hkArrayUtil::_reserveMore(this, sizeof(T));
