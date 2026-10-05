@@ -9,10 +9,11 @@
 #include <types.h>
 
 ////////////////////////////////////////
-// soTeamModuleBuilder (0x74 bytes): fn_106_53D8 (ctor) / fn_106_49CC (dtor). The team module is at +0x30.
-//   soTeamModuleBuilder(fbd.getTeam(), soModuleAccesser*)
-// STUB: storage only (ftTeam at +4, ftTeamIndirect at +0x18, soTeamModuleImpl at +0x30).
+// soTeamModuleBuilder (0x74 bytes): fn_106_53D8 (ctor) / fn_106_49CC (dtor).
+//   soTeamModuleBuilder(fbd.getTeam() (unused), soModuleAccesser*); the team is the entry id of the owner fighter.
 ////////////////////////////////////////
+
+#include <ft/fighter.h>
 
 template <typename T>
 class soTeamModuleBuildConfig {
@@ -20,20 +21,30 @@ public:
     typedef T ModuleType;
 };
 
+extern char g_soTeamModuleNullArg[];
+
 template <typename BC>
 class soTeamModuleBuilder {
-    u8 m_data[0x74];
+    u32 m_unk0;
+    ftTeam m_team;                 // +0x4
+    ftTeamIndirect m_teamIndirect; // +0x18
+    soTeamModuleImpl m_module;     // +0x30
 public:
-    ~soTeamModuleBuilder() { m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; } // STUB: non-trivial so the dtor call exists
-    soTeamModuleBuilder(s32 team, soModuleAccesser* acc) { m_data[0] = 0; m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; m_data[6] = 6; m_data[7] = 7; } // STUB
-    void* getModule() { return m_data + 0x30; }
+    static int getEntryId(soModuleAccesser* acc) { return dynamic_cast<Fighter&>(*acc->m_stageObject).m_entryId; }
+    soTeamModuleBuilder(s32 team, soModuleAccesser* acc) :
+        m_team(getEntryId(acc)),
+        m_teamIndirect(getEntryId(acc)),
+        m_module(&m_team, &m_team, &m_teamIndirect, acc, g_soTeamModuleNullArg) { }
+    void* getModule() { return &m_module; }
 };
 
 ////////////////////////////////////////
-// soAreaModuleBuilder (0x374 bytes): fn_106_6BD8 (ctor) / fn_106_2F08 (dtor). The soAreaModuleImpl is at +0x10.
+// soAreaModuleBuilder (0x374 bytes): fn_106_6BD8 (ctor) / fn_106_2F08 (dtor). The area module is at +0x10.
 //   soAreaModuleBuilder(soModuleAccesser*, fbd.getAreaCategory(), &g_soEventObserverRegistrationDescNull)
-// STUB: storage only.
 ////////////////////////////////////////
+
+#include <so/area/so_area_module_impl.h>
+#include <ft/builder/ft_dol_holders.h>
 
 template <typename T>
 class soAreaModuleBuildConfig {
@@ -42,12 +53,18 @@ public:
 };
 
 template <typename BC>
-class soAreaModuleBuilder {
-    u8 m_data[0x374];
+class soAreaModuleBuilder : public soArraySelectHolder<1, soArrayVector<soAreaWind, 1>, soArrayNull<soAreaWind> > {
+    typename BC::ModuleType m_module;                 // +0x10
+    soAreaEnviromentElementCheckerImpl m_checker;     // +0x78
+    soArrayVector<soAreaContactLog, 16> m_contactLogs; // +0x94
+    soArrayVector<soAreaInstance, 9> m_instances;     // +0x220
+    u32 m_pad;
 public:
-    ~soAreaModuleBuilder() { m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; } // STUB: non-trivial so the dtor call exists
-    soAreaModuleBuilder(soModuleAccesser* acc, u8 areaCategory, soEventObserverRegistrationDesc* regDesc) { m_data[0] = 0; m_data[1] = 1; m_data[2] = 2; m_data[3] = 3; m_data[4] = 4; m_data[5] = 5; m_data[6] = 6; m_data[7] = 7; } // STUB
-    void* getModule() { return m_data + 0x10; }
+    soAreaModuleBuilder(soModuleAccesser* acc, u8 areaCategory, soEventObserverRegistrationDesc* regDesc) :
+        soArraySelectHolder<1, soArrayVector<soAreaWind, 1>, soArrayNull<soAreaWind> >(1, 0),
+        m_module(acc, areaCategory, &m_instances, &m_contactLogs, &m_checker, this->get(), regDesc, 8),
+        m_checker(), m_contactLogs(0), m_instances(0) { }
+    void* getModule() { return &m_module; }
 };
 
 ////////////////////////////////////////

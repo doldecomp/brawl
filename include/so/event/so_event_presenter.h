@@ -57,6 +57,9 @@ public:
     }
 #endif
 
+#ifdef FT_MODULE_BUILDER
+    void addObserverSub(s32 manageId, T* obsvr, s8 p3); // MATCH-ONLY: a call into sora_melee in the fighter RELs
+#else
     void addObserverSub(s32 manageId, T* obsvr, s8 p3) {
         bool check4 = false;
         bool check3 = false;
@@ -91,6 +94,7 @@ public:
                 m_manageID = manageId;
         }
     }
+#endif
 
     void initialize(s16 param1, s8 param2) {
         addObserver(param1, param2);
