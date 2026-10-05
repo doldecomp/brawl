@@ -565,6 +565,13 @@ havok/hkPropertyClass.cpp:
 	.bss        start:0x805329C8 end:0x80532A10
 	.sdata2     start:0x805A41E8 end:0x805A4200
 
+havok/hkGenericConstraintDataClass.cpp:
+	.text       start:0x802DD570 end:0x802DD5D8
+	.ctors      start:0x804066C8 end:0x804066CC
+	.rodata     start:0x80412220 end:0x80412260
+	.bss        start:0x80532E70 end:0x80532E98
+	.sdata2     start:0x805A4290 end:0x805A42A0
+
 havok/hkGenericConstraintSchemeClass.cpp:
 	.text       start:0x802DD5D8 end:0x802DD63C
 	.ctors      start:0x804066CC end:0x804066D0
@@ -595,6 +602,13 @@ havok/hkConstraintMotorClass.cpp:
 	.bss        start:0x80532F48 end:0x80532F70
 	.sdata      start:0x8059EFE8 end:0x8059EFF0
 	.sdata2     start:0x805A42F8 end:0x805A4300
+
+havok/hkEntityClass.cpp:
+	.text       start:0x802E1FCC end:0x802E2038
+	.ctors      start:0x804066E8 end:0x804066EC
+	.rodata     start:0x80412A28 end:0x80412CA8
+	.bss        start:0x80532F80 end:0x80532FA8
+	.sdata2     start:0x805A4330 end:0x805A4348
 
 havok/hkEntityDeactivatorClass.cpp:
 	.text       start:0x802E2038 end:0x802E2094
@@ -640,6 +654,22 @@ havok/hkPhantomClass.cpp:
 	.ctors      start:0x8040672C end:0x80406730
 	.rodata     start:0x80413268 end:0x804132C8
 	.bss        start:0x805331A0 end:0x805331C8
+
+havok/hkPhysicsSystemClass.cpp:
+	.text       start:0x802E9B90 end:0x802E9BFC
+	.ctors      start:0x80406734 end:0x80406738
+	.rodata     start:0x804132D8 end:0x804133C8
+	.bss        start:0x805331D8 end:0x80533200
+	.sdata2     start:0x805A4410 end:0x805A4428
+
+havok/hkWorldCinfoClass.cpp:
+	.text       start:0x802F03A8 end:0x802F0438
+	.ctors      start:0x80406740 end:0x80406744
+	.rodata     start:0x80413758 end:0x80413E38
+	.data       start:0x804883C8 end:0x804885E8
+	.bss        start:0x80533210 end:0x80533238
+	.sdata      start:0x8059F000 end:0x8059F010
+	.sdata2     start:0x805A44D0 end:0x805A44D8
 
 havok/hkWorldObjectClass.cpp:
 	.text       start:0x802F06A8 end:0x802F0714
