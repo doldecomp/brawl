@@ -534,9 +534,11 @@ config.libs = [
     {
         "lib": "ft_ganon",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_ganon/ft_ganon.cpp"),
+        ],
     },
     {
         "lib": "ft_iceclimber",
@@ -569,9 +571,11 @@ config.libs = [
     {
         "lib": "ft_link",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_link/ft_link.cpp"),
+        ],
     },
     {
         "lib": "ft_lucario",
@@ -708,9 +712,11 @@ config.libs = [
     {
         "lib": "ft_toonlink",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_toonlink/ft_toonlink.cpp"),
+        ],
     },
     {
         "lib": "ft_wario",
@@ -743,9 +749,11 @@ config.libs = [
     {
         "lib": "ft_zelda",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_zelda/ft_zelda.cpp"),
+        ],
     },
     {
         "lib": "sora_adv_menu_difficulty",

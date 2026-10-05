@@ -44,6 +44,13 @@ public:
     ~soCollisionShieldPart();
 };
 
+class soCollisionSearchPart {
+    u8 m_opaque[0x60];
+public:
+    soCollisionSearchPart(soCollision::Category category);
+    ~soCollisionSearchPart();
+};
+
 class soCollisionCatchPart {
     u8 m_opaque[0x5C];
 public:
@@ -96,7 +103,7 @@ FT_DOL_POLY_BEGIN(soDamageModuleActor, 0x104);
     soDamageModuleActor(soModuleAccesser* acc, soArray<soDamage>* damages, void* null1, void* null2, soEventObserverRegistrationDesc* regDesc);
 FT_DOL_POLY_END;
 
-FT_DOL_POLY_BEGIN(soCollisionCatchModuleImpl, 0xE8);
+FT_DOL_POLY_BEGIN(soCollisionCatchModuleImpl, 0xE4);
     soCollisionCatchModuleImpl(soModuleAccesser* acc, int taskId, u8 category, soArray<soCollisionCatchPart>* parts, soEventObserverRegistrationDesc* regDesc, bool n1, bool n2);
 FT_DOL_POLY_END;
 

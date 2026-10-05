@@ -26,6 +26,7 @@ struct ftUnknownBuilderPart {
 };
 
 extern char g_soGenerateArticleManageModuleNull[];
+extern char g_soCollisionSearchModuleNull[];
 
 // soGenerateArticleManageModuleBuilder of a fighter without articles: an empty class. As a member it still takes
 // 4 bytes (empty class padded to the alignment of the next member), which is what the original layout has.
@@ -34,6 +35,15 @@ class ftNullGenerateArticleManageModuleBuilder {
 public:
     ftNullGenerateArticleManageModuleBuilder(soModuleAccesser*) { }
     void* getModule() { return g_soGenerateArticleManageModuleNull; }
+};
+
+// soCollisionSearchModuleBuilder of a fighter without a search module: an empty class, 4 bytes as a member (like the
+// article builder above). Fighters with a search module select soCollisionSearchModuleBuilder<...> through
+// BuildConfig::CollisionSearchModuleBuilder.
+class ftNullCollisionSearchModuleBuilder {
+public:
+    ftNullCollisionSearchModuleBuilder(soModuleAccesser*, int, gfTask::Category) { }
+    void* getModule() { return g_soCollisionSearchModuleNull; }
 };
 
 // soGenerateArticleManageModuleBuilder<...> of a fighter with articles (weapons): not reconstructed yet. The storage has the
@@ -98,10 +108,10 @@ public:
     typedef soPhysicsModuleBuildConfig<soPhysicsModuleImpl> PhysicsModuleBuildConfig;
     typedef soItemManageModuleBuildConfig<soItemManageModuleImpl> ItemManageModuleBuildConfig;
     typedef ftNullGenerateArticleManageModuleBuilder GenerateArticleManageModuleBuilder;
+    typedef ftNullCollisionSearchModuleBuilder CollisionSearchModuleBuilder;
 };
 
 extern char g_soCollisionAbsorberModuleNull[];
-extern char g_soCollisionSearchModuleNull[];
 extern char g_soDebugModuleNull[];
 extern char g_soGeneralTermDecideModuleNull[];
 extern char g_soSwitchDecideModuleNull[];
@@ -129,6 +139,7 @@ public:
     soCollisionShieldModuleBuilder<typename BC::CollisionShieldModuleBuildConfig> m_shieldModuleBuilder;   // +0x29F8
     soCollisionReflectorModuleBuilder<typename BC::CollisionReflectorModuleBuildConfig> m_reflectorModuleBuilder; // +0x2DA0
     soCollisionCatchModuleBuilder<typename BC::CollisionCatchModuleBuildConfig> m_collisionCatchModuleBuilder; // +0x380C
+    typename BC::CollisionSearchModuleBuilder m_searchBuilder; // after m_collisionCatchModuleBuilder (before m_damageModuleBuilder)
     soDamageModuleBuilder<typename BC::DamageModuleBuildConfig> m_damageModuleBuilder;                     // +0x3A70
     soCatchModuleBuilder<typename BC::CatchModuleBuildConfig> m_catchModuleBuilder;                                                                       // +0x3C20
     soCaptureModuleBuilder<typename BC::CaptureModuleBuildConfig> m_captureModuleBuilder;                                                                   // +0x3C84
@@ -176,7 +187,7 @@ public:
             (soCollisionShieldModule*)m_reflectorModuleBuilder.getModule(),
             (soCollisionShieldModule*)g_soCollisionAbsorberModuleNull,
             (void*)m_collisionCatchModuleBuilder.getModule(),
-            (soCollisionSearchModule*)g_soCollisionSearchModuleNull,
+            (soCollisionSearchModule*)m_searchBuilder.getModule(),
             (soDamageModule*)m_damageModuleBuilder.getModule(),
             (void*)m_catchModuleBuilder.getModule(),
             (void*)m_captureModuleBuilder.getModule(),
@@ -238,6 +249,7 @@ public:
         m_shieldModuleBuilder(&m_moduleAccsr, owner->m_taskId, owner->m_taskCategory),
         m_reflectorModuleBuilder(&m_moduleAccsr, owner->m_taskId, owner->m_taskCategory),
         m_collisionCatchModuleBuilder(&m_moduleAccsr, owner->m_taskId, owner->m_taskCategory, &g_soEventObserverRegistrationDescNull),
+        m_searchBuilder(&m_moduleAccsr, owner->m_taskId, owner->m_taskCategory),
         m_damageModuleBuilder(&m_moduleAccsr, &g_soEventObserverRegistrationDescNull),
         m_catchModuleBuilder(&m_moduleAccsr),
         m_captureModuleBuilder(&m_moduleAccsr),

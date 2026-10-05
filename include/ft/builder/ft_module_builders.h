@@ -13,6 +13,7 @@
 #include <so/so_module_accesser.h>
 #include <so/collision/so_collision_attack_module_impl.h>
 #include <so/collision/so_collision_hit_module_impl.h>
+#include <so/collision/so_collision_search_module_impl.h>
 #include <so/posture/so_posture_module_impl.h>
 #include <so/model/so_model_module_impl.h>
 #include <types.h>
@@ -245,6 +246,28 @@ public:
         m_parts(4, soCollisionCatchPart(soCollision::Category_Fighter), 0),
         m_catchModule(acc, taskId, category, &m_parts, regDesc, BC::Flag, BC::Flag) { }
     typename BC::ModuleType* getModule() { return &m_catchModule; }
+};
+
+////////////////////////////////////////
+// soCollisionSearchModuleBuilder (Link, Toon Link, Zelda)
+////////////////////////////////////////
+
+template <typename T>
+class soCollisionSearchModuleBuildConfig {
+public:
+    typedef T ModuleType;
+};
+
+template <typename BC>
+class soCollisionSearchModuleBuilder {
+    soArrayVector<soCollisionSearchPart, 1> m_parts;
+    soArrayVector<soCollisionGroup, 1> m_groups;
+    typename BC::ModuleType m_searchModule;
+public:
+    soCollisionSearchModuleBuilder(soModuleAccesser* acc, int taskId, gfTask::Category category) :
+        m_parts(1, soCollisionSearchPart(soCollision::Category_Fighter), 0),
+        m_groups(1, 0), m_searchModule(acc, taskId, category, &m_parts, true) { }
+    typename BC::ModuleType* getModule() { return &m_searchModule; }
 };
 
 ////////////////////////////////////////
