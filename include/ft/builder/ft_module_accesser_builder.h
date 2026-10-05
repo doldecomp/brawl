@@ -43,7 +43,7 @@ public:
     typedef soCollisionCatchModuleBuildConfig<soCollisionCatchModuleImpl> CollisionCatchModuleBuildConfig;
     typedef soMotionModuleBuildConfig<soMotionModuleImpl> MotionModuleBuildConfig;
     typedef soTeamModuleBuildConfig<soTeamModuleImpl> TeamModuleBuildConfig;
-    typedef soAnimCmdModuleBuildConfig<soAnimCmdModuleImpl> AnimCmdModuleBuildConfig;
+    typedef soAnimCmdModuleBuildConfig<11, soAnimCmdModuleImpl> AnimCmdModuleBuildConfig;
     typedef soStatusModuleBuildConfig<soStatusModuleImpl> StatusModuleBuildConfig;
     typedef soKineticModuleBuildConfig<soKineticModuleGenericImpl> KineticModuleBuildConfig;
     typedef soGeneralWorkBuildConfig<soGeneralWorkSimple> GeneralWorkBuildConfig;

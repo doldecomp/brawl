@@ -113,11 +113,9 @@ class soAnimCmdControlUnit {
 public:
     soAnimCmdInterpreter* m_animCmdInterpreter; // 0x0
     soAnimCmdAddressPackArraySeparate* m_animCmdAddressPackArraySeparate; // 0x4
-    int m_id; // 0x8
-    short m_type; // 0xC
-    short m_unk;  // 0xE
+    // The id/attribute fields that used to be listed here belong to soInstanceUnitFullProperty<soAnimCmdControlUnit> (0x10 bytes).
 };
-static_assert(sizeof(soAnimCmdControlUnit) == 0x10, "Class is the wrong size!");
+static_assert(sizeof(soAnimCmdControlUnit) == 0x8, "Class is the wrong size!");
 
 class soAnimCmdModule: public soNullable {
 public:
@@ -136,7 +134,11 @@ public:
     virtual void getCmdAddressPack();
     virtual void setAddressPackList();
     virtual void getInterpreterNum();
+#ifdef FT_MODULE_BUILDER
+    virtual ~soAnimCmdModule() { }
+#else
     virtual ~soAnimCmdModule();
+#endif
     virtual void activate(soModuleAccesser*);
     virtual void deactivate(soModuleAccesser*);
 };
@@ -166,6 +168,9 @@ class soAnimCmdModuleImpl:
 #ifdef FT_MODULE_BUILDER
 public:
     soAnimCmdModuleImpl(short unitId, void* controlUnits);
+    // MATCH-ONLY: the vtable lives in sora_melee; a non-inline override (key function) keeps this TU from emitting a copy.
+    virtual void registInterpreter();
+    virtual ~soAnimCmdModuleImpl() { }
 private:
 #endif
 public:
