@@ -1,7 +1,7 @@
 #include <havok/hkStream.h>
 
-bool hkStreamWriter::seekTellSupported() const {
-    return false;
+hkBool hkStreamWriter::seekTellSupported() const {
+    return hkBool(false);
 }
 
 hkResult hkStreamWriter::seek(int, int) {

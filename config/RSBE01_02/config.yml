@@ -11,6 +11,16 @@ quick_analysis: true # Faster reruns after full analysis
 force_active:
 - __init_cpp_exceptions_reference
 - __fini_cpp_exceptions_reference
+- create__12hkScratchpadFv
+- create__13hkSystemClockFv
+- __dt__27hkSingleton<12hkScratchpad>Fv
+- __dt__12hkScratchpadFv
+- __vt__12hkScratchpad
+- __vt__27hkSingleton<12hkScratchpad>
+- __dt__28hkSingleton<13hkSystemClock>Fv
+- __dt__13hkSystemClockFv
+- __vt__13hkSystemClock
+- __vt__28hkSingleton<13hkSystemClock>
 
 extract:
 - symbol: HomeBtnIcon

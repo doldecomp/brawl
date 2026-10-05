@@ -14,8 +14,8 @@ int hkStreamReader::skip(int nbytes) {
     return nbytes - remaining;
 }
 
-bool hkStreamReader::markSupported() const {
-    return false;
+hkBool hkStreamReader::markSupported() const {
+    return hkBool(false);
 }
 
 hkResult hkStreamReader::setMark(int) {
@@ -26,8 +26,8 @@ hkResult hkStreamReader::rewindToMark() {
     return HK_FAILURE;
 }
 
-bool hkStreamReader::seekTellSupported() const {
-    return false;
+hkBool hkStreamReader::seekTellSupported() const {
+    return hkBool(false);
 }
 
 hkResult hkStreamReader::seek(int, int) {

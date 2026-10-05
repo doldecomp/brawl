@@ -255,7 +255,7 @@ cflags_sora_enemy = ["-O2,s" if flag == "-O4,p" else flag for flag in cflags_rel
 cflags_st_starfox = [*cflags_rel, "-inline on,noauto"]
 
 # Havok middleware (embedded in the main DOL): no RTTI, string literals in .rodata
-cflags_havok = [*cflags_common, "-RTTI off", "-str reuse,readonly"]
+cflags_havok = [*cflags_common, "-RTTI off", "-str reuse,readonly", "-use_lmw_stmw on"]
 
 config.linker_version = "GC/3.0a5.2"
 
@@ -393,16 +393,16 @@ config.libs = [
             Object(NonMatching, "havok/hkPointerMapBase.cpp"),
             Object(NonMatching, "havok/hkStringMapBase.cpp"),
             Object(NonMatching, "havok/hkMemory.cpp"),
-            Object(NonMatching, "havok/hkScratchpad.cpp"),
-            Object(NonMatching, "havok/hkStackTracer.cpp"),
+            Object(Matching, "havok/hkScratchpad.cpp"),
+            Object(Matching, "havok/hkStackTracer.cpp"),
             Object(NonMatching, "havok/hkThreadMemory.cpp"),
             Object(NonMatching, "havok/hkPoolMemory.cpp"),
-            Object(NonMatching, "havok/hkMonitorStream.cpp"),
+            Object(Matching, "havok/hkMonitorStream.cpp"),
             Object(NonMatching, "havok/hkUnionFind.cpp"),
-            Object(NonMatching, "havok/hkSystemClock.cpp"),
-            Object(NonMatching, "havok/hkIstream.cpp"),
-            Object(NonMatching, "havok/hkOstream.cpp"),
-            Object(NonMatching, "havok/hkSocket.cpp"),
+            Object(Matching, "havok/hkSystemClock.cpp"),
+            Object(Matching, "havok/hkIstream.cpp"),
+            Object(Matching, "havok/hkOstream.cpp"),
+            Object(Matching, "havok/hkSocket.cpp"),
             Object(Matching, "havok/hkStreamReader.cpp"),
             Object(Matching, "havok/hkStreamWriter.cpp"),
             Object(NonMatching, "havok/hkBufferedStreamReader.cpp"),
