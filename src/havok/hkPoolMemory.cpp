@@ -131,9 +131,9 @@ void* hkPoolMemory::alignedAllocate(int alignment, int nbytes, int cl) {
 void hkPoolMemory::alignedDeallocate(void* p) {
     if (p != 0) {
         int* h = (int*)p - 4;
+        h[0] = 0xDEADBEEF;
         int size = h[1] + 0x10;
         int offset = h[3];
-        h[0] = 0xDEADBEEF;
         deallocateChunk((char*)p - offset, size, h[2]);
     }
 }
