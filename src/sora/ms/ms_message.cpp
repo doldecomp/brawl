@@ -101,9 +101,12 @@ void Message::printf(const char* format, ...) {
 }
 
 void Message::vprintf(const char* format, va_list args) {
-    char* buf = (char*)__alloca(GetBufferSize());
-    int len = vsnprintf(buf, GetBufferSize(), format, args);
-    MsgBuf* cur = m_cur;
+    MsgBuf* cur;
+    int len;
+    char* buf;
+    buf = (char*)__alloca(GetBufferSize());
+    len = vsnprintf(buf, GetBufferSize(), format, args);
+    cur = m_cur;
     memcpy(cur->m_data + cur->m_pos, buf, len);
     cur->m_pos += len;
 }
@@ -115,8 +118,9 @@ void Message::write(const void* data, int len) {
 }
 
 void Message::writeString(const char* str) {
+    MsgBuf* cur;
     int len = strlen(str);
-    MsgBuf* cur = m_cur;
+    cur = m_cur;
     memcpy(cur->m_data + cur->m_pos, str, len);
     cur->m_pos += len;
 }
