@@ -409,6 +409,7 @@ config.libs = [
             Object(Matching, "havok/hkActionClass.cpp"),
             Object(Matching, "havok/hkMaterialClass.cpp"),
             Object(Matching, "havok/hkPropertyClass.cpp"),
+            Object(Matching, "havok/hkConstraintAtomClasses.cpp"),
             Object(Matching, "havok/hkGenericConstraintDataClass.cpp"),
             Object(Matching, "havok/hkGenericConstraintSchemeClass.cpp"),
             Object(Matching, "havok/hkConstraintInfoClass.cpp"),

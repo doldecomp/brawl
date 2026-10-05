@@ -590,6 +590,15 @@ havok/hkPropertyClass.cpp:
 	.bss        start:0x805329C8 end:0x80532A10
 	.sdata2     start:0x805A41E8 end:0x805A4200
 
+havok/hkConstraintAtomClasses.cpp:
+	.text       start:0x802D9ADC end:0x802DA104
+	.ctors      start:0x804066B8 end:0x804066BC
+	.rodata     start:0x804111C8 end:0x804121D8
+	.data       start:0x80487968 end:0x80487A08
+	.bss        start:0x80532A50 end:0x80532E40
+	.sdata      start:0x8059EFD8 end:0x8059EFE0
+	.sdata2     start:0x805A4208 end:0x805A4260
+
 havok/hkGenericConstraintDataClass.cpp:
 	.text       start:0x802DD570 end:0x802DD5D8
 	.ctors      start:0x804066C8 end:0x804066CC
