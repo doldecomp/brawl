@@ -30,7 +30,7 @@ public:
 };
 
 class ftMarth : public ftFighterBuilder<ftMarthBuildConfig> {
-    u8 unk8548[0x8574 - 0x8548];
+    u8 unkTail[0x8574 - sizeof(ftFighterBuilder<ftMarthBuildConfig>)];
 public:
     ftMarth(s32 entryId,
             Heaps::HeapType instHeap,

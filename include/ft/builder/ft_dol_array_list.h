@@ -74,6 +74,16 @@ FT_DOL_ARRAY_VECTOR(soCollisionGroup, 3);
 FT_DOL_ARRAY_VECTOR(soLinkConnection, 6);
 FT_DOL_ARRAY_VECTOR(s32, 1);
 
+// ft_captain, ft_samus, ft_metaknight
+FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 290);
+FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 301);
+FT_DOL_ARRAY_VECTOR(soLinkConnection, 12);
+
+// ft_kirby
+FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 448);
+FT_DOL_ARRAY_VECTOR(soLinkConnection, 8);
+FT_DOL_ARRAY_VECTOR(soCollisionShieldPart, 9);
+
 // soArrayContractibleTable<const soStatusData>: the (table, size) constructor and the destructor are calls into sora_melee.
 template <>
 class soArrayContractibleTable<const soStatusData> : public soArrayContractible<const soStatusData>,

@@ -481,9 +481,11 @@ config.libs = [
     {
         "lib": "ft_captain",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_captain/ft_captain.cpp"),
+        ],
     },
     {
         "lib": "ft_dedede",
@@ -555,9 +557,11 @@ config.libs = [
     {
         "lib": "ft_kirby",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_kirby/ft_kirby.cpp"),
+        ],
     },
     {
         "lib": "ft_koopa",
@@ -622,9 +626,11 @@ config.libs = [
     {
         "lib": "ft_metaknight",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_metaknight/ft_metaknight.cpp"),
+        ],
     },
     {
         "lib": "ft_ness",
@@ -687,9 +693,11 @@ config.libs = [
     {
         "lib": "ft_samus",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_samus/ft_samus.cpp"),
+        ],
     },
     {
         "lib": "ft_snake",
