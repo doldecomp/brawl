@@ -5,6 +5,40 @@
 #include <so/status/so_status_module_impl.h>
 #include <types.h>
 
+// MATCH-ONLY: view of the soAnimCmdModule vtable that exposes the slot at +0x28, used to run the
+// pre-check anim cmd of a status. The real name/signature are unknown (BrawlHeaders mislabels this
+// part of the soAnimCmdModule vtable).
+// HYPOTHESIS: 4 byte aligned flag object whose first member is a u16 mask.
+union AnimCmdPreCheckFlag {
+    u16 m_mask;
+    u32 m_pad;
+};
+
+class soAnimCmdModulePreCheckView {
+public:
+    virtual void unk08();
+    virtual void unk0c();
+    virtual void interpretCmd(soModuleAccesser* moduleAccesser, u16* flag, float frame); // +0x10 (HYPOTHESIS signature)
+    virtual void unk14();
+    virtual void unk18();
+    virtual void unk1c();
+    virtual void unk20();
+    virtual void unk24();
+    virtual void preCheck(u16* flag, void* cmd, soModuleAccesser* moduleAccesser, int a, int b);
+};
+
+static inline void callAnimCmdInterpret(soAnimCmdModule& module, soModuleAccesser* acc, u16* flag, float frame) {
+    ((soAnimCmdModulePreCheckView&)module).interpretCmd(acc, flag, frame);
+}
+
+static inline void callAnimCmdPreCheck(soAnimCmdModule& module, u16* flag, void* cmd, soModuleAccesser* acc, int a, int b) {
+    ((soAnimCmdModulePreCheckView&)module).preCheck(flag, cmd, acc, a, b);
+}
+
+static inline soLockable& getWorkLock(soModuleAccesser* moduleAccesser) {
+    return static_cast<soLockable&>(static_cast<soWorkManageModuleImpl&>(moduleAccesser->getWorkManageModule()));
+}
+
 // MATCH-ONLY: explicit instantiations stand in for the vtable of the soArrayVector<s32, 8> member
 // (emitted by the not yet decompiled constructor in the original).
 template class soArrayVector<s32, 8>;
@@ -212,6 +246,75 @@ bool soStatusModuleImpl::notifyEventAnimCmd(acAnimCmd* animCmd, soModuleAccesser
     return false;
 }
 
+// MATCH-ONLY: view of the (undeclared) debug module; slot +0x3c receives the status kind on each change.
+class soDebugModuleStatusView {
+public:
+    virtual void unk08();
+    virtual void unk0c();
+    virtual void unk10();
+    virtual void unk14();
+    virtual void unk18();
+    virtual void unk1c();
+    virtual void unk20();
+    virtual void unk24();
+    virtual void unk28();
+    virtual void unk2c();
+    virtual void unk30();
+    virtual void unk34();
+    virtual void unk38();
+    virtual void notifyStatus(int status);
+};
+
+void soStatusModuleImpl::changeStatus(int status, soModuleAccesser* moduleAccesser) {
+    if (status > -1 && status < m_statusDataArr->size() && getStatusKind() > -1
+        && moduleAccesser->getSituationModule().getKind() == Situation_Air
+        && (*(s32*)((const char*)&m_statusDataArr->at(status) + 0xC) >> 28) == 0) {
+        ((soDebugModuleStatusView*)moduleAccesser->m_enumerationStart->m_debugModule)->notifyStatus(m_statusKind);
+        ((soDebugModuleStatusView*)moduleAccesser->m_enumerationStart->m_debugModule)->notifyStatus(status);
+        return;
+    }
+    moduleAccesser->getSlowModule().resetSkip();
+    s32 prevStatus = m_statusKind;
+    s32 prevStatusKind = m_statusKind;
+    if (prevStatusKind >= 0 && prevStatusKind < m_statusUniqProcessArr->size()) {
+        soStatusUniqProcess* proc = m_statusUniqProcessArr->at(prevStatusKind);
+        if (proc != 0) {
+            proc->exitStatus(moduleAccesser, status);
+        }
+    }
+    soArray<s32>* history = *m_statusHistory;
+    if (history->isFull() == true) {
+        history->pop();
+    }
+    history->unshift(prevStatus);
+    m_statusKind = status;
+    m_isChanged = true;
+    m_transitionModule->clearTransitionTermAll(0);
+    if (m_statusKind >= 0) {
+        const soStatusData& statusData = m_statusDataArr->at(status);
+        soInstanceManagerFullProperty<soStatusEventObserver*>* list = getObserverList();
+        s32 num = list->size();
+        s32 newStatus = m_statusKind;
+        for (s32 i = 0; i < num; i++) {
+            soStatusEventObserver* observer = list->atIndexFast(i);
+            observer->notifyEventChangeStatus(newStatus, prevStatus, (soStatusData*)&statusData, moduleAccesser);
+        }
+    }
+    succeedStatusWork(&m_statusDataArr->at(status));
+    s32 newKind = m_statusKind;
+    if (newKind >= 0 && newKind < m_statusUniqProcessArr->size()) {
+        soStatusUniqProcess* proc = m_statusUniqProcessArr->at(newKind);
+        if (proc != 0) {
+            proc->initStatus(moduleAccesser);
+        }
+    }
+    m_isCollisionAttackOccer = false;
+    AnimCmdPreCheckFlag flag;
+    flag.m_mask = 5;
+    callAnimCmdInterpret(moduleAccesser->getAnimCmdModule(), moduleAccesser, &flag.m_mask, 0.0f);
+    checkTransition(moduleAccesser);
+}
+
 soStatusModuleImpl::~soStatusModuleImpl() { }
 
 // HYPOTHESIS: soStatusData starts with three masks selecting which flag/int/float work values survive a status change.
@@ -345,40 +448,6 @@ void soStatusModuleImpl::connectStatusDataList(void* list) {
     m_statusDataArr->connect((soArrayContractibleTable<const soStatusData>*)list);
 }
 
-
-// MATCH-ONLY: view of the soAnimCmdModule vtable that exposes the slot at +0x28, used to run the
-// pre-check anim cmd of a status. The real name/signature are unknown (BrawlHeaders mislabels this
-// part of the soAnimCmdModule vtable).
-// HYPOTHESIS: 4 byte aligned flag object whose first member is a u16 mask.
-union AnimCmdPreCheckFlag {
-    u16 m_mask;
-    u32 m_pad;
-};
-
-class soAnimCmdModulePreCheckView {
-public:
-    virtual void unk08();
-    virtual void unk0c();
-    virtual void interpretCmd(soModuleAccesser* moduleAccesser, u16* flag, float frame); // +0x10 (HYPOTHESIS signature)
-    virtual void unk14();
-    virtual void unk18();
-    virtual void unk1c();
-    virtual void unk20();
-    virtual void unk24();
-    virtual void preCheck(u16* flag, void* cmd, soModuleAccesser* moduleAccesser, int a, int b);
-};
-
-static inline void callAnimCmdInterpret(soAnimCmdModule& module, soModuleAccesser* acc, u16* flag, float frame) {
-    ((soAnimCmdModulePreCheckView&)module).interpretCmd(acc, flag, frame);
-}
-
-static inline void callAnimCmdPreCheck(soAnimCmdModule& module, u16* flag, void* cmd, soModuleAccesser* acc, int a, int b) {
-    ((soAnimCmdModulePreCheckView&)module).preCheck(flag, cmd, acc, a, b);
-}
-
-static inline soLockable& getWorkLock(soModuleAccesser* moduleAccesser) {
-    return static_cast<soLockable&>(static_cast<soWorkManageModuleImpl&>(moduleAccesser->getWorkManageModule()));
-}
 
 // Common body of changeStatusRequest / changeStatusForce.
 static inline void changeStatusSub(soStatusModuleImpl* self, int status, soModuleAccesser* moduleAccesser) {
