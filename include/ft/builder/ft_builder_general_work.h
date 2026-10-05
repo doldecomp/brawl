@@ -20,7 +20,6 @@ class soGeneralWorkBuilder {
     float m_floats[BC::FloatCap];
     u32 m_flags[BC::FlagCap];
     typename BC::ModuleType m_module;
-    u32 m_pad[((BC::IntCap + BC::FloatCap + BC::FlagCap) % 2 == 0) ? 1 : 0]; // the builder is 8 byte aligned
 public:
     soGeneralWorkBuilder() : m_module(m_ints, BC::IntCap, m_floats, BC::FloatCap, m_flags, BC::FlagCap) {
         soGeneralWorkAbstract* work = &m_module;

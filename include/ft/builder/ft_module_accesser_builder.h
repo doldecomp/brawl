@@ -73,7 +73,7 @@ public:
     typedef soKineticModuleBuildConfig<soKineticModuleGenericImpl> KineticModuleBuildConfig;
     typedef soGeneralWorkBuildConfig<77, 32, 3> GeneralWorkBuildConfig;
     typedef soComboModuleBuildConfig<ftComboModuleImpl> ComboModuleBuildConfig;
-    typedef soAreaModuleBuildConfig<soAreaModuleImpl> AreaModuleBuildConfig;
+    typedef soAreaModuleBuildConfig<ftAreaModuleImpl> AreaModuleBuildConfig;
     typedef soColorBlendModuleBuildConfig<10, 1, soColorBlendModuleImpl> ColorBlendModuleBuildConfig;
     typedef soJostleModuleBuildConfig<0, 8, soJostleModuleImpl> JostleModuleBuildConfig;
     typedef soAbnormalModuleBuildConfig<ftAbnormalModuleImpl> AbnormalModuleBuildConfig;

@@ -25,6 +25,7 @@ public:
         m_sendID = -1;
     }
     ~soEventObserver();
+    void addObserverSub(s32 manageId, soAnimCmdEventObserver* obsvr, s8 p3); // sora_melee
     void initialize(s16 param1, s8 param2) { addObserver(param1, param2); }
 };
 #endif
@@ -38,7 +39,11 @@ public:
     // HYPOTHESIS: constructor that also registers with the given manager (seen in soControllerModuleImpl ctor).
     soAnimCmdEventObserver(s16 unitID, s16 manageID) : soEventObserver<soAnimCmdEventObserver>(unitID) { addObserver(manageID, -1); }
 
+#ifdef FT_MODULE_BUILDER
+    virtual void addObserver(short param1, s8 param2) { addObserverSub(param1, this, param2); } // MATCH-ONLY: inline in the REL
+#else
     virtual void addObserver(short param1, s8 param2);
+#endif
     virtual bool isObserv(char unk1);
     virtual bool notifyEventAnimCmd(acAnimCmd* acmd, soModuleAccesser* moduleAccesser, s32 unk3);
 };
