@@ -43,7 +43,7 @@ public:
 };
 
 class ftMario : public ftFighterBuilder<ftMarioBuildConfig> {
-    u8 unk2DBC0[0x2DBE8 - 0x2DBC0];
+    u8 unkTail[0x2DBE8 - sizeof(ftFighterBuilder<ftMarioBuildConfig>)];
 public:
     ftMario(s32 entryId,
             Heaps::HeapType instHeap,
