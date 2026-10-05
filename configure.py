@@ -255,7 +255,7 @@ cflags_sora_enemy = ["-O2,s" if flag == "-O4,p" else flag for flag in cflags_rel
 cflags_st_starfox = [*cflags_rel, "-inline on,noauto"]
 
 # Havok middleware (embedded in the main DOL): no RTTI, string literals in .rodata
-cflags_havok = [*cflags_common, "-RTTI off", "-str reuse,readonly"]
+cflags_havok = [*cflags_common, "-RTTI off", "-str reuse,readonly", "-use_lmw_stmw on"]
 
 config.linker_version = "GC/3.0a5.2"
 
@@ -430,6 +430,7 @@ config.libs = [
             Object(Matching, "havok/hkSkeletalAnimationClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
             Object(Matching, "havok/hkMeshBindingClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
             Object(Matching, "havok/hkAnimationContainerClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "havok/hkSkeletonMapperDataClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
             Object(Matching, "havok/hkAnimatedReferenceFrameClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
             Object(Matching, "havok/hkBoneAttachmentClass.cpp", extra_cflags=["-Cpp_exceptions on"]),
             Object(Matching, "havok/hkBoneClass.cpp", extra_cflags=["-Cpp_exceptions on"]),

@@ -745,6 +745,15 @@ havok/hkAnimationContainerClass.cpp:
 	.bss        start:0x80533418 end:0x80533440
 	.sdata2     start:0x805A48B0 end:0x805A48B8
 
+havok/hkSkeletonMapperDataClass.cpp:
+	extab       start:0x80009188 end:0x80009190
+	extabindex  start:0x8000C01C end:0x8000C028
+	.text       start:0x8032E7AC end:0x8032E890
+	.ctors      start:0x80406784 end:0x80406788
+	.rodata     start:0x80414B38 end:0x80414D88
+	.bss        start:0x80533468 end:0x805334D8
+	.sdata2     start:0x805A4908 end:0x805A4918
+
 havok/hkAnimatedReferenceFrameClass.cpp:
 	extab       start:0x80009190 end:0x80009198
 	extabindex  start:0x8000C028 end:0x8000C034
