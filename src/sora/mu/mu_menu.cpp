@@ -166,12 +166,11 @@ bool muMenu::isCharUsable(int muCharKind, int, int) {
 bool muMenu::isCharRefered(int muCharKind, int, int) {
     u32* bits = fn_8004E580(g_GameGlobal);
     int unlockIdx = lbl_80407A40[muCharKind].unk1;
-    if (unlockIdx == 0xE) {
-        return true;
-    }
-    int bit = unlockIdx * 3 + 2;
-    if (!(bits[bit / 32] & (1 << (bit % 32)))) {
-        return false;
+    if (unlockIdx != 0xE) {
+        int bit = unlockIdx * 3 + 2;
+        if (!(bits[bit / 32] & (1 << (bit % 32)))) {
+            return false;
+        }
     }
     return true;
 }
