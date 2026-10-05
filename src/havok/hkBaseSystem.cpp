@@ -233,14 +233,16 @@ int hkGameCubeDvdReader::read(void* buf, int nbytes) {
 }
 
 hkBool hkGameCubeDvdReader::isOk() const {
-    bool ok = false;
-    if (m_fileSize >= 0) {
-        if (m_position <= m_fileSize) {
-            ok = true;
-        }
+    bool ok;
+    __typeof__(m_fileSize) tmp0 = m_fileSize;
+    ok = false;
+    __typeof__(tmp0) tmp1 = tmp0;
+    if (( tmp1 >= 0) && (m_position <= m_fileSize)) {
+        ok = true;
     }
     return hkBool(ok);
 }
+
 
 hkGameCubeDvdReader::~hkGameCubeDvdReader() {
     if (m_fileSize != -1) {

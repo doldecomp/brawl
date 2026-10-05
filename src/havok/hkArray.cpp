@@ -30,9 +30,9 @@ void hkArrayUtil::_reserveMore(hkArrayBase* array, int elemSize) {
 }
 
 void hkArrayUtil::_reduce(hkArrayBase* array, int elemSize, void* buffer, int bufferCapacity) {
-    void* newData;
     int newCapacity;
     int flags;
+    void* newData;
     if (buffer != 0 && array->m_size < bufferCapacity) {
         newData = buffer;
         newCapacity = bufferCapacity;
@@ -43,9 +43,8 @@ void hkArrayUtil::_reduce(hkArrayBase* array, int elemSize, void* buffer, int bu
         flags = 0;
     }
     hkString::memCpy(newData, array->m_data, array->m_size * elemSize);
-    hkThreadMemory::s_instance->deallocateChunk(
-        array->m_data, elemSize * (array->m_capacityAndFlags & hkArrayBase::CAPACITY_MASK), 0x15);
+    hkThreadMemory::s_instance->deallocateChunk( array->m_data, elemSize * (array->m_capacityAndFlags & hkArrayBase::CAPACITY_MASK), 0x15);
     array->m_data = newData;
-    array->m_capacityAndFlags =
-        (array->m_capacityAndFlags & hkArrayBase::FORCE_SIGN_FLAG) | (newCapacity | flags);
+    array->m_capacityAndFlags = (array->m_capacityAndFlags & hkArrayBase::FORCE_SIGN_FLAG) | (newCapacity | flags);
 }
+
