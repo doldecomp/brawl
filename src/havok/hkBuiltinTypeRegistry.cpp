@@ -69,7 +69,7 @@ hkDefaultBuiltinTypeRegistry::~hkDefaultBuiltinTypeRegistry() {
 }
 
 void hkFinishLoadedObjectRegistry::merge(hkFinishLoadedObjectRegistry& other) {
-    for (hkStringMapBase::Iterator it = other.m_map.getIterator(); other.m_map.isValid(it);
+    for (int it = other.m_map.getIterator(); other.m_map.isValid(it);
          it = other.m_map.getNext(it)) {
         m_map.insert(other.m_map.getKey(it), other.m_map.getValue(it));
     }

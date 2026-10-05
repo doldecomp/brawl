@@ -1,10 +1,6 @@
 #include <havok/hkStructureLayout.h>
 #include <havok/hkIostream.h>
-#include <havok/hkSingleton.h>
-
-struct hkError : hkSingleton<hkError> {
-    virtual int message(int m, int id, const char* description, const char* file, int line) = 0; // 0x10
-};
+#include <havok/hkError.h>
 
 hkStructureLayout::LayoutRules hkStructureLayout::HostLayoutRules = {4, hkBool(false), 1, 1};
 
@@ -125,7 +121,7 @@ static void retargetClassInplace(hkClass* klass, const hkStructureLayout::Layout
         hkClassMember& m = (hkClassMember&)klass->getMember(i);
         bool recurse = false;
         if (m.m_class != 0) {
-            if (!done.hasKey((hkUlong)m.getStructClass())) {
+            if (!hkPointerMapHasKey(done, (hkUlong)m.getStructClass())) {
                 recurse = true;
             }
         }
@@ -193,7 +189,7 @@ static void retargetClassInplace(hkClass* klass, const hkStructureLayout::Layout
 }
 
 void hkStructureLayout::computeMemberOffsetsInplace(hkClass* klass, hkPointerMapBase<hkUlong>& done) {
-    if (!done.hasKey((hkUlong)klass)) {
+    if (!hkPointerMapHasKey(done, (hkUlong)klass)) {
         retargetClassInplace(klass, m_rules, done);
     }
 }
