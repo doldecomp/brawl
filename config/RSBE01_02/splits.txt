@@ -506,6 +506,13 @@ havok/hkBufferedStreamWriter.cpp:
 havok/hkString.cpp:
 	.text       start:0x8028193C end:0x80281E48
 
+havok/hkMultiThreadLock.cpp:
+	.text       start:0x80281E48 end:0x80281F4C
+	.ctors      start:0x80406600 end:0x80406604
+	.rodata     start:0x8040F590 end:0x8040F6B8
+	.bss        start:0x80532480 end:0x805324A8
+	.sbss       start:0x805A0EF0 end:0x805A0EF8
+
 havok/hkAabbClass.cpp:
 	.text       start:0x80281F4C end:0x80281FB0
 	.ctors      start:0x80406604 end:0x80406608
