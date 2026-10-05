@@ -8,8 +8,8 @@
 // Per-class registration record (partial; offsets seen from registerList).
 struct hkTypeInfo {
     const char* m_name;      // 0x00
-    int unk4;                // 0x04
-    int unk8;                // 0x08
+    void (*m_finish)(void*); // 0x04 (HYPOTHESIS: finishLoadedObject callback)
+    void (*m_cleanup)(void*);// 0x08 (cleanupLoadedObject callback)
     const void* m_vtable;    // 0x0C
 };
 

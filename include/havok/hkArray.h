@@ -46,12 +46,30 @@ struct hkArray : hkArrayBase {
     }
     ~hkArray() {
         if (mustDeallocate()) {
-            hkThreadMemory::s_instance->deallocateChunk(m_data, sizeof(T) * m_capacityAndFlags, 0x15);
+            hkThreadMemory::s_instance->deallocateChunk(m_data, (m_capacityAndFlags & CAPACITY_MASK) * sizeof(T), 0x15);
         }
     }
 
     int getCapacity() const {
         return m_capacityAndFlags & CAPACITY_MASK;
+    }
+    hkArray<T>& operator=(const hkArray<T>& other) {
+        if ((m_capacityAndFlags & CAPACITY_MASK) < other.m_size) {
+            if (mustDeallocate()) {
+                hkThreadMemory::s_instance->deallocateChunk(m_data, (m_capacityAndFlags & CAPACITY_MASK) * sizeof(T), 0x15);
+            }
+            m_data = hkThreadMemory::s_instance->allocateChunk(other.m_size * sizeof(T), 0x15);
+            m_capacityAndFlags = other.m_size | (m_capacityAndFlags & FORCE_SIGN_FLAG);
+        }
+        int n = other.m_size;
+        m_size = n;
+        const T* src = (const T*)other.m_data;
+        int i = 0;
+        T* dst = (T*)m_data;
+        for (; i < n; i++) {
+            dst[i] = src[i];
+        }
+        return *this;
     }
     void reserve(int n) {
         if (n > getCapacity()) {
@@ -68,6 +86,7 @@ struct hkArray : hkArrayBase {
             hkArrayUtil::_reserve(this, m, sizeof(T));
         }
     }
+    void swap(hkArray<T>& other);
     void insertAt(int i, const T& t);
     void insertAt(int i, const hkArray<T>& other);
 
@@ -109,6 +128,19 @@ void hkArray<T>::insertAt(int i, const hkArray<T>& other) {
         to[k] = from[k];
     }
     m_size = newSize;
+}
+
+template <typename T>
+void hkArray<T>::swap(hkArray<T>& other) {
+    void* d = m_data;
+    m_data = other.m_data;
+    other.m_data = d;
+    int sz = m_size;
+    m_size = other.m_size;
+    other.m_size = sz;
+    int cap = m_capacityAndFlags;
+    m_capacityAndFlags = other.m_capacityAndFlags;
+    other.m_capacityAndFlags = cap;
 }
 
 // Array with inline storage for N elements.

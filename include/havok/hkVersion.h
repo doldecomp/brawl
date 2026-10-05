@@ -3,6 +3,8 @@
 #include <havok/hkArray.h>
 #include <havok/hkClass.h>
 #include <havok/hkString.h>
+#include <havok/hkMap.h>
+#include <havok/hkSingleton.h>
 
 struct hkVariant {
     void* m_object;          // 0x00
@@ -19,15 +21,37 @@ struct hkObjectUpdateTracker : hkReferencedObject {
     virtual void removeFinish(void* oldObject) = 0;                      // 0x24
 };
 
-struct hkVersionRegistry {
+struct hkClassNameRegistry;
+
+// Holds the chain of object updaters between Havok releases and the class sets of each release.
+struct hkVersionRegistry : hkSingleton<hkVersionRegistry> {
     // One step in a versioning path.
     struct Updater {
-        int unk0;  // 0x00
-        int unk4;  // 0x04
+        const char* m_fromVersion;  // 0x00
+        const char* m_toVersion;    // 0x04
         hkResult (*m_updateFunction)(hkArray<hkVariant>& objects, hkObjectUpdateTracker& tracker); // 0x08
+
+        static int getNumElements(const Updater* const* updaters);
     };
 
+    // Classes (null terminated) that existed in one release.
+    struct ClassVersion {
+        const char* m_version;               // 0x00
+        const hkClass* const* m_classes;     // 0x04
+    };
+
+    hkArray<const Updater*> m_updaters;                                 // 0x08
+    hkStringMap<hkClassNameRegistry*> m_versionToClassNameRegistryMap;  // 0x14
+
+    static const Updater* const StaticLinkedUpdaters[];
+    static const ClassVersion StaticLinkedClassVersions[];
+
+    hkVersionRegistry();
+    virtual ~hkVersionRegistry();
+
     hkResult getVersionPath(const char* versionFrom, const char* versionTo, hkArray<const Updater*>& pathOut) const;
+    hkClassNameRegistry* getClassNameRegistry(const char* versionString);
+    static hkVersionRegistry* create();
 };
 
 struct hkFinishLoadedObjectRegistry;

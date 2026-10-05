@@ -1034,6 +1034,10 @@ havok/hkxVertexFormatClass.cpp:
 	.bss        start:0x80533688 end:0x805336B0
 	.sdata2     start:0x805A4960 end:0x805A4968
 
+havok/hkPackfileData.cpp:
+	.text       start:0x80331DD8 end:0x8033259C
+	.data       start:0x80488F30 end:0x80488F50
+
 havok/hkPackfileReader.cpp:
 	.text       start:0x8033259C end:0x80332600
 
@@ -1060,6 +1064,10 @@ havok/hkStructureLayout.cpp:
 
 havok/hkVtableClassRegistry.cpp:
 	.text       start:0x803340B8 end:0x8033413C
+
+havok/hkVersionRegistry.cpp:
+	.text       start:0x8033413C end:0x80334BF8
+	.ctors      start:0x804067C0 end:0x804067C4
 
 havok/hkVersionUtil.cpp:
 	.text       start:0x80334BF8 end:0x80334DE4
