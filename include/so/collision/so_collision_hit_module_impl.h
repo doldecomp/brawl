@@ -136,6 +136,10 @@ public:
     virtual Vec3f getCenterPos(u16 index, u32 collisionHitGroupIndex);
     virtual void renderDebug();
 
+    // event2nd is the non-virtual helper from the map (soCollisionHitModuleImpl::event2nd), added by agent/damage
+    void event(soCollisionAttackModule* attackModule, void* attackerGlowModule, soCollisionLog* collisionLog, u32 groupIndex);
+    void event2nd(soCollisionAttackModule* attackModule, void* attackerGlowModule, soCollisionLog* collisionLog, u32 groupIndex);
+
     virtual bool isObserv(char unk1);
     virtual bool notifyEventAnimCmd(acAnimCmd* acmd, soModuleAccesser* moduleAccesser, int unk3);
     virtual void notifyEventChangeStatus(int statusKind, int prevStatusKind, soStatusData* statusData, soModuleAccesser* moduleAccesser);
