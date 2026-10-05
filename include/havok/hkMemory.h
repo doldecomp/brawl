@@ -8,11 +8,8 @@ enum {
     HK_MEMORY_CLASS_STREAM = 0x18,
 };
 
-struct hkMemoryRowTable {
-    u8 unk0[0xB0];
-    int m_rowSize[1]; // 0xB0 (HYPOTHESIS: size in bytes for each allocation row)
-};
-extern hkMemoryRowTable* g_hkMemoryRowTable;
+extern void* (*g_hkMalloc)(int size, int alignment);
+extern void (*g_hkFree)(void* p);
 
 // Abstract allocator interface (vtable has no destructor in slot 2: layout is
 // allocate*, chunk*, runtime blocks, statistics, then the destructor last).
@@ -31,18 +28,18 @@ struct hkMemory {
     virtual void* allocateRuntimeBlock(int nbytes, int cl) = 0;         // 0x2C
     virtual void deallocateRuntimeBlock(void* p, int nbytes, int cl) = 0; // 0x30
     virtual void preAllocateRuntimeBlock(int nbytes, int cl) = 0;       // 0x34
-    virtual void* provideRuntimeBlock(int& nbytes) = 0;                 // 0x38
+    virtual void provideRuntimeBlock(void* p, int nbytes, int cl) = 0;  // 0x38
     virtual void freeRuntimeBlocks() = 0;                               // 0x3C
-    virtual void printStatistics(void* os) = 0;                         // 0x40
+    virtual void printStatistics(struct hkOstream* os) = 0;             // 0x40
     virtual int getAllocatedSize(int nbytes);                           // 0x44
-    virtual void getStatSynopsis(char* buf, int size) = 0;              // 0x48
+    virtual void getStatSynopsis(int* stats) = 0;                       // 0x48
     virtual hkBool isOk() const;                                        // 0x4C
     virtual ~hkMemory() {}                                              // 0x50
 
     int unk4;             // 0x04
     int unk8;             // 0x08
     int m_referenceCount; // 0x0C
-    int unk10[7];         // 0x10..0x2C
+    int m_stats[7];       // 0x10..0x2C
 
     static hkMemory* s_instance;
     static hkMemory& getInstance() {

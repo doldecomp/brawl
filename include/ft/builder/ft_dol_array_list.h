@@ -22,6 +22,8 @@ class BaseItem;
 #include <so/item/so_item_pick_transactor_impl.h>
 #include <ef/ef_screen_handle.h>
 #include <so/posture/so_posture_module_impl.h>
+#include <so/transition/so_transition_module_impl.h>
+#include <so/status/so_status_module_impl.h>
 
 FT_DOL_ARRAY_VECTOR(soInterpolation<Vec3f>, 1);
 FT_DOL_ARRAY_VECTOR(soCollisionAttackPart, 5);
@@ -32,6 +34,7 @@ FT_DOL_ARRAY_VECTOR(soCollisionGroup, 1);
 FT_DOL_ARRAY_VECTOR(soCollisionHitGroup, 1);
 FT_DOL_ARRAY_VECTOR(soGroundShapeImpl, 1);
 FT_DOL_ARRAY_VECTOR(soCameraSubject, 1);
+FT_DOL_ARRAY_VECTOR(soModelNodeSetUp, 8);
 FT_DOL_ARRAY_VECTOR(soShakeTerm, 4);
 FT_DOL_ARRAY_VECTOR(soControllerImpl, 10);
 FT_DOL_ARRAY_VECTOR(soControllerClatter, 2);
@@ -49,3 +52,63 @@ FT_DOL_ARRAY_VECTOR(soEffectContinual, 1);
 FT_DOL_ARRAY_VECTOR(soEffectTime, 1);
 FT_DOL_ARRAY_VECTOR(efScreenHandle, 1);
 FT_DOL_ARRAY_VECTOR(u32, 1);
+FT_DOL_ARRAY_VECTOR(soInstanceUnitFullProperty<soTransitionTerm>, 1);
+FT_DOL_ARRAY_VECTOR(soInstanceUnitFullProperty<soTransitionTerm>, 2);
+FT_DOL_ARRAY_VECTOR(soInstanceUnitFullProperty<soTransitionTerm>, 3);
+FT_DOL_ARRAY_VECTOR(soInstanceUnitFullProperty<soTransitionTerm>, 6);
+FT_DOL_ARRAY_VECTOR(soInstanceUnitFullProperty<soTransitionTerm>, 8);
+FT_DOL_ARRAY_VECTOR(soInstanceUnitFullProperty<soTransitionTerm>, 17);
+FT_DOL_ARRAY_VECTOR(soInstanceUnitFullProperty<soTransitionTerm>, 25);
+FT_DOL_ARRAY_VECTOR(soTransitionTermGroup, 20);
+FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 289);
+FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 288);
+FT_DOL_ARRAY_VECTOR(s32, 1);
+
+// soArrayContractibleTable<const soStatusData>: the (table, size) constructor and the destructor are calls into sora_melee.
+template <>
+class soArrayContractibleTable<const soStatusData> : public soArrayContractible<const soStatusData>,
+                                                     public soConnectable<soArrayContractibleTable<const soStatusData> > {
+    const soStatusData* m_elements;
+    s32 m_size;
+public:
+    soArrayContractibleTable() : m_elements(nullptr), m_size(0) { }
+    soArrayContractibleTable(const soStatusData* elements, s32 size);
+    virtual ~soArrayContractibleTable();
+    virtual const soStatusData& at(s32 index);
+    virtual const soStatusData& at(s32 index) const;
+    virtual void shift();
+    virtual void pop();
+    virtual void clear();
+    virtual s32 size() const;
+    virtual bool isNull() const;
+    virtual const soStatusData& atSub(s32 index) const;
+};
+
+// ---- kinetic energy manager (constructor in sora_melee) -----------------------------------------------------
+#include <so/kinetic/so_kinetic_module_impl.h>
+FT_DOL_ARRAY_VECTOR(soInstanceUnitFullProperty<soKineticEnergy*>, 12);
+
+template <>
+class soInstanceManagerFullPropertyVector<soKineticEnergy*, 12> : public soInstanceManagerFullProperty<soKineticEnergy*> {
+    soArrayVector<soInstanceUnitFullProperty<soKineticEnergy*>, 12> m_arrayVector; // 0x10
+    bool m_unk1;
+public:
+    soInstanceManagerFullPropertyVector(bool p1);
+    ~soInstanceManagerFullPropertyVector() { }
+    virtual soKineticEnergy*& at(s32 id);
+    virtual soKineticEnergy*& atIndex(s32 idx);
+    virtual s32 getId(s32 idx);
+    virtual u32 size() const;
+    virtual bool isContain(s32 id) const;
+    virtual void erase(s32 id);
+    virtual void clear();
+    virtual void set(soKineticEnergy* const& elm, s32 id);
+    virtual s32 add(soKineticEnergy*& elm, s32 id, soAttributeFlag attr, s16 p4);
+    virtual u32 capacity();
+    virtual soKineticEnergy*& atIndexFast(s32 idx);
+    virtual soInstanceUnitFullProperty<soKineticEnergy*>& atUnitIndexFast(s32 idx);
+    virtual s32 getIndex(s32 id) const;
+    virtual void getAttributeArray(soAttributeFlag targetAttr, soArray<soKineticEnergy**>& arr);
+    virtual soAttributeFlag getAttribute(s32 id) const;
+    virtual void getPriorityArray(soArray<soKineticEnergy**>& arr);
+};

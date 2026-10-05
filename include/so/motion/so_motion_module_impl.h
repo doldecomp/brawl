@@ -152,7 +152,7 @@ static_assert(sizeof(soMotionModule) == 4, "Class is wrong size!");
 class soMotionModuleImpl : public soMotionModule, public soStatusEventObserver, public soAnimCmdEventObserver, public soModelEventObserver, public soEventPresenter<soMotionEventObserver> {
 #ifdef FT_MODULE_BUILDER
 public:
-    soMotionModuleImpl(soModuleAccesser* acc, soArray<const soMotionData>* motionData, soTransitionModule* transition, soArray<soPartialAnim>* partialAnims, soArray<soOtherAnim>* otherAnims, soArray<soTransitionTermPack>* termPacks, soArray<u32>* u32s, s16 unitId, bool b, soMotionAnimObjCacheModule* animObjCache);
+    soMotionModuleImpl(soModuleAccesser* acc, soArrayFixed<const soMotionData>* motionData, soTransitionModule* transition, soArray<soPartialAnim>* partialAnims, soArray<soOtherAnim>* otherAnims, soArray<soTransitionTermPack>* termPacks, soArray<u32>* u32s, s16 unitId, bool b, soMotionAnimObjCacheModule* animObjCache);
 private:
 #endif
 public:

@@ -17,7 +17,7 @@ typedef soParamCustomizeModuleBuildConfig<ftParamCustomizeModuleImpl> ftMarthPar
 typedef soResourceModuleBuildConfigDynamic<0, ftResourceIdAccesserImpl, soResourceModuleImpl> ftMarthResourceModuleBuildConfig;
 typedef soModelModuleBuildConfig<8, 3, soModelModuleImpl> ftMarthModelModuleBuildConfig;
 
-typedef ftAnimCmdModuleSubBuildConfig<288, 501> ftMarthAnimCmdModuleSubBuildConfig;
+typedef ftAnimCmdModuleSubBuildConfig<289, 501> ftMarthAnimCmdModuleSubBuildConfig;
 
 class ftMarthBuildConfig : public ftCommonBuildConfig {
 public:
