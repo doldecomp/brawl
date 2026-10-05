@@ -48,11 +48,21 @@ struct hkClassMember {
     const hkClassEnum* m_enum; // 0x08
     u8 m_type;                 // 0x0C
     u8 m_subtype;              // 0x0D
-    u16 m_cArraySize;          // 0x0E
+    s16 m_cArraySize;          // 0x0E
     u16 m_flags;               // 0x10
     u16 m_offset;              // 0x12
 
+    // Per-type name and layout information.
+    struct TypeProperties {
+        int m_type;           // 0x00
+        const char* m_name;   // 0x04
+        s16 m_size;           // 0x08
+        s16 m_alignment;      // 0x0A
+    };
+    static const TypeProperties TYPE_PROPERTIES[];
+
     const hkClass* getStructClass() const;
+    int getArrayType() const;
     int getCstyleArraySize() const;
     int getSizeInBytes() const;
     int getAlignment() const;

@@ -414,6 +414,12 @@ havok/hkClassEnumClass.cpp:
 	.bss        start:0x805323A0 end:0x805323E8
 	.sdata2     start:0x805A3BA8 end:0x805A3BC0
 
+havok/hkClassMember.cpp:
+	.text       start:0x8027CA38 end:0x8027CC2C
+	.rodata     start:0x8040EBE0 end:0x8040EE50
+	.data       start:0x804861D0 end:0x80486250
+	.sdata2     start:0x805A3BC0 end:0x805A3C28
+
 havok/hkClassMemberClass.cpp:
 	.text       start:0x8027CC2C end:0x8027CCA0
 	.ctors      start:0x804065E8 end:0x804065EC
@@ -1047,6 +1053,11 @@ havok/hkBuiltinTypeRegistry.cpp:
 	.data       start:0x80488F50 end:0x80488FA8
 	.bss        start:0x805336B0 end:0x805336C0
 	.sbss       start:0x805A0F38 end:0x805A0F40
+
+havok/hkObjectInspector.cpp:
+	.text       start:0x80332BD0 end:0x803335A4
+	.rodata     start:0x80415578 end:0x804155C0
+	.data       start:0x80488FA8 end:0x80489020
 
 havok/hkRootLevelContainer.cpp:
 	.text       start:0x803335A4 end:0x80333698

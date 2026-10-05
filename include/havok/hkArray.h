@@ -86,6 +86,21 @@ struct hkArray : hkArrayBase {
             hkArrayUtil::_reserve(this, m, sizeof(T));
         }
     }
+    // Grows the size by n and returns the first new element (contents are not initialised).
+    T* expandBy(int n) {
+        int oldSize = m_size;
+        int newSize = oldSize + n;
+        if (getCapacity() < newSize) {
+            int c = getCapacity() * 2;
+            int m = newSize;
+            if (newSize < c) {
+                m = c;
+            }
+            hkArrayUtil::_reserve(this, m, sizeof(T));
+        }
+        m_size = newSize;
+        return (T*)m_data + oldSize;
+    }
     void swap(hkArray<T>& other);
     void insertAt(int i, const T& t);
     void insertAt(int i, const hkArray<T>& other);
