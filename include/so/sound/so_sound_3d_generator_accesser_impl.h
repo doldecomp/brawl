@@ -14,8 +14,8 @@ protected:
         snd3DGenerator* m_soundGenerator;
         void initialize();
     };
-    void allocateInstance(GeneratorInstance* inst, Vec3f* pos);
-    void freeInstance(GeneratorInstance* inst);
+    static void allocateInstance(GeneratorInstance* inst, Vec3f* pos);
+    static void freeInstance(GeneratorInstance* inst);
 #else
     struct GeneratorInstance {
         int m_0;

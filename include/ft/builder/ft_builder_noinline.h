@@ -21,6 +21,8 @@ void ftKeepObserverVtables(s16 id) {
 }
 
 #pragma dont_inline on
+ftStatusGimmickUniqProcessPool::~ftStatusGimmickUniqProcessPool() { }
+soKineticModuleImpl::~soKineticModuleImpl() { }
 ftTeam::~ftTeam() { }
 ftTeamIndirect::~ftTeamIndirect() { }
 ftSound3dGeneratorAccesserImpl::~ftSound3dGeneratorAccesserImpl() { } // MATCH-ONLY: out of line in the REL

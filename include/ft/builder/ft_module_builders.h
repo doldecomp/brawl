@@ -110,8 +110,8 @@ public:
     }
 
     soModelModuleBuilder(soModuleAccesser* acc, void* extendNodeTbl, soEventObserverRegistrationDesc* regDesc, float modelScale) :
-        m_nodeSetUps(S),
-        m_virtualNodes(N),
+        m_nodeSetUps(S, 0),
+        m_virtualNodes(N, 0),
         m_modelModule(acc, &m_nodeSetUps, extendNodeTbl, m_virtualNodes.get(), regDesc, modelScale) { }
 };
 

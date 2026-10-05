@@ -92,6 +92,9 @@ FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 448);
 FT_DOL_ARRAY_VECTOR(soLinkConnection, 8);
 FT_DOL_ARRAY_VECTOR(soCollisionShieldPart, 9);
 
+// soModelModuleBuilder<8, 3>
+FT_DOL_ARRAY_VECTOR(soModelNodeSetUp, 8);
+FT_DOL_ARRAY_VECTOR(soModelVirtualNode, 3);
 // ft_donkey
 FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 309);
 FT_DOL_ARRAY_VECTOR(soPartialAnim, 4);
