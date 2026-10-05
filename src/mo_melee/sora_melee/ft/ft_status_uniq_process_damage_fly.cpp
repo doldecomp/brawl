@@ -90,9 +90,8 @@ void ftStatusUniqProcessDamageFly::execNormalDamageCommon(soModuleAccesser* modu
     int effectHandle = moduleAccesser->getWorkManageModule().getInt(0x20000000);
     if (effectHandle != -1) {
         float threshold = soValueAccesser::getConstantFloat(moduleAccesser, 0xcd1, 0);
-        const Vec2f& speed = moduleAccesser->getKineticModule().getEnergy(4)->getSpeed();
-        if (calcLength(speed) < threshold) {
-            moduleAccesser->getEffectModule().removeContinual(effectHandle);
+        if (calcLength( moduleAccesser->getKineticModule().getEnergy(4)->getSpeed()) < threshold) {
+            moduleAccesser->getEffectModule().removeContinual((int)effectHandle);
             moduleAccesser->getWorkManageModule().setInt(-1, 0x20000000);
         }
     }
@@ -106,6 +105,7 @@ void ftStatusUniqProcessDamageFly::execNormalDamageCommon(soModuleAccesser* modu
         }
     }
 }
+
 
 void ftStatusUniqProcessDamageFly::correctDamageVector(soModuleAccesser* moduleAccesser) {
     float stickX = moduleAccesser->getControllerModule().getStickX();
