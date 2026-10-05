@@ -422,11 +422,89 @@ havok/hkClassVersion1Class.cpp:
 	.bss        start:0x80532410 end:0x80532438
 	.sdata2     start:0x805A3CB0 end:0x805A3CC0
 
+havok/hkError.cpp:
+	.text       start:0x8027CD04 end:0x8027CD94
+	.rodata     start:0x8040F300 end:0x8040F408
+
+havok/hkArray.cpp:
+	.text       start:0x8027CD94 end:0x8027CFB8
+
+havok/hkPointerMapBase.cpp:
+	.text       start:0x8027CFB8 end:0x8027DC18
+
+havok/hkStringMapBase.cpp:
+	.text       start:0x8027DC18 end:0x8027E1C4
+
+havok/hkMemory.cpp:
+	.text       start:0x8027E1C4 end:0x8027E360
+	.data       start:0x804862F0 end:0x80486348
+
+havok/hkScratchpad.cpp:
+	.text       start:0x8027E360 end:0x8027E514
+	.ctors      start:0x804065F0 end:0x804065F4
+	.data       start:0x80486348 end:0x80486378
+	.bss        start:0x80532438 end:0x80532448
+	.sbss       start:0x805A0EC0 end:0x805A0EC8
+
+havok/hkStackTracer.cpp:
+	.text       start:0x8027E514 end:0x8027E5A8
+	.rodata     start:0x8040F408 end:0x8040F428
+	.data       start:0x80486378 end:0x80486388
+
+havok/hkThreadMemory.cpp:
+	.text       start:0x8027E5A8 end:0x8027ECC0
+	.data       start:0x80486388 end:0x804863A8
+
+havok/hkPoolMemory.cpp:
+	.text       start:0x8027ECC0 end:0x8027FF58
+	.rodata     start:0x8040F428 end:0x8040F560
+	.data       start:0x804863A8 end:0x80486400
+
+havok/hkMonitorStream.cpp:
+	.text       start:0x8027FF58 end:0x8027FFC0
+	.ctors      start:0x804065F4 end:0x804065F8
+	.bss        start:0x80532448 end:0x80532460
+
+havok/hkUnionFind.cpp:
+	.text       start:0x8027FFC0 end:0x8028059C
+
+havok/hkSystemClock.cpp:
+	.text       start:0x8028059C end:0x80280750
+	.ctors      start:0x804065F8 end:0x804065FC
+	.data       start:0x80486400 end:0x80486440
+	.bss        start:0x80532460 end:0x80532470
+	.sbss       start:0x805A0ED8 end:0x805A0EE0
+
+havok/hkIstream.cpp:
+	.text       start:0x80280750 end:0x80280840
+	.data       start:0x80486440 end:0x80486450
+
+havok/hkOstream.cpp:
+	.text       start:0x80280840 end:0x80280C14
+	.rodata     start:0x8040F560 end:0x8040F590
+	.data       start:0x80486450 end:0x80486460
+
+havok/hkSocket.cpp:
+	.text       start:0x80280C14 end:0x80280C20
+	.ctors      start:0x804065FC end:0x80406600
+	.sbss       start:0x805A0EE0 end:0x805A0EE8
+
 havok/hkStreamReader.cpp:
 	.text       start:0x80280C20 end:0x80280CD4
 
 havok/hkStreamWriter.cpp:
 	.text       start:0x80280CD4 end:0x80280CEC
+
+havok/hkBufferedStreamReader.cpp:
+	.text       start:0x80280CEC end:0x8028138C
+	.data       start:0x80486460 end:0x80486498
+
+havok/hkBufferedStreamWriter.cpp:
+	.text       start:0x8028138C end:0x8028193C
+	.data       start:0x80486498 end:0x804864C0
+
+havok/hkString.cpp:
+	.text       start:0x8028193C end:0x80281E48
 
 havok/hkAabbClass.cpp:
 	.text       start:0x80281F4C end:0x80281FB0
