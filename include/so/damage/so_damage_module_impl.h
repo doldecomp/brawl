@@ -93,6 +93,8 @@ public:
     // NOTE: shadows the BrawlHeaders copy to declare the constructor (agent/damage)
     soDamageModuleImpl(soModuleAccesser* moduleAccesser, soArray<soDamage>* damageArray, soDamageEffector* effector, soDamageTransactor* transactor, soEventObserverRegistrationDesc* registrationDesc);
 
+    bool setGroundDamage(u32 touchKind, soCollisionAttackData* attackData);
+
     virtual ~soDamageModuleImpl();
     virtual void activate(float damage);
     virtual void deactivate();
@@ -149,8 +151,8 @@ public:
     virtual bool onDamage(u32 damageIndex);
     virtual bool isCheckGroundDamage();
     virtual bool onGroundDamage();
-    virtual float getReactionSub(soCollisionAttackData* attackData, u32 damageIndex, u8 hitIndex);
-    virtual float getReactionMul(soCollisionAttackData* attackData, u32 damageIndex, u8 hitIndex);
+    virtual float getReactionSub(soCollisionAttackData* attackData, u32 damageIndex, int hitIndex);
+    virtual float getReactionMul(soCollisionAttackData* attackData, u32 damageIndex, int hitIndex);
     virtual float getWeightReactionMul(soCollisionAttackData* attackData);
     virtual float getDamageMul();
     virtual void reqDamageEffect();
