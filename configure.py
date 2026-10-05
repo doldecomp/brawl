@@ -579,9 +579,11 @@ config.libs = [
     {
         "lib": "ft_ike",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_ike/ft_ike.cpp"),
+        ],
     },
     {
         "lib": "ft_kirby",

@@ -270,6 +270,25 @@ public:
     typename BC::ModuleType* getModule() { return &m_searchModule; }
 };
 
+// Same with another number of search parts (Ike).
+template <u32 Parts, typename T>
+class soCollisionSearchModuleBuildConfigParts {
+public:
+    typedef T ModuleType;
+};
+
+template <u32 Parts, typename T>
+class soCollisionSearchModuleBuilder<soCollisionSearchModuleBuildConfigParts<Parts, T> > {
+    soArrayVector<soCollisionSearchPart, Parts> m_parts;
+    soArrayVector<soCollisionGroup, 1> m_groups;
+    T m_searchModule;
+public:
+    soCollisionSearchModuleBuilder(soModuleAccesser* acc, int taskId, gfTask::Category category) :
+        m_parts(Parts, soCollisionSearchPart(soCollision::Category_Fighter), 0),
+        m_groups(1, 0), m_searchModule(acc, taskId, category, &m_parts, true) { }
+    T* getModule() { return &m_searchModule; }
+};
+
 ////////////////////////////////////////
 // soCollisionShieldModuleBuilder (shield / reflector)
 ////////////////////////////////////////
