@@ -111,8 +111,8 @@ See [AGENTS.md](AGENTS.md) for the full agent instructions.
 Much of the work in this fork is done by AI agents (Claude, Codex) working for a person. Commits should show **who ran the agent and which agent it was**:
 
 - **Author and committer** = the human whose account or credits run the agent (for example Brendan, GitHub `brendan-hoenn`, or May, GitHub `may-petalburg`). Use that person's GitHub noreply address (`<id>+<username>@users.noreply.github.com`, for example `4410221+brendan-hoenn@users.noreply.github.com`).
-- **Co-author** = the agent, as a trailer at the end of the message, so GitHub shows "Human and Agent":
-  - `Co-Authored-By: Claude <noreply@anthropic.com>` (include the model name if known, e.g. `Claude Sonnet 5.5`)
+- **Co-author** = the agent, as one trailer at the end of the message, exactly as written below (no model names), so GitHub shows "Human and Agent":
+  - `Co-Authored-By: Claude <noreply@anthropic.com>`
   - `Co-Authored-By: Codex <noreply@openai.com>`
 - Never commit as just `Claude` or `codex`, never leave session links in messages, and keep other people's authorship intact when importing their commits.
 
