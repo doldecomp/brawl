@@ -10,6 +10,10 @@ Super Smash Bros. Brawl
 
 A work-in-progress decompilation of Super Smash Bros. Brawl.
 
+![Progress treemap](https://raw.githubusercontent.com/humboldt123/brawl/main/.github/progress/treemap.png)
+
+Each rectangle is a unit sized by its code; green is fully matched, blue is partially matched, grey is not started.
+
 This repository does **not** contain any game assets or assembly whatsoever. An existing copy of the game is required.
 
 ## Contributors and AI agents
