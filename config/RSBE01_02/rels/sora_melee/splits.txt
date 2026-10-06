@@ -144,6 +144,18 @@ mo_melee/sora_melee/so/so_array_vector_abstract_ptr_soGimmickEventObserver_part2
 mo_melee/sora_melee/so/so_array_vector_abstract_ptr_soTransitionTerm_unit.cpp:
 	.text       start:0x000AC37C end:0x000ACA50
 
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soSlopeStatusParam_part1.cpp:
+	.text       start:0x000AE4B4 end:0x000AE610
+
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soSlopeStatusParam_part2.cpp:
+	.text       start:0x000AE6D8 end:0x000AECA0
+
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soDisposeInstanceTerm_part1.cpp:
+	.text       start:0x000AF718 end:0x000AF86C
+
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soDisposeInstanceTerm_part2.cpp:
+	.text       start:0x000B0540 end:0x000B0B38
+
 mo_melee/sora_melee/so/so_array_vector_abstract_record_soInstanceUnitFullProperty_soDisposeInstanceEventObserver.cpp:
 	.text       start:0x000B0B38 end:0x000B1284
 
@@ -167,8 +179,17 @@ mo_melee/sora_melee/so/so_array_vector_abstract_record_float.cpp:
 mo_melee/sora_melee/so/so_array_vector_abstract_value_soDamage.cpp:
 	.text       start:0x000DCAD4 end:0x000DD928
 
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soTargetSearchRayCheckCache.cpp:
+	.text       start:0x000DE7FC end:0x000DF0D8
+
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soCollisionAttackAbsolute.cpp:
+	.text       start:0x000DF0D8 end:0x000DFBE4
+
 mo_melee/sora_melee/so/so_array_vector_abstract_value_soCollisionShieldGroup.cpp:
 	.text       start:0x000E0470 end:0x000E1454
+
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soArticleEventObserver.cpp:
+	.text       start:0x000E1454 end:0x000E1BA0
 
 mo_melee/sora_melee/so/so_array_vector_abstract_shield.cpp:
 	.text       start:0x000E2274 end:0x000E3280
@@ -191,14 +212,44 @@ mo_melee/sora_melee/so/so_array_vector_abstract_value_soModelVirtualNode.cpp:
 mo_melee/sora_melee/so/so_array_vector_abstract_hit.cpp:
 	.text       start:0x000E74FC end:0x000E8580
 
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soGroundShapeImpl.cpp:
+	.text       start:0x000E8580 end:0x000E8ED4
+
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soEffectContinual.cpp:
+	.text       start:0x000E8ED4 end:0x000E9788
+
 mo_melee/sora_melee/so/so_array_vector_abstract_value_soModelNodeSetUp.cpp:
 	.text       start:0x000E9788 end:0x000EA03C
+
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soLinkConnection.cpp:
+	.text       start:0x000EA03C end:0x000EA8F0
 
 mo_melee/sora_melee/so/so_array_vector_abstract_value_soCameraSubject.cpp:
 	.text       start:0x000EA8F0 end:0x000EB21C
 
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_wnemProcFncObj.cpp:
+	.text       start:0x000EB21C end:0x000EB918
+
 mo_melee/sora_melee/so/so_array_vector_abstract_value_soAreaInstance.cpp:
 	.text       start:0x000EB918 end:0x000EC12C
+
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soPartialAnim.cpp:
+	.text       start:0x000EC12C end:0x000ECAA8
+
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soShakeTerm.cpp:
+	.text       start:0x000ECAA8 end:0x000ED26C
+
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soOtherAnim.cpp:
+	.text       start:0x000ED26C end:0x000EDAD0
+
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soAreaWind.cpp:
+	.text       start:0x000EDAD0 end:0x000EE1A4
+
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_emAIInfo.cpp:
+	.text       start:0x000EE1A4 end:0x000EE8A0
+
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soAreaContactLog.cpp:
+	.text       start:0x000EE8A0 end:0x000EF0B4
 
 mo_melee/sora_melee/so/so_array_vector_abstract_record_soInstanceUnitFullProperty_soCollisionReflectorEventObserver.cpp:
 	.text       start:0x000FF41C end:0x000FFB68
@@ -337,11 +388,23 @@ mo_melee/sora_melee/so/so_array_vector_abstract_ptr_wnPikminPikmin.cpp:
 mo_melee/sora_melee/so/so_array_vector_abstract_ptr_const_acAnimCmdConv.cpp:
 	.text       start:0x001B4EA4 end:0x001B5578
 
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soItemInfo.cpp:
+	.text       start:0x001B5578 end:0x001B5CEC
+
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soPhysicsIKHandle.cpp:
+	.text       start:0x001B5CEC end:0x001B65C8
+
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soControllerClatter.cpp:
+	.text       start:0x001B7514 end:0x001B7D00
+
 mo_melee/sora_melee/so/so_array_vector_abstract_value_soControllerImpl.cpp:
 	.text       start:0x001B7D00 end:0x001B8EC4
 
 mo_melee/sora_melee/so/so_array_vector_abstract_record_soInstanceUnitFullProperty_soKineticEnergy.cpp:
 	.text       start:0x001B8EC4 end:0x001B9610
+
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soEffectTime.cpp:
+	.text       start:0x001B9610 end:0x001B9D34
 
 mo_melee/sora_melee/so/so_array_vector_abstract_ptr_soStatusUniqProcess.cpp:
 	.text       start:0x001B9D34 end:0x001BA408
@@ -354,6 +417,12 @@ mo_melee/sora_melee/so/so_array_vector_abstract_record_soInstanceUnitFullPropert
 
 mo_melee/sora_melee/so/so_array_vector_abstract_record_soInstanceUnitFullProperty_soItemManageEventObserver.cpp:
 	.text       start:0x001D1C58 end:0x001D23A4
+
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soLogAttackInfo_part1.cpp:
+	.text       start:0x001D5878 end:0x001D5A80
+
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_soLogAttackInfo_part2.cpp:
+	.text       start:0x001D5B2C end:0x001D6048
 
 mo_melee/sora_melee/st/st_common_gimmick.cpp:
 	.text       start:0x00237C00 end:0x002381FC
