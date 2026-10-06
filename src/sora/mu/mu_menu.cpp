@@ -185,17 +185,21 @@ void muMenu::setCharRefered(int muCharKind, int, int) {
 }
 
 int muMenu::findCharTeamColorNo(int selchkind, int teamColor, int colorNo) {
+    const u8* c;
     u8 want = lbl_805A21F0[teamColor];
-    const u8* colors = lbl_80455458[selchkind].colors;
-    const u8* c = colors + colorNo * 2;
+    muCharColorInfo& info = lbl_80455458[selchkind];
+    const u8* colors = info.colors;
+    c = colors + colorNo * 2;
     for (; colorNo < getNumCharColor(selchkind, 0, 0); colorNo++) {
         if ((int)want == (int)*c) {
             break;
+        } else {
+            c += 2;
         }
-        c += 2;
     }
     return colorNo;
 }
+
 
 int muMenu::exchangeMuStageKindToGmHideStageKind(int muStageKind, int, int) {
     return lbl_80407AAC[muStageKind].hideStageKind;
