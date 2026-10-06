@@ -6,8 +6,8 @@ Instructions for AI agents (Claude, Codex, ...) working on this matching decompi
 
 ## 0. Ground rules
 
-- **The game image stays on the build server.** Never copy it off the server or commit it, and never commit anything extracted from it (`orig/`, `build/`, assets, asm dumps, maps, codesets, Ghidra output): keep all of that out of git, commit messages and PR text.
-- **Reading it on the server is the job.** Through `bx exec` you are expected to read what you need to write the C++: objdiff/assembly diffs, per-function assembly, Ghidra pseudocode, symbol maps, reports and the BrawlRE docs. Using them to write source is allowed and required; only copying the data out of the server or into the repo is forbidden. Do not paste large dumps anywhere; short excerpts to explain a problem are fine.
+- **The game image lives on the build server, and reading it there is the job.** Through `bx exec` you read what you need to write the C++: objdiff/assembly diffs, per-function assembly, Ghidra pseudocode, symbol maps, reports and the BrawlRE docs.
+- Do not put extracted data (assembly, pseudocode, dumps) in commit messages or PR text.
 - Pick a short name for yourself (lowercase, e.g. `hawk`). Use it for your claims, worktrees and branches.
 - Work alone: **do not use subagents, background agents, parallel tasks or workflow/multi-agent features.** One thread, so you can run for hours on little usage.
 - **Do not ask questions** and do not wait for replies. Decide with the rules below and keep going until your queue is done or you are blocked.
