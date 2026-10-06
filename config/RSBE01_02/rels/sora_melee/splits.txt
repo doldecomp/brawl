@@ -96,6 +96,9 @@ mo_melee/sora_melee/so/so_status_module_impl.cpp:
 mo_melee/sora_melee/so/transition/so_transition_module_impl.cpp:
 	.text       start:0x000767A0 end:0x0007756C
 
+mo_melee/sora_melee/so/so_transition_term_copy.cpp:
+	.text       start:0x00077588 end:0x000775AC
+
 mo_melee/sora_melee/so/so_array_vector_abstract_ptr_soArticle.cpp:
 	.text       start:0x0007AC18 end:0x0007B2EC
 
@@ -178,6 +181,12 @@ mo_melee/sora_melee/so/so_array_vector_abstract_record_float.cpp:
 
 mo_melee/sora_melee/so/so_array_vector_abstract_value_soDamage.cpp:
 	.text       start:0x000DCAD4 end:0x000DD928
+
+mo_melee/sora_melee/so/so_array_vector_abstract_valuerecord_soInstanceUnitFullProperty_soAnimCmdControlUnit.cpp:
+	.text       start:0x000DD928 end:0x000DE09C
+
+mo_melee/sora_melee/so/so_array_vector_abstract_valuerecord_soInstanceUnitFullProperty_soTransitionTerm.cpp:
+	.text       start:0x000DE09C end:0x000DE7FC
 
 mo_melee/sora_melee/so/so_array_vector_abstract_layout_soTargetSearchRayCheckCache.cpp:
 	.text       start:0x000DE7FC end:0x000DF0D8
@@ -473,8 +482,14 @@ mo_melee/sora_melee/st/st_common_gimmick.cpp:
 	.text       start:0x00237C00 end:0x002381FC
 	.data       start:0x0004C748 end:0x0004C96C
 
+mo_melee/sora_melee/so/so_array_vector_abstract_valuerecord_soGeneralFlag_s32_part1.cpp:
+	.text       start:0x00292204 end:0x002922F8
+
 mo_melee/sora_melee/so/so_array_vector_abstract_ptr_BaseItem.cpp:
 	.text       start:0x00296224 end:0x002968F8
+
+mo_melee/sora_melee/so/so_array_vector_abstract_valuerecord_soGeneralFlag_s32_part2.cpp:
+	.text       start:0x002968F8 end:0x00296ED8
 
 mo_melee/sora_melee/so/so_array_vector_abstract_nested_wnPokeTrainerMBall_ParticleInfo_part1.cpp:
 	.text       start:0x0038F300 end:0x0038F58C
