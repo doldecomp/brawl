@@ -1072,9 +1072,11 @@ config.libs = [
     {
         "lib": "ft_robot",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_robot/ft_robot.cpp"),
+        ],
     },
     {
         "lib": "ft_samus",

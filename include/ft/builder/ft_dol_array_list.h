@@ -113,6 +113,10 @@ FT_DOL_ARRAY_VECTOR(soAreaInstance, 11);
 FT_DOL_ARRAY_VECTOR(soItemInfo, 7);
 // ft_gamewatch
 FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 313);
+// ft_robot
+FT_DOL_ARRAY_VECTOR(soCollisionShieldPart, 17);
+FT_DOL_ARRAY_VECTOR(soStatusUniqProcess*, 286);
+FT_DOL_ARRAY_VECTOR(soPartialAnim, 3);
 // ft_pit
 FT_DOL_ARRAY_VECTOR(soCollisionShieldGroup, 4);
 
