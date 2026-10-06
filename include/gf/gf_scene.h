@@ -44,6 +44,8 @@ public:
     int processStep;
     char _spacer4[148];
 
+    s32 registScene(gfScene* scene);
+    s32 registSequence(gfSequence* sequence);
     gfScene* searchScene(const char* sceneName);
     gfSequence* searchSequence(const char* sequenceName);
     static gfSceneManager* getInstance();

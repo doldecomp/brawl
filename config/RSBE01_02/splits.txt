@@ -108,6 +108,9 @@ sora/gf/gf_pad_thread.cpp:
 	.data       start:0x80422E88 end:0x80422EA8
 	.sdata2     start:0x805A1550 end:0x805A1560
 
+sora/gf/gf_scene_manager_register.cpp:
+	.text       start:0x8002D160 end:0x8002D1A0
+
 sora/gf/gf_scene_manager_search.cpp:
 	.text       start:0x8002D3F4 end:0x8002D4F4
 
