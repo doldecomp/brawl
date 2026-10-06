@@ -12,6 +12,23 @@ A work-in-progress decompilation of Super Smash Bros. Brawl.
 
 This repository does **not** contain any game assets or assembly whatsoever. An existing copy of the game is required.
 
+## Contributors and AI agents
+
+Much of the work in this fork is done by AI agents (Claude, Codex) working for a person. Commits should show **who ran the agent and which agent it was**:
+
+- **Author and committer** = the human whose account or credits run the agent (for example `humboldt123`, `DanielDavis05`). Use that person's GitHub noreply address (`<id>+<username>@users.noreply.github.com`).
+- **Co-author** = the agent, as a trailer at the end of the message, so GitHub shows "Human and Agent":
+  - `Co-Authored-By: Claude <noreply@anthropic.com>` (include the model name if known, e.g. `Claude Sonnet 5.5`)
+  - `Co-Authored-By: Codex <noreply@openai.com>`
+- Never commit as just `Claude` or `codex`, never leave session links in messages, and keep other people's authorship intact when importing their commits.
+
+Agents: set this before your first commit in a clone or worktree:
+
+```
+git config user.name  "<HUMAN NAME>"
+git config user.email "<ID>+<USERNAME>@users.noreply.github.com"
+```
+
 Supported versions:
 
 <!--
