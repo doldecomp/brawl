@@ -134,6 +134,9 @@ mo_melee/sora_melee/so/so_general_work_simple.cpp:
 mo_melee/sora_melee/so/so_array_vector_abstract_record_efScreenHandle.cpp:
 	.text       start:0x000A0CB4 end:0x000A1388
 
+mo_melee/sora_melee/so/so_array_vector_abstract_layout_acCmdInterpreterStackData.cpp:
+	.text       start:0x000A1388 end:0x000A1AFC
+
 mo_melee/sora_melee/so/anim/so_anim_cmd_interpreter_effect.cpp:
 	.text       start:0x000A1D18 end:0x000A1DA4
 	.data       start:0x00015450 end:0x000154C0
