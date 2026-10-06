@@ -23,6 +23,9 @@ mo_melee/sora_melee/so/model/so_model_module_impl_variable.cpp:
 	.text       start:0x0000F288 end:0x0000FED0
 	.data       start:0x00000A98 end:0x00000C78
 
+mo_melee/sora_melee/so/so_array_vector_abstract_remaining_Vec3f_part1.cpp:
+	.text       start:0x0001CDC8 end:0x0001CECC
+
 mo_melee/sora_melee/so/so_array_vector_abstract_record_u32_part1.cpp:
 	.text       start:0x0001CECC end:0x0001CFC0
 
@@ -37,6 +40,12 @@ mo_melee/sora_melee/so/so_array_vector_abstract_layout_soAnimCmdAddressPack_part
 
 mo_melee/sora_melee/so/so_array_vector_abstract_layout_soAnimCmdAddressPack_part3.cpp:
 	.text       start:0x0001DBD0 end:0x0001DD64
+
+mo_melee/sora_melee/so/so_array_vector_abstract_remaining_Vec3f_part2.cpp:
+	.text       start:0x0001DD64 end:0x0001E1F0
+
+mo_melee/sora_melee/so/so_array_vector_abstract_remaining_Vec3f_part3.cpp:
+	.text       start:0x0001E2A4 end:0x0001E374
 
 mo_melee/sora_melee/so/so_array_vector_abstract_record_u32_part2.cpp:
 	.text       start:0x0001E374 end:0x0001E954
