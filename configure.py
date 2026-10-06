@@ -1350,6 +1350,8 @@ config.libs = [
             Object(NonMatching, "mo_melee/sora_melee/so/collision/so_collision_hit_module_impl.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_collision_shield_part.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_array_vector_abstract_attack.cpp"),
+            Object(Matching, "mo_melee/sora_melee/so/so_array_vector_abstract_special_soTransitionTermPack.cpp"),
+            Object(Matching, "mo_melee/sora_melee/so/so_array_vector_abstract_special_wnPikminPikminOwnerInfo.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_array_vector_abstract_layout_soAreaWind.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_array_vector_abstract_layout_soItemInfo.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_array_vector_abstract_layout_soOtherAnim.cpp"),

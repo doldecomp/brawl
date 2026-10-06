@@ -385,6 +385,9 @@ mo_melee/sora_melee/ft/ft_fighter_build_data.cpp:
 mo_melee/sora_melee/so/so_array_vector_abstract_ptr_wnPikminPikmin.cpp:
 	.text       start:0x001B2A78 end:0x001B314C
 
+mo_melee/sora_melee/so/so_array_vector_abstract_special_wnPikminPikminOwnerInfo.cpp:
+	.text       start:0x001B314C end:0x001B38C0
+
 mo_melee/sora_melee/so/so_array_vector_abstract_ptr_const_acAnimCmdConv.cpp:
 	.text       start:0x001B4EA4 end:0x001B5578
 
@@ -393,6 +396,9 @@ mo_melee/sora_melee/so/so_array_vector_abstract_layout_soItemInfo.cpp:
 
 mo_melee/sora_melee/so/so_array_vector_abstract_layout_soPhysicsIKHandle.cpp:
 	.text       start:0x001B5CEC end:0x001B65C8
+
+mo_melee/sora_melee/so/so_array_vector_abstract_special_soTransitionTermPack.cpp:
+	.text       start:0x001B6CC4 end:0x001B7514
 
 mo_melee/sora_melee/so/so_array_vector_abstract_layout_soControllerClatter.cpp:
 	.text       start:0x001B7514 end:0x001B7D00
