@@ -173,8 +173,20 @@ mo_melee/sora_melee/so/so_array_vector_abstract_attack.cpp:
 mo_melee/sora_melee/so/so_array_vector_abstract_catch.cpp:
 	.text       start:0x000E5428 end:0x000E640C
 
+mo_melee/sora_melee/so/so_array_vector_abstract_value_soModelVirtualNode.cpp:
+	.text       start:0x000E6D88 end:0x000E74FC
+
 mo_melee/sora_melee/so/so_array_vector_abstract_hit.cpp:
 	.text       start:0x000E74FC end:0x000E8580
+
+mo_melee/sora_melee/so/so_array_vector_abstract_value_soModelNodeSetUp.cpp:
+	.text       start:0x000E9788 end:0x000EA03C
+
+mo_melee/sora_melee/so/so_array_vector_abstract_value_soCameraSubject.cpp:
+	.text       start:0x000EA8F0 end:0x000EB21C
+
+mo_melee/sora_melee/so/so_array_vector_abstract_value_soAreaInstance.cpp:
+	.text       start:0x000EB918 end:0x000EC12C
 
 mo_melee/sora_melee/so/so_array_vector_abstract_record_soInstanceUnitFullProperty_soCollisionReflectorEventObserver.cpp:
 	.text       start:0x000FF41C end:0x000FFB68
