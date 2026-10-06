@@ -5,7 +5,7 @@
 #include <so/so_array.h>
 #include <types.h>
 
-// Shadows the BrawlHeaders placeholder with the layout verified by the array-copy methods.
+// Copy layout verified by the array-copy methods and concrete-vector element stride.
 struct soCollisionSearchData {
     // MATCH-ONLY: raw words preserve the original aggregate-copy instructions.
     u32 unk0, unk4, unk8, unkC, unk10, unk14;

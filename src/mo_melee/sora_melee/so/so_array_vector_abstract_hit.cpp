@@ -1,6 +1,6 @@
 #pragma force_active on
 #include <revolution/gx.h>
-#include <so/collision/so_collision_hit_part.h>
+#include <so/collision/templates/so_collision_hit_part.h>
 
 template soCollisionHitPart& soArrayVectorAbstract<soCollisionHitPart>::at(s32);
 template const soCollisionHitPart& soArrayVectorAbstract<soCollisionHitPart>::at(s32) const;

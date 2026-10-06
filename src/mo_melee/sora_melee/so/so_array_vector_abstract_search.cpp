@@ -1,6 +1,6 @@
 #pragma force_active on
 #include <revolution/gx.h>
-#include <so/collision/so_collision_search_part.h>
+#include <so/collision/templates/so_collision_search_part.h>
 
 template soCollisionSearchPart& soArrayVectorAbstract<soCollisionSearchPart>::at(s32);
 template const soCollisionSearchPart& soArrayVectorAbstract<soCollisionSearchPart>::at(s32) const;

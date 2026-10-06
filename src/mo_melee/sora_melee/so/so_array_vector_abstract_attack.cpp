@@ -1,5 +1,5 @@
 #pragma force_active on
-#include <so/collision/so_collision_attack_part.h>
+#include <so/collision/templates/so_collision_attack_part.h>
 
 template soCollisionAttackPart& soArrayVectorAbstract<soCollisionAttackPart>::at(s32);
 template const soCollisionAttackPart& soArrayVectorAbstract<soCollisionAttackPart>::at(s32) const;
