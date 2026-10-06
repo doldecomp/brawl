@@ -8,9 +8,11 @@ Super Smash Bros. Brawl
 [Data Progress]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhumboldt123%2Fbrawl%2Fmain%2F.github%2Fbadges%2Fdata.json
 [progress]: https://github.com/humboldt123/brawl
 
-A work-in-progress slopcoded decompilation of Super Smash Bros. Brawl. (This repository does not contain any game assets or assembly whatsoever. An existing copy of the game is required.)
+A work-in-progress slopcoded decompilation of Super Smash Bros. Brawl.
 
 ![Progress treemap](https://raw.githubusercontent.com/humboldt123/brawl/main/.github/progress/treemap.png)
+
+This repository does **not** contain any game assets or assembly whatsoever. An existing copy of the game is required.
 
 Supported versions:
 
