@@ -164,6 +164,12 @@ mo_melee/sora_melee/so/so_array_vector_abstract_ptr_wnemSimple.cpp:
 mo_melee/sora_melee/so/so_array_vector_abstract_record_float.cpp:
 	.text       start:0x000DC3F0 end:0x000DCAD4
 
+mo_melee/sora_melee/so/so_array_vector_abstract_value_soDamage.cpp:
+	.text       start:0x000DCAD4 end:0x000DD928
+
+mo_melee/sora_melee/so/so_array_vector_abstract_value_soCollisionShieldGroup.cpp:
+	.text       start:0x000E0470 end:0x000E1454
+
 mo_melee/sora_melee/so/so_array_vector_abstract_shield.cpp:
 	.text       start:0x000E2274 end:0x000E3280
 
@@ -175,6 +181,9 @@ mo_melee/sora_melee/so/so_array_vector_abstract_attack.cpp:
 
 mo_melee/sora_melee/so/so_array_vector_abstract_catch.cpp:
 	.text       start:0x000E5428 end:0x000E640C
+
+mo_melee/sora_melee/so/so_array_vector_abstract_value_soCollisionHitGroup.cpp:
+	.text       start:0x000E640C end:0x000E6D88
 
 mo_melee/sora_melee/so/so_array_vector_abstract_value_soModelVirtualNode.cpp:
 	.text       start:0x000E6D88 end:0x000E74FC
