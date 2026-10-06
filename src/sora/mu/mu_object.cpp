@@ -1312,9 +1312,9 @@ void MuObject::changeMaterialTex(const char* matName, int texIndex, nw4r::g3d::R
 
 void MuObject::changeMaterialTex(u32 matId, const char* texName, nw4r::g3d::ResFile* texFile) {
     MatAccess access(m_scnMdl, matId);
-    nw4r::g3d::ResTex tex(NULL);
     nw4r::g3d::ResTexObj texObj(CopiedMatAccess_GetResTexObj(&access, false));
     GXTexObj* obj = texObj.GetTexObj(GX_TEXMAP0);
+    nw4r::g3d::ResTex tex(NULL);
     if (texFile == NULL) {
         texFile = &m_resFile;
     }
