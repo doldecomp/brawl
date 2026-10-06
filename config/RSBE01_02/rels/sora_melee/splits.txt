@@ -116,6 +116,111 @@ mo_melee/sora_melee/so/so_common_data_accesser.cpp:
 	.ctors      start:0x0000004C end:0x00000050
 	.bss        start:0x00002CD0 end:0x00002E58
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_106.cpp:
+	.text       start:0x000CE01C end:0x000CE0BC
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_115.cpp:
+	.text       start:0x000CE1B8 end:0x000CE258
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_12.cpp:
+	.text       start:0x000CE350 end:0x000CE3F0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_14.cpp:
+	.text       start:0x000CE4E8 end:0x000CE588
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_146.cpp:
+	.text       start:0x000CE680 end:0x000CE720
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_16.cpp:
+	.text       start:0x000CE818 end:0x000CE8B8
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_17.cpp:
+	.text       start:0x000CE9B0 end:0x000CEA50
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_19.cpp:
+	.text       start:0x000CEB48 end:0x000CEBE8
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_22.cpp:
+	.text       start:0x000CECE0 end:0x000CED80
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_23.cpp:
+	.text       start:0x000CEE78 end:0x000CEF18
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_24.cpp:
+	.text       start:0x000CF010 end:0x000CF0B0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_25.cpp:
+	.text       start:0x000CF1A8 end:0x000CF248
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_26.cpp:
+	.text       start:0x000CF340 end:0x000CF3E0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_27.cpp:
+	.text       start:0x000CF4D8 end:0x000CF578
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_28.cpp:
+	.text       start:0x000CF670 end:0x000CF710
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_29.cpp:
+	.text       start:0x000CF808 end:0x000CF8A8
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_3.cpp:
+	.text       start:0x000CF9A0 end:0x000CFA40
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_31.cpp:
+	.text       start:0x000CFB38 end:0x000CFBD8
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_32.cpp:
+	.text       start:0x000CFCD0 end:0x000CFD70
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_33.cpp:
+	.text       start:0x000CFE68 end:0x000CFF08
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_34.cpp:
+	.text       start:0x000D0000 end:0x000D00A0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_36.cpp:
+	.text       start:0x000D0198 end:0x000D0238
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_37.cpp:
+	.text       start:0x000D0330 end:0x000D03D0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_38.cpp:
+	.text       start:0x000D04C8 end:0x000D0568
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_39.cpp:
+	.text       start:0x000D0660 end:0x000D0700
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_43.cpp:
+	.text       start:0x000D07F8 end:0x000D0898
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_44.cpp:
+	.text       start:0x000D0990 end:0x000D0A30
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_52.cpp:
+	.text       start:0x000D0B28 end:0x000D0BC8
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_54.cpp:
+	.text       start:0x000D0CC0 end:0x000D0D60
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_61.cpp:
+	.text       start:0x000D0E58 end:0x000D0EF8
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_64.cpp:
+	.text       start:0x000D0FF0 end:0x000D1090
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_65.cpp:
+	.text       start:0x000D1188 end:0x000D1228
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_76.cpp:
+	.text       start:0x000D1320 end:0x000D13C0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_9.cpp:
+	.text       start:0x000D14B8 end:0x000D1558
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_92.cpp:
+	.text       start:0x000D1650 end:0x000D16F0
+
 mo_melee/sora_melee/ft/ft_class_info.cpp:
 	.text       start:0x001254D4 end:0x001257EC
 	.ctors      start:0x0000005C end:0x00000060
@@ -186,6 +291,12 @@ mo_melee/sora_melee/ft/ft_fighter_build_data.cpp:
 	.rodata     start:0x000026A8 end:0x000026B0
 	.data       start:0x00032A98 end:0x00032BF8
 	.bss        start:0x00005040 end:0x00005050
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_1.cpp:
+	.text       start:0x001A0054 end:0x001A00F4
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_2.cpp:
+	.text       start:0x001A01EC end:0x001A028C
 
 mo_melee/sora_melee/st/st_common_gimmick.cpp:
 	.text       start:0x00237C00 end:0x002381FC
