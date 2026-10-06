@@ -75,12 +75,10 @@ Server layout (`/srv/brawl-native`): `brawl/` (reference checkout, do not edit),
 
 ## 4. Branches and pull requests
 
-- Branch name: `agent/<name>-<descriptive-topic>` (for example `agent/hawk-so-array-vector-templates`, `agent/lynx-ft-sonic-builder`). One topic per branch, small enough to review.
-- Push with the GitHub token your human gives you (`GH_TOKEN`):
-  `git push https://x-access-token:$GH_TOKEN@github.com/humboldt123/brawl.git <branch>` (do not store the token in the repo or in a remote URL).
-- Open a PR into `humboldt123/brawl` `main`:
-  `curl -s -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" https://api.github.com/repos/humboldt123/brawl/pulls -d '{"title":"<title>","head":"<branch>","base":"main","body":"<what matched, how many functions, what is unsure>"}'`
-- PR body: what you matched, how many functions went green, what you are unsure about, and that all 127 hashes are OK. Do not merge your own PRs; the maintainer merges. Keep branches rebased on `main` (`git fetch origin && git rebase origin/main`). Do not leave stale branches: the maintainer deletes merged ones.
+- Preferred branch name: `agent/<name>-<descriptive-topic>` (for example `agent/hawk-so-array-vector-templates`, `agent/lynx-ft-sonic-builder`). One topic per branch, small enough to review.
+- **Use the GitHub access your environment already has.** In Claude Code on the web the repo is already connected: commit on your session's branch and push it, and open the PR with the tools you have (GitHub tools or `gh`). If the environment forces a branch name (for example `claude/...`), keep it and put the topic in the PR title instead. Only if you have NO GitHub access, and your human gave you `GH_TOKEN`, push with `git push https://x-access-token:$GH_TOKEN@github.com/humboldt123/brawl.git <branch>` and open the PR with `curl -s -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" https://api.github.com/repos/humboldt123/brawl/pulls -d '{"title":"<title>","head":"<branch>","base":"main","body":"<body>"}'` (never store the token in the repo or in a remote URL). If you can push no way at all, commit on the server worktree and report the branch name.
+- The build happens on the server worktree, but your commits must also reach GitHub: the server worktree cannot push, so when you have a batch ready, copy the changed files into your GitHub checkout (`bx get`) and commit them there with the identity in section 5, or tell your human the server branch name.
+- PR body: what you matched, how many functions went green, what you are unsure about, and that all 127 hashes are OK. Do not merge your own PRs; the maintainer merges. Keep branches rebased on `main`. The maintainer deletes merged branches.
 
 ## 5. Commit identity (required)
 
