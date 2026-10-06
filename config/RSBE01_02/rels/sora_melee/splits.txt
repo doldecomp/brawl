@@ -41,6 +41,9 @@ mo_melee/sora_melee/so/so_collision_shield_part.cpp:
 	.text       start:0x00046588 end:0x00046A74
 	.rodata     start:0x000004C8 end:0x000004E0
 
+mo_melee/sora_melee/so/so_array_vector_abstract_value_soCollisionGroup.cpp:
+	.text       start:0x0004CBD0 end:0x0004D77C
+
 mo_melee/sora_melee/so/so_array_vector_abstract_record_soInstanceUnitFullProperty_soTeamEventObserver.cpp:
 	.text       start:0x00054470 end:0x00054BBC
 
