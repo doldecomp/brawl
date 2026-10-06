@@ -311,6 +311,30 @@ mo_melee/sora_melee/so/so_array_vector_abstract_ptr_ftEntry_part2.cpp:
 mo_melee/sora_melee/so/so_array_vector_abstract_record_soInstanceUnitFullProperty_ftEntryEventObserver.cpp:
 	.text       start:0x0011BF58 end:0x0011C6A4
 
+mo_melee/sora_melee/so/so_array_vector_abstract_nested_ftSlotManager_FlexHeapInfo_part1.cpp:
+	.text       start:0x001223C8 end:0x0012261C
+
+mo_melee/sora_melee/so/so_array_vector_abstract_nested_ftSlot_LoadOrderKirby_part1.cpp:
+	.text       start:0x0012261C end:0x00122848
+
+mo_melee/sora_melee/so/so_array_vector_abstract_nested_ftSlot_LoadOrder_part1.cpp:
+	.text       start:0x00122848 end:0x00122A64
+
+mo_melee/sora_melee/so/so_array_vector_abstract_nested_ftSlotManager_FlexHeapInfo_part2.cpp:
+	.text       start:0x00122C8C end:0x0012324C
+
+mo_melee/sora_melee/so/so_array_vector_abstract_nested_ftSlot_LoadOrderKirby_part2.cpp:
+	.text       start:0x0012324C end:0x0012376C
+
+mo_melee/sora_melee/so/so_array_vector_abstract_nested_ftSlot_LoadOrder_part2.cpp:
+	.text       start:0x0012376C end:0x00123C4C
+
+mo_melee/sora_melee/so/so_array_vector_abstract_nested_ftInstanceManager_InstanceInfo_part1.cpp:
+	.text       start:0x00124B24 end:0x00124D60
+
+mo_melee/sora_melee/so/so_array_vector_abstract_nested_ftInstanceManager_InstanceInfo_part2.cpp:
+	.text       start:0x00124E5C end:0x001253BC
+
 mo_melee/sora_melee/ft/ft_class_info.cpp:
 	.text       start:0x001254D4 end:0x001257EC
 	.ctors      start:0x0000005C end:0x00000060
@@ -328,6 +352,12 @@ mo_melee/sora_melee/ft/ft_info.cpp:
 	.rodata     start:0x000018F0 end:0x00001C60
 	.data       start:0x0002C0C8 end:0x0002CFF8
 	.bss        start:0x00004660 end:0x00004678
+
+mo_melee/sora_melee/so/so_array_vector_abstract_nested_ftAreaModuleImpl_GimmickTermInfo_part1.cpp:
+	.text       start:0x0014F0F8 end:0x0014F24C
+
+mo_melee/sora_melee/so/so_array_vector_abstract_nested_ftAreaModuleImpl_GimmickTermInfo_part2.cpp:
+	.text       start:0x0014F3BC end:0x0014FB1C
 
 mo_melee/sora_melee/ft/ft_kinetic_energy_controller.cpp:
 	.text       start:0x0015BD28 end:0x0015CFE0
@@ -388,6 +418,15 @@ mo_melee/sora_melee/so/so_array_vector_abstract_ptr_wnPikminPikmin.cpp:
 mo_melee/sora_melee/so/so_array_vector_abstract_special_wnPikminPikminOwnerInfo.cpp:
 	.text       start:0x001B314C end:0x001B38C0
 
+mo_melee/sora_melee/so/so_array_vector_abstract_nested_ftWolf_PostureInfo.cpp:
+	.text       start:0x001B38C0 end:0x001B400C
+
+mo_melee/sora_melee/so/so_array_vector_abstract_nested_ftFalco_PostureInfo.cpp:
+	.text       start:0x001B400C end:0x001B4758
+
+mo_melee/sora_melee/so/so_array_vector_abstract_nested_ftFox_PostureInfo.cpp:
+	.text       start:0x001B4758 end:0x001B4EA4
+
 mo_melee/sora_melee/so/so_array_vector_abstract_ptr_const_acAnimCmdConv.cpp:
 	.text       start:0x001B4EA4 end:0x001B5578
 
@@ -436,6 +475,18 @@ mo_melee/sora_melee/st/st_common_gimmick.cpp:
 
 mo_melee/sora_melee/so/so_array_vector_abstract_ptr_BaseItem.cpp:
 	.text       start:0x00296224 end:0x002968F8
+
+mo_melee/sora_melee/so/so_array_vector_abstract_nested_wnPokeTrainerMBall_ParticleInfo_part1.cpp:
+	.text       start:0x0038F300 end:0x0038F58C
+
+mo_melee/sora_melee/so/so_array_vector_abstract_nested_wnPokeTrainerMBall_BallInfo_part1.cpp:
+	.text       start:0x0038F58C end:0x0038F810
+
+mo_melee/sora_melee/so/so_array_vector_abstract_nested_wnPokeTrainerMBall_ParticleInfo_part2.cpp:
+	.text       start:0x00390514 end:0x00390BB4
+
+mo_melee/sora_melee/so/so_array_vector_abstract_nested_wnPokeTrainerMBall_BallInfo_part2.cpp:
+	.text       start:0x00390BB4 end:0x00391234
 
 mo_melee/mo_melee.cpp:
 	.text       start:0x003CBCBC end:0x003CBE40
