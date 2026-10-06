@@ -647,6 +647,7 @@ config.libs = [
             Object(NonMatching, "sora/gf/gf_slow_manager.cpp"),
             Object(Matching, "sora/gf/gf_scene_manager_search.cpp"),
             Object(Matching, "sora/gf/gf_scene_manager_register.cpp"),
+            Object(NonMatching, "sora/gf/gf_scene_manager_transition.cpp"),
             Object(Matching, "sora/gf/gf_system_callback.cpp"),
             Object(Matching, "sora/gf/gf_capture_util.cpp"),
             Object(Matching, "sora/gf/gf_monitor.cpp"),

@@ -45,8 +45,15 @@ public:
     int m_memoryLayout; // 0x280
     int unk1;
     int processStep;
-    char _spacer4[148];
+    s32 unk28C;
+    char _spacer4[140];
+    s32 unk31C;
 
+    void changeNextScene();
+    // HYPOTHESIS: p2 is a 32-bit payload; its semantic type is unknown.
+    void startSequence(const char* name, int p2);
+    void setNextScene(const char* name, int memoryLayout);
+    void setNextSequence(const char* name, int p2);
     s32 registScene(gfScene* scene);
     s32 registSequence(gfSequence* sequence);
     gfScene* searchScene(const char* sceneName);
