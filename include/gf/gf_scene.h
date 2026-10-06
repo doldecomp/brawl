@@ -1,5 +1,8 @@
 #pragma once
 
+// Supersedes include/lib/BrawlHeaders/Brawl/Include/gf/gf_scene.h (shadows it via -I include).
+// Adds registScene, registSequence and searchSequence, which the BrawlHeaders submodule lacks. Keep in sync.
+
 #include <StaticAssert.h>
 #include <types.h>
 
