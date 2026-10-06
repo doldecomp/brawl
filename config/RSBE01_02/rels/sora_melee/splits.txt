@@ -116,8 +116,20 @@ mo_melee/sora_melee/so/so_common_data_accesser.cpp:
 	.ctors      start:0x0000004C end:0x00000050
 	.bss        start:0x00002CD0 end:0x00002E58
 
+mo_melee/sora_melee/so/so_array_vector_abstract_shield.cpp:
+	.text       start:0x000E2274 end:0x000E3280
+
+mo_melee/sora_melee/so/so_array_vector_abstract_search.cpp:
+	.text       start:0x000E3280 end:0x000E428C
+
 mo_melee/sora_melee/so/so_array_vector_abstract_attack.cpp:
 	.text       start:0x000E428C end:0x000E5428
+
+mo_melee/sora_melee/so/so_array_vector_abstract_catch.cpp:
+	.text       start:0x000E5428 end:0x000E640C
+
+mo_melee/sora_melee/so/so_array_vector_abstract_hit.cpp:
+	.text       start:0x000E74FC end:0x000E8580
 
 mo_melee/sora_melee/ft/ft_class_info.cpp:
 	.text       start:0x001254D4 end:0x001257EC

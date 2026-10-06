@@ -624,85 +624,85 @@ public:
 // Out-of-line definitions let MWCC emit members for explicit abstract-template instantiations.
 template <class T>
 bool soArrayVectorAbstract<T>::isNull() const {
-        return false;
-    }
+    return false;
+}
 
 template <class T>
 T& soArrayVectorAbstract<T>::at(s32 index) {
-        return this->atFastAbstractSub(index);
-    }
+    return this->atFastAbstractSub(index);
+}
 
 template <class T>
 const T& soArrayVectorAbstract<T>::at(s32 index) const {
-        return this->atFastAbstractSub(index);
-    }
+    return this->atFastAbstractSub(index);
+}
 
 template <class T>
 soArrayVectorAbstract<T>::~soArrayVectorAbstract() { }
 
 template <class T>
 void soArrayVectorAbstract<T>::shift() {
-        soArrayVectorCalculator::shift(*this, this->isEmpty(), this->capacity(), this->getTopIndex());
-        this->setSize(this->size() - 1);
-    }
+    soArrayVectorCalculator::shift(*this, this->isEmpty(), this->capacity(), this->getTopIndex());
+    this->setSize(this->size() - 1);
+}
 
 template <class T>
 void soArrayVectorAbstract<T>::pop() {
-        soArrayVectorCalculator::pop(*this, this->isEmpty(), this->capacity(), this->getLastIndex());
-        this->setSize(this->size() - 1);
-    }
+    soArrayVectorCalculator::pop(*this, this->isEmpty(), this->capacity(), this->getLastIndex());
+    this->setSize(this->size() - 1);
+}
 
 template <class T>
 void soArrayVectorAbstract<T>::clear() {
-        soArrayVectorCalculator::clear(*this);
-        this->setSize(0);
-    }
+    soArrayVectorCalculator::clear(*this);
+    this->setSize(0);
+}
 
 template <class T>
 void soArrayVectorAbstract<T>::unshift(const T& newElement) {
-        s32 topIndex = soArrayVectorCalculator::unshift(*this, this->isFull(), this->capacity(), this->getTopIndex(), this->getLastIndex());
-        T& element = this->getArrayValueConst(topIndex);
-        element = newElement;
-        this->setSize(this->size() + 1);
-    }
+    s32 topIndex = soArrayVectorCalculator::unshift(*this, this->isFull(), this->capacity(), this->getTopIndex(), this->getLastIndex());
+    T& element = this->getArrayValueConst(topIndex);
+    element = newElement;
+    this->setSize(this->size() + 1);
+}
 
 template <class T>
 void soArrayVectorAbstract<T>::push(const T& newElement) {
-        s32 lastIndex = soArrayVectorCalculator::push(*this, this->isFull(), this->capacity(), this->getTopIndex(), this->getLastIndex());
-        T& element = this->getArrayValueConst(lastIndex);
-        element = newElement;
-        this->setSize(this->size() + 1);
-    }
+    s32 lastIndex = soArrayVectorCalculator::push(*this, this->isFull(), this->capacity(), this->getTopIndex(), this->getLastIndex());
+    T& element = this->getArrayValueConst(lastIndex);
+    element = newElement;
+    this->setSize(this->size() + 1);
+}
 
 template <class T>
 void soArrayVectorAbstract<T>::insert(s32 index, const T& newElement) {
-        s32 lastIndex = soArrayVectorCalculator::insert(*this, index, this->isFull(), this->size(), this->capacity(), this->getTopIndex(), this->getLastIndex());
-        T& element = this->getArrayValueConst(lastIndex);
-        element = newElement;
-        this->setSize(this->size() + 1);
-    }
+    s32 lastIndex = soArrayVectorCalculator::insert(*this, index, this->isFull(), this->size(), this->capacity(), this->getTopIndex(), this->getLastIndex());
+    T& element = this->getArrayValueConst(lastIndex);
+    element = newElement;
+    this->setSize(this->size() + 1);
+}
 
 template <class T>
 void soArrayVectorAbstract<T>::erase(s32 index) {
-        soArrayVectorCalculator::erase(*this, index, this->size(), this->capacity(), this->getTopIndex(), this->getLastIndex());
-        this->setSize(this->size() - 1);
-    }
+    soArrayVectorCalculator::erase(*this, index, this->size(), this->capacity(), this->getTopIndex(), this->getLastIndex());
+    this->setSize(this->size() - 1);
+}
 
 template <class T>
 void soArrayVectorAbstract<T>::set(s32 start, const T& elm, s32 count) {
-        int c = count;
-        if (c + start >= this->size())
-            c = this->size() - start;
-        for (s32 i = 0; i < c; i++)
-            this->at(start+i) = elm;
-    }
+    int c = count;
+    if (c + start >= this->size())
+        c = this->size() - start;
+    for (s32 i = 0; i < c; i++)
+        this->at(start+i) = elm;
+}
 
 template <class T>
 void soArrayVectorAbstract<T>::substitution(s32 subIndex, s32 targetIndex) {
-        T& subElement = this->getArrayValueConst(subIndex);
-        T& targetElement = this->getArrayValueConst(targetIndex);
-        targetElement = subElement;
-    }
+    T& subElement = this->getArrayValueConst(subIndex);
+    T& targetElement = this->getArrayValueConst(targetIndex);
+    targetElement = subElement;
+}
 
 template <class T, s32 C>
 class soArrayVector : public soArrayVectorAbstract<T> {
