@@ -67,6 +67,9 @@ struct ResPlttRef {
     u8* m_data;
 };
 extern "C" u8* fn_8018D310(nw4r::g3d::ResFile* file, const char* name);
+// ResFile texture lookups still have anonymous names in the symbol configuration.
+extern "C" nw4r::g3d::ResTex fn_8018D4D0(nw4r::g3d::ResFile* file, int index);
+extern "C" nw4r::g3d::ResTex fn_8018D3F0(nw4r::g3d::ResFile* file, const char* name);
 
 void ScnMdl_SetNodeMtx(nw4r::g3d::ScnMdl* mdl, u32 nodeId, const Matrix* mtx);
 
@@ -1301,7 +1304,7 @@ void MuObject::changeMaterialTex(const char* matName, void* image, u16 width, u1
 
 void MuObject::changeMaterialTex(const char* matName, int texIndex, nw4r::g3d::ResFile* texFile) {
     nw4r::g3d::ResFile* file = texFile == NULL ? &m_resFile : texFile;
-    u8* tex = (u8*)file->GetResTex(texIndex).ptr();
+    u8* tex = (u8*)fn_8018D4D0(file, texIndex).ptr();
     u32 off = *(u32*)(tex + 0x14);
     const char* texName = off != 0 ? (const char*)(tex + off) : NULL;
     changeMaterialTex(m_resMdl.GetResMat(matName)->m_id, texName, texFile);
@@ -1315,7 +1318,7 @@ void MuObject::changeMaterialTex(u32 matId, const char* texName, nw4r::g3d::ResF
     if (texFile == NULL) {
         texFile = &m_resFile;
     }
-    tex = texFile->GetResTex(texName);
+    tex = fn_8018D3F0(texFile, texName);
     if ((*(u32*)((u8*)tex.ptr() + 0x18)) & 1) {
         u8* pltt = fn_8018D310(texFile, texName);
         void* tlutObjPtr = fn_801AFF94(&access, false);
