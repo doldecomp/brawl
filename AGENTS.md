@@ -87,7 +87,7 @@ Commits show who ran the agent and which agent. The worktree author is already s
 End every commit message with a blank line and exactly one trailer for the agent you are, including your model name if you know it (leave it out if you do not):
 
 - `Co-Authored-By: Claude <model name> <noreply@anthropic.com>`, for example `Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>`
-- `Co-Authored-By: Codex <model name> <noreply@openai.com>`, for example `Co-Authored-By: Codex GPT-5 <noreply@openai.com>`
+- `Co-Authored-By: Codex <model name> <noreply@openai.com>`, for example `Co-Authored-By: Codex Example-Model 1 <noreply@openai.com>` (use the exact model name your environment reports, never a guess)
 
 No other trailers, no session links. Imported commits from other people keep only their original authors. GitHub then shows "Human and Agent".
 
