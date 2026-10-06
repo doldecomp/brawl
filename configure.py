@@ -1349,6 +1349,7 @@ config.libs = [
             Object(Matching, "mo_melee/sora_melee/so/anim/so_anim_chr.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/collision/so_collision_hit_module_impl.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_collision_shield_part.cpp"),
+            Object(NonMatching, "mo_melee/sora_melee/so/so_array_vector_abstract_attack.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/controller/so_controller_module_impl.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/so_controller_module_link_ref.cpp"),
             Object(Matching, "mo_melee/sora_melee/so/controller/so_controller_impl.cpp"),
