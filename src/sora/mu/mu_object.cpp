@@ -1128,9 +1128,9 @@ u32 MuObject::getNodeID(const char* nodeName) {
 Matrix MuObject::getNodeMatrix(const char* nodeName) {
     nw4r::g3d::ResMdl mdl = m_sceneModel->m_resMdl;
     nw4r::g3d::ResNode node = mdl.GetResNode(nodeName);
-    Vec3f trans(node->m_translation.m_x, node->m_translation.m_y, node->m_translation.m_z);
-    Vec3f rot(node->m_rotation.m_x, node->m_rotation.m_y, node->m_rotation.m_z);
-    Vec3f scale(node->m_scale.m_x, node->m_scale.m_y, node->m_scale.m_z);
+    Vec3f trans = node->m_translation;
+    Vec3f rot = node->m_rotation;
+    Vec3f scale = node->m_scale;
     Matrix mtx(true);
     mtx.setSRT(scale, rot, trans);
     return mtx;
