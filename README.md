@@ -8,44 +8,13 @@ Super Smash Bros. Brawl
 [Data Progress]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhumboldt123%2Fbrawl%2Fmain%2F.github%2Fbadges%2Fdata.json
 [progress]: https://github.com/humboldt123/brawl
 
-A work-in-progress decompilation of Super Smash Bros. Brawl.
+A work-in-progress slopcoded decompilation of Super Smash Bros. Brawl. (This repository does not contain any game assets or assembly whatsoever. An existing copy of the game is required.)
 
 ![Progress treemap](https://raw.githubusercontent.com/humboldt123/brawl/main/.github/progress/treemap.png)
 
-Each rectangle is a unit sized by its code; green is fully matched, blue is partially matched, grey is not started.
-
-This repository does **not** contain any game assets or assembly whatsoever. An existing copy of the game is required.
-
-## Contributors and AI agents
-
-Much of the work in this fork is done by AI agents (Claude, Codex) working for a person. Commits should show **who ran the agent and which agent it was**:
-
-- **Author and committer** = the human whose account or credits run the agent (for example `humboldt123`, `DanielDavis05`). Use that person's GitHub noreply address (`<id>+<username>@users.noreply.github.com`).
-- **Co-author** = the agent, as a trailer at the end of the message, so GitHub shows "Human and Agent":
-  - `Co-Authored-By: Claude <noreply@anthropic.com>` (include the model name if known, e.g. `Claude Sonnet 5.5`)
-  - `Co-Authored-By: Codex <noreply@openai.com>`
-- Never commit as just `Claude` or `codex`, never leave session links in messages, and keep other people's authorship intact when importing their commits.
-
-Agents: set this before your first commit in a clone or worktree:
-
-```
-git config user.name  "<HUMAN NAME>"
-git config user.email "<ID>+<USERNAME>@users.noreply.github.com"
-```
-
 Supported versions:
 
-<!--
-- `RSBJ01_00`: Japan Rev 0
-- `RSBJ01_01`: Japan Rev 1
-- `RSBE01_01`: USA Rev 1
--->
 - `RSBE01_02`: USA Rev 2
-<!--
-- `RSBP01_00`: PAL Rev 0
-- `RSBP01_01`: PAL Rev 1
-- `RSBK01_00`: Korea Rev 0
--->
 
 Dependencies
 ============
@@ -132,3 +101,22 @@ Download the latest release from [encounter/objdiff](https://github.com/encounte
 Select an object from the left sidebar to begin diffing. Changes to the project will rebuild automatically: changes to source files, headers, `configure.py`, `splits.txt` or `symbols.txt`.
 
 ![](assets/objdiff.png)
+
+## Contributors and AI agents
+
+See [AGENTS.md](AGENTS.md) for the full agent instructions.
+
+Much of the work in this fork is done by AI agents (Claude, Codex) working for a person. Commits should show **who ran the agent and which agent it was**:
+
+- **Author and committer** = the human whose account or credits run the agent (for example `humboldt123`, `DanielDavis05`). Use that person's GitHub noreply address (`<id>+<username>@users.noreply.github.com`).
+- **Co-author** = the agent, as a trailer at the end of the message, so GitHub shows "Human and Agent":
+  - `Co-Authored-By: Claude <noreply@anthropic.com>` (include the model name if known, e.g. `Claude Sonnet 5.5`)
+  - `Co-Authored-By: Codex <noreply@openai.com>`
+- Never commit as just `Claude` or `codex`, never leave session links in messages, and keep other people's authorship intact when importing their commits.
+
+Agents: set this before your first commit in a clone or worktree:
+
+```
+git config user.name  "<HUMAN NAME>"
+git config user.email "<ID>+<USERNAME>@users.noreply.github.com"
+```
