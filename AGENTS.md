@@ -84,10 +84,10 @@ Server layout (`/srv/brawl-native`): `brawl/` (reference checkout, do not edit),
 
 Commits show who ran the agent and which agent. The worktree author is already set by `newwt.sh` from `HUMAN_NAME` / `HUMAN_EMAIL`. All worktrees on the server share one git dir, so **never** run plain `git config user.name`; use `git config --worktree ...` if you must. Check: `git log -1 --format='%an <%ae>'`.
 
-End every commit message with a blank line and exactly one trailer for the agent you are:
+End every commit message with a blank line and exactly one trailer for the agent you are, including your model name if you know it (leave it out if you do not):
 
-- `Co-Authored-By: Claude <noreply@anthropic.com>`
-- `Co-Authored-By: Codex <noreply@openai.com>`
+- `Co-Authored-By: Claude <model name> <noreply@anthropic.com>`, for example `Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>`
+- `Co-Authored-By: Codex <model name> <noreply@openai.com>`, for example `Co-Authored-By: Codex GPT-5 <noreply@openai.com>`
 
 No other trailers, no session links. Imported commits from other people keep only their original authors. GitHub then shows "Human and Agent".
 
