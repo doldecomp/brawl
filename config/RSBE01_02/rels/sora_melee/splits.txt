@@ -325,6 +325,9 @@ mo_melee/sora_melee/so/so_array_vector_abstract_ptr_wnPikminPikmin.cpp:
 mo_melee/sora_melee/so/so_array_vector_abstract_ptr_const_acAnimCmdConv.cpp:
 	.text       start:0x001B4EA4 end:0x001B5578
 
+mo_melee/sora_melee/so/so_array_vector_abstract_value_soControllerImpl.cpp:
+	.text       start:0x001B7D00 end:0x001B8EC4
+
 mo_melee/sora_melee/so/so_array_vector_abstract_record_soInstanceUnitFullProperty_soKineticEnergy.cpp:
 	.text       start:0x001B8EC4 end:0x001B9610
 
