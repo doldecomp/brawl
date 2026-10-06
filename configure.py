@@ -432,6 +432,24 @@ def MatchingFor(*versions):
 config.warn_missing_config = True
 config.warn_missing_source = False
 config.libs = [
+    {
+        "lib": "DWC",
+        "mw_version": config.linker_version,
+        "cflags": cflags_common,
+        "host": False,
+        "objects": [
+            Object(NonMatching, "DWC/dwcbase64.c"),
+            Object(NonMatching, "DWC/dwcerror.c"),
+            Object(NonMatching, "DWC/dwcmemfunc.c"),
+            Object(NonMatching, "DWC/dwcinit.c"),
+            Object(NonMatching, "DWC/dwcreport.c"),
+            Object(NonMatching, "DWC/dwcghttp.c"),
+            Object(NonMatching, "DWC/dwccommon.c"),
+            Object(NonMatching, "DWC/dwcfriend.c"),
+            Object(NonMatching, "DWC/dwclogin.c"),
+            Object(NonMatching, "DWC/dwcmain.c"),
+        ],
+    },
     # --- sibling-project libraries (begin) ---
     {
         "lib": "NWLib",

@@ -1391,6 +1391,36 @@ havok/hkVersionUtil.cpp:
 	.text       start:0x80334BF8 end:0x80334DE4
 	.rodata     start:0x804156D0 end:0x804156E0
 
+DWC/dwcbase64.c:
+	.text       start:0x80334DE4 end:0x8033514C
+
+DWC/dwcerror.c:
+	.text       start:0x8033514C end:0x80335264
+
+DWC/dwcinit.c:
+	.text       start:0x80335264 end:0x80335384
+
+DWC/dwcmemfunc.c:
+	.text       start:0x80335384 end:0x80335630
+
+DWC/dwcreport.c:
+	.text       start:0x80335630 end:0x80335988
+
+DWC/dwcghttp.c:
+	.text       start:0x80335988 end:0x803362EC
+
+DWC/dwccommon.c:
+	.text       start:0x803362EC end:0x80336698
+
+DWC/dwcfriend.c:
+	.text       start:0x80336698 end:0x80338600
+
+DWC/dwclogin.c:
+	.text       start:0x80338600 end:0x8033949C
+
+DWC/dwcmain.c:
+	.text       start:0x8033949C end:0x80339B30
+
 Runtime.PPCEABI.H/__va_arg.c:
 	.text       start:0x803F065C end:0x803F0724
 
