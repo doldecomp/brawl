@@ -35,6 +35,11 @@ public:
     // far threshold (three common constant IDs).
     static float calcAdventureMulValue(soModuleAccesser* acc, u32 nearDistanceId, u32 farDistanceId, u32 maxMulId);
 
+    // Motion played while holding an item: -1 when the held item has no special wait motion. Items held by a
+    // grip (only King Dedede keeps one) or by a normal/pickup/plate hold use it, except the motion sensor bomb.
+    static int getItemWaitMotion(soModuleAccesser* acc);
+    static int getItemSquatWaitMotion(soModuleAccesser* acc);
+
     // False while the fighter is moving faster than the common speed limit and its "free speed" flag is off.
     static bool isEnableSpeedOperation(soModuleAccesser* acc);
 

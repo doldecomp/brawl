@@ -1,5 +1,7 @@
 #include <ft/ft_util.h>
+#include <ft/fighter.h>
 #include <ft/ft_manager.h>
+#include <it/it_create.h>
 #include <so/kinetic/so_kinetic_energy.h>
 #include <so/kinetic/so_kinetic_module_impl.h>
 #include <so/so_module_accesser.h>
@@ -166,4 +168,40 @@ bool ftUtil::isEnableSpeedOperation(soModuleAccesser* acc) {
             return false;
     }
     return true;
+}
+
+int ftUtil::getItemWaitMotion(soModuleAccesser* acc) {
+    switch (acc->getItemManageModule().getHaveItemHoldKind(0)) {
+    case itParam::Have_Normal:
+    case itParam::Have_Pickup:
+    case itParam::Have_Plate:
+        if (acc->getItemManageModule().getHaveItemKind(0) != Item_MotionSensorBomb)
+            return 5;
+        break;
+    case itParam::Have_Grip:
+        switch (acc->getStageObject().soGetSubKind()) {
+        case Fighter_KingDedede:
+            return 5;
+        }
+        break;
+    }
+    return -1;
+}
+
+int ftUtil::getItemSquatWaitMotion(soModuleAccesser* acc) {
+    switch (acc->getItemManageModule().getHaveItemHoldKind(0)) {
+    case itParam::Have_Normal:
+    case itParam::Have_Pickup:
+    case itParam::Have_Plate:
+        if (acc->getItemManageModule().getHaveItemKind(0) != Item_MotionSensorBomb)
+            return 0x2D;
+        break;
+    case itParam::Have_Grip:
+        switch (acc->getStageObject().soGetSubKind()) {
+        case Fighter_KingDedede:
+            return 0x2D;
+        }
+        break;
+    }
+    return -1;
 }
