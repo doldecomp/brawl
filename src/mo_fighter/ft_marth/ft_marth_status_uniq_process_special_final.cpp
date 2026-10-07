@@ -47,7 +47,7 @@ void ftMarthStatusUniqProcessFinal::initStatus(soModuleAccesser* moduleAccesser)
     case 0x120: {
         ftMarth* marth = dynamic_cast<ftMarth*>(&moduleAccesser->getStageObject());
         if (marth != NULL) {
-            ((soPhotoCallBack*)((u8*)marth + 0x8554))->addCallback();
+            marth->addCallback();
         }
         break;
     }
@@ -107,7 +107,7 @@ void ftMarthStatusUniqProcessFinal::exitStatus(soModuleAccesser* moduleAccesser,
     case 0x120: {
         ftMarth* marth = dynamic_cast<ftMarth*>(&moduleAccesser->getStageObject());
         if (marth == NULL) return;
-        ((soPhotoCallBack*)((u8*)marth + 0x8554))->removeCallBack();
+        marth->removeCallBack();
         break;
     }
     }
