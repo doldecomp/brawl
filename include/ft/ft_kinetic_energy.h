@@ -2,7 +2,6 @@
 
 #include <mt/mt_vector.h>
 #include <so/kinetic/so_kinetic_energy.h>
-#include <ft/ft_kinetic_energy_controller.h>
 #include <so/so_kinetic_energy_normal.h>
 #include <types.h>
 
@@ -24,6 +23,9 @@ public:
     float unk40;
     u8 unk44[0xc];
 };
+
+// MATCH-ONLY: declaration order keeps shared controller RTTI before motion RTTI.
+#include <ft/ft_kinetic_energy_controller.h>
 
 class ftKineticEnergyStop : public soKineticEnergyNormal {
 public:
