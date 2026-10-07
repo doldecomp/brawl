@@ -855,10 +855,13 @@ s32 soArrayVector<T, C>::capacity() const {
 }
 #endif
 
+// MATCH-ONLY: Preserve the separately owned capacity check.
+#ifndef SO_ARRAY_EXTERNAL_VECTOR_IS_FULL
 template <class T, s32 C>
 bool soArrayVector<T, C>::isFull() const {
     return m_isFull;
 }
+#endif
 
 template <class T, s32 C>
 T& soArrayVector<T, C>::atFastAbstractSub(s32 index) const {
