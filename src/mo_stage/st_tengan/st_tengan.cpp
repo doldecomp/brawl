@@ -26,6 +26,8 @@
 #include <gm/gm_global.h>
 #include <ec/ec_mgr.h>
 #include <OS/OSError.h>
+#include <cm/cm_quake.h>
+#include <ef/ef_screen.h>
 
 stClassInfoImpl<Stages::Tengan, stTengan> stTengan::bss_loc_14;
 
@@ -603,27 +605,27 @@ void stTengan::createObjFloor(int index) {
     switch(index) {
         case 6:
             floor = grTenganFloor::create(6, "StgTenganBrkYukaL", "grTenganFloorL");
-            stateWork = &m_stateFloorL;
+            stateWork = &m_stateFloor[0];
             type = 0;
             break;
         case 7:
             floor = grTenganFloor::create(8, "StgTenganBrkYukaC", "grTenganFloorC");
-            stateWork = &m_stateFloorC;
+            stateWork = &m_stateFloor[1];
             type = 1;
             break;
         case 8:
             floor = grTenganFloor::create(7, "StgTenganBrkYukaR", "grTenganFloorR");
-            stateWork = &m_stateFloorR;
+            stateWork = &m_stateFloor[2];
             type = 2;
             break;
         case 9:
             floor = grTenganFloor::create(9, "StgTenganBrkYukaCL", "grTenganFloorCL");
-            stateWork = &m_stateFloorL;
+            stateWork = &m_stateFloor[0];
             type = 3;
             break;
         case 10:
             floor = grTenganFloor::create(10, "StgTenganBrkYukaCR", "grTenganFloorCR");
-            stateWork = &m_stateFloorL;
+            stateWork = &m_stateFloor[0];
             type = 4;
             break;
         default:
@@ -667,7 +669,7 @@ bool stTengan::eventRebuildStageUpdate() {
     }
     switch (eventRebuildStage.getPhase()) {
         case 0:
-            if (m_stateFloorC == 1) {
+            if (m_stateFloor[1] == 1) {
                 if (static_cast<grTenganFloor*>(getGround(7))->m_state == 3) {
                     static_cast<grMadein*>(getGround(27))->endEntity();
                     static_cast<grMadein*>(getGround(27))->setEnableCollisionStatus(false);
@@ -684,6 +686,75 @@ bool stTengan::eventRebuildStageUpdate() {
             break;
     }
     return 0;
+}
+
+bool stTengan::eventDropStageUpdate() {
+    switch (eventDropStage.getPhase()) {
+        case 0: {
+            m_dropSoundHandle = playSeBasic(snd_se_stage_Tengan_06, 0.0f);
+            u32 sound = randi(2);
+            if (sound >= 1) {
+                sound = 1;
+            }
+            playSeBasic(static_cast<SndID>(snd_se_stage_Tengan_01 + sound), 0.0f);
+            eventDropStage.setPhase(1);
+            break;
+        }
+        case 1:
+            if (eventDropStage.isReadyEnd() == true) {
+                float choice = randf();
+                u32 floor;
+                if (choice < 1.0f / 3.0f) {
+                    floor = 0;
+                } else if (choice < 2.0f / 3.0f) {
+                    floor = 1;
+                } else {
+                    floor = 2;
+                }
+                // Do not drop an already broken floor or restart its rebuild event.
+                if (m_stateFloor[floor] != 1 && eventRebuildStage.start() == true) {
+                    m_stateFloor[floor] = 1;
+                    m_rebuildTimer = eventRebuildStage.m_framesLeft;
+                    if (floor == 1) {
+                        static_cast<grMadein*>(getGround(27))->startEntity();
+                        getGround(27)->setEnableCollisionStatus(true);
+                    }
+                    return true;
+                }
+            }
+            break;
+    }
+    return false;
+}
+
+bool stTengan::eventGravityHalfUpdate() {
+    switch (eventGravityHalf.getPhase()) {
+        case 0: {
+            eventGravityHalf.setPhase(1);
+            setGravityHalf();
+            Vec3f quakeOffset;
+            quakeOffset.m_x = 0.0f;
+            quakeOffset.m_y = 0.0f;
+            quakeOffset.m_z = 0.0f;
+            cmReqQuake(cmQuake::Amplitude_S, &quakeOffset);
+            playSeBasic(snd_se_stage_Tengan_gravity_01, 0.0f);
+            GXColor color = {255, 255, 255, 128};
+            g_efScreen->requestFlash(20.0f, 0, 128, 2, &color);
+            break;
+        }
+        case 1:
+            if (eventGravityHalf.isReadyEnd() == true) {
+                GXColor color = {255, 255, 255, 128};
+                g_efScreen->requestFlash(20.0f, 0, 128, 2, &color);
+                cmRemoveQuake(1);
+                setGravityNormal();
+                eventGravityHalf.end();
+                playSeBasic(snd_se_stage_Tengan_gravity_02, 0.0f);
+            }
+            break;
+    }
+    // The handler ends its own event; the caller never receives completion.
+    return false;
 }
 
 void stTengan::updateEvent(float deltaFrame) {
@@ -709,20 +780,22 @@ void stTengan::updateEvent(float deltaFrame) {
     }
 }
 
-u32 stTengan::getZoneLightSetIndex(Vec2f *position) {
+u32 stTengan::getZoneLightSetIndex(Vec3f *position) {
     if (position == NULL) {
         return 20;
     }
-    if (position->m_x < -78.0f) {
+    float x = position->m_x;
+    float y = position->m_y;
+    if (x < -78.0f) {
         return 20;
     }
-    if (position->m_x > 78.0f) {
+    if (x > 78.0f) {
         return 20;
     }
-    if (position->m_y < -60.0f) {
+    if (y < -60.0f) {
         return 20;
     }
-    if (position->m_y > -16.0f) {
+    if (y > -16.0f) {
         return 20;
     }
     return 21;

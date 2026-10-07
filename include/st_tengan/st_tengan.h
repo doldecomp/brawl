@@ -74,13 +74,11 @@ class stTengan : public stMelee {
     float unke5c;
     u8 unke60;
     float m_rebuildTimer;
-    u8 m_stateFloorL;
-    u8 m_stateFloorC;
-    u8 m_stateFloorR;
+    u8 m_stateFloor[3]; // Left, center, right; shared with grTenganFloor.
     u8 unke6b;
     Vec3f posAshibaWork[4];
     u32 unke9c;
-    u32 unkea0;
+    u32 m_dropSoundHandle;
     float unkea4;
     u8 unkea8;
     u32 unkeac;
@@ -107,6 +105,8 @@ class stTengan : public stMelee {
 
   public:
     bool eventRebuildStageUpdate();
+    bool eventGravityHalfUpdate();
+    bool eventDropStageUpdate();
     
     stTengan();
     virtual ~stTengan();
@@ -120,7 +120,7 @@ class stTengan : public stMelee {
     virtual bool loading();
     virtual void update(float deltaFrame);
     virtual void updateEvent(float deltaFrame);
-    virtual u32 getZoneLightSetIndex(Vec2f *position);
+    virtual u32 getZoneLightSetIndex(Vec3f *position);
     virtual GXColor getFinalTechniqColor() { return nw4r::ut::Color(0x1400047d); }
     virtual bool isBamperVector() { return true; }
     static stTengan* create();
