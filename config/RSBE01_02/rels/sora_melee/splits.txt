@@ -38,6 +38,9 @@ mo_melee/sora_melee/so/so_array_vector_accessors_soAnimCmdAddressPack_20.cpp:
 mo_melee/sora_melee/so/so_array_vector_accessors_Vec3f_1.cpp:
 	.text       start:0x0001D3CC end:0x0001D494
 
+mo_melee/sora_melee/so/so_array_vector_accessors_u32_1.cpp:
+	.text       start:0x0001D494 end:0x0001D55C
+
 mo_melee/sora_melee/so/so_array_vector_accessors_soMotionChangeParam_4_part1.cpp:
 	.text       start:0x0001D598 end:0x0001D5A8
 
@@ -248,6 +251,9 @@ mo_melee/sora_melee/so/so_array_vector_accessors_soArticle_20.cpp:
 
 mo_melee/sora_melee/so/so_array_vector_abstract_record_soInstanceUnitFullProperty_soLogEventObserver.cpp:
 	.text       start:0x000C530C end:0x000C5A58
+
+mo_melee/sora_melee/so/so_array_vector_accessors_u32_8.cpp:
+	.text       start:0x000C6F34 end:0x000C6FFC
 
 mo_melee/sora_melee/so/so_photo_call_back.cpp:
 	.text       start:0x000C7024 end:0x000C7124
@@ -497,6 +503,12 @@ mo_melee/sora_melee/so/so_array_vector_accessors_emAIInfo_2_part1.cpp:
 mo_melee/sora_melee/so/so_array_vector_accessors_soDamage_1_part1.cpp:
 	.text       start:0x000D30E8 end:0x000D3188
 
+mo_melee/sora_melee/so/so_array_vector_accessors_float_5_part1.cpp:
+	.text       start:0x000D324C end:0x000D32EC
+
+mo_melee/sora_melee/so/so_array_vector_accessors_s32_2_part1.cpp:
+	.text       start:0x000D34A4 end:0x000D3544
+
 mo_melee/sora_melee/so/so_array_vector_accessors_wnemSimple_10_part1.cpp:
 	.text       start:0x000D35E4 end:0x000D3684
 
@@ -508,6 +520,12 @@ mo_melee/sora_melee/so/so_array_vector_accessors_soArticle_10_part2.cpp:
 
 mo_melee/sora_melee/so/so_array_vector_accessors_wnemSimple_10_part2.cpp:
 	.text       start:0x000D8F58 end:0x000D8F80
+
+mo_melee/sora_melee/so/so_array_vector_accessors_s32_2_part2.cpp:
+	.text       start:0x000D8F80 end:0x000D8FA8
+
+mo_melee/sora_melee/so/so_array_vector_accessors_float_5_part2.cpp:
+	.text       start:0x000D8FA8 end:0x000D8FD0
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soDamage_1_part2.cpp:
 	.text       start:0x000D8FD0 end:0x000D8FF8
@@ -839,8 +857,14 @@ mo_melee/sora_melee/ft/ft_info.cpp:
 	.data       start:0x0002C0C8 end:0x0002CFF8
 	.bss        start:0x00004660 end:0x00004678
 
+mo_melee/sora_melee/so/so_array_vector_accessors_s32_32_part1.cpp:
+	.text       start:0x0014F0E8 end:0x0014F0F8
+
 mo_melee/sora_melee/so/so_array_vector_abstract_nested_ftAreaModuleImpl_GimmickTermInfo_part1.cpp:
 	.text       start:0x0014F0F8 end:0x0014F24C
+
+mo_melee/sora_melee/so/so_array_vector_accessors_s32_32_part2.cpp:
+	.text       start:0x0014F304 end:0x0014F3BC
 
 mo_melee/sora_melee/so/so_array_vector_abstract_nested_ftAreaModuleImpl_GimmickTermInfo_part2.cpp:
 	.text       start:0x0014F3BC end:0x0014FB1C
@@ -1150,6 +1174,9 @@ mo_melee/sora_melee/so/so_array_vector_accessors_soCollisionAttackAbsolute_2_par
 mo_melee/sora_melee/so/so_array_vector_accessors_soCollisionAttackAbsolute_6_part1.cpp:
 	.text       start:0x001A14AC end:0x001A154C
 
+mo_melee/sora_melee/so/so_array_vector_accessors_s32_1_part1.cpp:
+	.text       start:0x001A2B48 end:0x001A2BE8
+
 mo_melee/sora_melee/so/so_array_vector_accessors_wnPikminPikmin_10_part1.cpp:
 	.text       start:0x001A2C4C end:0x001A2CEC
 
@@ -1284,6 +1311,135 @@ mo_melee/sora_melee/so/so_array_vector_accessors_soArticle_7_part1.cpp:
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soArticle_8_part1.cpp:
 	.text       start:0x001A58FC end:0x001A599C
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_280_part1.cpp:
+	.text       start:0x001A5A00 end:0x001A5AA0
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_281_part1.cpp:
+	.text       start:0x001A5B04 end:0x001A5BA4
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_283_part1.cpp:
+	.text       start:0x001A5C08 end:0x001A5CA8
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_284_part1.cpp:
+	.text       start:0x001A5D0C end:0x001A5DAC
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_285_part1.cpp:
+	.text       start:0x001A5E10 end:0x001A5EB0
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_286_part1.cpp:
+	.text       start:0x001A5F14 end:0x001A5FB4
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_287_part1.cpp:
+	.text       start:0x001A6018 end:0x001A60B8
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_288_part1.cpp:
+	.text       start:0x001A611C end:0x001A61BC
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_289_part1.cpp:
+	.text       start:0x001A6220 end:0x001A62C0
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_290_part1.cpp:
+	.text       start:0x001A6324 end:0x001A63C4
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_291_part1.cpp:
+	.text       start:0x001A6428 end:0x001A64C8
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_292_part1.cpp:
+	.text       start:0x001A652C end:0x001A65CC
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_293_part1.cpp:
+	.text       start:0x001A6630 end:0x001A66D0
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_295_part1.cpp:
+	.text       start:0x001A6734 end:0x001A67D4
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_301_part1.cpp:
+	.text       start:0x001A6838 end:0x001A68D8
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_303_part1.cpp:
+	.text       start:0x001A693C end:0x001A69DC
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_305_part1.cpp:
+	.text       start:0x001A6A40 end:0x001A6AE0
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_309_part1.cpp:
+	.text       start:0x001A6B44 end:0x001A6BE4
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_313_part1.cpp:
+	.text       start:0x001A6C48 end:0x001A6CE8
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_314_part1.cpp:
+	.text       start:0x001A6D4C end:0x001A6DEC
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_448_part1.cpp:
+	.text       start:0x001A6E50 end:0x001A6EF0
+
+mo_melee/sora_melee/so/so_array_vector_accessors_u32_2_part1.cpp:
+	.text       start:0x001A74E4 end:0x001A7584
+
+mo_melee/sora_melee/so/so_array_vector_accessors_u32_5_part1.cpp:
+	.text       start:0x001A7624 end:0x001A76C4
+
+mo_melee/sora_melee/so/so_array_vector_accessors_u32_2_part2.cpp:
+	.text       start:0x001AF6AC end:0x001AF6D4
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_448_part2.cpp:
+	.text       start:0x001AF6D4 end:0x001AF6FC
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_314_part2.cpp:
+	.text       start:0x001AF6FC end:0x001AF724
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_313_part2.cpp:
+	.text       start:0x001AF724 end:0x001AF74C
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_309_part2.cpp:
+	.text       start:0x001AF74C end:0x001AF774
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_305_part2.cpp:
+	.text       start:0x001AF774 end:0x001AF79C
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_303_part2.cpp:
+	.text       start:0x001AF79C end:0x001AF7C4
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_301_part2.cpp:
+	.text       start:0x001AF7C4 end:0x001AF7EC
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_295_part2.cpp:
+	.text       start:0x001AF7EC end:0x001AF814
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_293_part2.cpp:
+	.text       start:0x001AF814 end:0x001AF83C
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_292_part2.cpp:
+	.text       start:0x001AF83C end:0x001AF864
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_291_part2.cpp:
+	.text       start:0x001AF864 end:0x001AF88C
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_290_part2.cpp:
+	.text       start:0x001AF88C end:0x001AF8B4
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_289_part2.cpp:
+	.text       start:0x001AF8B4 end:0x001AF8DC
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_287_part2.cpp:
+	.text       start:0x001AF8DC end:0x001AF904
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_286_part2.cpp:
+	.text       start:0x001AF904 end:0x001AF92C
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_284_part2.cpp:
+	.text       start:0x001AF92C end:0x001AF954
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_283_part2.cpp:
+	.text       start:0x001AF954 end:0x001AF97C
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_281_part2.cpp:
+	.text       start:0x001AF97C end:0x001AF9A4
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_280_part2.cpp:
+	.text       start:0x001AF9A4 end:0x001AF9CC
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soArticle_8_part2.cpp:
 	.text       start:0x001AF9CC end:0x001AF9F4
@@ -1564,11 +1720,17 @@ mo_melee/sora_melee/so/so_array_vector_accessors_soCollisionShieldPart_14_part2.
 mo_melee/sora_melee/so/so_array_vector_accessors_soCollisionHitPart_12_part2.cpp:
 	.text       start:0x001B0918 end:0x001B0940
 
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_285_part2.cpp:
+	.text       start:0x001B0968 end:0x001B0990
+
 mo_melee/sora_melee/so/so_array_vector_accessors_soStatusUniqProcess_285_part2.cpp:
 	.text       start:0x001B0990 end:0x001B09B8
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soCollisionAttackPart_2_part2.cpp:
 	.text       start:0x001B09B8 end:0x001B09E0
+
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_288_part2.cpp:
+	.text       start:0x001B0A08 end:0x001B0A30
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soItemInfo_4_part2.cpp:
 	.text       start:0x001B0A30 end:0x001B0A58
@@ -1627,6 +1789,9 @@ mo_melee/sora_melee/so/so_array_vector_accessors_soCollisionHitPart_13_part2.cpp
 mo_melee/sora_melee/so/so_array_vector_accessors_soCollisionAttackAbsolute_2_part2.cpp:
 	.text       start:0x001B0E9C end:0x001B0EC4
 
+mo_melee/sora_melee/so/so_array_vector_accessors_u32_5_part2.cpp:
+	.text       start:0x001B0EEC end:0x001B0F14
+
 mo_melee/sora_melee/so/so_array_vector_accessors_soTransitionTermPack_1_part2.cpp:
 	.text       start:0x001B0F14 end:0x001B0F3C
 
@@ -1659,6 +1824,9 @@ mo_melee/sora_melee/so/so_array_vector_accessors_soStatusUniqProcess_2_part2.cpp
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soCollisionAttackPart_4_part2.cpp:
 	.text       start:0x001B1274 end:0x001B129C
+
+mo_melee/sora_melee/so/so_array_vector_accessors_s32_1_part2.cpp:
+	.text       start:0x001B129C end:0x001B12C4
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soStatusUniqProcess_1_part2.cpp:
 	.text       start:0x001B12C4 end:0x001B12EC
@@ -1742,6 +1910,18 @@ mo_melee/sora_melee/so/so_array_vector_accessors_soAreaContactLog_8.cpp:
 mo_melee/sora_melee/so/so_array_vector_accessors_BaseItem_10_part1.cpp:
 	.text       start:0x00290F5C end:0x00290F6C
 
+mo_melee/sora_melee/so/so_array_vector_accessors_float_14_part1.cpp:
+	.text       start:0x00291328 end:0x00291358
+
+mo_melee/sora_melee/so/so_array_vector_accessors_s32_31_part1.cpp:
+	.text       start:0x002914B0 end:0x002914E0
+
+mo_melee/sora_melee/so/so_array_vector_accessors_float_6_part1.cpp:
+	.text       start:0x00291810 end:0x00291840
+
+mo_melee/sora_melee/so/so_array_vector_accessors_s32_5_part1.cpp:
+	.text       start:0x00291998 end:0x002919C8
+
 mo_melee/sora_melee/so/so_array_vector_accessors_soCollisionHitPart_3_part1.cpp:
 	.text       start:0x00291D60 end:0x00291DA0
 
@@ -1750,6 +1930,18 @@ mo_melee/sora_melee/so/so_array_vector_abstract_valuerecord_soGeneralFlag_s32_pa
 
 mo_melee/sora_melee/so/so_array_vector_accessors_BaseItem_10_part2.cpp:
 	.text       start:0x0029564C end:0x00295704
+
+mo_melee/sora_melee/so/so_array_vector_accessors_float_14_part2.cpp:
+	.text       start:0x00295864 end:0x002958FC
+
+mo_melee/sora_melee/so/so_array_vector_accessors_s32_31_part2.cpp:
+	.text       start:0x002958FC end:0x00295994
+
+mo_melee/sora_melee/so/so_array_vector_accessors_float_6_part2.cpp:
+	.text       start:0x00295A2C end:0x00295AC4
+
+mo_melee/sora_melee/so/so_array_vector_accessors_s32_5_part2.cpp:
+	.text       start:0x00295AC4 end:0x00295B5C
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soDamage_3.cpp:
 	.text       start:0x00295B5C end:0x00295C24
@@ -1769,8 +1961,14 @@ mo_melee/sora_melee/so/so_array_vector_abstract_valuerecord_soGeneralFlag_s32_pa
 mo_melee/sora_melee/so/so_array_vector_accessors_BaseItem_1.cpp:
 	.text       start:0x002AE0A8 end:0x002AE170
 
+mo_melee/sora_melee/so/so_array_vector_accessors_const_acAnimCmdConv_299.cpp:
+	.text       start:0x00385AE8 end:0x00385BB0
+
 mo_melee/sora_melee/so/so_array_vector_accessors_soStatusUniqProcess_299.cpp:
 	.text       start:0x00385BB0 end:0x00385C78
+
+mo_melee/sora_melee/so/so_array_vector_accessors_s32_4.cpp:
+	.text       start:0x00389D94 end:0x00389E5C
 
 mo_melee/sora_melee/so/so_array_vector_abstract_nested_wnPokeTrainerMBall_ParticleInfo_part1.cpp:
 	.text       start:0x0038F300 end:0x0038F58C
