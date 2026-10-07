@@ -23,6 +23,24 @@ public:
     // Common statuses 0xC7-0xC8: buried in the ground.
     static bool isBuryStatus(soModuleAccesser* acc, int status);
 
+    // Speed multipliers. In adventure mode they are scaled up when this fighter is far from player 1's fighter
+    // (see calcAdventureMulValue).
+    static float getWalkSpeedMul(soModuleAccesser* acc);
+    static float getRunSpeedMul(soModuleAccesser* acc);
+    static float getJumpSpeedMul(soModuleAccesser* acc);
+    // Scales how far a hit moves a fighter by its weight (heavier fighters are knocked back less).
+    static float getWeightReactionMul(soModuleAccesser* acc);
+
+    // Linear ramp from 1.0 to a maximum multiplier as the distance to the player 1 fighter grows between a near and a
+    // far threshold (three common constant IDs).
+    static float calcAdventureMulValue(soModuleAccesser* acc, u32 nearDistanceId, u32 farDistanceId, u32 maxMulId);
+
+    // False while the fighter is moving faster than the common speed limit and its "free speed" flag is off.
+    static bool isEnableSpeedOperation(soModuleAccesser* acc);
+
+    // Whether a Zako fighter is allowed to enter the status.
+    static bool isValidStatusKindZako(soModuleAccesser* acc, int status);
+
     // Global multipliers read from the common constants.
     static float getAttackReactionMul(soModuleAccesser* acc);
     static float getAttackPowerMul(soModuleAccesser* acc);
