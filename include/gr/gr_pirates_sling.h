@@ -17,7 +17,7 @@ class grPiratesSling : public grPirates {
     Matrix* m_mtxWork;                 // 0x160
     u8* m_stateWork;                   // 0x164
     u8 m_firstActivation;              // 0x168
-    u8 unk169;
+    u8 m_motionId;                    // 0x169
     u8 unk16A[2];
     float m_motionEndFrame;            // 0x16C
     grCollisionJoint* m_collisionJoint; // 0x170
@@ -34,7 +34,7 @@ public:
     // Verified virtual slots 0x1EC, 0x1F0, and 0x1F4.
     virtual void setHit();
     virtual void setAttack();
-    virtual void setMotion(u32 motion, u32 animIndex, bool unk3, float* endFrame);
+    virtual void setMotion(u32 motion, u32 loop, bool force, float* endFrame);
 
     void updateActive(float deltaFrame);
     void updateCollision(float deltaFrame);

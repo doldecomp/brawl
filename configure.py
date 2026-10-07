@@ -4159,6 +4159,7 @@ config.libs = [
         "objects": [
             Object(Matching, "mo_stage/st_pirates/gr_pirates_sling_collision.cpp"),
             Object(Matching, "mo_stage/st_pirates/gr_pirates_sling_active.cpp"),
+            Object(Matching, "mo_stage/st_pirates/gr_pirates_sling_attack.cpp"),
             Object(Matching, "mo_stage/st_pirates/gr_pirates_sling_ai.cpp"),
         ],
     },

@@ -14,7 +14,7 @@ struct PiratesSlingParams {
 };
 
 // MATCH-ONLY: preserve the original stage constant pool and node string.
-extern const float g_piratesSlingMotionConstants[3]; // 0.0f, 60.0f, 5.0f
+extern const float g_piratesSlingMotionConstants[]; // Begins with 0.0f, 60.0f, 5.0f
 extern const char g_piratesSlingEffectNode[];         // StgPirates00S
 
 void grPiratesSling::updateActive(float deltaFrame) {

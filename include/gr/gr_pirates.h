@@ -24,6 +24,6 @@ public:
     virtual void updateCallBack(float deltaFrame);
     virtual void setHit();
     virtual void setAttack();
-    virtual void setMotion(u32 motion, u32 animIndex, bool unk3, float* endFrame);
+    virtual void setMotion(u32 motion, u32 loop, bool force, float* endFrame);
 };
 static_assert(sizeof(grPirates) == 0x160, "grPirates layout");
