@@ -730,11 +730,14 @@ void soArrayVectorAbstract<T>::pop() {
     this->setSize(this->size() - 1);
 }
 
+// MATCH-ONLY: Preserve the separately owned array helper.
+#ifndef SO_ARRAY_EXTERNAL_ABSTRACT_CLEAR
 template <class T>
 void soArrayVectorAbstract<T>::clear() {
     soArrayVectorCalculator::clear(*this);
     this->setSize(0);
 }
+#endif
 
 template <class T>
 void soArrayVectorAbstract<T>::unshift(const T& newElement) {
@@ -760,11 +763,14 @@ void soArrayVectorAbstract<T>::insert(s32 index, const T& newElement) {
     this->setSize(this->size() + 1);
 }
 
+// MATCH-ONLY: Preserve the separately owned array helper.
+#ifndef SO_ARRAY_EXTERNAL_ABSTRACT_ERASE
 template <class T>
 void soArrayVectorAbstract<T>::erase(s32 index) {
     soArrayVectorCalculator::erase(*this, index, this->size(), this->capacity(), this->getTopIndex(), this->getLastIndex());
     this->setSize(this->size() - 1);
 }
+#endif
 
 template <class T>
 void soArrayVectorAbstract<T>::set(s32 start, const T& elm, s32 count) {

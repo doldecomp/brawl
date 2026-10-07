@@ -6,11 +6,15 @@
 #include <StaticAssert.h>
 #include <types.h>
 #define SO_ARRAY_EXTERNAL_ABSTRACT_CONST_AT
+#define SO_ARRAY_EXTERNAL_ABSTRACT_ERASE
+#define SO_ARRAY_EXTERNAL_ABSTRACT_CLEAR
 #define SO_ARRAY_EXTERNAL_ABSTRACT_AT
 #define SO_ARRAY_EXTERNAL_VECTOR_SIZE
 #define SO_ARRAY_EXTERNAL_VECTOR_CAPACITY
 #include <so/so_array.h>
 #undef SO_ARRAY_EXTERNAL_ABSTRACT_CONST_AT
+#undef SO_ARRAY_EXTERNAL_ABSTRACT_ERASE
+#undef SO_ARRAY_EXTERNAL_ABSTRACT_CLEAR
 #undef SO_ARRAY_EXTERNAL_ABSTRACT_AT
 #undef SO_ARRAY_EXTERNAL_VECTOR_SIZE
 #undef SO_ARRAY_EXTERNAL_VECTOR_CAPACITY
@@ -207,20 +211,11 @@ public:
 
     virtual bool isContain(s32 id) const;
 
-    virtual void erase(s32 id) {
-        s32 idx = searchIndex(id);
-        if (idx >= 0)
-            m_arrayVector.erase(idx);
-    }
+    virtual void erase(s32 id);
 
-    virtual void clear() {
-        m_arrayVector.clear();
-    }
+    virtual void clear();
 
-    virtual void set(const T& elm, s32 id) {
-        T& ref = at(id);
-        ref = elm;
-    }
+    virtual void set(const T& elm, s32 id);
 
     virtual s32 add(T& elm, s32 id, soAttributeFlag attr, s16 p4) {
         if (m_arrayVector.isFull() == true)
@@ -256,6 +251,24 @@ public:
 };
 
 template <class T, u32 C>
+void soInstanceManagerFullPropertyVector<T, C>::erase(s32 id) {
+        s32 idx = searchIndex(id);
+        if (idx >= 0)
+            m_arrayVector.erase(idx);
+    }
+
+template <class T, u32 C>
+void soInstanceManagerFullPropertyVector<T, C>::clear() {
+        m_arrayVector.clear();
+    }
+
+template <class T, u32 C>
+void soInstanceManagerFullPropertyVector<T, C>::set(const T& elm, s32 id) {
+        T& ref = at(id);
+        ref = elm;
+    }
+
+template <class T, u32 C>
 void soInstanceManagerFullPropertyVector<T, C>::getPriorityArray(soArray<T*>& arr) {
         s32 sz = m_arrayVector.size();
         for (s32 i = 0; i < sz; i++)
@@ -273,6 +286,8 @@ void soInstanceManagerFullPropertyVector<T, C>::getAttributeArray(soAttributeFla
         }
     }
 
+// MATCH-ONLY: Mutation units call the separately owned lookup member.
+#ifndef SO_INSTANCE_MANAGER_EXTERNAL_AT
 template <class T, u32 C>
 T& soInstanceManagerFullPropertyVector<T, C>::at(s32 id) {
         if (id <= -1)
@@ -280,6 +295,7 @@ T& soInstanceManagerFullPropertyVector<T, C>::at(s32 id) {
         s32 i = searchIndex(id);
         return (i < 0) ? m_arrayVector.at(0).m_element : m_arrayVector.at(i).m_element;
     }
+#endif
 
 template <class T, u32 C>
 bool soInstanceManagerFullPropertyVector<T, C>::isContain(s32 id) const {
