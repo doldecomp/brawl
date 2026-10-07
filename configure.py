@@ -4753,6 +4753,7 @@ config.libs = [
             Object(NonMatching, "mo_melee/sora_melee/so/so_array_base_soArrayVectorAbstract_Q27ftFalco11PostureInfo_1D35A8.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_array_base_soArrayVectorAbstract_Ul_1F098.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_array_base_soArrayVectorAbstract_f_1080F4.cpp"),
+            Object(Matching, "mo_melee/sora_melee/ft/ft_log_data_accesser.cpp"),
         ],
     },
     {

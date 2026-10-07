@@ -9127,6 +9127,10 @@ mo_melee/sora_melee/so/so_instance_manager_thunks_Vector_soKineticEnergy_2.cpp:
 mo_melee/sora_melee/so/so_instance_manager_thunks_Vector_soKineticEnergy_4.cpp:
 	.text       start:0x001D48A8 end:0x001D48C0
 
+mo_melee/sora_melee/ft/ft_log_data_accesser.cpp:
+	.text       start:0x001D49FC end:0x001D548C
+	.rodata     start:0x00002710 end:0x00002718
+
 mo_melee/sora_melee/so/so_array_base_soArrayFixed_15soLogAttackInfo_1D579C.cpp:
 	.text       start:0x001D579C end:0x001D57D0
 
