@@ -4958,11 +4958,20 @@ mo_melee/sora_melee/so/so_array_list_members_ptr_itGenArchive_3_part1.cpp:
 mo_melee/sora_melee/so/so_array_list_members_ptr_BaseItem_64_part2.cpp:
 	.text       start:0x002AD050 end:0x002AD668
 
+mo_melee/sora_melee/so/so_array_list_archive_ptr_itArchive_128_part1.cpp:
+	.text       start:0x002AD6D0 end:0x002AD778
+
 mo_melee/sora_melee/so/so_array_list_members_ptr_itArchive_128_part1.cpp:
 	.text       start:0x002AD778 end:0x002AD784
 
+mo_melee/sora_melee/so/so_array_list_archive_ptr_itArchive_128_part2.cpp:
+	.text       start:0x002AD784 end:0x002AD894
+
 mo_melee/sora_melee/so/so_array_list_members_ptr_itArchive_128_part2.cpp:
 	.text       start:0x002AD894 end:0x002AD89C
+
+mo_melee/sora_melee/so/so_array_list_archive_ptr_itArchive_128_part3.cpp:
+	.text       start:0x002AD89C end:0x002ADCF8
 
 mo_melee/sora_melee/so/so_array_vector_accessors_BaseItem_1.cpp:
 	.text       start:0x002AE0A8 end:0x002AE170
@@ -4973,20 +4982,41 @@ mo_melee/sora_melee/so/so_array_list_members_ptr_itGenArchive_3_part2.cpp:
 mo_melee/sora_melee/so/so_array_list_members_ptr_BaseItem_64_part3.cpp:
 	.text       start:0x002AEB18 end:0x002AEFEC
 
+mo_melee/sora_melee/so/so_array_list_archive_ptr_itArchive_128_part4.cpp:
+	.text       start:0x002AEFEC end:0x002AF224
+
 mo_melee/sora_melee/so/so_array_list_members_ptr_itArchive_128_part3.cpp:
 	.text       start:0x002AF224 end:0x002AF234
+
+mo_melee/sora_melee/so/so_array_list_archive_ptr_itArchive_128_part5.cpp:
+	.text       start:0x002AF234 end:0x002AF30C
 
 mo_melee/sora_melee/so/so_array_list_members_ptr_itArchive_128_part4.cpp:
 	.text       start:0x002AF30C end:0x002AF314
 
+mo_melee/sora_melee/so/so_array_list_archive_ptr_itArchive_128_part6.cpp:
+	.text       start:0x002AF314 end:0x002AF4B4
+
 mo_melee/sora_melee/so/so_array_list_members_soInstanceUnitFullProperty_ptr_soKineticEnergy_11_part1.cpp:
 	.text       start:0x002BB9F0 end:0x002BC544
+
+mo_melee/sora_melee/so/so_array_list_archive_ptr_itFigureArchive_64_part1.cpp:
+	.text       start:0x002C1DA4 end:0x002C23B4
+
+mo_melee/sora_melee/so/so_array_list_archive_ptr_itFigureArchive_64_part2.cpp:
+	.text       start:0x002C24D0 end:0x002C2708
 
 mo_melee/sora_melee/so/so_array_list_members_ptr_itFigureArchive_64_part2.cpp:
 	.text       start:0x002C2708 end:0x002C2718
 
+mo_melee/sora_melee/so/so_array_list_archive_ptr_itFigureArchive_64_part3.cpp:
+	.text       start:0x002C2718 end:0x002C27F0
+
 mo_melee/sora_melee/so/so_array_list_members_ptr_itFigureArchive_64_part3.cpp:
 	.text       start:0x002C27F0 end:0x002C27F8
+
+mo_melee/sora_melee/so/so_array_list_archive_ptr_itFigureArchive_64_part4.cpp:
+	.text       start:0x002C27F8 end:0x002C299C
 
 mo_melee/sora_melee/so/so_instance_manager_mutation_soKineticEnergy_3_part1.cpp:
 	.text       start:0x002EA6B4 end:0x002EA78C

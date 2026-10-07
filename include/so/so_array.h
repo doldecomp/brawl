@@ -285,8 +285,24 @@ public:
 // Each unit has a logical "position" corresponding to an actual "index"
 // in the internal array. This distinction is implemented via an intrusive
 // doubly-linked list connecting the units; see getArrayIndex for details.
+// MATCH-ONLY: The capacity-64 figure-archive helper reuses its extracted index.
+// Other observed specializations load the bitfield again.
+class itFigureArchive;
+template <typename T, s32 C>
+struct soArrayListUsesCachedFreeIndex { enum { value = false }; };
+template <>
+struct soArrayListUsesCachedFreeIndex<itFigureArchive*, 64> { enum { value = true }; };
+
+// Node-link loads/stores are bytes at smaller observed capacities,
+// and signed halfwords in the capacity-128 archive list.
+template <s32 C>
+struct soArrayListIndexType { typedef s8 type; };
+template <>
+struct soArrayListIndexType<128> { typedef s16 type; };
+
 template <typename T, s32 C>
 class soArrayList : public soArray<T> {
+    typedef typename soArrayListIndexType<C>::type IndexTy;
     // The index of the next available free unit in the list
     s32 m_freeIndex : sizeof(bit_width<C>) + 1;
     // The index of logical position 0
@@ -296,7 +312,7 @@ class soArrayList : public soArray<T> {
     // The current number of allocated units
     s32 m_size : sizeof(bit_width<C>) + 1;
 
-    soArrayListUnit<T, s8> m_units[C];
+    soArrayListUnit<T, IndexTy> m_units[C];
 
     // Allocate an soArrayListUnit from the internal list,
     // incrementing the size and returning the index of the
@@ -377,16 +393,16 @@ public:
     virtual void set(s32 pos, const T& elm, s32 count);
 
     // TODO: check implicit generation by <wnPikminPikmin*, 10> for these two
-    soArrayListEnumerator<T, s8> getEnumerator() {
-        return soArrayListEnumerator<T, s8>(m_units, m_topIndex);
+    soArrayListEnumerator<T, IndexTy> getEnumerator() {
+        return soArrayListEnumerator<T, IndexTy>(m_units, m_topIndex);
     }
 
     // Erase the element at position enm.getNext()
-    void erase(const soArrayListEnumerator<T, s8>& enm) {
+    void erase(const soArrayListEnumerator<T, IndexTy>& enm) {
         eraseSub(enm.getNext());
     }
 
-    soArrayListUnit<T, s8>* getUnits() { return m_units; }
+    soArrayListUnit<T, IndexTy>* getUnits() { return m_units; }
 };
 
 // Individual definitions permit explicit list member instantiations.
@@ -522,8 +538,8 @@ s32 soArrayList<T, C>::shiftFreeArrayIndex(s32 idx) {
     if (isFull() == true)
         return End;
     if (idx < 0) {
-        s32 freeIndex = getFreeIndex();
-        m_freeIndex = m_units[m_freeIndex].m_next;
+        s32 freeIndex = soArrayListUsesCachedFreeIndex<T, C>::value ? m_freeIndex : getFreeIndex();
+        m_freeIndex = m_units[soArrayListUsesCachedFreeIndex<T, C>::value ? freeIndex : m_freeIndex].m_next;
         if (m_freeIndex > 0)
             m_units[m_freeIndex].m_prev = End;
         m_size++;
@@ -535,7 +551,7 @@ s32 soArrayList<T, C>::shiftFreeArrayIndex(s32 idx) {
     // soArrayListUnit at position idx from the doubly-linked list.
     if (idx >= capacity())
         return End;
-    const soArrayListUnit<T, s8>& curr = m_units[idx];
+    const soArrayListUnit<T, IndexTy>& curr = m_units[idx];
     if (static_cast<bool>(curr.m_inUse) == true)
         return End;
     s32 next = curr.m_next;
