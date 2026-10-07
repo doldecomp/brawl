@@ -41,6 +41,7 @@ public:
     virtual void photoExit();
     virtual bool notifyEventCollisionShieldCheck();
     virtual bool notifyEventCollisionAttackCheck(u32 flags);
+    virtual void notifyEventCollisionAttackFighter(soCollisionLog* collisionLog, soModuleAccesser* moduleAccesser);
     virtual void notifyEventCollisionShield(soCollisionAttackModule* attackModule, float power, soCollisionLog* collisionLog, int groupIndex, float posX, float posY, soModuleAccesser* moduleAccesser);
 };
 static_assert(sizeof(ftFighterBuilder<ftMarthBuildConfig>) == 0x8554, "Photo callback offset is wrong!");

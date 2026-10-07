@@ -1,3 +1,4 @@
+#define FT_MARTH_COLLISION_VEC3F_NOINLINE
 #include <ft/ft_class_info_impl.h>
 #include <ft/marth/ft_marth.h>
 #include <ft/marth/ft_marth_extend_param_accesser.h>
@@ -5,6 +6,10 @@
 #include <so/so_value_accesser.h>
 #include <so/so_external_value_accesser.h>
 #include <gf/gf_task_scheduler.h>
+#include <ft/ft_common_data_accesser.h>
+#include <ft/ft_external_value_accesser.h>
+#include <mt/mt_prng.h>
+#include <math.h>
 
 #define FT_BC ftMarthBuildConfig
 #include <ft/builder/ft_builder_noinline.h>
@@ -65,6 +70,54 @@ bool ftMarth::notifyEventCollisionShieldCheck() {
         return true;
     }
     return Fighter::notifyEventCollisionShieldCheck();
+}
+
+void ftMarth::notifyEventCollisionAttackFighter(soCollisionLog* collisionLog, soModuleAccesser* moduleAccesser) {
+    int count;
+    float sine;
+    if (m_moduleAccesser->getStatusModule().getStatusKind() == 0x11e) {
+        gfTask* task = gfTaskScheduler::getInstance()->getTaskById(gfTask::Category_Fighter, collisionLog->m_taskId);
+        if (task != NULL) {
+            Fighter& target = dynamic_cast<Fighter&>(*task);
+            if (ftExternalValueAccesser::getsoCollisionHitModule(&target)->getTotalStatus(0) != 3) {
+                m_moduleAccesser->getWorkManageModule().onFlag(0x22000011);
+            }
+        }
+    } else if (m_moduleAccesser->getStatusModule().getStatusKind() == 0x120) {
+        gfTask* task = gfTaskScheduler::getInstance()->getTask(collisionLog->m_taskId);
+        if (task->m_taskCategory == gfTask::Category_Fighter) {
+            Fighter& target = dynamic_cast<Fighter&>(*task);
+            if (ftExternalValueAccesser::getsoCollisionHitModule(&target)->getTotalStatus(0) == 0) {
+                count = m_moduleAccesser->getWorkManageModule().getInt(0x20000016);
+                if (count < 6) {
+                    // Temporarily link the target to place its numbered HP window.
+                    moduleAccesser->getLinkModule().link(6, collisionLog->m_taskId);
+                    ftKind kind = ftKind(m_moduleAccesser->getStageObject().soGetSubKind());
+                    u32 resId = g_ftCommonDataAccesser.getFinalResId(kind);
+                    void* resourceData = m_moduleAccesser->getResourceModule().getBinFile(resId, 0, -1);
+                    IfMarthFinalTask* window = IfMarthFinalTask::create(resourceData, Heaps::HeapType(0x1f), count + 1);
+                    if (gfTaskScheduler::getInstance()->getTaskById(gfTask::Category_Fighter, collisionLog->m_taskId) != NULL) {
+                        float angle = randi(360);
+                        float radius = soValueAccesser::getConstantFloat(moduleAccesser, 0xfbe, 0);
+                        sine = sin(angle);
+                        float cosine = cos(angle);
+                        // The original computes this offset but places the window without it.
+                        Vec3f unusedOffset(radius * cosine, radius * sine, 0.0f);
+                        Vec3f pos = moduleAccesser->getLinkModule().getParentModelNodeGlobalPosition(6, u32(0), false);
+                        pos.m_y += -2.0f;
+                        window->setPosConv(&pos);
+                    }
+                    window->dispOn(0);
+                    window->setAnim(0);
+                    m_moduleAccesser->getWorkManageModule().setInt(window->m_taskId, 0x20000004 + count);
+                    m_moduleAccesser->getWorkManageModule().offFlag(0x22000012);
+                    m_moduleAccesser->getWorkManageModule().addInt(1, 0x20000016);
+                    moduleAccesser->getLinkModule().unlink(6);
+                }
+                m_moduleAccesser->getWorkManageModule().onFlag(0x22000012);
+            }
+        }
+    }
 }
 
 bool ftMarth::notifyEventCollisionAttackCheck(u32 flags) {

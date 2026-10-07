@@ -73,7 +73,7 @@ nw4r::g3d::ResFile soResourceModuleImpl::getAnmFile(u16 fileIndex, u32 anmResId,
     return nw4r::g3d::ResFile();
 }
 
-nw4r::g3d::ResFile soResourceModuleImpl::getBinFile(u32 binResId, u16 fileIndex, s32 archiveId) {
+void* soResourceModuleImpl::getBinFile(u32 binResId, u16 fileIndex, s32 archiveId) {
     u32 r31 = binResId;
     if (binResId == 0xFFFF) {
         r31 = m_resourceIdAccesser->getBinResId();
@@ -86,7 +86,7 @@ nw4r::g3d::ResFile soResourceModuleImpl::getBinFile(u32 binResId, u16 fileIndex,
         utArchiveManager* arcManager = soArchiveDb::getManager(m_managerID);
         return arcManager->getResFileFromId(binResId, Data_Type_Misc, fileIndex, (u8)r31, archiveId);
     }
-    return nw4r::g3d::ResFile();
+    return nullptr;
 }
 
 void* soResourceModuleImpl::getFile(u32 resId, ARCNodeType nodeType, u16 fileIndex) {

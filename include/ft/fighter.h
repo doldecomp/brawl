@@ -1474,7 +1474,7 @@ public:
     virtual void analyzeSeal(void*);
 #endif
     virtual void notifyEventCollisionAttack(float power, soCollisionLog* collisionLog, soModuleAccesser* moduleAccesser);
-    virtual bool notifyEventCollisionAttackFighter(void* unk, soModuleAccesser* moduleAccesser);
+    virtual void notifyEventCollisionAttackFighter(soCollisionLog* collisionLog, soModuleAccesser* moduleAccesser);
     virtual ftOwner* getOwner();
 #ifdef FT_MODULE_BUILDER
     virtual ftKind getFtKind() { return *(ftKind*)((u8*)this + 0x110); }

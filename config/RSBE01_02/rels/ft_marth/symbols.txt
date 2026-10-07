@@ -173,7 +173,7 @@ setupDisguiseList__99soAnimCmdControlUnitBuilderDisguise<60soAnimCmdControlUnitB
 fn_106_70D0 = .text:0x000070D0; // type:function size:0x4
 notifyEventCollisionShield__7ftMarthFP23soCollisionAttackModulefP14soCollisionLogiffP16soModuleAccesser = .text:0x000070D4; // type:function size:0x1EC
 notifyEventCollisionShieldCheck__7ftMarthFv = .text:0x000072C0; // type:function size:0x15C
-fn_106_741C = .text:0x0000741C; // type:function size:0x3D8
+notifyEventCollisionAttackFighter__7ftMarthFP14soCollisionLogP16soModuleAccesser = .text:0x0000741C; // type:function size:0x3D8
 __ct__5Vec3fFfff = .text:0x000077F4; // type:function size:0x10
 notifyEventCollisionAttackCheck__7ftMarthFUl = .text:0x00007804; // type:function size:0x128
 photoMoved__7ftMarthFv = .text:0x0000792C; // type:function size:0xE4
@@ -604,7 +604,7 @@ lbl_106_data_F8C = .data:0x00000F8C; // type:object size:0xC
 lbl_106_data_F98 = .data:0x00000F98; // type:object size:0x8
 lbl_106_data_FA0 = .data:0x00000FA0; // type:object size:0x8 data:string
 lbl_106_data_FA8 = .data:0x00000FA8; // type:object size:0x114
-lbl_106_data_10BC = .data:0x000010BC; // type:object size:0x8
+__RTTI__7Fighter = .data:0x000010BC; // type:object size:0x8
 lbl_106_data_10C4 = .data:0x000010C4; // type:object size:0x14 data:string
 lbl_106_data_10D8 = .data:0x000010D8; // type:object size:0xC
 lbl_106_data_10E4 = .data:0x000010E4; // type:object size:0x8
