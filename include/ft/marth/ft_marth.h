@@ -39,6 +39,7 @@ public:
             Heaps::HeapType nwMotionInstHeap);
     virtual void photoMoved();
     virtual void photoExit();
+    virtual bool notifyEventCollisionShieldCheck();
 };
 static_assert(sizeof(ftFighterBuilder<ftMarthBuildConfig>) == 0x8554, "Photo callback offset is wrong!");
 static_assert(sizeof(ftMarth) == 0x8574, "Class is the wrong size!");
