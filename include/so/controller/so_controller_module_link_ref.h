@@ -42,7 +42,7 @@ public:
     virtual float getSubStickPrevX();
     virtual float getSubStickY();
     virtual float getSubStickPrevY();
-    virtual ipPadButton getTrigger();
+    virtual int getTrigger();
     virtual u8 getTriggerCount(u8 index);
     virtual u8 getTriggerCountPrev(u8 index);
     virtual ipPadButton getButton();
