@@ -31,13 +31,17 @@ class grPiratesSling : public grPirates {
     s32 m_dangerZoneId;                // 0x18C
 
 public:
-    // Verified virtual slots 0x1EC, 0x1F0, and 0x1F4.
+    // Derived virtual entries begin at slot 0x1D0.
+    virtual void updateYakumono(float deltaFrame);
+    virtual void updateJoint(float deltaFrame);
+    virtual void updateCollision(float deltaFrame);
+    virtual void updateActive(float deltaFrame);
+    virtual void updateSE(float deltaFrame);
+    virtual void updateAI(float deltaFrame);
+    virtual void updateCallBack(float deltaFrame);
     virtual void setHit();
     virtual void setAttack();
     virtual void setMotion(u32 motion, u32 loop, bool force, float* endFrame);
 
-    void updateActive(float deltaFrame);
-    void updateCollision(float deltaFrame);
-    void updateAI(float deltaFrame);
 };
 static_assert(sizeof(grPiratesSling) == 0x190, "grPiratesSling layout");
