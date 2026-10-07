@@ -699,10 +699,13 @@ bool soArrayVectorAbstract<T>::isNull() const {
     return false;
 }
 
+// MATCH-ONLY: Allow isolated callers to retain the existing helper owner.
+#ifndef SO_ARRAY_EXTERNAL_ABSTRACT_AT
 template <class T>
 T& soArrayVectorAbstract<T>::at(s32 index) {
     return this->atFastAbstractSub(index);
 }
+#endif
 
 template <class T>
 const T& soArrayVectorAbstract<T>::at(s32 index) const {
@@ -827,15 +830,21 @@ public:
 };
 
 // Individual member definitions permit explicit accessor instantiations.
+// MATCH-ONLY: Allow isolated callers to retain the existing helper owner.
+#ifndef SO_ARRAY_EXTERNAL_VECTOR_SIZE
 template <class T, s32 C>
 s32 soArrayVector<T, C>::size() const {
     return m_size;
 }
+#endif
 
+// MATCH-ONLY: Allow isolated callers to retain the existing helper owner.
+#ifndef SO_ARRAY_EXTERNAL_VECTOR_CAPACITY
 template <class T, s32 C>
 s32 soArrayVector<T, C>::capacity() const {
     return C;
 }
+#endif
 
 template <class T, s32 C>
 bool soArrayVector<T, C>::isFull() const {
