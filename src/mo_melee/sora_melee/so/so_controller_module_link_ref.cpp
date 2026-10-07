@@ -106,7 +106,7 @@ u8 soControllerModuleLinkRef::getTriggerCount(u8 index) {
     return controller->getTriggerCount(index);
 }
 
-ipPadButton soControllerModuleLinkRef::getTrigger() {
+int soControllerModuleLinkRef::getTrigger() {
     soController* controller = (!m_lkController) ? &g_soControllerNull : m_lkController;
     return controller->getTrigger();
 }

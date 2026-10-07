@@ -1121,7 +1121,9 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_fighter/ft_sonic/ft_sonic_status_uniq_process_special_lw_hold.cpp", extra_cflags=["-O2,s"]),
+        ],
     },
     {
         "lib": "ft_toonlink",

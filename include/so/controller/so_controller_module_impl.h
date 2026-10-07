@@ -70,7 +70,8 @@ public:
     virtual float getSubStickPrevY() = 0;
     virtual float getSubStickDir() = 0;
     virtual bool isSubStickSide() = 0;
-    virtual ipPadButton getTrigger() = 0;
+    // Module implementations forward the controller's scalar trigger mask unchanged.
+    virtual int getTrigger() = 0;
     virtual u8 getTriggerCount(u8 index) = 0;
     virtual u8 getTriggerCountPrev(u8 index) = 0;
     virtual ipPadButton getButton() = 0;
