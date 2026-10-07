@@ -34,20 +34,7 @@ struct FontData {
 
 class Message;
 
-namespace nw4r {
-    namespace g3d {
-        // Draw callback interface registered on a ScnMdlSimple (implemented elsewhere).
-        class IScnObjCallback {
-        public:
-            virtual ~IScnObjCallback() {}
-            virtual void ExecCallback_CALC_WORLD();
-            virtual void ExecCallback_CALC_MAT();
-            virtual void ExecCallback_CALC_VIEW();
-            virtual void ExecCallback_DRAW_OPA();
-            virtual void ExecCallback_DRAW_XLU(int pass);
-        };
-    } // namespace g3d
-} // namespace nw4r
+#include <nw4r/g3d/g3d_scnobjcallback.h>
 
 // Draw callback registered on a ScnMdlSimple so that a message buffer is drawn with the model.
 class msScnObjCallback : public nw4r::g3d::IScnObjCallback {
@@ -71,7 +58,7 @@ public:
         , m_next(0)
         , m_enable(1) {}
     virtual ~msScnObjCallback() {}
-    virtual void ExecCallback_DRAW_XLU(int pass);
+    virtual void ExecCallback_DRAW_XLU(nw4r::g3d::ScnObj::Timing timing, nw4r::g3d::ScnObj* object, u32 param, void* info);
 };
 
 // One command buffer for a message (0x54 bytes).

@@ -5,21 +5,21 @@
 #include <types.h>
 #include <memory.h>
 #include <nw4r/g3d/g3d_resfile.h>
+#include <nw4r/g3d/g3d_scnobjcallback.h>
 
 class MuObject;
 namespace nw4r { namespace g3d { class ScnObj; } }
 namespace nw4r { namespace g3d { class ScnGroup; } }
 namespace nw4r { namespace g3d { class ScnMdl; } }
 
-// Partial callback layout; the scene interface and its construction remain unrecovered.
-class IfMarthFinalObjCallback {
+class IfMarthFinalObjCallback : public nw4r::g3d::IScnObjCallback {
 public:
-    void* unk0;
     Vec3f m_position;
     u8 m_executed;
     u8 unk11[3];
-    ~IfMarthFinalObjCallback();
-    void ExecCallback_CALC_WORLD(int timing, nw4r::g3d::ScnMdl* model);
+    IfMarthFinalObjCallback() : m_position(0.0f, 0.0f, 0.0f), m_executed(0) {}
+    virtual ~IfMarthFinalObjCallback();
+    virtual void ExecCallback_CALC_WORLD(nw4r::g3d::ScnObj::Timing timing, nw4r::g3d::ScnObj* object, u32 param, void* info);
 };
 static_assert(sizeof(IfMarthFinalObjCallback) == 0x14, "Class is wrong size!");
 
@@ -31,7 +31,9 @@ public:
     nw4r::g3d::ScnObj* unk48;
     MuObject* m_objects[1];
     nw4r::g3d::ScnObj* m_sceneObjects[1];
-    u8 unk54[0x20];
+    u8 unk54;
+    u8 unk55[0x1b];
+    u32 unk70;
     IfMarthFinalObjCallback m_callback;
     u8 unk88;
     u8 unk89[3];
