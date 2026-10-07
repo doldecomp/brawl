@@ -14,7 +14,7 @@
 #undef SO_ARRAY_EXTERNAL_ABSTRACT_AT
 #undef SO_ARRAY_EXTERNAL_VECTOR_SIZE
 #undef SO_ARRAY_EXTERNAL_VECTOR_CAPACITY
-#include <so/so_instance_unit.h>
+#include <so/templates/so_instance_unit.h>
 
 template <class T>
 class soInstanceManagerFixed : public soNullable {

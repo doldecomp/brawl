@@ -62,7 +62,8 @@ public:
     ~soInstanceUnitFullProperty() { }
 
     soAttributeFlag getAttribute() const {
-        return m_attribute;
+        // MATCH-ONLY: Preserve the signed mask load used by the original getter.
+        return soAttributeFlag(m_attribute.m_mask);
     }
 };
 
