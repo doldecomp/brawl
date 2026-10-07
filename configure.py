@@ -1142,9 +1142,11 @@ config.libs = [
     {
         "lib": "ft_wolf",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_fighter/ft_wolf/ft_wolf_status_uniq_process_reflector.cpp"),
+        ],
     },
     {
         "lib": "ft_yoshi",
