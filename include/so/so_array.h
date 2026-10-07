@@ -285,8 +285,24 @@ public:
 // Each unit has a logical "position" corresponding to an actual "index"
 // in the internal array. This distinction is implemented via an intrusive
 // doubly-linked list connecting the units; see getArrayIndex for details.
+// MATCH-ONLY: The capacity-64 figure-archive helper reuses its extracted index.
+// Other observed specializations load the bitfield again.
+class itFigureArchive;
+template <typename T, s32 C>
+struct soArrayListUsesCachedFreeIndex { enum { value = false }; };
+template <>
+struct soArrayListUsesCachedFreeIndex<itFigureArchive*, 64> { enum { value = true }; };
+
+// Node-link loads/stores are bytes at smaller observed capacities,
+// and signed halfwords in the capacity-128 archive list.
+template <s32 C>
+struct soArrayListIndexType { typedef s8 type; };
+template <>
+struct soArrayListIndexType<128> { typedef s16 type; };
+
 template <typename T, s32 C>
 class soArrayList : public soArray<T> {
+    typedef typename soArrayListIndexType<C>::type IndexTy;
     // The index of the next available free unit in the list
     s32 m_freeIndex : sizeof(bit_width<C>) + 1;
     // The index of logical position 0
@@ -296,7 +312,7 @@ class soArrayList : public soArray<T> {
     // The current number of allocated units
     s32 m_size : sizeof(bit_width<C>) + 1;
 
-    soArrayListUnit<T, s8> m_units[C];
+    soArrayListUnit<T, IndexTy> m_units[C];
 
     // Allocate an soArrayListUnit from the internal list,
     // incrementing the size and returning the index of the
@@ -336,42 +352,103 @@ public:
         clear();
     }
 
-    virtual bool isNull() const {
-        return false;
-    }
+    virtual bool isNull() const;
 
-    virtual T& at(s32 i) {
-        s32 idx = getArrayIndex(i);
-        if (this->isEmpty() != true && idx >= 0)
-            static_cast<void>(capacity());
-        return m_units[idx].m_element;
-    }
+    virtual T& at(s32 i);
 
-    virtual const T& at(s32 i) const {
-        s32 idx = getArrayIndex(i);
-        if (this->isEmpty() != true && idx >= 0)
-            static_cast<void>(capacity());
-        return m_units[idx].m_element;
-    }
+    virtual const T& at(s32 i) const;
 
-    virtual s32 size() const {
-        return m_size;
-    }
+    virtual s32 size() const;
 
     virtual ~soArrayList() { }
 
     // Erase the element in the first position
-    virtual void shift() {
+    virtual void shift();
+
+    // Erase the element in the last position
+    virtual void pop();
+
+    // Erase all elements of the list, resetting the bitfields and linked list
+    virtual void clear();
+
+    // Prepend elm to the list, if space is available
+    virtual void unshift(const T& elm);
+
+    // Append elm to the list, if space is available
+    virtual void push(const T& elm);
+
+    // Insert elm at position i of the list, if i is in range and space is
+    // available
+    virtual void insert(s32 pos, const T& elm);
+
+    // Erase the element at position pos
+    virtual void erase(s32 pos);
+
+    virtual s32 capacity() const;
+
+    virtual bool isFull() const;
+
+    // Starting at position pos, assign elm to consecutive elements, stopping
+    // when either count or the end of the list has been reached
+    virtual void set(s32 pos, const T& elm, s32 count);
+
+    // TODO: check implicit generation by <wnPikminPikmin*, 10> for these two
+    soArrayListEnumerator<T, IndexTy> getEnumerator() {
+        return soArrayListEnumerator<T, IndexTy>(m_units, m_topIndex);
+    }
+
+    // Erase the element at position enm.getNext()
+    void erase(const soArrayListEnumerator<T, IndexTy>& enm) {
+        eraseSub(enm.getNext());
+    }
+
+    soArrayListUnit<T, IndexTy>* getUnits() { return m_units; }
+};
+
+// Individual definitions permit explicit list member instantiations.
+// MATCH-ONLY: range units omit definitions owned by other reconstructed ranges.
+template <typename T, s32 C>
+bool soArrayList<T, C>::isNull() const {
+        return false;
+    }
+
+template <typename T, s32 C>
+T& soArrayList<T, C>::at(s32 i) {
+        s32 idx = getArrayIndex(i);
+        if (this->isEmpty() != true && idx >= 0)
+            static_cast<void>(capacity());
+        return m_units[idx].m_element;
+    }
+
+template <typename T, s32 C>
+const T& soArrayList<T, C>::at(s32 i) const {
+        s32 idx = getArrayIndex(i);
+        if (this->isEmpty() != true && idx >= 0)
+            static_cast<void>(capacity());
+        return m_units[idx].m_element;
+    }
+
+#ifndef SO_ARRAY_LIST_EXTERNAL_QUERY_MEMBERS
+#ifndef SO_ARRAY_LIST_EXTERNAL_size
+template <typename T, s32 C>
+s32 soArrayList<T, C>::size() const {
+        return m_size;
+    }
+#endif
+#endif
+
+template <typename T, s32 C>
+void soArrayList<T, C>::shift() {
         eraseSub(getArrayIndex(0));
     }
 
-    // Erase the element in the last position
-    virtual void pop() {
+template <typename T, s32 C>
+void soArrayList<T, C>::pop() {
         eraseSub(getArrayIndex(size() - 1));
     }
 
-    // Erase all elements of the list, resetting the bitfields and linked list
-    virtual void clear() {
+template <typename T, s32 C>
+void soArrayList<T, C>::clear() {
         m_freeIndex = 0;
         m_topIndex = End;
         m_lastIndex = End;
@@ -391,44 +468,52 @@ public:
         }
     }
 
-    // Prepend elm to the list, if space is available
-    virtual void unshift(const T& elm) {
+template <typename T, s32 C>
+void soArrayList<T, C>::unshift(const T& elm) {
         s32 idx = insertSub(-1);
         if (idx >= 0)
             m_units[idx].m_element = elm;
     }
 
-    // Append elm to the list, if space is available
-    virtual void push(const T& elm) {
+template <typename T, s32 C>
+void soArrayList<T, C>::push(const T& elm) {
         s32 idx = insertSub(size() - 1);
         if (idx >= 0)
             m_units[idx].m_element = elm;
     }
 
-    // Insert elm at position i of the list, if i is in range and space is
-    // available
-    virtual void insert(s32 pos, const T& elm) {
+template <typename T, s32 C>
+void soArrayList<T, C>::insert(s32 pos, const T& elm) {
         s32 idx = insertSub(pos - 1);
         if (idx >= 0)
             m_units[idx].m_element = elm;
     }
 
-    // Erase the element at position pos
-    virtual void erase(s32 pos) {
+template <typename T, s32 C>
+void soArrayList<T, C>::erase(s32 pos) {
         eraseSub(getArrayIndex(pos));
     }
 
-    virtual s32 capacity() const {
+#ifndef SO_ARRAY_LIST_EXTERNAL_QUERY_MEMBERS
+#ifndef SO_ARRAY_LIST_EXTERNAL_capacity
+template <typename T, s32 C>
+s32 soArrayList<T, C>::capacity() const {
         return C;
     }
+#endif
+#endif
 
-    virtual bool isFull() const {
+#ifndef SO_ARRAY_LIST_EXTERNAL_QUERY_MEMBERS
+#ifndef SO_ARRAY_LIST_EXTERNAL_isFull
+template <typename T, s32 C>
+bool soArrayList<T, C>::isFull() const {
         return m_freeIndex < 0;
     }
+#endif
+#endif
 
-    // Starting at position pos, assign elm to consecutive elements, stopping
-    // when either count or the end of the list has been reached
-    virtual void set(s32 pos, const T& elm, s32 count) {
+template <typename T, s32 C>
+void soArrayList<T, C>::set(s32 pos, const T& elm, s32 count) {
         if (count) {
             if (count + pos >= size())
                 count = size() - pos;
@@ -446,26 +531,15 @@ public:
         }
     }
 
-    // TODO: check implicit generation by <wnPikminPikmin*, 10> for these two
-    soArrayListEnumerator<T, s8> getEnumerator() {
-        return soArrayListEnumerator<T, s8>(m_units, m_topIndex);
-    }
-
-    // Erase the element at position enm.getNext()
-    void erase(const soArrayListEnumerator<T, s8>& enm) {
-        eraseSub(enm.getNext());
-    }
-
-    soArrayListUnit<T, s8>* getUnits() { return m_units; }
-};
-
+#ifndef SO_ARRAY_LIST_EXTERNAL_INDEX_MEMBERS
+#ifndef SO_ARRAY_LIST_EXTERNAL_shiftFreeArrayIndex
 template <typename T, s32 C>
 s32 soArrayList<T, C>::shiftFreeArrayIndex(s32 idx) {
     if (isFull() == true)
         return End;
     if (idx < 0) {
-        s32 freeIndex = getFreeIndex();
-        m_freeIndex = m_units[m_freeIndex].m_next;
+        s32 freeIndex = soArrayListUsesCachedFreeIndex<T, C>::value ? m_freeIndex : getFreeIndex();
+        m_freeIndex = m_units[soArrayListUsesCachedFreeIndex<T, C>::value ? freeIndex : m_freeIndex].m_next;
         if (m_freeIndex > 0)
             m_units[m_freeIndex].m_prev = End;
         m_size++;
@@ -477,7 +551,7 @@ s32 soArrayList<T, C>::shiftFreeArrayIndex(s32 idx) {
     // soArrayListUnit at position idx from the doubly-linked list.
     if (idx >= capacity())
         return End;
-    const soArrayListUnit<T, s8>& curr = m_units[idx];
+    const soArrayListUnit<T, IndexTy>& curr = m_units[idx];
     if (static_cast<bool>(curr.m_inUse) == true)
         return End;
     s32 next = curr.m_next;
@@ -496,7 +570,11 @@ s32 soArrayList<T, C>::shiftFreeArrayIndex(s32 idx) {
     m_size++;
     return idx;
 }
+#endif
+#endif
 
+#ifndef SO_ARRAY_LIST_EXTERNAL_INDEX_MEMBERS
+#ifndef SO_ARRAY_LIST_EXTERNAL_getArrayIndex
 template <typename T, s32 C>
 s32 soArrayList<T, C>::getArrayIndex(s32 pos) const {
     if (pos < 0 || pos >= size())
@@ -524,7 +602,11 @@ s32 soArrayList<T, C>::getArrayIndex(s32 pos) const {
     }
     return End;
 }
+#endif
+#endif
 
+#ifndef SO_ARRAY_LIST_EXTERNAL_INDEX_MEMBERS
+#ifndef SO_ARRAY_LIST_EXTERNAL_insertSub
 template <typename T, s32 C>
 s32 soArrayList<T, C>::insertSub(s32 prevPos, s32 where) {
     s32 prevIdx = End;
@@ -557,7 +639,11 @@ s32 soArrayList<T, C>::insertSub(s32 prevPos, s32 where) {
     m_units[freeIdx].m_inUse = true;
     return freeIdx;
 }
+#endif
+#endif
 
+#ifndef SO_ARRAY_LIST_EXTERNAL_INDEX_MEMBERS
+#ifndef SO_ARRAY_LIST_EXTERNAL_eraseSub
 template <typename T, s32 C>
 void soArrayList<T, C>::eraseSub(s32 idx) {
     if (idx < 0 || idx >= capacity())
@@ -584,6 +670,8 @@ void soArrayList<T, C>::eraseSub(s32 idx) {
         clearElement(idx);
     }
 }
+#endif
+#endif
 
 class soArrayVectorCalcInterface {
 public:
@@ -627,15 +715,21 @@ bool soArrayVectorAbstract<T>::isNull() const {
     return false;
 }
 
+// MATCH-ONLY: Allow isolated callers to retain the existing helper owner.
+#ifndef SO_ARRAY_EXTERNAL_ABSTRACT_AT
 template <class T>
 T& soArrayVectorAbstract<T>::at(s32 index) {
     return this->atFastAbstractSub(index);
 }
+#endif
 
+// MATCH-ONLY: Keep the const helper in its existing source range.
+#ifndef SO_ARRAY_EXTERNAL_ABSTRACT_CONST_AT
 template <class T>
 const T& soArrayVectorAbstract<T>::at(s32 index) const {
     return this->atFastAbstractSub(index);
 }
+#endif
 
 template <class T>
 soArrayVectorAbstract<T>::~soArrayVectorAbstract() { }
@@ -652,11 +746,14 @@ void soArrayVectorAbstract<T>::pop() {
     this->setSize(this->size() - 1);
 }
 
+// MATCH-ONLY: Preserve the separately owned array helper.
+#ifndef SO_ARRAY_EXTERNAL_ABSTRACT_CLEAR
 template <class T>
 void soArrayVectorAbstract<T>::clear() {
     soArrayVectorCalculator::clear(*this);
     this->setSize(0);
 }
+#endif
 
 template <class T>
 void soArrayVectorAbstract<T>::unshift(const T& newElement) {
@@ -674,6 +771,8 @@ void soArrayVectorAbstract<T>::push(const T& newElement) {
     this->setSize(this->size() + 1);
 }
 
+// MATCH-ONLY: Preserve the separately owned array insertion helper.
+#ifndef SO_ARRAY_EXTERNAL_ABSTRACT_INSERT
 template <class T>
 void soArrayVectorAbstract<T>::insert(s32 index, const T& newElement) {
     s32 lastIndex = soArrayVectorCalculator::insert(*this, index, this->isFull(), this->size(), this->capacity(), this->getTopIndex(), this->getLastIndex());
@@ -682,11 +781,16 @@ void soArrayVectorAbstract<T>::insert(s32 index, const T& newElement) {
     this->setSize(this->size() + 1);
 }
 
+#endif
+
+// MATCH-ONLY: Preserve the separately owned array helper.
+#ifndef SO_ARRAY_EXTERNAL_ABSTRACT_ERASE
 template <class T>
 void soArrayVectorAbstract<T>::erase(s32 index) {
     soArrayVectorCalculator::erase(*this, index, this->size(), this->capacity(), this->getTopIndex(), this->getLastIndex());
     this->setSize(this->size() - 1);
 }
+#endif
 
 template <class T>
 void soArrayVectorAbstract<T>::set(s32 start, const T& elm, s32 count) {
@@ -714,24 +818,20 @@ class soArrayVector : public soArrayVectorAbstract<T> {
     T m_elements[C];
 
 public:
-    virtual s32 size() const { return m_size; }
-    virtual ~soArrayVector() { }
-    virtual s32 capacity() const { return C; }
-    virtual bool isFull() const { return m_isFull; }
+    virtual s32 size() const;
+    virtual ~soArrayVector();
+    virtual s32 capacity() const;
+    virtual bool isFull() const;
 
-    virtual T& atFastAbstractSub(s32 index) const {
-        return atFast(index);
-    }
-    virtual T& getArrayValueConst(s32 index) {
-        return this->m_elements[index];
-    }
-    virtual s32 getTopIndex() const { return m_topIndex; }
-    virtual s32 getLastIndex() const { return m_lastIndex; }
-    virtual void setSize(s32 size) { m_size = size; }
-    virtual void setTopIndex(s32 topIndex) { m_topIndex = topIndex; }
-    virtual void setLastIndex(s32 lastIndex) { m_lastIndex = lastIndex; }
-    virtual void onFull() { m_isFull = true; }
-    virtual void offFull() { m_isFull = false; }
+    virtual T& atFastAbstractSub(s32 index) const;
+    virtual T& getArrayValueConst(s32 index);
+    virtual s32 getTopIndex() const;
+    virtual s32 getLastIndex() const;
+    virtual void setSize(s32 size);
+    virtual void setTopIndex(s32 topIndex);
+    virtual void setLastIndex(s32 lastIndex);
+    virtual void onFull();
+    virtual void offFull();
 
     soArrayVector() : m_topIndex(0), m_lastIndex(0), m_size(0), m_isFull(false) { }
 
@@ -758,6 +858,76 @@ public:
     }
 };
 
+// Individual member definitions permit explicit accessor instantiations.
+// MATCH-ONLY: Allow isolated callers to retain the existing helper owner.
+#ifndef SO_ARRAY_EXTERNAL_VECTOR_SIZE
+template <class T, s32 C>
+s32 soArrayVector<T, C>::size() const {
+    return m_size;
+}
+#endif
+
+// MATCH-ONLY: Allow isolated callers to retain the existing helper owner.
+#ifndef SO_ARRAY_EXTERNAL_VECTOR_CAPACITY
+template <class T, s32 C>
+s32 soArrayVector<T, C>::capacity() const {
+    return C;
+}
+#endif
+
+// MATCH-ONLY: Preserve the separately owned capacity check.
+#ifndef SO_ARRAY_EXTERNAL_VECTOR_IS_FULL
+template <class T, s32 C>
+bool soArrayVector<T, C>::isFull() const {
+    return m_isFull;
+}
+#endif
+
+template <class T, s32 C>
+T& soArrayVector<T, C>::atFastAbstractSub(s32 index) const {
+    return atFast(index);
+}
+
+template <class T, s32 C>
+T& soArrayVector<T, C>::getArrayValueConst(s32 index) {
+    return this->m_elements[index];
+}
+
+template <class T, s32 C>
+s32 soArrayVector<T, C>::getTopIndex() const {
+    return m_topIndex;
+}
+
+template <class T, s32 C>
+s32 soArrayVector<T, C>::getLastIndex() const {
+    return m_lastIndex;
+}
+
+template <class T, s32 C>
+void soArrayVector<T, C>::setSize(s32 size) {
+    m_size = size;
+}
+
+template <class T, s32 C>
+void soArrayVector<T, C>::setTopIndex(s32 topIndex) {
+    m_topIndex = topIndex;
+}
+
+template <class T, s32 C>
+void soArrayVector<T, C>::setLastIndex(s32 lastIndex) {
+    m_lastIndex = lastIndex;
+}
+
+template <class T, s32 C>
+void soArrayVector<T, C>::onFull() {
+    m_isFull = true;
+}
+
+template <class T, s32 C>
+void soArrayVector<T, C>::offFull() {
+    m_isFull = false;
+}
+
 template <class T>
 class soArrayVector<T, 0> : public soArrayNull<T> {
 public:
@@ -775,3 +945,6 @@ soArray<T>& getNullArray() {
 extern soArrayNull<s32> g_s32ArrayNull;
 extern soArrayNull<float> g_floatArrayNull;
 extern soArrayNull<soGeneralFlag<s32> > g_s32GeneralFlagArrayNull;
+
+template<class T, s32 C>
+soArrayVector<T,C>::~soArrayVector() { }
