@@ -413,10 +413,12 @@ const T& soArrayList<T, C>::at(s32 i) const {
     }
 
 #ifndef SO_ARRAY_LIST_EXTERNAL_QUERY_MEMBERS
+#ifndef SO_ARRAY_LIST_EXTERNAL_size
 template <typename T, s32 C>
 s32 soArrayList<T, C>::size() const {
         return m_size;
     }
+#endif
 #endif
 
 template <typename T, s32 C>
@@ -477,17 +479,21 @@ void soArrayList<T, C>::erase(s32 pos) {
     }
 
 #ifndef SO_ARRAY_LIST_EXTERNAL_QUERY_MEMBERS
+#ifndef SO_ARRAY_LIST_EXTERNAL_capacity
 template <typename T, s32 C>
 s32 soArrayList<T, C>::capacity() const {
         return C;
     }
 #endif
+#endif
 
 #ifndef SO_ARRAY_LIST_EXTERNAL_QUERY_MEMBERS
+#ifndef SO_ARRAY_LIST_EXTERNAL_isFull
 template <typename T, s32 C>
 bool soArrayList<T, C>::isFull() const {
         return m_freeIndex < 0;
     }
+#endif
 #endif
 
 template <typename T, s32 C>
@@ -510,6 +516,7 @@ void soArrayList<T, C>::set(s32 pos, const T& elm, s32 count) {
     }
 
 #ifndef SO_ARRAY_LIST_EXTERNAL_INDEX_MEMBERS
+#ifndef SO_ARRAY_LIST_EXTERNAL_shiftFreeArrayIndex
 template <typename T, s32 C>
 s32 soArrayList<T, C>::shiftFreeArrayIndex(s32 idx) {
     if (isFull() == true)
@@ -548,8 +555,10 @@ s32 soArrayList<T, C>::shiftFreeArrayIndex(s32 idx) {
     return idx;
 }
 #endif
+#endif
 
 #ifndef SO_ARRAY_LIST_EXTERNAL_INDEX_MEMBERS
+#ifndef SO_ARRAY_LIST_EXTERNAL_getArrayIndex
 template <typename T, s32 C>
 s32 soArrayList<T, C>::getArrayIndex(s32 pos) const {
     if (pos < 0 || pos >= size())
@@ -578,8 +587,10 @@ s32 soArrayList<T, C>::getArrayIndex(s32 pos) const {
     return End;
 }
 #endif
+#endif
 
 #ifndef SO_ARRAY_LIST_EXTERNAL_INDEX_MEMBERS
+#ifndef SO_ARRAY_LIST_EXTERNAL_insertSub
 template <typename T, s32 C>
 s32 soArrayList<T, C>::insertSub(s32 prevPos, s32 where) {
     s32 prevIdx = End;
@@ -613,8 +624,10 @@ s32 soArrayList<T, C>::insertSub(s32 prevPos, s32 where) {
     return freeIdx;
 }
 #endif
+#endif
 
 #ifndef SO_ARRAY_LIST_EXTERNAL_INDEX_MEMBERS
+#ifndef SO_ARRAY_LIST_EXTERNAL_eraseSub
 template <typename T, s32 C>
 void soArrayList<T, C>::eraseSub(s32 idx) {
     if (idx < 0 || idx >= capacity())
@@ -641,6 +654,7 @@ void soArrayList<T, C>::eraseSub(s32 idx) {
         clearElement(idx);
     }
 }
+#endif
 #endif
 
 class soArrayVectorCalcInterface {
