@@ -19,3 +19,10 @@ public:
 
 extern ftYoshiStatusUniqProcessSpecialLw g_ftYoshiStatusUniqProcessSpecialLw;
 extern ftYoshiStatusUniqProcessSpecialAirLw g_ftYoshiStatusUniqProcessSpecialAirLw;
+
+class ftYoshiStatusUniqProcessSpecialHi : public soStatusUniqProcess {
+public:
+    virtual ~ftYoshiStatusUniqProcessSpecialHi() { }
+    virtual void initStatus(soModuleAccesser* moduleAccesser);
+};
+extern ftYoshiStatusUniqProcessSpecialHi g_ftYoshiStatusUniqProcessSpecialHi;

@@ -1156,6 +1156,7 @@ config.libs = [
         "cflags": cflags_fighter,
         "host": False,
         "objects": [
+            Object(Matching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_hi.cpp"),
             Object(Matching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_lw.cpp"),
             Object(Matching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_air_lw.cpp"),
         ],
