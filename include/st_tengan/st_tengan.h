@@ -83,7 +83,7 @@ class stTengan : public stMelee {
     u8 unkea8;
     u32 unkeac;
     u32 unkeb0;
-    u32 unkeb4;
+    u32 m_randomCallEffectHandle;
     u8 unkeb8;
     u8 unkeb9;
     u8 unkeba;
@@ -95,18 +95,21 @@ class stTengan : public stMelee {
     float unked0;
     float unked4;
     float unked8;
-    u32 unkedc;
-    u32 unkee0;
-    u32 unkee4;
+    u32 m_boomerangEffectHandle;
+    s32 m_auraSoundHandle;
+    s32 m_boomerangSoundHandle;
     float unkee8;
     float unkeec;
-    u8 unkef0;
+    u8 m_boomerangMotion;
     char m_slow;
 
   public:
     bool eventRebuildStageUpdate();
     bool eventGravityHalfUpdate();
     bool eventDropStageUpdate();
+    bool eventBoomerangUpdate();
+    bool eventAuraUpdate();
+    bool eventRandomCallUpdate();
     
     stTengan();
     virtual ~stTengan();

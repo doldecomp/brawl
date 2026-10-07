@@ -727,6 +727,147 @@ bool stTengan::eventDropStageUpdate() {
     return false;
 }
 
+bool stTengan::eventRandomCallUpdate() {
+    switch (eventRandomCall.getPhase()) {
+        case 0:
+            if (static_cast<grMadein*>(getGround(19))->isEndEntity()) {
+                m_randomCallEffectHandle = g_ecMgr->setEffect(ef_ptc_stg_tengan_crecelia_kona);
+                static_cast<grMadein*>(getGround(19))->setMotion(5);
+                static_cast<grMadein*>(getGround(19))->startEntity();
+                static_cast<grMadein*>(getGround(32))->setMotion(0);
+                static_cast<grMadein*>(getGround(32))->startEntity();
+                static_cast<grMadein*>(getGround(1))->endEntity();
+                eventRandomCall.setPhase(eventRandomCall.getPhase() + 1);
+                playSeBasic(snd_se_stage_Tengan_cres_up, 0.0f);
+            }
+            break;
+        case 1:
+            if (static_cast<grMadein*>(getGround(32))->isEndEntity()) {
+                static_cast<grMadein*>(getGround(32))->setMotion(1);
+                static_cast<grMadein*>(getGround(32))->startEntity();
+                eventRandomCall.setPhase(eventRandomCall.getPhase() + 1);
+            }
+            break;
+        case 2:
+            if (static_cast<grMadein*>(getGround(32))->isEndEntity()) {
+                static_cast<grMadein*>(getGround(32))->setMotion(2);
+                static_cast<grMadein*>(getGround(32))->startEntity();
+                eventRandomCall.setPhase(eventRandomCall.getPhase() + 1);
+            }
+            break;
+        case 3:
+            if (static_cast<grMadein*>(getGround(32))->isEndEntity()) {
+                static_cast<grMadein*>(getGround(32))->endEntity();
+                static_cast<grMadein*>(getGround(1))->startEntity();
+                eventRandomCall.end();
+                g_ecMgr->endEffect(m_randomCallEffectHandle);
+                return true;
+            }
+            break;
+    }
+    return false;
+}
+
+bool stTengan::eventAuraUpdate() {
+    switch (eventAura.getPhase()) {
+        case 0:
+            if (static_cast<grMadein*>(getGround(3))->isEndEntity()) {
+                static_cast<grMadein*>(getGround(3))->setMotion(5);
+                static_cast<grMadein*>(getGround(3))->startEntity();
+                eventAura.setPhase(1);
+                m_auraSoundHandle = -1;
+            }
+            break;
+        case 1:
+            if (m_auraSoundHandle == -1) {
+                if (getGround(3)->getMotionFrame(0) >= 48.0f) {
+                    m_auraSoundHandle = playSeBasic(snd_se_stage_Tengan_Aura_01, 0.0f);
+                }
+            }
+            if (static_cast<grMadein*>(getGround(3))->isEndEntity()) {
+                g_ecMgr->setDrawPrio(1);
+                u32 effect = g_ecMgr->setEffect(ef_ptc_stg_tengan_aura);
+                g_ecMgr->setDrawPrio(-1);
+                g_ecMgr->setParent(effect, getGround(3)->m_sceneModels[0],
+                                   "StgTenganDialga_origin", false);
+                static_cast<grMadein*>(getGround(3))->setMotion(6);
+                static_cast<grMadein*>(getGround(3))->startEntityLoop(2);
+                static_cast<grMadein*>(getGround(26))->startEntity();
+                eventAura.setPhase(2);
+                playSeBasic(snd_se_stage_Tengan_Aura_02, 0.0f);
+            }
+            break;
+        case 2:
+            if (static_cast<grMadein*>(getGround(3))->isEndEntity()) {
+                static_cast<grMadein*>(getGround(3))->setMotion(7);
+                static_cast<grMadein*>(getGround(3))->startEntity();
+                static_cast<grMadein*>(getGround(26))->endEntity();
+                eventAura.setPhase(3);
+            }
+            break;
+        case 3:
+            if (static_cast<grMadein*>(getGround(3))->isEndEntity()) {
+                return true;
+            }
+            break;
+    }
+    return false;
+}
+
+bool stTengan::eventBoomerangUpdate() {
+    switch (eventBoomerang.getPhase()) {
+        case 0: {
+            u32 motion = randi(3);
+            if (motion >= 2) {
+                motion = 2;
+            }
+            m_boomerangMotion = motion;
+            static_cast<grMadein*>(getGround(31))->setMotion(m_boomerangMotion);
+            static_cast<grMadein*>(getGround(31))->startEntity();
+            zoomOutCamera(300.0f, 340.0f);
+            m_boomerangSoundHandle = playSeBasic(snd_se_stage_Tengan_cres_boomerang, 0.0f);
+            eventBoomerang.setPhase(1);
+            m_boomerangEffectHandle = g_ecMgr->setEffect(ef_ptc_stg_tengan_crecelia_boomeran);
+            g_ecMgr->setParent(m_boomerangEffectHandle, getGround(31)->m_sceneModels[0],
+                               "StgTenganBoomerang1", false);
+            break;
+        }
+        case 1:
+            // Motion zero finishes its sound earlier than the other two paths.
+            switch (m_boomerangMotion) {
+                case 0:
+                    if (getGround(31)->getMotionFrame(0) > 250.0f) {
+                        stopSeBasic(m_boomerangSoundHandle, 1.0f);
+                        m_boomerangSoundHandle = -1;
+                        eventBoomerang.setPhase(2);
+                    }
+                    break;
+                case 1:
+                case 2:
+                    if (getGround(31)->getMotionFrame(0) > 500.0f) {
+                        stopSeBasic(m_boomerangSoundHandle, 1.0f);
+                        m_boomerangSoundHandle = -1;
+                        eventBoomerang.setPhase(2);
+                    }
+                    break;
+            }
+            break;
+        case 2:
+            if (static_cast<grMadein*>(getGround(31))->isEndEntity()) {
+                static_cast<grMadein*>(getGround(31))->endEntity();
+                g_ecMgr->endEffect(m_boomerangEffectHandle);
+                eventBoomerang.end();
+                zoomInCamera();
+                if (m_boomerangSoundHandle != -1) {
+                    stopSeBasic(m_boomerangSoundHandle, 1.0f);
+                    m_boomerangSoundHandle = -1;
+                }
+            }
+            break;
+    }
+    return false;
+}
+
 bool stTengan::eventGravityHalfUpdate() {
     switch (eventGravityHalf.getPhase()) {
         case 0: {
