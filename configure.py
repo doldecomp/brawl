@@ -1014,7 +1014,7 @@ config.libs = [
             Object(NonMatching, "mo_fighter/ft_marth/ft_marth.cpp"),
             Object(NonMatching, "mo_fighter/ft_marth/ft_marth_status_uniq_process_special_s.cpp"),
             Object(NonMatching, "mo_fighter/ft_marth/ft_marth_status_uniq_process_special_hi.cpp"),
-            Object(NonMatching, "mo_fighter/ft_marth/ft_marth_status_uniq_process_special_lw.cpp"),
+            Object(Matching, "mo_fighter/ft_marth/ft_marth_status_uniq_process_special_lw.cpp"),
             Object(NonMatching, "mo_fighter/ft_marth/ft_marth_status_uniq_process_special_final.cpp"),
             Object(NonMatching, "mo_fighter/ft_marth/if_marth_final.cpp"),
         ],

@@ -1,18 +1,19 @@
 #include <types.h>
 
+// Keep the existing shared helper copies aligned with their verified symbol names.
 extern "C" {
 
 void fn_106_B508();
 void fn_106_B50C();
 void fn_106_B510();
-bool fn_106_B514();
-void fn_106_B51C();
-bool fn_106_B520();
-void fn_106_B528();
-bool fn_106_B52C();
-void fn_106_B534();
-void fn_106_B538();
-void fn_106_B53C();
+bool checkTransitionPrecede__19soStatusUniqProcessFP16soModuleAccesserPvi();
+void leaveStop__19soStatusUniqProcessFP16soModuleAccesserib();
+bool onChangeLr__19soStatusUniqProcessFP16soModuleAccesserff();
+void checkAttack__19soStatusUniqProcessFP16soModuleAccesserPvf();
+bool checkDamage__19soStatusUniqProcessFP16soModuleAccesserPv();
+void execFixCamera__19soStatusUniqProcessFP16soModuleAccesser();
+void execFixPosCounter__19soStatusUniqProcessFP16soModuleAccesser();
+void execMapCorrection__19soStatusUniqProcessFP16soModuleAccesser();
 
 void fn_106_B508() {}
 
@@ -20,26 +21,26 @@ void fn_106_B50C() {}
 
 void fn_106_B510() {}
 
-bool fn_106_B514() {
+bool checkTransitionPrecede__19soStatusUniqProcessFP16soModuleAccesserPvi() {
     return true;
 }
 
-void fn_106_B51C() {}
+void leaveStop__19soStatusUniqProcessFP16soModuleAccesserib() {}
 
-bool fn_106_B520() {
+bool onChangeLr__19soStatusUniqProcessFP16soModuleAccesserff() {
     return false;
 }
 
-void fn_106_B528() {}
+void checkAttack__19soStatusUniqProcessFP16soModuleAccesserPvf() {}
 
-bool fn_106_B52C() {
+bool checkDamage__19soStatusUniqProcessFP16soModuleAccesserPv() {
     return false;
 }
 
-void fn_106_B534() {}
+void execFixCamera__19soStatusUniqProcessFP16soModuleAccesser() {}
 
-void fn_106_B538() {}
+void execFixPosCounter__19soStatusUniqProcessFP16soModuleAccesser() {}
 
-void fn_106_B53C() {}
+void execMapCorrection__19soStatusUniqProcessFP16soModuleAccesser() {}
 
 }
