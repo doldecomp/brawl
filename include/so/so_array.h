@@ -190,32 +190,62 @@ template <class T>
 class soArrayNull : public soArray<T> {
 
 public:
-    virtual bool isNull() const { return true; }
-    virtual T& at(s32 index) {
-        static T m_nullElement;
-        return m_nullElement;
-    };
-    virtual const T& at(s32 index) const {
-        static T m_nullElement;
-        return m_nullElement;
-    };
-    virtual s32 size() const { return 0; }
+    virtual bool isNull() const;
+    virtual T& at(s32 index);
+    virtual const T& at(s32 index) const;
+    virtual s32 size() const;
     virtual ~soArrayNull() { }
-    virtual void shift() { return; }
-    virtual void pop() { return; }
-    virtual void clear() { return; }
-    virtual void unshift(const T&) { return; }
-    virtual void push(const T&) { return; }
-    virtual void insert(s32, const T&) { return; }
-    virtual void erase(s32) { return; }
-    virtual s32 capacity() const { return 0; }
-    virtual bool isFull() const { return true; }
-    virtual void set(s32 startingIndex, const T& element, s32 numIndicesToSet) { }
+    virtual void shift();
+    virtual void pop();
+    virtual void clear();
+    virtual void unshift(const T&);
+    virtual void push(const T&);
+    virtual void insert(s32, const T&);
+    virtual void erase(s32);
+    virtual s32 capacity() const;
+    virtual bool isFull() const;
+    virtual void set(s32 startingIndex, const T& element, s32 numIndicesToSet);
 
     soArrayNull() { }
     soArrayNull(s32 size, s32 = 0) { }
     soArrayNull(s32 size, const T& element, s32) { }
 };
+
+// Out-of-class definitions so individual members can be instantiated (and linked) on their own.
+template <class T>
+bool soArrayNull<T>::isNull() const { return true; }
+template <class T>
+T& soArrayNull<T>::at(s32 index) {
+    static T m_nullElement;
+    return m_nullElement;
+}
+template <class T>
+const T& soArrayNull<T>::at(s32 index) const {
+    static T m_nullElement;
+    return m_nullElement;
+}
+template <class T>
+s32 soArrayNull<T>::size() const { return 0; }
+template <class T>
+void soArrayNull<T>::shift() { return; }
+template <class T>
+void soArrayNull<T>::pop() { return; }
+template <class T>
+void soArrayNull<T>::clear() { return; }
+template <class T>
+void soArrayNull<T>::unshift(const T&) { return; }
+template <class T>
+void soArrayNull<T>::push(const T&) { return; }
+template <class T>
+void soArrayNull<T>::insert(s32, const T&) { return; }
+template <class T>
+void soArrayNull<T>::erase(s32) { return; }
+template <class T>
+s32 soArrayNull<T>::capacity() const { return 0; }
+template <class T>
+bool soArrayNull<T>::isFull() const { return true; }
+template <class T>
+void soArrayNull<T>::set(s32 startingIndex, const T& element, s32 numIndicesToSet) { }
 
 template <typename ElementTy, typename IndexTy>
 struct soArrayListUnit {

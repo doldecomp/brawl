@@ -708,6 +708,81 @@ mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soCollisionHitEventObs
 mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soCollisionAttackEventObserver.cpp:
 	.text       start:0x0008513C end:0x00085170
 
+mo_melee/sora_melee/so/so_array_null_Vec3f_rest.cpp:
+	.text       start:0x00085300 end:0x00085340
+
+mo_melee/sora_melee/so/so_array_null_soOtherAnim_rest.cpp:
+	.text       start:0x00085520 end:0x00085560
+
+mo_melee/sora_melee/so/so_array_null_soPartialAnim_rest.cpp:
+	.text       start:0x00085640 end:0x00085680
+
+mo_melee/sora_melee/so/so_array_null_soCameraSubject_rest.cpp:
+	.text       start:0x00085760 end:0x000857A0
+
+mo_melee/sora_melee/so/so_array_null_soControllerImpl_rest.cpp:
+	.text       start:0x000859C0 end:0x00085A00
+
+mo_melee/sora_melee/so/so_array_null_soTransitionTermPack_rest.cpp:
+	.text       start:0x00085AF8 end:0x00085B38
+
+mo_melee/sora_melee/so/so_array_null_soEffectContinual_rest.cpp:
+	.text       start:0x00085C18 end:0x00085C58
+
+mo_melee/sora_melee/so/so_array_null_soDamage_rest.cpp:
+	.text       start:0x00085D58 end:0x00085D98
+
+mo_melee/sora_melee/so/so_array_null_PCc_at.cpp:
+	.text       start:0x00085EA8 end:0x00085EC0
+
+mo_melee/sora_melee/so/so_array_null_PCc_rest.cpp:
+	.text       start:0x00085EC0 end:0x00085F00
+
+mo_melee/sora_melee/so/so_array_null_f_at.cpp:
+	.text       start:0x00085F00 end:0x00085F18
+
+mo_melee/sora_melee/so/so_array_null_f_rest.cpp:
+	.text       start:0x00085F18 end:0x00085F58
+
+mo_melee/sora_melee/so/so_array_null_Ul_at.cpp:
+	.text       start:0x00085F58 end:0x00085F70
+
+mo_melee/sora_melee/so/so_array_null_Ul_rest.cpp:
+	.text       start:0x00085F70 end:0x00085FB0
+
+mo_melee/sora_melee/so/so_array_null_l_at.cpp:
+	.text       start:0x00085FB0 end:0x00085FC8
+
+mo_melee/sora_melee/so/so_array_null_l_rest.cpp:
+	.text       start:0x00085FC8 end:0x00086008
+
+mo_melee/sora_melee/so/so_array_null_soModelVirtualNode_rest.cpp:
+	.text       start:0x000860E8 end:0x00086128
+
+mo_melee/sora_melee/so/so_array_null_soCollisionAttackAbsolute_rest.cpp:
+	.text       start:0x00086228 end:0x00086268
+
+mo_melee/sora_melee/so/so_array_null_soShakeTerm_rest.cpp:
+	.text       start:0x00086368 end:0x000863A8
+
+mo_melee/sora_melee/so/so_array_null_P19soStatusUniqProcess_at.cpp:
+	.text       start:0x000863A8 end:0x000863C0
+
+mo_melee/sora_melee/so/so_array_null_P19soStatusUniqProcess_rest.cpp:
+	.text       start:0x000863C0 end:0x00086400
+
+mo_melee/sora_melee/so/so_array_null_soPhysicsIKHandle_rest.cpp:
+	.text       start:0x00086448 end:0x00086488
+
+mo_melee/sora_melee/so/so_array_null_soAreaWind_rest.cpp:
+	.text       start:0x000866C8 end:0x00086708
+
+mo_melee/sora_melee/so/so_array_null_soEffectTime_rest.cpp:
+	.text       start:0x000867E8 end:0x00086828
+
+mo_melee/sora_melee/so/so_array_null_efScreenHandle_rest.cpp:
+	.text       start:0x00086888 end:0x000868C8
+
 mo_melee/sora_melee/so/so_instance_unit_full_property_soKineticEnergy_part1.cpp:
 	.text       start:0x0008754C end:0x00087558
 
@@ -887,6 +962,12 @@ mo_melee/sora_melee/so/so_array_vector_abstract_record_soInstanceUnitFullPropert
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soInstanceUnit_ptr_soEventUnit_8.cpp:
 	.text       start:0x000B12EC end:0x000B13B4
+
+mo_melee/sora_melee/so/so_array_null_P9soArticle_at.cpp:
+	.text       start:0x000C3B98 end:0x000C3BB0
+
+mo_melee/sora_melee/so/so_array_null_P9soArticle_rest.cpp:
+	.text       start:0x000C3BB0 end:0x000C3BF0
 
 mo_melee/sora_melee/so/so_array_vector_destructor_soArticle_20.cpp:
 	.text       start:0x000C4434 end:0x000C4474
@@ -3378,6 +3459,12 @@ mo_melee/sora_melee/so/so_array_list_members_wnPikminPikmin_10_part2.cpp:
 
 mo_melee/sora_melee/so/so_array_list_members_wnPikminPikmin_10_part3.cpp:
 	.text       start:0x00197558 end:0x00197B68
+
+mo_melee/sora_melee/so/so_array_null_PC13acAnimCmdConv_at.cpp:
+	.text       start:0x00197DEC end:0x00197E04
+
+mo_melee/sora_melee/so/so_array_null_PC13acAnimCmdConv_rest.cpp:
+	.text       start:0x00197E04 end:0x00197E44
 
 mo_melee/sora_melee/so/so_array_vector_destructor_soAreaWind_1.cpp:
 	.text       start:0x00197EF4 end:0x00197F34
