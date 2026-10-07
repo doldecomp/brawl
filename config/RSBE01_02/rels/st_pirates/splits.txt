@@ -14,6 +14,10 @@ global_destructor_chain.c:
 mo_stage/st_pirates/gr_pirates_sling_collision.cpp:
 	.text       start:0x0000A6B8 end:0x0000A70C
 
+mo_stage/st_pirates/gr_pirates_sling_active.cpp:
+	.text       start:0x0000A70C end:0x0000AA98
+	.data       start:0x00002360 end:0x0000238C align:8
+
 mo_stage/st_pirates/gr_pirates_sling_ai.cpp:
 	.text       start:0x0000ADD4 end:0x0000AEA8
 

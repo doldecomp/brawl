@@ -6,9 +6,17 @@
 #include <snd/snd_3d_generator.h>
 
 class grPiratesSling : public grPirates {
+    enum State {
+        State_Reset = 0,
+        State_Wait = 1,
+        State_Active = 4,
+        State_Raising = 5,
+        State_Lowering = 10,
+    };
+
     Matrix* m_mtxWork;                 // 0x160
     u8* m_stateWork;                   // 0x164
-    u8 unk168;
+    u8 m_firstActivation;              // 0x168
     u8 unk169;
     u8 unk16A[2];
     float m_motionEndFrame;            // 0x16C
@@ -23,6 +31,12 @@ class grPiratesSling : public grPirates {
     s32 m_dangerZoneId;                // 0x18C
 
 public:
+    // Verified virtual slots 0x1EC, 0x1F0, and 0x1F4.
+    virtual void setHit();
+    virtual void setAttack();
+    virtual void setMotion(u32 motion, u32 animIndex, bool unk3, float* endFrame);
+
+    void updateActive(float deltaFrame);
     void updateCollision(float deltaFrame);
     void updateAI(float deltaFrame);
 };

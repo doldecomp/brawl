@@ -7,8 +7,8 @@ void grPiratesSling::updateCollision(float deltaFrame) {
     }
 
     switch (m_state) {
-    case 4:
-    case 10:
+    case State_Active:
+    case State_Lowering:
         joint->m_0x54_7 = false;
         joint->m_0x54_4 = joint->m_0x54_7;
         joint->m_0x54_6 = joint->m_0x54_4;

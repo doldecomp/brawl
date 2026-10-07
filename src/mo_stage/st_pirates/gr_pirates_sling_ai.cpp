@@ -6,8 +6,8 @@ extern const float g_piratesSlingDangerZoneHalfExtent;
 
 void grPiratesSling::updateAI(float deltaFrame) {
     switch (m_state) {
-    case 4:
-    case 5:
+    case State_Active:
+    case State_Raising:
         if (m_mtxWork != NULL) {
             const float halfExtent = g_piratesSlingDangerZoneHalfExtent;
             // MATCH-ONLY: coordinate temporaries preserve MWCC register allocation.
