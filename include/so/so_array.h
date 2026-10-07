@@ -707,10 +707,13 @@ T& soArrayVectorAbstract<T>::at(s32 index) {
 }
 #endif
 
+// MATCH-ONLY: Keep the const helper in its existing source range.
+#ifndef SO_ARRAY_EXTERNAL_ABSTRACT_CONST_AT
 template <class T>
 const T& soArrayVectorAbstract<T>::at(s32 index) const {
     return this->atFastAbstractSub(index);
 }
+#endif
 
 template <class T>
 soArrayVectorAbstract<T>::~soArrayVectorAbstract() { }

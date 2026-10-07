@@ -92,14 +92,23 @@ mo_melee/sora_melee/so/so_array_vector_accessors_soCollisionGroup_1.cpp:
 mo_melee/sora_melee/so/so_array_vector_abstract_value_soCollisionGroup.cpp:
 	.text       start:0x0004CBD0 end:0x0004D77C
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soTeamEventObserver_255_part1.cpp:
+	.text       start:0x000508B0 end:0x000509B0
+
 mo_melee/sora_melee/so/so_instance_manager_members_soTeamEventObserver_255_part1.cpp:
 	.text       start:0x000509B0 end:0x000509C0
 
 mo_melee/sora_melee/so/so_instance_manager_members_soTeamEventObserver_255_part2.cpp:
 	.text       start:0x00050A04 end:0x00050A14
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soTeamEventObserver_255_part2.cpp:
+	.text       start:0x00050A14 end:0x00050AC4
+
 mo_melee/sora_melee/so/so_instance_manager_members_soTeamEventObserver_255_part3.cpp:
 	.text       start:0x00050D0C end:0x00050D9C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soTeamEventObserver_255_part3.cpp:
+	.text       start:0x00050D9C end:0x00050E48
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soInstanceUnitFullProperty_ptr_soTeamEventObserver_255.cpp:
 	.text       start:0x000542E0 end:0x000543A8
@@ -264,14 +273,23 @@ mo_melee/sora_melee/so/so_array_vector_accessors_soDisposeInstanceTerm_255_part1
 mo_melee/sora_melee/so/so_array_vector_abstract_layout_soDisposeInstanceTerm_part1.cpp:
 	.text       start:0x000AF718 end:0x000AF86C
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soDisposeInstanceEventObserver_8_part1.cpp:
+	.text       start:0x000AFB14 end:0x000AFC14
+
 mo_melee/sora_melee/so/so_instance_manager_members_soDisposeInstanceEventObserver_8_part1.cpp:
 	.text       start:0x000AFC14 end:0x000AFC24
 
 mo_melee/sora_melee/so/so_instance_manager_members_soDisposeInstanceEventObserver_8_part2.cpp:
 	.text       start:0x000AFC68 end:0x000AFC78
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soDisposeInstanceEventObserver_8_part2.cpp:
+	.text       start:0x000AFC78 end:0x000AFD28
+
 mo_melee/sora_melee/so/so_instance_manager_members_soDisposeInstanceEventObserver_8_part3.cpp:
 	.text       start:0x000AFF70 end:0x000B0000
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soDisposeInstanceEventObserver_8_part3.cpp:
+	.text       start:0x000B0000 end:0x000B00AC
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soDisposeInstanceTerm_255_part2.cpp:
 	.text       start:0x000B0358 end:0x000B0410
@@ -291,14 +309,23 @@ mo_melee/sora_melee/so/so_array_vector_accessors_soInstanceUnit_ptr_soEventUnit_
 mo_melee/sora_melee/so/so_array_vector_accessors_soArticle_20.cpp:
 	.text       start:0x000C4474 end:0x000C453C
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soLogEventObserver_1_part1.cpp:
+	.text       start:0x000C49C8 end:0x000C4AC8
+
 mo_melee/sora_melee/so/so_instance_manager_members_soLogEventObserver_1_part1.cpp:
 	.text       start:0x000C4AC8 end:0x000C4AD8
 
 mo_melee/sora_melee/so/so_instance_manager_members_soLogEventObserver_1_part2.cpp:
 	.text       start:0x000C4B1C end:0x000C4B2C
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soLogEventObserver_1_part2.cpp:
+	.text       start:0x000C4B2C end:0x000C4BDC
+
 mo_melee/sora_melee/so/so_instance_manager_members_soLogEventObserver_1_part3.cpp:
 	.text       start:0x000C4E24 end:0x000C4EB4
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soLogEventObserver_1_part3.cpp:
+	.text       start:0x000C4EB4 end:0x000C4F60
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soInstanceUnitFullProperty_ptr_soLogEventObserver_1.cpp:
 	.text       start:0x000C51DC end:0x000C52A4
@@ -974,149 +1001,365 @@ mo_melee/sora_melee/so/so_array_vector_abstract_layout_emAIInfo.cpp:
 mo_melee/sora_melee/so/so_array_vector_abstract_layout_soAreaContactLog.cpp:
 	.text       start:0x000EE8A0 end:0x000EF0B4
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionReflectorEventObserver_1_part1.cpp:
+	.text       start:0x000EF4B4 end:0x000EF5B4
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionReflectorEventObserver_1_part2.cpp:
 	.text       start:0x000EF5B4 end:0x000EF5C4
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionReflectorEventObserver_1_part2.cpp:
+	.text       start:0x000EF608 end:0x000EF6B8
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionReflectorEventObserver_1_part3.cpp:
 	.text       start:0x000EF900 end:0x000EF990
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionReflectorEventObserver_1_part3.cpp:
+	.text       start:0x000EF990 end:0x000EFA3C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAbsorberEventObserver_1_part1.cpp:
+	.text       start:0x000EFE98 end:0x000EFF98
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionAbsorberEventObserver_1_part2.cpp:
 	.text       start:0x000EFF98 end:0x000EFFA8
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAbsorberEventObserver_1_part2.cpp:
+	.text       start:0x000EFFEC end:0x000F009C
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionAbsorberEventObserver_1_part3.cpp:
 	.text       start:0x000F02E4 end:0x000F0374
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAbsorberEventObserver_1_part3.cpp:
+	.text       start:0x000F0374 end:0x000F0420
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionShieldEventObserver_1_part1.cpp:
+	.text       start:0x000F087C end:0x000F097C
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionShieldEventObserver_1_part2.cpp:
 	.text       start:0x000F097C end:0x000F098C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionShieldEventObserver_1_part2.cpp:
+	.text       start:0x000F09D0 end:0x000F0A80
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionShieldEventObserver_1_part3.cpp:
 	.text       start:0x000F0CC8 end:0x000F0D58
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionShieldEventObserver_1_part3.cpp:
+	.text       start:0x000F0D58 end:0x000F0E04
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionSearchEventObserver_2_part1.cpp:
+	.text       start:0x000F1260 end:0x000F1360
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionSearchEventObserver_2_part2.cpp:
 	.text       start:0x000F1360 end:0x000F1370
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionSearchEventObserver_2_part2.cpp:
+	.text       start:0x000F13B4 end:0x000F1464
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionSearchEventObserver_2_part3.cpp:
 	.text       start:0x000F16AC end:0x000F173C
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionSearchEventObserver_2_part3.cpp:
+	.text       start:0x000F173C end:0x000F17E8
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionSearchEventObserver_1_part1.cpp:
+	.text       start:0x000F1C44 end:0x000F1D44
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionSearchEventObserver_1_part2.cpp:
 	.text       start:0x000F1D44 end:0x000F1D54
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionSearchEventObserver_1_part2.cpp:
+	.text       start:0x000F1D98 end:0x000F1E48
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionSearchEventObserver_1_part3.cpp:
 	.text       start:0x000F2090 end:0x000F2120
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionSearchEventObserver_1_part3.cpp:
+	.text       start:0x000F2120 end:0x000F21CC
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAttackEventObserver_5_part1.cpp:
+	.text       start:0x000F2628 end:0x000F2728
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionAttackEventObserver_5_part2.cpp:
 	.text       start:0x000F2728 end:0x000F2738
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAttackEventObserver_5_part2.cpp:
+	.text       start:0x000F277C end:0x000F282C
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionAttackEventObserver_5_part3.cpp:
 	.text       start:0x000F2A74 end:0x000F2B04
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAttackEventObserver_5_part3.cpp:
+	.text       start:0x000F2B04 end:0x000F2BB0
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAttackEventObserver_3_part1.cpp:
+	.text       start:0x000F300C end:0x000F310C
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionAttackEventObserver_3_part2.cpp:
 	.text       start:0x000F310C end:0x000F311C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAttackEventObserver_3_part2.cpp:
+	.text       start:0x000F3160 end:0x000F3210
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionAttackEventObserver_3_part3.cpp:
 	.text       start:0x000F3458 end:0x000F34E8
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAttackEventObserver_3_part3.cpp:
+	.text       start:0x000F34E8 end:0x000F3594
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionCatchEventObserver_1_part1.cpp:
+	.text       start:0x000F39F0 end:0x000F3AF0
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionCatchEventObserver_1_part2.cpp:
 	.text       start:0x000F3AF0 end:0x000F3B00
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionCatchEventObserver_1_part2.cpp:
+	.text       start:0x000F3B44 end:0x000F3BF4
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionCatchEventObserver_1_part3.cpp:
 	.text       start:0x000F3E3C end:0x000F3ECC
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionCatchEventObserver_1_part3.cpp:
+	.text       start:0x000F3ECC end:0x000F3F78
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionHitEventObserver_4_part1.cpp:
+	.text       start:0x000F43D4 end:0x000F44D4
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionHitEventObserver_4_part2.cpp:
 	.text       start:0x000F44D4 end:0x000F44E4
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionHitEventObserver_4_part2.cpp:
+	.text       start:0x000F4528 end:0x000F45D8
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionHitEventObserver_4_part3.cpp:
 	.text       start:0x000F4820 end:0x000F48B0
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionHitEventObserver_4_part3.cpp:
+	.text       start:0x000F48B0 end:0x000F495C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionHitEventObserver_3_part1.cpp:
+	.text       start:0x000F4DB8 end:0x000F4EB8
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionHitEventObserver_3_part2.cpp:
 	.text       start:0x000F4EB8 end:0x000F4EC8
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionHitEventObserver_3_part2.cpp:
+	.text       start:0x000F4F0C end:0x000F4FBC
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionHitEventObserver_3_part3.cpp:
 	.text       start:0x000F5204 end:0x000F5294
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionHitEventObserver_3_part3.cpp:
+	.text       start:0x000F5294 end:0x000F5340
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soSituationEventObserver_2_part1.cpp:
+	.text       start:0x000F579C end:0x000F589C
+
 mo_melee/sora_melee/so/so_instance_manager_members_soSituationEventObserver_2_part2.cpp:
 	.text       start:0x000F589C end:0x000F58AC
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soSituationEventObserver_2_part2.cpp:
+	.text       start:0x000F58F0 end:0x000F59A0
 
 mo_melee/sora_melee/so/so_instance_manager_members_soSituationEventObserver_2_part3.cpp:
 	.text       start:0x000F5BE8 end:0x000F5C78
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soSituationEventObserver_2_part3.cpp:
+	.text       start:0x000F5C78 end:0x000F5D24
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCaptureEventObserver_1_part1.cpp:
+	.text       start:0x000F6180 end:0x000F6280
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCaptureEventObserver_1_part2.cpp:
 	.text       start:0x000F6280 end:0x000F6290
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCaptureEventObserver_1_part2.cpp:
+	.text       start:0x000F62D4 end:0x000F6384
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCaptureEventObserver_1_part3.cpp:
 	.text       start:0x000F65CC end:0x000F665C
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCaptureEventObserver_1_part3.cpp:
+	.text       start:0x000F665C end:0x000F6708
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soArticleEventObserver_1_part1.cpp:
+	.text       start:0x000F6B64 end:0x000F6C64
+
 mo_melee/sora_melee/so/so_instance_manager_members_soArticleEventObserver_1_part2.cpp:
 	.text       start:0x000F6C64 end:0x000F6C74
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soArticleEventObserver_1_part2.cpp:
+	.text       start:0x000F6CB8 end:0x000F6D68
 
 mo_melee/sora_melee/so/so_instance_manager_members_soArticleEventObserver_1_part3.cpp:
 	.text       start:0x000F6FB0 end:0x000F7040
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soArticleEventObserver_1_part3.cpp:
+	.text       start:0x000F7040 end:0x000F70EC
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_37_part1.cpp:
+	.text       start:0x000F7548 end:0x000F7648
+
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_37_part2.cpp:
 	.text       start:0x000F7648 end:0x000F7658
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_37_part2.cpp:
+	.text       start:0x000F769C end:0x000F774C
 
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_37_part3.cpp:
 	.text       start:0x000F7994 end:0x000F7A24
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_37_part3.cpp:
+	.text       start:0x000F7A24 end:0x000F7AD0
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_22_part1.cpp:
+	.text       start:0x000F7F2C end:0x000F802C
+
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_22_part2.cpp:
 	.text       start:0x000F802C end:0x000F803C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_22_part2.cpp:
+	.text       start:0x000F8080 end:0x000F8130
 
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_22_part3.cpp:
 	.text       start:0x000F8378 end:0x000F8408
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_22_part3.cpp:
+	.text       start:0x000F8408 end:0x000F84B4
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_23_part1.cpp:
+	.text       start:0x000F8910 end:0x000F8A10
+
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_23_part2.cpp:
 	.text       start:0x000F8A10 end:0x000F8A20
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_23_part2.cpp:
+	.text       start:0x000F8A64 end:0x000F8B14
 
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_23_part3.cpp:
 	.text       start:0x000F8D5C end:0x000F8DEC
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_23_part3.cpp:
+	.text       start:0x000F8DEC end:0x000F8E98
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_12_part1.cpp:
+	.text       start:0x000F92F4 end:0x000F93F4
+
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_12_part2.cpp:
 	.text       start:0x000F93F4 end:0x000F9404
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_12_part2.cpp:
+	.text       start:0x000F9448 end:0x000F94F8
 
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_12_part3.cpp:
 	.text       start:0x000F9740 end:0x000F97D0
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_12_part3.cpp:
+	.text       start:0x000F97D0 end:0x000F987C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soMotionEventObserver_1_part1.cpp:
+	.text       start:0x000F9CD8 end:0x000F9DD8
+
 mo_melee/sora_melee/so/so_instance_manager_members_soMotionEventObserver_1_part2.cpp:
 	.text       start:0x000F9DD8 end:0x000F9DE8
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soMotionEventObserver_1_part2.cpp:
+	.text       start:0x000F9E2C end:0x000F9EDC
 
 mo_melee/sora_melee/so/so_instance_manager_members_soMotionEventObserver_1_part3.cpp:
 	.text       start:0x000FA124 end:0x000FA1B4
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soMotionEventObserver_1_part3.cpp:
+	.text       start:0x000FA1B4 end:0x000FA260
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soDamageEventObserver_4_part1.cpp:
+	.text       start:0x000FA6BC end:0x000FA7BC
+
 mo_melee/sora_melee/so/so_instance_manager_members_soDamageEventObserver_4_part2.cpp:
 	.text       start:0x000FA7BC end:0x000FA7CC
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soDamageEventObserver_4_part2.cpp:
+	.text       start:0x000FA810 end:0x000FA8C0
 
 mo_melee/sora_melee/so/so_instance_manager_members_soDamageEventObserver_4_part3.cpp:
 	.text       start:0x000FAB08 end:0x000FAB98
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soDamageEventObserver_4_part3.cpp:
+	.text       start:0x000FAB98 end:0x000FAC44
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soDamageEventObserver_1_part1.cpp:
+	.text       start:0x000FB0A0 end:0x000FB1A0
+
 mo_melee/sora_melee/so/so_instance_manager_members_soDamageEventObserver_1_part2.cpp:
 	.text       start:0x000FB1A0 end:0x000FB1B0
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soDamageEventObserver_1_part2.cpp:
+	.text       start:0x000FB1F4 end:0x000FB2A4
 
 mo_melee/sora_melee/so/so_instance_manager_members_soDamageEventObserver_1_part3.cpp:
 	.text       start:0x000FB4EC end:0x000FB57C
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soDamageEventObserver_1_part3.cpp:
+	.text       start:0x000FB57C end:0x000FB628
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soModelEventObserver_4_part1.cpp:
+	.text       start:0x000FBA84 end:0x000FBB84
+
 mo_melee/sora_melee/so/so_instance_manager_members_soModelEventObserver_4_part2.cpp:
 	.text       start:0x000FBB84 end:0x000FBB94
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soModelEventObserver_4_part2.cpp:
+	.text       start:0x000FBBD8 end:0x000FBC88
 
 mo_melee/sora_melee/so/so_instance_manager_members_soModelEventObserver_4_part3.cpp:
 	.text       start:0x000FBED0 end:0x000FBF60
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soModelEventObserver_4_part3.cpp:
+	.text       start:0x000FBF60 end:0x000FC00C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soModelEventObserver_3_part1.cpp:
+	.text       start:0x000FC468 end:0x000FC568
+
 mo_melee/sora_melee/so/so_instance_manager_members_soModelEventObserver_3_part2.cpp:
 	.text       start:0x000FC568 end:0x000FC578
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soModelEventObserver_3_part2.cpp:
+	.text       start:0x000FC5BC end:0x000FC66C
 
 mo_melee/sora_melee/so/so_instance_manager_members_soModelEventObserver_3_part3.cpp:
 	.text       start:0x000FC8B4 end:0x000FC944
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soModelEventObserver_3_part3.cpp:
+	.text       start:0x000FC944 end:0x000FC9F0
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soLinkEventObserver_2_part1.cpp:
+	.text       start:0x000FCE4C end:0x000FCF4C
+
 mo_melee/sora_melee/so/so_instance_manager_members_soLinkEventObserver_2_part2.cpp:
 	.text       start:0x000FCF4C end:0x000FCF5C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soLinkEventObserver_2_part2.cpp:
+	.text       start:0x000FCFA0 end:0x000FD050
 
 mo_melee/sora_melee/so/so_instance_manager_members_soLinkEventObserver_2_part3.cpp:
 	.text       start:0x000FD298 end:0x000FD328
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soLinkEventObserver_2_part3.cpp:
+	.text       start:0x000FD328 end:0x000FD3D4
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soLinkEventObserver_1_part1.cpp:
+	.text       start:0x000FD830 end:0x000FD930
+
 mo_melee/sora_melee/so/so_instance_manager_members_soLinkEventObserver_1_part2.cpp:
 	.text       start:0x000FD930 end:0x000FD940
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soLinkEventObserver_1_part2.cpp:
+	.text       start:0x000FD984 end:0x000FDA34
+
 mo_melee/sora_melee/so/so_instance_manager_members_soLinkEventObserver_1_part3.cpp:
 	.text       start:0x000FDC7C end:0x000FDD0C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soLinkEventObserver_1_part3.cpp:
+	.text       start:0x000FDD0C end:0x000FDDB8
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soInstanceUnit_ptr_soEventUnit_19.cpp:
 	.text       start:0x000FE214 end:0x000FE2DC
@@ -1244,14 +1487,23 @@ mo_melee/sora_melee/so/so_array_vector_abstract_record_soInstanceUnitFullPropert
 mo_melee/sora_melee/so/so_array_vector_accessors_ftEntry_9_part1.cpp:
 	.text       start:0x0010DFB0 end:0x0010DFC0
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_ftOutsideEventObserver_8_part1.cpp:
+	.text       start:0x0010E31C end:0x0010E41C
+
 mo_melee/sora_melee/so/so_instance_manager_members_ftOutsideEventObserver_8_part1.cpp:
 	.text       start:0x0010E41C end:0x0010E42C
 
 mo_melee/sora_melee/so/so_instance_manager_members_ftOutsideEventObserver_8_part2.cpp:
 	.text       start:0x0010E470 end:0x0010E480
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_ftOutsideEventObserver_8_part2.cpp:
+	.text       start:0x0010E480 end:0x0010E530
+
 mo_melee/sora_melee/so/so_instance_manager_members_ftOutsideEventObserver_8_part3.cpp:
 	.text       start:0x0010E778 end:0x0010E808
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_ftOutsideEventObserver_8_part3.cpp:
+	.text       start:0x0010E808 end:0x0010E8B4
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soInstanceUnitFullProperty_ptr_ftOutsideEventObserver_8.cpp:
 	.text       start:0x0010EBAC end:0x0010EC74
@@ -1262,14 +1514,23 @@ mo_melee/sora_melee/so/so_array_vector_abstract_record_soInstanceUnitFullPropert
 mo_melee/sora_melee/so/so_array_vector_abstract_ptr_ftEntry_part1.cpp:
 	.text       start:0x0011A958 end:0x0011AB6C
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_ftEntryEventObserver_4_part1.cpp:
+	.text       start:0x0011B054 end:0x0011B154
+
 mo_melee/sora_melee/so/so_instance_manager_members_ftEntryEventObserver_4_part1.cpp:
 	.text       start:0x0011B154 end:0x0011B164
 
 mo_melee/sora_melee/so/so_instance_manager_members_ftEntryEventObserver_4_part2.cpp:
 	.text       start:0x0011B1A8 end:0x0011B1B8
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_ftEntryEventObserver_4_part2.cpp:
+	.text       start:0x0011B1B8 end:0x0011B268
+
 mo_melee/sora_melee/so/so_instance_manager_members_ftEntryEventObserver_4_part3.cpp:
 	.text       start:0x0011B4B0 end:0x0011B540
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_ftEntryEventObserver_4_part3.cpp:
+	.text       start:0x0011B540 end:0x0011B5EC
 
 mo_melee/sora_melee/so/so_array_vector_accessors_ftEntry_9_part2.cpp:
 	.text       start:0x0011B918 end:0x0011B9D0
@@ -1939,14 +2200,23 @@ mo_melee/sora_melee/so/so_array_vector_accessors_u32_2_part1.cpp:
 mo_melee/sora_melee/so/so_array_vector_accessors_u32_5_part1.cpp:
 	.text       start:0x001A7624 end:0x001A76C4
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soKineticEnergy_12_part1.cpp:
+	.text       start:0x001AD0A0 end:0x001AD1A0
+
 mo_melee/sora_melee/so/so_instance_manager_members_soKineticEnergy_12_part1.cpp:
 	.text       start:0x001AD1A0 end:0x001AD1B0
 
 mo_melee/sora_melee/so/so_instance_manager_members_soKineticEnergy_12_part2.cpp:
 	.text       start:0x001AD1F4 end:0x001AD204
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soKineticEnergy_12_part2.cpp:
+	.text       start:0x001AD204 end:0x001AD2B4
+
 mo_melee/sora_melee/so/so_instance_manager_members_soKineticEnergy_12_part3.cpp:
 	.text       start:0x001AD4FC end:0x001AD58C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soKineticEnergy_2_part1.cpp:
+	.text       start:0x001ADABC end:0x001ADBBC
 
 mo_melee/sora_melee/so/so_instance_manager_members_soKineticEnergy_2_part1.cpp:
 	.text       start:0x001ADBBC end:0x001ADBCC
@@ -1954,8 +2224,14 @@ mo_melee/sora_melee/so/so_instance_manager_members_soKineticEnergy_2_part1.cpp:
 mo_melee/sora_melee/so/so_instance_manager_members_soKineticEnergy_2_part2.cpp:
 	.text       start:0x001ADC10 end:0x001ADC20
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soKineticEnergy_2_part2.cpp:
+	.text       start:0x001ADC20 end:0x001ADCD0
+
 mo_melee/sora_melee/so/so_instance_manager_members_soKineticEnergy_2_part3.cpp:
 	.text       start:0x001ADF18 end:0x001ADFA8
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soKineticEnergy_4_part1.cpp:
+	.text       start:0x001AE4A4 end:0x001AE5A4
 
 mo_melee/sora_melee/so/so_instance_manager_members_soKineticEnergy_4_part1.cpp:
 	.text       start:0x001AE5A4 end:0x001AE5B4
@@ -1963,8 +2239,14 @@ mo_melee/sora_melee/so/so_instance_manager_members_soKineticEnergy_4_part1.cpp:
 mo_melee/sora_melee/so/so_instance_manager_members_soKineticEnergy_4_part2.cpp:
 	.text       start:0x001AE5F8 end:0x001AE608
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soKineticEnergy_4_part2.cpp:
+	.text       start:0x001AE608 end:0x001AE6B8
+
 mo_melee/sora_melee/so/so_instance_manager_members_soKineticEnergy_4_part3.cpp:
 	.text       start:0x001AE900 end:0x001AE990
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soKineticEnergy_8_part1.cpp:
+	.text       start:0x001AEE8C end:0x001AEF8C
 
 mo_melee/sora_melee/so/so_instance_manager_members_soKineticEnergy_8_part1.cpp:
 	.text       start:0x001AEF8C end:0x001AEF9C
@@ -1972,8 +2254,17 @@ mo_melee/sora_melee/so/so_instance_manager_members_soKineticEnergy_8_part1.cpp:
 mo_melee/sora_melee/so/so_instance_manager_members_soKineticEnergy_8_part2.cpp:
 	.text       start:0x001AEFE0 end:0x001AEFF0
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soKineticEnergy_8_part2.cpp:
+	.text       start:0x001AEFF0 end:0x001AF0A0
+
 mo_melee/sora_melee/so/so_instance_manager_members_soKineticEnergy_8_part3.cpp:
 	.text       start:0x001AF2E8 end:0x001AF378
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soKineticEnergy_4_part3.cpp:
+	.text       start:0x001AF554 end:0x001AF600
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soKineticEnergy_2_part3.cpp:
+	.text       start:0x001AF600 end:0x001AF6AC
 
 mo_melee/sora_melee/so/so_array_vector_accessors_u32_2_part2.cpp:
 	.text       start:0x001AF6AC end:0x001AF6D4
@@ -2434,6 +2725,9 @@ mo_melee/sora_melee/so/so_array_vector_accessors_soArticleEventObserver_2_part2.
 mo_melee/sora_melee/so/so_array_vector_accessors_soArticle_2_part2.cpp:
 	.text       start:0x001B0F8C end:0x001B0FB4
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soKineticEnergy_12_part3.cpp:
+	.text       start:0x001B0FB4 end:0x001B1060
+
 mo_melee/sora_melee/so/so_array_vector_accessors_soInstanceUnitFullProperty_ptr_soKineticEnergy_12_part2.cpp:
 	.text       start:0x001B1060 end:0x001B1088
 
@@ -2454,6 +2748,9 @@ mo_melee/sora_melee/so/so_array_vector_accessors_soStatusUniqProcess_3_part2.cpp
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soCollisionAttackPart_1_part2.cpp:
 	.text       start:0x001B1150 end:0x001B1178
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soKineticEnergy_8_part3.cpp:
+	.text       start:0x001B1178 end:0x001B1224
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soInstanceUnitFullProperty_ptr_soKineticEnergy_8_part2.cpp:
 	.text       start:0x001B1224 end:0x001B124C
@@ -2725,161 +3022,395 @@ mo_melee/sora_melee/so/so_array_vector_abstract_layout_soEffectTime.cpp:
 mo_melee/sora_melee/so/so_array_vector_abstract_ptr_soStatusUniqProcess.cpp:
 	.text       start:0x001B9D34 end:0x001BA408
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAttackEventObserver_2_part1.cpp:
+	.text       start:0x001BA710 end:0x001BA810
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionAttackEventObserver_2_part2.cpp:
 	.text       start:0x001BA810 end:0x001BA820
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAttackEventObserver_2_part2.cpp:
+	.text       start:0x001BA864 end:0x001BA914
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionAttackEventObserver_2_part3.cpp:
 	.text       start:0x001BAB5C end:0x001BABEC
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAttackEventObserver_2_part3.cpp:
+	.text       start:0x001BABEC end:0x001BAC98
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionHitEventObserver_2_part1.cpp:
+	.text       start:0x001BB0F4 end:0x001BB1F4
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionHitEventObserver_2_part2.cpp:
 	.text       start:0x001BB1F4 end:0x001BB204
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionHitEventObserver_2_part2.cpp:
+	.text       start:0x001BB248 end:0x001BB2F8
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionHitEventObserver_2_part3.cpp:
 	.text       start:0x001BB540 end:0x001BB5D0
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionHitEventObserver_2_part3.cpp:
+	.text       start:0x001BB5D0 end:0x001BB67C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soGimmickEventObserver_8_part1.cpp:
+	.text       start:0x001BBAD8 end:0x001BBBD8
+
 mo_melee/sora_melee/so/so_instance_manager_members_soGimmickEventObserver_8_part2.cpp:
 	.text       start:0x001BBBD8 end:0x001BBBE8
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soGimmickEventObserver_8_part2.cpp:
+	.text       start:0x001BBC2C end:0x001BBCDC
 
 mo_melee/sora_melee/so/so_instance_manager_members_soGimmickEventObserver_8_part3.cpp:
 	.text       start:0x001BBF24 end:0x001BBFB4
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soGimmickEventObserver_8_part3.cpp:
+	.text       start:0x001BBFB4 end:0x001BC060
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soArticleEventObserver_10_part1.cpp:
+	.text       start:0x001BC4BC end:0x001BC5BC
+
 mo_melee/sora_melee/so/so_instance_manager_members_soArticleEventObserver_10_part2.cpp:
 	.text       start:0x001BC5BC end:0x001BC5CC
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soArticleEventObserver_10_part2.cpp:
+	.text       start:0x001BC610 end:0x001BC6C0
 
 mo_melee/sora_melee/so/so_instance_manager_members_soArticleEventObserver_10_part3.cpp:
 	.text       start:0x001BC908 end:0x001BC998
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soArticleEventObserver_10_part3.cpp:
+	.text       start:0x001BC998 end:0x001BCA44
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_24_part1.cpp:
+	.text       start:0x001BCEA0 end:0x001BCFA0
+
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_24_part2.cpp:
 	.text       start:0x001BCFA0 end:0x001BCFB0
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_24_part2.cpp:
+	.text       start:0x001BCFF4 end:0x001BD0A4
 
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_24_part3.cpp:
 	.text       start:0x001BD2EC end:0x001BD37C
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_24_part3.cpp:
+	.text       start:0x001BD37C end:0x001BD428
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_20_part1.cpp:
+	.text       start:0x001BD884 end:0x001BD984
+
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_20_part2.cpp:
 	.text       start:0x001BD984 end:0x001BD994
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_20_part2.cpp:
+	.text       start:0x001BD9D8 end:0x001BDA88
 
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_20_part3.cpp:
 	.text       start:0x001BDCD0 end:0x001BDD60
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_20_part3.cpp:
+	.text       start:0x001BDD60 end:0x001BDE0C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_18_part1.cpp:
+	.text       start:0x001BE268 end:0x001BE368
+
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_18_part2.cpp:
 	.text       start:0x001BE368 end:0x001BE378
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_18_part2.cpp:
+	.text       start:0x001BE3BC end:0x001BE46C
 
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_18_part3.cpp:
 	.text       start:0x001BE6B4 end:0x001BE744
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_18_part3.cpp:
+	.text       start:0x001BE744 end:0x001BE7F0
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_17_part1.cpp:
+	.text       start:0x001BEC4C end:0x001BED4C
+
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_17_part2.cpp:
 	.text       start:0x001BED4C end:0x001BED5C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_17_part2.cpp:
+	.text       start:0x001BEDA0 end:0x001BEE50
 
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_17_part3.cpp:
 	.text       start:0x001BF098 end:0x001BF128
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_17_part3.cpp:
+	.text       start:0x001BF128 end:0x001BF1D4
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_18_part1.cpp:
+	.text       start:0x001BF630 end:0x001BF730
+
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_18_part2.cpp:
 	.text       start:0x001BF730 end:0x001BF740
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_18_part2.cpp:
+	.text       start:0x001BF784 end:0x001BF834
 
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_18_part3.cpp:
 	.text       start:0x001BFA7C end:0x001BFB0C
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_18_part3.cpp:
+	.text       start:0x001BFB0C end:0x001BFBB8
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_11_part1.cpp:
+	.text       start:0x001C0014 end:0x001C0114
+
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_11_part2.cpp:
 	.text       start:0x001C0114 end:0x001C0124
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_11_part2.cpp:
+	.text       start:0x001C0168 end:0x001C0218
 
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_11_part3.cpp:
 	.text       start:0x001C0460 end:0x001C04F0
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_11_part3.cpp:
+	.text       start:0x001C04F0 end:0x001C059C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_10_part1.cpp:
+	.text       start:0x001C09F8 end:0x001C0AF8
+
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_10_part2.cpp:
 	.text       start:0x001C0AF8 end:0x001C0B08
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_10_part2.cpp:
+	.text       start:0x001C0B4C end:0x001C0BFC
 
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_10_part3.cpp:
 	.text       start:0x001C0E44 end:0x001C0ED4
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_10_part3.cpp:
+	.text       start:0x001C0ED4 end:0x001C0F80
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soTurnEventObserver_8_part1.cpp:
+	.text       start:0x001C13DC end:0x001C14DC
+
 mo_melee/sora_melee/so/so_instance_manager_members_soTurnEventObserver_8_part2.cpp:
 	.text       start:0x001C14DC end:0x001C14EC
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soTurnEventObserver_8_part2.cpp:
+	.text       start:0x001C1530 end:0x001C15E0
 
 mo_melee/sora_melee/so/so_instance_manager_members_soTurnEventObserver_8_part3.cpp:
 	.text       start:0x001C1828 end:0x001C18B8
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soTurnEventObserver_8_part3.cpp:
+	.text       start:0x001C18B8 end:0x001C1964
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soTurnEventObserver_7_part1.cpp:
+	.text       start:0x001C1DC0 end:0x001C1EC0
+
 mo_melee/sora_melee/so/so_instance_manager_members_soTurnEventObserver_7_part2.cpp:
 	.text       start:0x001C1EC0 end:0x001C1ED0
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soTurnEventObserver_7_part2.cpp:
+	.text       start:0x001C1F14 end:0x001C1FC4
 
 mo_melee/sora_melee/so/so_instance_manager_members_soTurnEventObserver_7_part3.cpp:
 	.text       start:0x001C220C end:0x001C229C
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soTurnEventObserver_7_part3.cpp:
+	.text       start:0x001C229C end:0x001C2348
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_33_part1.cpp:
+	.text       start:0x001C76C4 end:0x001C77C4
+
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_33_part2.cpp:
 	.text       start:0x001C77C4 end:0x001C77D4
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_33_part2.cpp:
+	.text       start:0x001C7818 end:0x001C78C8
 
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_33_part3.cpp:
 	.text       start:0x001C7B10 end:0x001C7BA0
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_33_part3.cpp:
+	.text       start:0x001C7BA0 end:0x001C7C4C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_17_part1.cpp:
+	.text       start:0x001C80A8 end:0x001C81A8
+
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_17_part2.cpp:
 	.text       start:0x001C81A8 end:0x001C81B8
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_17_part2.cpp:
+	.text       start:0x001C81FC end:0x001C82AC
 
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_17_part3.cpp:
 	.text       start:0x001C84F4 end:0x001C8584
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_17_part3.cpp:
+	.text       start:0x001C8584 end:0x001C8630
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soItemManageEventObserver_1_part1.cpp:
+	.text       start:0x001C8A8C end:0x001C8B8C
+
 mo_melee/sora_melee/so/so_instance_manager_members_soItemManageEventObserver_1_part2.cpp:
 	.text       start:0x001C8B8C end:0x001C8B9C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soItemManageEventObserver_1_part2.cpp:
+	.text       start:0x001C8BE0 end:0x001C8C90
 
 mo_melee/sora_melee/so/so_instance_manager_members_soItemManageEventObserver_1_part3.cpp:
 	.text       start:0x001C8ED8 end:0x001C8F68
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soItemManageEventObserver_1_part3.cpp:
+	.text       start:0x001C8F68 end:0x001C9014
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionSearchEventObserver_4_part1.cpp:
+	.text       start:0x001C9470 end:0x001C9570
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionSearchEventObserver_4_part2.cpp:
 	.text       start:0x001C9570 end:0x001C9580
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionSearchEventObserver_4_part2.cpp:
+	.text       start:0x001C95C4 end:0x001C9674
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionSearchEventObserver_4_part3.cpp:
 	.text       start:0x001C98BC end:0x001C994C
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionSearchEventObserver_4_part3.cpp:
+	.text       start:0x001C994C end:0x001C99F8
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAbsorberEventObserver_4_part1.cpp:
+	.text       start:0x001C9E54 end:0x001C9F54
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionAbsorberEventObserver_4_part2.cpp:
 	.text       start:0x001C9F54 end:0x001C9F64
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAbsorberEventObserver_4_part2.cpp:
+	.text       start:0x001C9FA8 end:0x001CA058
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionAbsorberEventObserver_4_part3.cpp:
 	.text       start:0x001CA2A0 end:0x001CA330
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAbsorberEventObserver_4_part3.cpp:
+	.text       start:0x001CA330 end:0x001CA3DC
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionReflectorEventObserver_4_part1.cpp:
+	.text       start:0x001CA838 end:0x001CA938
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionReflectorEventObserver_4_part2.cpp:
 	.text       start:0x001CA938 end:0x001CA948
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionReflectorEventObserver_4_part2.cpp:
+	.text       start:0x001CA98C end:0x001CAA3C
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionReflectorEventObserver_4_part3.cpp:
 	.text       start:0x001CAC84 end:0x001CAD14
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionReflectorEventObserver_4_part3.cpp:
+	.text       start:0x001CAD14 end:0x001CADC0
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionShieldEventObserver_4_part1.cpp:
+	.text       start:0x001CB21C end:0x001CB31C
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionShieldEventObserver_4_part2.cpp:
 	.text       start:0x001CB31C end:0x001CB32C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionShieldEventObserver_4_part2.cpp:
+	.text       start:0x001CB370 end:0x001CB420
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionShieldEventObserver_4_part3.cpp:
 	.text       start:0x001CB668 end:0x001CB6F8
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionShieldEventObserver_4_part3.cpp:
+	.text       start:0x001CB6F8 end:0x001CB7A4
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCaptureEventObserver_4_part1.cpp:
+	.text       start:0x001CBC00 end:0x001CBD00
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCaptureEventObserver_4_part2.cpp:
 	.text       start:0x001CBD00 end:0x001CBD10
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCaptureEventObserver_4_part2.cpp:
+	.text       start:0x001CBD54 end:0x001CBE04
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCaptureEventObserver_4_part3.cpp:
 	.text       start:0x001CC04C end:0x001CC0DC
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCaptureEventObserver_4_part3.cpp:
+	.text       start:0x001CC0DC end:0x001CC188
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soArticleEventObserver_2_part1.cpp:
+	.text       start:0x001CC5E4 end:0x001CC6E4
+
 mo_melee/sora_melee/so/so_instance_manager_members_soArticleEventObserver_2_part2.cpp:
 	.text       start:0x001CC6E4 end:0x001CC6F4
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soArticleEventObserver_2_part2.cpp:
+	.text       start:0x001CC738 end:0x001CC7E8
 
 mo_melee/sora_melee/so/so_instance_manager_members_soArticleEventObserver_2_part3.cpp:
 	.text       start:0x001CCA30 end:0x001CCAC0
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soArticleEventObserver_2_part3.cpp:
+	.text       start:0x001CCAC0 end:0x001CCB6C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAttackEventObserver_4_part1.cpp:
+	.text       start:0x001CCFC8 end:0x001CD0C8
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionAttackEventObserver_4_part2.cpp:
 	.text       start:0x001CD0C8 end:0x001CD0D8
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAttackEventObserver_4_part2.cpp:
+	.text       start:0x001CD11C end:0x001CD1CC
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionAttackEventObserver_4_part3.cpp:
 	.text       start:0x001CD414 end:0x001CD4A4
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAttackEventObserver_4_part3.cpp:
+	.text       start:0x001CD4A4 end:0x001CD550
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soSituationEventObserver_4_part1.cpp:
+	.text       start:0x001CD9AC end:0x001CDAAC
+
 mo_melee/sora_melee/so/so_instance_manager_members_soSituationEventObserver_4_part2.cpp:
 	.text       start:0x001CDAAC end:0x001CDABC
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soSituationEventObserver_4_part2.cpp:
+	.text       start:0x001CDB00 end:0x001CDBB0
 
 mo_melee/sora_melee/so/so_instance_manager_members_soSituationEventObserver_4_part3.cpp:
 	.text       start:0x001CDDF8 end:0x001CDE88
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soSituationEventObserver_4_part3.cpp:
+	.text       start:0x001CDE88 end:0x001CDF34
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_32_part1.cpp:
+	.text       start:0x001CE390 end:0x001CE490
+
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_32_part2.cpp:
 	.text       start:0x001CE490 end:0x001CE4A0
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_32_part2.cpp:
+	.text       start:0x001CE4E4 end:0x001CE594
 
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_32_part3.cpp:
 	.text       start:0x001CE7DC end:0x001CE86C
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_32_part3.cpp:
+	.text       start:0x001CE86C end:0x001CE918
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_16_part1.cpp:
+	.text       start:0x001CED74 end:0x001CEE74
+
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_16_part2.cpp:
 	.text       start:0x001CEE74 end:0x001CEE84
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_16_part2.cpp:
+	.text       start:0x001CEEC8 end:0x001CEF78
+
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_16_part3.cpp:
 	.text       start:0x001CF1C0 end:0x001CF250
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_16_part3.cpp:
+	.text       start:0x001CF250 end:0x001CF2FC
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soInstanceUnitFullProperty_ptr_soCollisionAttackEventObserver_2_part2.cpp:
 	.text       start:0x001CF550 end:0x001CF608
@@ -3007,14 +3538,26 @@ mo_melee/sora_melee/so/so_array_vector_abstract_layout_soLogAttackInfo_part2.cpp
 mo_melee/sora_melee/so/so_array_vector_accessors_soLogAttackInfo_10.cpp:
 	.text       start:0x001D7E00 end:0x001D7EC8
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soModelEventObserver_1_part1.cpp:
+	.text       start:0x001E4C70 end:0x001E4D70
+
 mo_melee/sora_melee/so/so_instance_manager_members_soModelEventObserver_1_part1.cpp:
 	.text       start:0x001E4D70 end:0x001E4D80
 
 mo_melee/sora_melee/so/so_instance_manager_members_soModelEventObserver_1_part2.cpp:
 	.text       start:0x001E4DC4 end:0x001E4DD4
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soModelEventObserver_1_part2.cpp:
+	.text       start:0x001E4DD4 end:0x001E4E84
+
 mo_melee/sora_melee/so/so_instance_manager_members_soModelEventObserver_1_part3.cpp:
 	.text       start:0x001E50CC end:0x001E515C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soModelEventObserver_1_part3.cpp:
+	.text       start:0x001E515C end:0x001E5208
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAttackEventObserver_1_part1.cpp:
+	.text       start:0x001E5664 end:0x001E5764
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionAttackEventObserver_1_part1.cpp:
 	.text       start:0x001E5764 end:0x001E5774
@@ -3022,8 +3565,17 @@ mo_melee/sora_melee/so/so_instance_manager_members_soCollisionAttackEventObserve
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionAttackEventObserver_1_part2.cpp:
 	.text       start:0x001E57B8 end:0x001E57C8
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAttackEventObserver_1_part2.cpp:
+	.text       start:0x001E57C8 end:0x001E5878
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionAttackEventObserver_1_part3.cpp:
 	.text       start:0x001E5AC0 end:0x001E5B50
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionAttackEventObserver_1_part3.cpp:
+	.text       start:0x001E5B50 end:0x001E5BFC
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soSituationEventObserver_1_part1.cpp:
+	.text       start:0x001E6058 end:0x001E6158
 
 mo_melee/sora_melee/so/so_instance_manager_members_soSituationEventObserver_1_part1.cpp:
 	.text       start:0x001E6158 end:0x001E6168
@@ -3031,8 +3583,17 @@ mo_melee/sora_melee/so/so_instance_manager_members_soSituationEventObserver_1_pa
 mo_melee/sora_melee/so/so_instance_manager_members_soSituationEventObserver_1_part2.cpp:
 	.text       start:0x001E61AC end:0x001E61BC
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soSituationEventObserver_1_part2.cpp:
+	.text       start:0x001E61BC end:0x001E626C
+
 mo_melee/sora_melee/so/so_instance_manager_members_soSituationEventObserver_1_part3.cpp:
 	.text       start:0x001E64B4 end:0x001E6544
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soSituationEventObserver_1_part3.cpp:
+	.text       start:0x001E6544 end:0x001E65F0
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_7_part1.cpp:
+	.text       start:0x001E6A4C end:0x001E6B4C
 
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_7_part1.cpp:
 	.text       start:0x001E6B4C end:0x001E6B5C
@@ -3040,8 +3601,17 @@ mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_7_part
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_7_part2.cpp:
 	.text       start:0x001E6BA0 end:0x001E6BB0
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_7_part2.cpp:
+	.text       start:0x001E6BB0 end:0x001E6C60
+
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_7_part3.cpp:
 	.text       start:0x001E6EA8 end:0x001E6F38
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_7_part3.cpp:
+	.text       start:0x001E6F38 end:0x001E6FE4
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_4_part1.cpp:
+	.text       start:0x001E7440 end:0x001E7540
 
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_4_part1.cpp:
 	.text       start:0x001E7540 end:0x001E7550
@@ -3049,8 +3619,14 @@ mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_4_part1
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_4_part2.cpp:
 	.text       start:0x001E7594 end:0x001E75A4
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_4_part2.cpp:
+	.text       start:0x001E75A4 end:0x001E7654
+
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_4_part3.cpp:
 	.text       start:0x001E789C end:0x001E792C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_4_part3.cpp:
+	.text       start:0x001E792C end:0x001E79D8
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soInstanceUnitFullProperty_ptr_soModelEventObserver_1.cpp:
 	.text       start:0x001E7BB4 end:0x001E7C7C
@@ -3083,14 +3659,23 @@ mo_melee/sora_melee/so/so_array_list_members_Ul_32_part2.cpp:
 mo_melee/sora_melee/so/so_array_list_members_Ul_32_part3.cpp:
 	.text       start:0x0025EBF8 end:0x0025F3C4
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionHitEventObserver_1_part1.cpp:
+	.text       start:0x00264124 end:0x00264224
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionHitEventObserver_1_part1.cpp:
 	.text       start:0x00264224 end:0x00264234
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionHitEventObserver_1_part2.cpp:
 	.text       start:0x00264278 end:0x00264288
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionHitEventObserver_1_part2.cpp:
+	.text       start:0x00264288 end:0x00264338
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionHitEventObserver_1_part3.cpp:
 	.text       start:0x00264580 end:0x00264610
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionHitEventObserver_1_part3.cpp:
+	.text       start:0x00264610 end:0x002646BC
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soInstanceUnitFullProperty_ptr_soCollisionHitEventObserver_1.cpp:
 	.text       start:0x00264898 end:0x00264960
@@ -3128,14 +3713,26 @@ mo_melee/sora_melee/so/so_array_vector_accessors_soCollisionHitPart_3_part1.cpp:
 mo_melee/sora_melee/so/so_array_vector_abstract_valuerecord_soGeneralFlag_s32_part1.cpp:
 	.text       start:0x00292204 end:0x002922F8
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soModelEventObserver_2_part1.cpp:
+	.text       start:0x00292708 end:0x00292808
+
 mo_melee/sora_melee/so/so_instance_manager_members_soModelEventObserver_2_part1.cpp:
 	.text       start:0x00292808 end:0x00292818
 
 mo_melee/sora_melee/so/so_instance_manager_members_soModelEventObserver_2_part2.cpp:
 	.text       start:0x0029285C end:0x0029286C
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soModelEventObserver_2_part2.cpp:
+	.text       start:0x0029286C end:0x0029291C
+
 mo_melee/sora_melee/so/so_instance_manager_members_soModelEventObserver_2_part3.cpp:
 	.text       start:0x00292B64 end:0x00292BF4
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soModelEventObserver_2_part3.cpp:
+	.text       start:0x00292BF4 end:0x00292CA0
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionShieldEventObserver_2_part1.cpp:
+	.text       start:0x002930FC end:0x002931FC
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionShieldEventObserver_2_part1.cpp:
 	.text       start:0x002931FC end:0x0029320C
@@ -3143,8 +3740,17 @@ mo_melee/sora_melee/so/so_instance_manager_members_soCollisionShieldEventObserve
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionShieldEventObserver_2_part2.cpp:
 	.text       start:0x00293250 end:0x00293260
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionShieldEventObserver_2_part2.cpp:
+	.text       start:0x00293260 end:0x00293310
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionShieldEventObserver_2_part3.cpp:
 	.text       start:0x00293558 end:0x002935E8
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionShieldEventObserver_2_part3.cpp:
+	.text       start:0x002935E8 end:0x00293694
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soGimmickEventObserver_9_part1.cpp:
+	.text       start:0x00293AF0 end:0x00293BF0
 
 mo_melee/sora_melee/so/so_instance_manager_members_soGimmickEventObserver_9_part1.cpp:
 	.text       start:0x00293BF0 end:0x00293C00
@@ -3152,8 +3758,17 @@ mo_melee/sora_melee/so/so_instance_manager_members_soGimmickEventObserver_9_part
 mo_melee/sora_melee/so/so_instance_manager_members_soGimmickEventObserver_9_part2.cpp:
 	.text       start:0x00293C44 end:0x00293C54
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soGimmickEventObserver_9_part2.cpp:
+	.text       start:0x00293C54 end:0x00293D04
+
 mo_melee/sora_melee/so/so_instance_manager_members_soGimmickEventObserver_9_part3.cpp:
 	.text       start:0x00293F4C end:0x00293FDC
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soGimmickEventObserver_9_part3.cpp:
+	.text       start:0x00293FDC end:0x00294088
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_30_part1.cpp:
+	.text       start:0x002944E4 end:0x002945E4
 
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_30_part1.cpp:
 	.text       start:0x002945E4 end:0x002945F4
@@ -3161,8 +3776,17 @@ mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_30_par
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_30_part2.cpp:
 	.text       start:0x00294638 end:0x00294648
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_30_part2.cpp:
+	.text       start:0x00294648 end:0x002946F8
+
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_30_part3.cpp:
 	.text       start:0x00294940 end:0x002949D0
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_30_part3.cpp:
+	.text       start:0x002949D0 end:0x00294A7C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_20_part1.cpp:
+	.text       start:0x00294ED8 end:0x00294FD8
 
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_20_part1.cpp:
 	.text       start:0x00294FD8 end:0x00294FE8
@@ -3170,8 +3794,14 @@ mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_20_part
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_20_part2.cpp:
 	.text       start:0x0029502C end:0x0029503C
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_20_part2.cpp:
+	.text       start:0x0029503C end:0x002950EC
+
 mo_melee/sora_melee/so/so_instance_manager_members_soStatusEventObserver_20_part3.cpp:
 	.text       start:0x00295334 end:0x002953C4
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soStatusEventObserver_20_part3.cpp:
+	.text       start:0x002953C4 end:0x00295470
 
 mo_melee/sora_melee/so/so_array_vector_accessors_BaseItem_10_part2.cpp:
 	.text       start:0x0029564C end:0x00295704
@@ -3266,14 +3896,26 @@ mo_melee/sora_melee/so/so_array_list_members_ptr_itFigureArchive_64_part2.cpp:
 mo_melee/sora_melee/so/so_array_list_members_ptr_itFigureArchive_64_part3.cpp:
 	.text       start:0x002C27F0 end:0x002C27F8
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soKineticEnergy_3_part1.cpp:
+	.text       start:0x002EA78C end:0x002EA88C
+
 mo_melee/sora_melee/so/so_instance_manager_members_soKineticEnergy_3_part1.cpp:
 	.text       start:0x002EA88C end:0x002EA89C
 
 mo_melee/sora_melee/so/so_instance_manager_members_soKineticEnergy_3_part2.cpp:
 	.text       start:0x002EA8E0 end:0x002EA8F0
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soKineticEnergy_3_part2.cpp:
+	.text       start:0x002EA8F0 end:0x002EA9A0
+
 mo_melee/sora_melee/so/so_instance_manager_members_soKineticEnergy_3_part3.cpp:
 	.text       start:0x002EABE8 end:0x002EAC78
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soKineticEnergy_3_part3.cpp:
+	.text       start:0x002EAC78 end:0x002EAD24
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionSearchEventObserver_3_part1.cpp:
+	.text       start:0x002EB180 end:0x002EB280
 
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionSearchEventObserver_3_part1.cpp:
 	.text       start:0x002EB280 end:0x002EB290
@@ -3281,8 +3923,14 @@ mo_melee/sora_melee/so/so_instance_manager_members_soCollisionSearchEventObserve
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionSearchEventObserver_3_part2.cpp:
 	.text       start:0x002EB2D4 end:0x002EB2E4
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionSearchEventObserver_3_part2.cpp:
+	.text       start:0x002EB2E4 end:0x002EB394
+
 mo_melee/sora_melee/so/so_instance_manager_members_soCollisionSearchEventObserver_3_part3.cpp:
 	.text       start:0x002EB5DC end:0x002EB66C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soCollisionSearchEventObserver_3_part3.cpp:
+	.text       start:0x002EB66C end:0x002EB718
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soInstanceUnitFullProperty_ptr_soKineticEnergy_3.cpp:
 	.text       start:0x002EB8F4 end:0x002EB9BC
@@ -3311,14 +3959,23 @@ mo_melee/sora_melee/so/so_array_vector_abstract_nested_wnPokeTrainerMBall_Partic
 mo_melee/sora_melee/so/so_array_vector_abstract_nested_wnPokeTrainerMBall_BallInfo_part1.cpp:
 	.text       start:0x0038F58C end:0x0038F810
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_19_part1.cpp:
+	.text       start:0x0038FAA0 end:0x0038FBA0
+
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_19_part1.cpp:
 	.text       start:0x0038FBA0 end:0x0038FBB0
 
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_19_part2.cpp:
 	.text       start:0x0038FBF4 end:0x0038FC04
 
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_19_part2.cpp:
+	.text       start:0x0038FC04 end:0x0038FCB4
+
 mo_melee/sora_melee/so/so_instance_manager_members_soAnimCmdEventObserver_19_part3.cpp:
 	.text       start:0x0038FEFC end:0x0038FF8C
+
+mo_melee/sora_melee/so/so_instance_manager_lookup_soAnimCmdEventObserver_19_part3.cpp:
+	.text       start:0x0038FF8C end:0x00390038
 
 mo_melee/sora_melee/so/so_array_vector_accessors_wnPokeTrainerMBall_ParticleInfo_2_part2.cpp:
 	.text       start:0x00390214 end:0x003902CC

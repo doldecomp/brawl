@@ -5,10 +5,12 @@
 
 #include <StaticAssert.h>
 #include <types.h>
+#define SO_ARRAY_EXTERNAL_ABSTRACT_CONST_AT
 #define SO_ARRAY_EXTERNAL_ABSTRACT_AT
 #define SO_ARRAY_EXTERNAL_VECTOR_SIZE
 #define SO_ARRAY_EXTERNAL_VECTOR_CAPACITY
 #include <so/so_array.h>
+#undef SO_ARRAY_EXTERNAL_ABSTRACT_CONST_AT
 #undef SO_ARRAY_EXTERNAL_ABSTRACT_AT
 #undef SO_ARRAY_EXTERNAL_VECTOR_SIZE
 #undef SO_ARRAY_EXTERNAL_VECTOR_CAPACITY
@@ -195,12 +197,7 @@ public:
     soInstanceManagerFullPropertyVector(bool p1) : m_unk1(p1) { }
     ~soInstanceManagerFullPropertyVector() { }
 
-    virtual T& at(s32 id) {
-        if (id <= -1)
-            return m_arrayVector.at(0).m_element;
-        s32 i = searchIndex(id);
-        return (i < 0) ? m_arrayVector.at(0).m_element : m_arrayVector.at(i).m_element;
-    }
+    virtual T& at(s32 id);
 
     virtual T& atIndex(s32 idx);
 
@@ -208,9 +205,7 @@ public:
 
     virtual u32 size() const;
 
-    virtual bool isContain(s32 id) const {
-        return searchIndex(id) >= 0;
-    }
+    virtual bool isContain(s32 id) const;
 
     virtual void erase(s32 id) {
         s32 idx = searchIndex(id);
@@ -251,7 +246,7 @@ public:
 
     virtual soInstanceUnitFullProperty<T>& atUnitIndexFast(s32 idx);
 
-    virtual s32 getIndex(s32 id) const { return searchIndex(id); }
+    virtual s32 getIndex(s32 id) const;
 
     virtual void getAttributeArray(soAttributeFlag targetAttr, soArray<T*>& arr) {
         s32 sz = m_arrayVector.size();
@@ -263,12 +258,7 @@ public:
         }
     }
 
-    virtual soAttributeFlag getAttribute(s32 id) const {
-        s32 idx = searchIndex(id);
-        if (idx < 0)
-            return soAttributeFlag();
-        return m_arrayVector.at(idx).getAttribute();
-    }
+    virtual soAttributeFlag getAttribute(s32 id) const;
 
     virtual void getPriorityArray(soArray<T*>& arr) {
         s32 sz = m_arrayVector.size();
@@ -276,6 +266,30 @@ public:
             arr.push(&m_arrayVector.at(i).m_element);
     }
 };
+
+template <class T, u32 C>
+T& soInstanceManagerFullPropertyVector<T, C>::at(s32 id) {
+        if (id <= -1)
+            return m_arrayVector.at(0).m_element;
+        s32 i = searchIndex(id);
+        return (i < 0) ? m_arrayVector.at(0).m_element : m_arrayVector.at(i).m_element;
+    }
+
+template <class T, u32 C>
+bool soInstanceManagerFullPropertyVector<T, C>::isContain(s32 id) const {
+        return searchIndex(id) >= 0;
+    }
+
+template <class T, u32 C>
+s32 soInstanceManagerFullPropertyVector<T, C>::getIndex(s32 id) const { return searchIndex(id); }
+
+template <class T, u32 C>
+soAttributeFlag soInstanceManagerFullPropertyVector<T, C>::getAttribute(s32 id) const {
+        s32 idx = searchIndex(id);
+        if (idx < 0)
+            return soAttributeFlag();
+        return m_arrayVector.at(idx).getAttribute();
+    }
 
 template <class T, u32 C>
 T& soInstanceManagerFullPropertyVector<T, C>::atIndex(s32 idx) {
@@ -287,10 +301,13 @@ s32 soInstanceManagerFullPropertyVector<T, C>::getId(s32 idx) {
         return m_arrayVector.at(idx).m_id;
     }
 
+// MATCH-ONLY: Lookup units call the separately owned size member.
+#ifndef SO_INSTANCE_MANAGER_EXTERNAL_SIZE
 template <class T, u32 C>
 u32 soInstanceManagerFullPropertyVector<T, C>::size() const {
         return m_arrayVector.size();
     }
+#endif
 
 template <class T, u32 C>
 u32 soInstanceManagerFullPropertyVector<T, C>::capacity() {
