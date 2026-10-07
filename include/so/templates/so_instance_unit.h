@@ -110,5 +110,8 @@ template<class T>
 soInstanceUnitFullProperty<T>::soInstanceUnitFullProperty() :
     m_attribute(0), m_10(-1) { }
 
+// MATCH-ONLY: Array destruction calls the separately owned element destructor.
+#ifndef SO_INSTANCE_UNIT_EXTERNAL_FULL_PROPERTY_DTOR
 template<class T>
 soInstanceUnitFullProperty<T>::~soInstanceUnitFullProperty() { }
+#endif
