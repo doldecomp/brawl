@@ -722,9 +722,9 @@ void Message::getPrintRect(float* rect, const u8* p) {
     }
 }
 
-void msScnObjCallback::ExecCallback_DRAW_XLU(int pass) {
+void msScnObjCallback::ExecCallback_DRAW_XLU(nw4r::g3d::ScnObj::Timing pass, nw4r::g3d::ScnObj* object, u32 param, void* info) {
     if (m_next != NULL) {
-        m_next->ExecCallback_DRAW_XLU(pass);
+        m_next->ExecCallback_DRAW_XLU(pass, object, param, info);
     }
     if (pass == 4) {
         GXSetZMode(1, (GXCompare)m_zUpdate, m_zCompare);

@@ -43,6 +43,8 @@ public:
     virtual ~soKineticEnergyNormal() { }
     virtual void init();
 
+    void setBrake(Vec2f* brake);
+
     Vec2f m_speed;        // +0x08
     Vec2f m_accel;        // +0x10
     Vec2f m_speedTarget;  // +0x18 (init -1,-1)

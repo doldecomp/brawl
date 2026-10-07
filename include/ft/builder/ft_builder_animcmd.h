@@ -117,10 +117,11 @@ public:
     static void pushRange(soArray<T>* array, const T* src, s32 count);
 };
 
+// Header specialization must have inline linkage when shared by status units.
 // MATCH-ONLY: never inlined in the original build.
 #pragma dont_inline on
 template <>
-void soArrayUtility::pushRange<acAnimCmdConvPtr>(soArray<acAnimCmdConvPtr>* array, const acAnimCmdConvPtr* src, s32 count) {
+inline void soArrayUtility::pushRange<acAnimCmdConvPtr>(soArray<acAnimCmdConvPtr>* array, const acAnimCmdConvPtr* src, s32 count) {
     if (src == 0 || count <= 0)
         return;
     for (s32 i = 0; i < count; i++) {
