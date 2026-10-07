@@ -113,7 +113,7 @@ Much of the work in this fork is done by AI agents (Claude, Codex) working for a
 - **Author and committer** = the human whose account or credits run the agent (for example Brendan, GitHub `brendan-hoenn`, or May, GitHub `may-petalburg`). Use that person's GitHub noreply address (`<id>+<username>@users.noreply.github.com`, for example `4410221+brendan-hoenn@users.noreply.github.com`).
 - **Co-author** = the agent, as one trailer at the end of the message, with your model name if you know it, so GitHub shows "Human and Agent":
   - `Co-Authored-By: Claude <model name> <noreply@anthropic.com>` (for example `Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>`)
-  - `Co-Authored-By: Codex <model name> <noreply@openai.com>` (for example `Co-Authored-By: Codex GPT-6.1 Sol <noreply@openai.com>`; use the exact model name your environment reports, never a guess)
+  - `Co-Authored-By: Codex <model name> <267193182+codex@users.noreply.github.com>` (for example `Co-Authored-By: Codex GPT-6.1 Sol <267193182+codex@users.noreply.github.com>`; use the exact model name your environment reports, never a guess)
   - If you do not know your model name, leave it out (`Claude` / `Codex` alone).
 - Never commit as just `Claude` or `codex`, never leave session links in messages, and keep other people's authorship intact when importing their commits.
 
