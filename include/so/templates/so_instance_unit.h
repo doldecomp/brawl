@@ -33,6 +33,8 @@ struct soAttributeFlag {
     };
     soAttributeFlag() : m_mask(ATTRIBUTE_MASK_NONE) { }
     soAttributeFlag(soAttributeMask bits) : m_mask(bits) { }
+    // MATCH-ONLY: Argument copies use the signed attribute mask load.
+    soAttributeFlag(const soAttributeFlag& other) : m_mask(other.m_mask) { }
     ~soAttributeFlag() { }
     soAttributeFlag& operator=(const soAttributeFlag& other) {
         m_mask = other.m_mask;
@@ -58,7 +60,7 @@ public:
 
     soInstanceUnitFullProperty() : m_attribute(0), m_10(-1) { }
     soInstanceUnitFullProperty(T& elm, s32 id, soAttributeFlag attr, s16 p4) :
-        soInstanceUnit<T>(elm, id), m_attribute(attr), m_10(p4) { }
+        soInstanceUnit<T>(elm, id), m_attribute(attr.m_mask), m_10(p4) { }
     ~soInstanceUnitFullProperty() { }
 
     soAttributeFlag getAttribute() const {

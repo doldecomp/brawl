@@ -7,6 +7,7 @@
 #include <types.h>
 #define SO_ARRAY_EXTERNAL_ABSTRACT_CONST_AT
 #define SO_ARRAY_EXTERNAL_ABSTRACT_ERASE
+#define SO_ARRAY_EXTERNAL_ABSTRACT_INSERT
 #define SO_ARRAY_EXTERNAL_ABSTRACT_CLEAR
 #define SO_ARRAY_EXTERNAL_ABSTRACT_AT
 #define SO_ARRAY_EXTERNAL_VECTOR_IS_FULL
@@ -15,6 +16,7 @@
 #include <so/so_array.h>
 #undef SO_ARRAY_EXTERNAL_ABSTRACT_CONST_AT
 #undef SO_ARRAY_EXTERNAL_ABSTRACT_ERASE
+#undef SO_ARRAY_EXTERNAL_ABSTRACT_INSERT
 #undef SO_ARRAY_EXTERNAL_ABSTRACT_CLEAR
 #undef SO_ARRAY_EXTERNAL_ABSTRACT_AT
 #undef SO_ARRAY_EXTERNAL_VECTOR_IS_FULL
@@ -219,23 +221,7 @@ public:
 
     virtual void set(const T& elm, s32 id);
 
-    virtual s32 add(T& elm, s32 id, soAttributeFlag attr, s16 p4) {
-        if (m_arrayVector.isFull() == true)
-            return -1;
-        if ((!m_unk1 || id > -1) && isContain(id) == true)
-            return -1;
-        if (!m_unk1 && id <= -1) {
-            id = getFreeId();
-            if (id <= -1)
-                return -1;
-        }
-        s32 idx = (p4 <= -1) ? size() : unkFindIndex(p4);
-        if (idx < 0)
-            return -1;
-        m_arrayVector.insert(idx,
-            soInstanceUnitFullPropertyWrapper<T>(attr, elm, id, p4).m_prop);
-        return id;
-    }
+    virtual s32 add(T& elm, s32 id, soAttributeFlag attr, s16 p4);
 
     virtual u32 capacity();
 
@@ -299,10 +285,14 @@ T& soInstanceManagerFullPropertyVector<T, C>::at(s32 id) {
     }
 #endif
 
+// MATCH-ONLY: Add units retain the separately owned containment definition.
+#ifndef SO_INSTANCE_MANAGER_EXTERNAL_IS_CONTAIN
 template <class T, u32 C>
 bool soInstanceManagerFullPropertyVector<T, C>::isContain(s32 id) const {
         return searchIndex(id) >= 0;
     }
+
+#endif
 
 template <class T, u32 C>
 s32 soInstanceManagerFullPropertyVector<T, C>::getIndex(s32 id) const { return searchIndex(id); }
@@ -348,6 +338,8 @@ soInstanceUnitFullProperty<T>& soInstanceManagerFullPropertyVector<T, C>::atUnit
         return m_arrayVector.atFast(idx);
     }
 
+// MATCH-ONLY: Add units call the separately owned free-ID definition.
+#ifndef SO_INSTANCE_MANAGER_EXTERNAL_FREE_ID
 template<typename T, u32 C>
 s32 soInstanceManagerFullPropertyVector<T, C>::getFreeId() const {
     if (m_arrayVector.isFull() == true)
@@ -371,6 +363,8 @@ s32 soInstanceManagerFullPropertyVector<T, C>::getFreeId() const {
     return -1;
 }
 
+#endif
+
 template <class T>
 class soInstanceManagerFullPropertyEccentric : public soInstanceManagerAttributePolicy<T>, public soInstanceManagerPriorityPolicy<T> {
 public:
@@ -381,3 +375,24 @@ public:
     virtual void getAttributeArray(soAttributeFlag mask, soArray<T*>& arr);
     virtual soAttributeFlag getAttribute(s32) const;
 };
+
+template<class T, u32 C>
+s32 soInstanceManagerFullPropertyVector<T,C>::add(T& elm, s32 id, soAttributeFlag attr, s16 p4) {
+        if (m_arrayVector.isFull() == true)
+            return -1;
+        if ((!m_unk1 || id > -1) && isContain(id) == true)
+            return -1;
+        if (!m_unk1 && id <= -1) {
+            id = getFreeId();
+            if (id <= -1)
+                return -1;
+        }
+        s32 idx = (p4 <= -1) ? size() : unkFindIndex(p4);
+        if (idx < 0)
+            return -1;
+        m_arrayVector.insert(idx,
+            // Construct the record directly, as verified by the original caller.
+            soInstanceUnitFullProperty<T>(elm, id, attr, p4));
+        return id;
+    }
+

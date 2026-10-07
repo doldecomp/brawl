@@ -771,6 +771,8 @@ void soArrayVectorAbstract<T>::push(const T& newElement) {
     this->setSize(this->size() + 1);
 }
 
+// MATCH-ONLY: Preserve the separately owned array insertion helper.
+#ifndef SO_ARRAY_EXTERNAL_ABSTRACT_INSERT
 template <class T>
 void soArrayVectorAbstract<T>::insert(s32 index, const T& newElement) {
     s32 lastIndex = soArrayVectorCalculator::insert(*this, index, this->isFull(), this->size(), this->capacity(), this->getTopIndex(), this->getLastIndex());
@@ -778,6 +780,8 @@ void soArrayVectorAbstract<T>::insert(s32 index, const T& newElement) {
     element = newElement;
     this->setSize(this->size() + 1);
 }
+
+#endif
 
 // MATCH-ONLY: Preserve the separately owned array helper.
 #ifndef SO_ARRAY_EXTERNAL_ABSTRACT_ERASE
