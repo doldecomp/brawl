@@ -248,7 +248,22 @@ public:
 
     virtual s32 getIndex(s32 id) const;
 
-    virtual void getAttributeArray(soAttributeFlag targetAttr, soArray<T*>& arr) {
+    virtual void getAttributeArray(soAttributeFlag targetAttr, soArray<T*>& arr);
+
+    virtual soAttributeFlag getAttribute(s32 id) const;
+
+    virtual void getPriorityArray(soArray<T*>& arr);
+};
+
+template <class T, u32 C>
+void soInstanceManagerFullPropertyVector<T, C>::getPriorityArray(soArray<T*>& arr) {
+        s32 sz = m_arrayVector.size();
+        for (s32 i = 0; i < sz; i++)
+            arr.push(&m_arrayVector.at(i).m_element);
+    }
+
+template <class T, u32 C>
+void soInstanceManagerFullPropertyVector<T, C>::getAttributeArray(soAttributeFlag targetAttr, soArray<T*>& arr) {
         s32 sz = m_arrayVector.size();
         for (s32 i = 0; i < sz; i++) {
             soAttributeFlag attrFlag = m_arrayVector.at(i).getAttribute();
@@ -257,15 +272,6 @@ public:
             }
         }
     }
-
-    virtual soAttributeFlag getAttribute(s32 id) const;
-
-    virtual void getPriorityArray(soArray<T*>& arr) {
-        s32 sz = m_arrayVector.size();
-        for (s32 i = 0; i < sz; i++)
-            arr.push(&m_arrayVector.at(i).m_element);
-    }
-};
 
 template <class T, u32 C>
 T& soInstanceManagerFullPropertyVector<T, C>::at(s32 id) {
