@@ -1153,6 +1153,15 @@ mo_melee/sora_melee/ft/ft_fighter_build_data.cpp:
 	.data       start:0x00032A98 end:0x00032BF8
 	.bss        start:0x00005040 end:0x00005050
 
+mo_melee/sora_melee/so/so_array_list_members_wnPikminPikmin_10_part1.cpp:
+	.text       start:0x0019703C end:0x0019731C
+
+mo_melee/sora_melee/so/so_array_list_members_wnPikminPikmin_10_part2.cpp:
+	.text       start:0x00197324 end:0x00197528
+
+mo_melee/sora_melee/so/so_array_list_members_wnPikminPikmin_10_part3.cpp:
+	.text       start:0x00197558 end:0x00197B68
+
 mo_melee/sora_melee/so/so_array_vector_accessors_soAreaWind_1_part1.cpp:
 	.text       start:0x00197F34 end:0x00197FD4
 
