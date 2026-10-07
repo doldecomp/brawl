@@ -26,6 +26,8 @@
 #include <gm/gm_global.h>
 #include <ec/ec_mgr.h>
 #include <OS/OSError.h>
+#include <cm/cm_quake.h>
+#include <ef/ef_screen.h>
 
 stClassInfoImpl<Stages::Tengan, stTengan> stTengan::bss_loc_14;
 
@@ -36,14 +38,14 @@ stTengan::stTengan() : stMelee("stTengan", Stages::Tengan) {
     m_slow = -1;
     unk1d8 = 0.0;
     unk1dc = 0.0;
-    unk1e0 = 0.0;
-    unk1e4 = 0.0;
-    unk1e8 = 0.0;
-    unk1ec = 0.0;
-    unk1f0 = 0.0;
-    unk1f4 = 0.0;
-    unk1f8 = 0.0;
-    unk1fc = 0.0;
+    m_rollTargetDegrees = 0.0;
+    m_rollDegrees = 0.0;
+    m_rollDirection = 0.0;
+    m_rollSpeed = 0.0;
+    m_reverseTargetDegrees = 0.0;
+    m_reverseDegrees = 0.0;
+    m_reverseDirection = 0.0;
+    m_reverseSpeed = 0.0;
     unk200 = 0.0;
 }
 
@@ -603,27 +605,27 @@ void stTengan::createObjFloor(int index) {
     switch(index) {
         case 6:
             floor = grTenganFloor::create(6, "StgTenganBrkYukaL", "grTenganFloorL");
-            stateWork = &m_stateFloorL;
+            stateWork = &m_stateFloor[0];
             type = 0;
             break;
         case 7:
             floor = grTenganFloor::create(8, "StgTenganBrkYukaC", "grTenganFloorC");
-            stateWork = &m_stateFloorC;
+            stateWork = &m_stateFloor[1];
             type = 1;
             break;
         case 8:
             floor = grTenganFloor::create(7, "StgTenganBrkYukaR", "grTenganFloorR");
-            stateWork = &m_stateFloorR;
+            stateWork = &m_stateFloor[2];
             type = 2;
             break;
         case 9:
             floor = grTenganFloor::create(9, "StgTenganBrkYukaCL", "grTenganFloorCL");
-            stateWork = &m_stateFloorL;
+            stateWork = &m_stateFloor[0];
             type = 3;
             break;
         case 10:
             floor = grTenganFloor::create(10, "StgTenganBrkYukaCR", "grTenganFloorCR");
-            stateWork = &m_stateFloorL;
+            stateWork = &m_stateFloor[0];
             type = 4;
             break;
         default:
@@ -667,7 +669,7 @@ bool stTengan::eventRebuildStageUpdate() {
     }
     switch (eventRebuildStage.getPhase()) {
         case 0:
-            if (m_stateFloorC == 1) {
+            if (m_stateFloor[1] == 1) {
                 if (static_cast<grTenganFloor*>(getGround(7))->m_state == 3) {
                     static_cast<grMadein*>(getGround(27))->endEntity();
                     static_cast<grMadein*>(getGround(27))->setEnableCollisionStatus(false);
@@ -684,6 +686,433 @@ bool stTengan::eventRebuildStageUpdate() {
             break;
     }
     return 0;
+}
+
+bool stTengan::eventDropStageUpdate() {
+    switch (eventDropStage.getPhase()) {
+        case 0: {
+            m_dropSoundHandle = playSeBasic(snd_se_stage_Tengan_06, 0.0f);
+            u32 sound = randi(2);
+            if (sound >= 1) {
+                sound = 1;
+            }
+            playSeBasic(static_cast<SndID>(snd_se_stage_Tengan_01 + sound), 0.0f);
+            eventDropStage.setPhase(1);
+            break;
+        }
+        case 1:
+            if (eventDropStage.isReadyEnd() == true) {
+                float choice = randf();
+                u32 floor;
+                if (choice < 1.0f / 3.0f) {
+                    floor = 0;
+                } else if (choice < 2.0f / 3.0f) {
+                    floor = 1;
+                } else {
+                    floor = 2;
+                }
+                // Do not drop an already broken floor or restart its rebuild event.
+                if (m_stateFloor[floor] != 1 && eventRebuildStage.start() == true) {
+                    m_stateFloor[floor] = 1;
+                    m_rebuildTimer = eventRebuildStage.m_framesLeft;
+                    if (floor == 1) {
+                        static_cast<grMadein*>(getGround(27))->startEntity();
+                        getGround(27)->setEnableCollisionStatus(true);
+                    }
+                    return true;
+                }
+            }
+            break;
+    }
+    return false;
+}
+
+void stTengan::setEventCrecelia() {
+    stTenganParams* params = static_cast<stTenganParams*>(m_stageData);
+    if (params == NULL) {
+        return;
+    }
+    float weightScale = 100.0f;
+    int event = 0;
+    int choice = randi(static_cast<int>(params->event_c_rate_boomerang * weightScale +
+                                       params->event_c_rate_sonicwave * weightScale) + 1);
+    int cumulative = 0;
+    bool selected = false;
+    do {
+        switch (event) {
+            case 0:
+                cumulative += static_cast<int>(params->event_c_rate_boomerang * weightScale);
+                break;
+            case 1:
+                cumulative += static_cast<int>(params->event_c_rate_sonicwave * weightScale);
+                break;
+            case 2:
+                cumulative = choice;
+                break;
+        }
+        if (cumulative >= choice) {
+            selected = true;
+        }
+        if (cumulative < choice) {
+            ++event;
+        }
+    } while (selected != true);
+    // A repeated choice does not start another event.
+    bool started = false;
+    if (m_lastCresseliaEvent != event) {
+        if (event != 1) {
+            started = eventBoomerang.start();
+        } else {
+            started = eventSonicWaveCall.start();
+        }
+    }
+    if (started == true) {
+        m_lastCresseliaEvent = event;
+        m_legendEventActive = 1;
+        static_cast<grMadein*>(getGround(19))->setMotion(1);
+        static_cast<grMadein*>(getGround(19))->startEntity();
+        event2.end();
+        event2.start();
+        m_pendingLegendSound = snd_se_stage_Tengan_cres_vc;
+        m_legendSoundDelayFrames = 100.0f;
+    }
+}
+
+bool stTengan::eventUpDownReversUpdate(float deltaFrame) {
+    if (m_stageData == NULL) {
+        return true;
+    }
+    switch (eventUpDownReverse.getPhase()) {
+        case 0:
+            m_reverseTargetDegrees = 180.0f;
+            m_reverseDegrees = 0.0f;
+            m_reverseSpeed = 0.1f;
+            eventUpDownReverse.setPhase(1);
+            if (randi(10) > 5) {
+                m_reverseDirection = 1.0f;
+            } else {
+                m_reverseDirection = -1.0f;
+            }
+            playSeBasic(snd_se_stage_Tengan_10, 0.0f);
+            break;
+        case 1: {
+            gfCameraManager* cameras = gfCameraManager::getManager();
+            if (cameras != NULL) {
+                m_reverseSpeed *= 1.1f;
+                if (m_reverseSpeed >= 8.0f) {
+                    m_reverseSpeed = 8.0f;
+                }
+                m_reverseDegrees += m_reverseSpeed * deltaFrame;
+                if (m_reverseDegrees >= m_reverseTargetDegrees) {
+                    m_reverseDegrees = m_reverseTargetDegrees;
+                }
+                cameras->m_cameras[0].m_rot.m_z =
+                    (m_rollDegrees * m_rollDirection + m_reverseDegrees * m_reverseDirection) * 0.017453292f;
+                cameras->m_cameras[0].unkFA.m_mask |= 0x40;
+                if (m_reverseDegrees == m_reverseTargetDegrees) {
+                    eventUpDownReverse.setPhase(2);
+                    m_reverseSpeed = 0.1f;
+                    Vec3f offset;
+                    offset.m_x = 0.0f;
+                    offset.m_y = 0.0f;
+                    offset.m_z = 0.0f;
+                    cmReqQuake(cmQuake::Amplitude_S, &offset);
+                    playSeBasic(snd_se_stage_Tengan_roll_finish, 0.0f);
+                }
+            }
+            break;
+        }
+        case 2:
+            cmRemoveQuake(1);
+            eventUpDownReverse.setPhase(3);
+            break;
+        case 3:
+            if (eventUpDownReverse.isReadyEnd() == true) {
+                playSeBasic(snd_se_stage_Tengan_10, 0.0f);
+                eventUpDownReverse.setPhase(4);
+            }
+            break;
+        case 4: {
+            gfCameraManager* cameras = gfCameraManager::getManager();
+            if (cameras != NULL) {
+                m_reverseSpeed *= 1.1f;
+                if (m_reverseSpeed >= 8.0f) {
+                    m_reverseSpeed = 8.0f;
+                }
+                m_reverseDegrees -= m_reverseSpeed * deltaFrame;
+                if (m_reverseDegrees < 0.0f) {
+                    m_reverseDegrees = 0.0f;
+                }
+                cameras->m_cameras[0].m_rot.m_z =
+                    (m_rollDegrees * m_rollDirection + m_reverseDegrees * m_reverseDirection) * 0.017453292f;
+                cameras->m_cameras[0].unkFA.m_mask |= 0x40;
+                if (m_reverseDegrees == 0.0f) {
+                    Vec3f offset;
+                    offset.m_x = 0.0f;
+                    offset.m_y = 0.0f;
+                    offset.m_z = 0.0f;
+                    cmReqQuake(cmQuake::Amplitude_S, &offset);
+                    eventUpDownReverse.setPhase(5);
+                    playSeBasic(snd_se_stage_Tengan_roll_finish, 0.0f);
+                }
+            }
+            break;
+        }
+        case 5:
+            cmRemoveQuake(1);
+            eventUpDownReverse.end();
+            return true;
+    }
+    return false;
+}
+
+bool stTengan::eventCameraRollUpdate(float deltaFrame) {
+    stTenganParams* params = static_cast<stTenganParams*>(m_stageData);
+    if (params == NULL) {
+        return true;
+    }
+    switch (eventCameraRoll.getPhase()) {
+        case 0: {
+            float random = randf();
+            float max = params->event_angle_rot_screen_max;
+            float min = params->event_angle_rot_screen_min;
+            float angle = (max - min) * random;
+            m_rollDegrees = 0.0f;
+            m_rollSpeed = 0.1f;
+            m_rollTargetDegrees = min + angle;
+            eventCameraRoll.setPhase(1);
+            if (randi(10) > 5) {
+                m_rollDirection = 1.0f;
+            } else {
+                m_rollDirection = -1.0f;
+            }
+            playSeBasic(snd_se_stage_Tengan_09, 0.0f);
+            break;
+        }
+        case 1: {
+            gfCameraManager* cameras = gfCameraManager::getManager();
+            if (cameras != NULL) {
+                m_rollSpeed *= 1.1f;
+                if (m_rollSpeed >= 8.0f) {
+                    m_rollSpeed = 8.0f;
+                }
+                m_rollDegrees += m_rollSpeed * deltaFrame;
+                if (m_rollDegrees >= m_rollTargetDegrees) {
+                    m_rollDegrees = m_rollTargetDegrees;
+                }
+                cameras->m_cameras[0].m_rot.m_z =
+                    (m_rollDegrees * m_rollDirection + m_reverseDegrees * m_reverseDirection) * 0.017453292f;
+                cameras->m_cameras[0].unkFA.m_mask |= 0x40;
+                if (m_rollDegrees == m_rollTargetDegrees) {
+                    eventCameraRoll.setPhase(2);
+                    m_rollSpeed = 0.1f;
+                    Vec3f offset;
+                    offset.m_x = 0.0f;
+                    offset.m_y = 0.0f;
+                    offset.m_z = 0.0f;
+                    cmReqQuake(cmQuake::Amplitude_S, &offset);
+                    playSeBasic(snd_se_stage_Tengan_roll_finish, 0.0f);
+                }
+            }
+            break;
+        }
+        case 2:
+            cmRemoveQuake(1);
+            eventCameraRoll.setPhase(3);
+            break;
+        case 3: {
+            gfCameraManager* cameras = gfCameraManager::getManager();
+            if (cameras != NULL) {
+                m_rollSpeed *= 1.1f;
+                if (m_rollSpeed >= params->event_angle_rot_return) {
+                    m_rollSpeed = params->event_angle_rot_return;
+                }
+                m_rollDegrees -= m_rollSpeed * deltaFrame;
+                if (m_rollDegrees < 0.0f) {
+                    m_rollDegrees = 0.0f;
+                }
+                cameras->m_cameras[0].m_rot.m_z =
+                    (m_rollDegrees * m_rollDirection + m_reverseDegrees * m_reverseDirection) * 0.017453292f;
+                cameras->m_cameras[0].unkFA.m_mask |= 0x40;
+                if (m_rollDegrees == 0.0f) {
+                    return true;
+                }
+            }
+            break;
+        }
+    }
+    return false;
+}
+
+bool stTengan::eventRandomCallUpdate() {
+    switch (eventRandomCall.getPhase()) {
+        case 0:
+            if (static_cast<grMadein*>(getGround(19))->isEndEntity()) {
+                m_randomCallEffectHandle = g_ecMgr->setEffect(ef_ptc_stg_tengan_crecelia_kona);
+                static_cast<grMadein*>(getGround(19))->setMotion(5);
+                static_cast<grMadein*>(getGround(19))->startEntity();
+                static_cast<grMadein*>(getGround(32))->setMotion(0);
+                static_cast<grMadein*>(getGround(32))->startEntity();
+                static_cast<grMadein*>(getGround(1))->endEntity();
+                eventRandomCall.setPhase(eventRandomCall.getPhase() + 1);
+                playSeBasic(snd_se_stage_Tengan_cres_up, 0.0f);
+            }
+            break;
+        case 1:
+            if (static_cast<grMadein*>(getGround(32))->isEndEntity()) {
+                static_cast<grMadein*>(getGround(32))->setMotion(1);
+                static_cast<grMadein*>(getGround(32))->startEntity();
+                eventRandomCall.setPhase(eventRandomCall.getPhase() + 1);
+            }
+            break;
+        case 2:
+            if (static_cast<grMadein*>(getGround(32))->isEndEntity()) {
+                static_cast<grMadein*>(getGround(32))->setMotion(2);
+                static_cast<grMadein*>(getGround(32))->startEntity();
+                eventRandomCall.setPhase(eventRandomCall.getPhase() + 1);
+            }
+            break;
+        case 3:
+            if (static_cast<grMadein*>(getGround(32))->isEndEntity()) {
+                static_cast<grMadein*>(getGround(32))->endEntity();
+                static_cast<grMadein*>(getGround(1))->startEntity();
+                eventRandomCall.end();
+                g_ecMgr->endEffect(m_randomCallEffectHandle);
+                return true;
+            }
+            break;
+    }
+    return false;
+}
+
+bool stTengan::eventAuraUpdate() {
+    switch (eventAura.getPhase()) {
+        case 0:
+            if (static_cast<grMadein*>(getGround(3))->isEndEntity()) {
+                static_cast<grMadein*>(getGround(3))->setMotion(5);
+                static_cast<grMadein*>(getGround(3))->startEntity();
+                eventAura.setPhase(1);
+                m_auraSoundHandle = -1;
+            }
+            break;
+        case 1:
+            if (m_auraSoundHandle == -1) {
+                if (getGround(3)->getMotionFrame(0) >= 48.0f) {
+                    m_auraSoundHandle = playSeBasic(snd_se_stage_Tengan_Aura_01, 0.0f);
+                }
+            }
+            if (static_cast<grMadein*>(getGround(3))->isEndEntity()) {
+                g_ecMgr->setDrawPrio(1);
+                u32 effect = g_ecMgr->setEffect(ef_ptc_stg_tengan_aura);
+                g_ecMgr->setDrawPrio(-1);
+                g_ecMgr->setParent(effect, getGround(3)->m_sceneModels[0],
+                                   "StgTenganDialga_origin", false);
+                static_cast<grMadein*>(getGround(3))->setMotion(6);
+                static_cast<grMadein*>(getGround(3))->startEntityLoop(2);
+                static_cast<grMadein*>(getGround(26))->startEntity();
+                eventAura.setPhase(2);
+                playSeBasic(snd_se_stage_Tengan_Aura_02, 0.0f);
+            }
+            break;
+        case 2:
+            if (static_cast<grMadein*>(getGround(3))->isEndEntity()) {
+                static_cast<grMadein*>(getGround(3))->setMotion(7);
+                static_cast<grMadein*>(getGround(3))->startEntity();
+                static_cast<grMadein*>(getGround(26))->endEntity();
+                eventAura.setPhase(3);
+            }
+            break;
+        case 3:
+            if (static_cast<grMadein*>(getGround(3))->isEndEntity()) {
+                return true;
+            }
+            break;
+    }
+    return false;
+}
+
+bool stTengan::eventBoomerangUpdate() {
+    switch (eventBoomerang.getPhase()) {
+        case 0: {
+            u32 motion = randi(3);
+            if (motion >= 2) {
+                motion = 2;
+            }
+            m_boomerangMotion = motion;
+            static_cast<grMadein*>(getGround(31))->setMotion(m_boomerangMotion);
+            static_cast<grMadein*>(getGround(31))->startEntity();
+            zoomOutCamera(300.0f, 340.0f);
+            m_boomerangSoundHandle = playSeBasic(snd_se_stage_Tengan_cres_boomerang, 0.0f);
+            eventBoomerang.setPhase(1);
+            m_boomerangEffectHandle = g_ecMgr->setEffect(ef_ptc_stg_tengan_crecelia_boomeran);
+            g_ecMgr->setParent(m_boomerangEffectHandle, getGround(31)->m_sceneModels[0],
+                               "StgTenganBoomerang1", false);
+            break;
+        }
+        case 1:
+            // Motion zero finishes its sound earlier than the other two paths.
+            switch (m_boomerangMotion) {
+                case 0:
+                    if (getGround(31)->getMotionFrame(0) > 250.0f) {
+                        stopSeBasic(m_boomerangSoundHandle, 1.0f);
+                        m_boomerangSoundHandle = -1;
+                        eventBoomerang.setPhase(2);
+                    }
+                    break;
+                case 1:
+                case 2:
+                    if (getGround(31)->getMotionFrame(0) > 500.0f) {
+                        stopSeBasic(m_boomerangSoundHandle, 1.0f);
+                        m_boomerangSoundHandle = -1;
+                        eventBoomerang.setPhase(2);
+                    }
+                    break;
+            }
+            break;
+        case 2:
+            if (static_cast<grMadein*>(getGround(31))->isEndEntity()) {
+                static_cast<grMadein*>(getGround(31))->endEntity();
+                g_ecMgr->endEffect(m_boomerangEffectHandle);
+                eventBoomerang.end();
+                zoomInCamera();
+                if (m_boomerangSoundHandle != -1) {
+                    stopSeBasic(m_boomerangSoundHandle, 1.0f);
+                    m_boomerangSoundHandle = -1;
+                }
+            }
+            break;
+    }
+    return false;
+}
+
+bool stTengan::eventGravityHalfUpdate() {
+    switch (eventGravityHalf.getPhase()) {
+        case 0: {
+            eventGravityHalf.setPhase(1);
+            setGravityHalf();
+            Vec3f quakeOffset;
+            quakeOffset.m_x = 0.0f;
+            quakeOffset.m_y = 0.0f;
+            quakeOffset.m_z = 0.0f;
+            cmReqQuake(cmQuake::Amplitude_S, &quakeOffset);
+            playSeBasic(snd_se_stage_Tengan_gravity_01, 0.0f);
+            GXColor color = {255, 255, 255, 128};
+            g_efScreen->requestFlash(20.0f, 0, 128, 2, &color);
+            break;
+        }
+        case 1:
+            if (eventGravityHalf.isReadyEnd() == true) {
+                GXColor color = {255, 255, 255, 128};
+                g_efScreen->requestFlash(20.0f, 0, 128, 2, &color);
+                cmRemoveQuake(1);
+                setGravityNormal();
+                eventGravityHalf.end();
+                playSeBasic(snd_se_stage_Tengan_gravity_02, 0.0f);
+            }
+            break;
+    }
+    // The handler ends its own event; the caller never receives completion.
+    return false;
 }
 
 void stTengan::updateEvent(float deltaFrame) {
@@ -709,20 +1138,22 @@ void stTengan::updateEvent(float deltaFrame) {
     }
 }
 
-u32 stTengan::getZoneLightSetIndex(Vec2f *position) {
+u32 stTengan::getZoneLightSetIndex(Vec3f *position) {
     if (position == NULL) {
         return 20;
     }
-    if (position->m_x < -78.0f) {
+    float x = position->m_x;
+    float y = position->m_y;
+    if (x < -78.0f) {
         return 20;
     }
-    if (position->m_x > 78.0f) {
+    if (x > 78.0f) {
         return 20;
     }
-    if (position->m_y < -60.0f) {
+    if (y < -60.0f) {
         return 20;
     }
-    if (position->m_y > -16.0f) {
+    if (y > -16.0f) {
         return 20;
     }
     return 21;
