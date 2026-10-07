@@ -37,6 +37,7 @@ soInsideEventManageModuleBuilder<ftMarthInsideEventManageModuleBuildConfig, ftIn
 #pragma dont_inline off
 
 void ftMarth::notifyEventCollisionShield(soCollisionAttackModule* attackModule, float power, soCollisionLog* collisionLog, int groupIndex, float posX, float posY, soModuleAccesser* moduleAccesser) {
+    // Counter records the first hit on its counter shield for the retaliation.
     if (m_moduleAccesser->getStatusModule().getStatusKind() == 0x115 && groupIndex == 1) {
         if (!m_moduleAccesser->getWorkManageModule().isFlag(0x22000013)) {
             m_moduleAccesser->getWorkManageModule().onFlag(0x22000013);
@@ -64,6 +65,20 @@ bool ftMarth::notifyEventCollisionShieldCheck() {
         return true;
     }
     return Fighter::notifyEventCollisionShieldCheck();
+}
+
+bool ftMarth::notifyEventCollisionAttackCheck(u32 flags) {
+    // A confirmed Final Smash hit requests the next attack phase.
+    if (m_moduleAccesser->getStatusModule().getStatusKind() == 0x11e &&
+        m_moduleAccesser->getWorkManageModule().isFlag(0x22000011)) {
+        m_moduleAccesser->getStatusModule().changeStatusRequest(0x120, m_moduleAccesser);
+        return true;
+    }
+    if (m_moduleAccesser->getStatusModule().getStatusKind() == 0x120 &&
+        m_moduleAccesser->getWorkManageModule().isFlag(0x22000012)) {
+        m_moduleAccesser->getWorkManageModule().offFlag(0x22000012);
+    }
+    return Fighter::notifyEventCollisionAttackCheck(flags);
 }
 
 void ftMarth::photoMoved() {

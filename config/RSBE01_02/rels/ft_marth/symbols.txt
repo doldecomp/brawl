@@ -175,7 +175,7 @@ notifyEventCollisionShield__7ftMarthFP23soCollisionAttackModulefP14soCollisionLo
 notifyEventCollisionShieldCheck__7ftMarthFv = .text:0x000072C0; // type:function size:0x15C
 fn_106_741C = .text:0x0000741C; // type:function size:0x3D8
 __ct__5Vec3fFfff = .text:0x000077F4; // type:function size:0x10
-fn_106_7804 = .text:0x00007804; // type:function size:0x128
+notifyEventCollisionAttackCheck__7ftMarthFUl = .text:0x00007804; // type:function size:0x128
 photoMoved__7ftMarthFv = .text:0x0000792C; // type:function size:0xE4
 photoExit__7ftMarthFv = .text:0x00007A10; // type:function size:0xE4
 getParamIndefinite__21ftExtendParamAccesserFP16soModuleAccesserll = .text:0x00007AF4; // type:function size:0x8
