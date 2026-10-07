@@ -1149,9 +1149,12 @@ config.libs = [
     {
         "lib": "ft_yoshi",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_lw.cpp"),
+            Object(Matching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_air_lw.cpp"),
+        ],
     },
     {
         "lib": "ft_zako",
