@@ -819,7 +819,7 @@ class soArrayVector : public soArrayVectorAbstract<T> {
 
 public:
     virtual s32 size() const;
-    virtual ~soArrayVector() { }
+    virtual ~soArrayVector();
     virtual s32 capacity() const;
     virtual bool isFull() const;
 
@@ -945,3 +945,6 @@ soArray<T>& getNullArray() {
 extern soArrayNull<s32> g_s32ArrayNull;
 extern soArrayNull<float> g_floatArrayNull;
 extern soArrayNull<soGeneralFlag<s32> > g_s32GeneralFlagArrayNull;
+
+template<class T, s32 C>
+soArrayVector<T,C>::~soArrayVector() { }
