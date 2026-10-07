@@ -9131,8 +9131,8 @@ mo_melee/sora_melee/ft/ft_log_data_accesser.cpp:
 	.text       start:0x001D49FC end:0x001D548C
 	.rodata     start:0x00002710 end:0x00002718
 
-mo_melee/sora_melee/so/so_array_base_soArrayFixed_15soLogAttackInfo_1D579C.cpp:
-	.text       start:0x001D579C end:0x001D57D0
+mo_melee/sora_melee/ft/ft_log_pattern_module.cpp:
+	.text       start:0x001D548C end:0x001D57F4
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soLogAttackInfo_9_part1.cpp:
 	.text       start:0x001D585C end:0x001D5878
@@ -9151,6 +9151,9 @@ mo_melee/sora_melee/so/so_array_vector_thunks_15soLogAttackInfo_9.cpp:
 
 mo_melee/sora_melee/so/so_array_base_soArrayVectorAbstract_15soLogAttackInfo_1D6070.cpp:
 	.text       start:0x001D6070 end:0x001D6078
+
+mo_melee/sora_melee/ft/ft_log_empty.cpp:
+	.text       start:0x001D6078 end:0x001D61CC
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soLogAttackInfo_10.cpp:
 	.text       start:0x001D7E00 end:0x001D7EC8

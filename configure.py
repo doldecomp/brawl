@@ -4605,7 +4605,6 @@ config.libs = [
             Object(NonMatching, "mo_melee/sora_melee/so/so_array_base_soArrayFixed_14soAreaInstance_CA318.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_array_base_soArrayFixed_14wnemProcFncObj_CB3DC.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_array_base_soArrayFixed_15soCameraSubject_86964.cpp"),
-            Object(NonMatching, "mo_melee/sora_melee/so/so_array_base_soArrayFixed_15soLogAttackInfo_1D579C.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_array_base_soArrayFixed_16soAreaContactLog_CB6AC.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_array_base_soArrayFixed_16soCollisionGroup_4D77C.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_array_base_soArrayFixed_16soControllerImpl_869CC.cpp"),
@@ -4754,6 +4753,8 @@ config.libs = [
             Object(NonMatching, "mo_melee/sora_melee/so/so_array_base_soArrayVectorAbstract_Ul_1F098.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_array_base_soArrayVectorAbstract_f_1080F4.cpp"),
             Object(Matching, "mo_melee/sora_melee/ft/ft_log_data_accesser.cpp"),
+            Object(NonMatching, "mo_melee/sora_melee/ft/ft_log_pattern_module.cpp"),
+            Object(Matching, "mo_melee/sora_melee/ft/ft_log_empty.cpp"),
         ],
     },
     {
