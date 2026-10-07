@@ -52,15 +52,25 @@ public:
     soInstanceUnit(T& elm, s32 id) : m_element(elm), m_id(id) { }
 };
 
+// MATCH-ONLY: Default pointer records leave the element untouched.
+template<class T>
+class soInstanceUnit<T*> {
+public:
+    T* m_element;
+    int m_id;
+    soInstanceUnit() : m_id(-1) { }
+    soInstanceUnit(T*& elm, s32 id) : m_element(elm), m_id(id) { }
+};
+
 template <typename T>
 class soInstanceUnitFullProperty : public soInstanceUnit<T> {
 public:
     soAttributeFlag m_attribute;
     s16 m_10;
 
-    soInstanceUnitFullProperty() : m_attribute(0), m_10(-1) { }
+    soInstanceUnitFullProperty();
     soInstanceUnitFullProperty(T& elm, s32 id, soAttributeFlag attr, s16 p4);
-    ~soInstanceUnitFullProperty() { }
+    ~soInstanceUnitFullProperty();
 
     soAttributeFlag getAttribute() const;
 
@@ -94,3 +104,11 @@ soAttributeFlag soInstanceUnitFullProperty<T>::getAttribute() const {
     return soAttributeFlag(m_attribute.m_mask);
 }
 #endif
+
+
+template<class T>
+soInstanceUnitFullProperty<T>::soInstanceUnitFullProperty() :
+    m_attribute(0), m_10(-1) { }
+
+template<class T>
+soInstanceUnitFullProperty<T>::~soInstanceUnitFullProperty() { }
