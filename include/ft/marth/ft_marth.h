@@ -40,6 +40,7 @@ public:
     virtual void photoMoved();
     virtual void photoExit();
     virtual bool notifyEventCollisionShieldCheck();
+    virtual void notifyEventCollisionShield(soCollisionAttackModule* attackModule, float power, soCollisionLog* collisionLog, int groupIndex, float posX, float posY, soModuleAccesser* moduleAccesser);
 };
 static_assert(sizeof(ftFighterBuilder<ftMarthBuildConfig>) == 0x8554, "Photo callback offset is wrong!");
 static_assert(sizeof(ftMarth) == 0x8574, "Class is the wrong size!");

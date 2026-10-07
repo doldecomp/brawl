@@ -171,7 +171,7 @@ getEntryList__99soAnimCmdControlUnitBuilderDisguise<60soAnimCmdControlUnitBuildC
 fn_106_701C = .text:0x0000701C; // type:function size:0x4
 setupDisguiseList__99soAnimCmdControlUnitBuilderDisguise<60soAnimCmdControlUnitBuildConfigDisguise<0,1,289,289,0,1,0,8>>FiP26soAnimCmdDisguiseListEntry = .text:0x00007020; // type:function size:0xB0
 fn_106_70D0 = .text:0x000070D0; // type:function size:0x4
-fn_106_70D4 = .text:0x000070D4; // type:function size:0x1EC
+notifyEventCollisionShield__7ftMarthFP23soCollisionAttackModulefP14soCollisionLogiffP16soModuleAccesser = .text:0x000070D4; // type:function size:0x1EC
 notifyEventCollisionShieldCheck__7ftMarthFv = .text:0x000072C0; // type:function size:0x15C
 fn_106_741C = .text:0x0000741C; // type:function size:0x3D8
 __ct__5Vec3fFfff = .text:0x000077F4; // type:function size:0x10
@@ -402,7 +402,7 @@ fn_106_A5C0 = .text:0x0000A5C0; // type:function size:0x8
 @136@notifyEventChangeCollisionHit__7FighterFiP16soModuleAccesser = .text:0x0000A608; // type:function size:0x8
 @148@notifyEventCollisionShieldCheck__7FighterFv = .text:0x0000A610; // type:function size:0x8
 @148@notifyEventCollisionShieldSearch__7FighterFP23soCollisionSearchModuleP14soCollisionLogUlP16soModuleAccesser = .text:0x0000A618; // type:function size:0x8
-@148@notifyEventCollisionShield__7FighterFP23soCollisionAttackModuleP14soCollisionLogUlP16soModuleAccesserfff = .text:0x0000A620; // type:function size:0x8
+@148@notifyEventCollisionShield__7ftMarthFP23soCollisionAttackModulefP14soCollisionLogiffP16soModuleAccesser = .text:0x0000A620; // type:function size:0x8
 @160@notifyEventCollisionReflectorCheck__7FighterFv = .text:0x0000A628; // type:function size:0x8
 @160@notifyEventCollisionReflectorSearch__7FighterFP23soCollisionSearchModuleP14soCollisionLogUlP16soModuleAccesser = .text:0x0000A630; // type:function size:0x8
 @160@notifyEventCollisionReflector__7FighterFP23soCollisionAttackModuleP14soCollisionLogUlP16soModuleAccesserfff = .text:0x0000A638; // type:function size:0x8

@@ -3,6 +3,8 @@
 #include <ft/marth/ft_marth_extend_param_accesser.h>
 #include <if/if_marth_final.h>
 #include <so/so_value_accesser.h>
+#include <so/so_external_value_accesser.h>
+#include <gf/gf_task_scheduler.h>
 
 #define FT_BC ftMarthBuildConfig
 #include <ft/builder/ft_builder_noinline.h>
@@ -33,6 +35,22 @@ void testBuilder() {
 soInsideEventManageModuleBuilder<ftMarthInsideEventManageModuleBuildConfig, ftInsideEventManageModuleTypes> g_insideBuilder;
 
 #pragma dont_inline off
+
+void ftMarth::notifyEventCollisionShield(soCollisionAttackModule* attackModule, float power, soCollisionLog* collisionLog, int groupIndex, float posX, float posY, soModuleAccesser* moduleAccesser) {
+    if (m_moduleAccesser->getStatusModule().getStatusKind() == 0x115 && groupIndex == 1) {
+        if (!m_moduleAccesser->getWorkManageModule().isFlag(0x22000013)) {
+            m_moduleAccesser->getWorkManageModule().onFlag(0x22000013);
+            m_moduleAccesser->getWorkManageModule().setFloat(power, 0x21000004);
+            soCollisionAttackData* attackData = attackModule->getData(collisionLog->m_collsionIndex, collisionLog->m_isAbsolute);
+            float lr = m_moduleAccesser->getDamageModule().getDamageLr(posX, posY, attackModule, attackData, collisionLog->m_collsionIndex, collisionLog->m_isAbsolute);
+            m_moduleAccesser->getWorkManageModule().setFloat(lr, 0x21000005);
+        }
+        StageObject& attacker = dynamic_cast<StageObject&>(*gfTaskScheduler::getInstance()->getTask(collisionLog->m_taskId));
+        soStopModule* stop = soExternalValueAccesser::getStopModule(&attacker);
+        stop->setHitStopFrameFix(soValueAccesser::getConstantInt(m_moduleAccesser, 0x5dc3, 0));
+    }
+    Fighter::notifyEventCollisionShield(attackModule, power, collisionLog, groupIndex, posX, posY, moduleAccesser);
+}
 
 bool ftMarth::notifyEventCollisionShieldCheck() {
     if (m_moduleAccesser->getStatusModule().getStatusKind() == 0x115 &&
