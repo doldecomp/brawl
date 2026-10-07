@@ -35,7 +35,9 @@ struct soAttributeFlag {
     soAttributeFlag(soAttributeMask bits) : m_mask(bits) { }
     // MATCH-ONLY: Argument copies use the signed attribute mask load.
     soAttributeFlag(const soAttributeFlag& other) : m_mask(other.m_mask) { }
+#ifndef SO_ATTRIBUTE_FLAG_TRIVIAL_DTOR
     ~soAttributeFlag() { }
+#endif
     soAttributeFlag& operator=(const soAttributeFlag& other) {
         m_mask = other.m_mask;
         return *this;

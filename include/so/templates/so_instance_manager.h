@@ -116,34 +116,66 @@ template <typename T>
 class soInstanceManagerFullPropertyNull : public soInstanceManagerFullProperty<T> {
 public:
 
-    virtual s32 getIndex(s32 index) const { return -1; }
-    virtual soInstanceUnitFullProperty<T>& atUnitIndexFast(s32 index) {
-        static soInstanceUnitFullProperty<T> NullElement;
-        return NullElement;
-    }
-    virtual u32 capacity() { return 0; }
-    virtual s32 getId(s32 index) { return -1; }
-    virtual soAttributeFlag getAttribute(s32) const { return soAttributeFlag(); }
-    virtual void getAttributeArray(soAttributeFlag mask, soArray<T*>& arr) { }
-    virtual void getPriorityArray(soArray<T*>& arr) { }
-    virtual bool isContain(s32) const { return false; }
-    virtual u32 size() const { return 0; }
-    virtual void set(const T&, s32 index) { }
-    virtual T& atIndex(s32 index) {
-        static T NullElement;
-        return NullElement;
-    }
-    virtual T& at(s32 index) {
-        static T NullElement;
-        return NullElement;
-    }
-    virtual void clear() { }
-    virtual void erase(s32) { }
-    virtual s32 add(T&, s32, soAttributeFlag, s16) { return -1; }
+    virtual s32 getIndex(s32 index) const;
+    virtual soInstanceUnitFullProperty<T>& atUnitIndexFast(s32 index);
+    virtual u32 capacity();
+    virtual s32 getId(s32 index);
+    virtual soAttributeFlag getAttribute(s32) const;
+    virtual void getAttributeArray(soAttributeFlag mask, soArray<T*>& arr);
+    virtual void getPriorityArray(soArray<T*>& arr);
+    virtual bool isContain(s32) const;
+    virtual u32 size() const;
+    virtual void set(const T&, s32 index);
+    virtual T& atIndex(s32 index);
+    virtual T& at(s32 index);
+    virtual void clear();
+    virtual void erase(s32);
+    virtual s32 add(T&, s32, soAttributeFlag, s16);
 
     // UBFIX: There should have been a virtual dtor in the base class
     ~soInstanceManagerFullPropertyNull() { }
 };
+
+// Out-of-class definitions so individual members can be instantiated (and linked) on their own.
+template <typename T>
+s32 soInstanceManagerFullPropertyNull<T>::getIndex(s32 index) const { return -1; }
+template <typename T>
+soInstanceUnitFullProperty<T>& soInstanceManagerFullPropertyNull<T>::atUnitIndexFast(s32 index) {
+    static soInstanceUnitFullProperty<T> NullElement;
+    return NullElement;
+}
+template <typename T>
+u32 soInstanceManagerFullPropertyNull<T>::capacity() { return 0; }
+template <typename T>
+s32 soInstanceManagerFullPropertyNull<T>::getId(s32 index) { return -1; }
+template <typename T>
+soAttributeFlag soInstanceManagerFullPropertyNull<T>::getAttribute(s32) const { return soAttributeFlag(); }
+template <typename T>
+void soInstanceManagerFullPropertyNull<T>::getAttributeArray(soAttributeFlag mask, soArray<T*>& arr) { }
+template <typename T>
+void soInstanceManagerFullPropertyNull<T>::getPriorityArray(soArray<T*>& arr) { }
+template <typename T>
+bool soInstanceManagerFullPropertyNull<T>::isContain(s32) const { return false; }
+template <typename T>
+u32 soInstanceManagerFullPropertyNull<T>::size() const { return 0; }
+template <typename T>
+void soInstanceManagerFullPropertyNull<T>::set(const T&, s32 index) { }
+template <typename T>
+T& soInstanceManagerFullPropertyNull<T>::atIndex(s32 index) {
+    static T NullElement;
+    return NullElement;
+}
+template <typename T>
+T& soInstanceManagerFullPropertyNull<T>::at(s32 index) {
+    static T NullElement;
+    return NullElement;
+}
+template <typename T>
+void soInstanceManagerFullPropertyNull<T>::clear() { }
+template <typename T>
+void soInstanceManagerFullPropertyNull<T>::erase(s32) { }
+template <typename T>
+s32 soInstanceManagerFullPropertyNull<T>::add(T&, s32, soAttributeFlag, s16) { return -1; }
 
 template <class T, u32 C>
 class soInstanceManagerFullPropertyUniqImpl : public soInstanceManagerFullProperty<T> {
