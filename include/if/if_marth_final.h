@@ -3,25 +3,47 @@
 #include <gf/gf_task.h>
 #include <mt/mt_vector.h>
 #include <types.h>
+#include <memory.h>
+#include <nw4r/g3d/g3d_resfile.h>
 
 class MuObject;
 namespace nw4r { namespace g3d { class ScnObj; } }
+namespace nw4r { namespace g3d { class ScnGroup; } }
+namespace nw4r { namespace g3d { class ScnMdl; } }
+
+// Partial callback layout; the scene interface and its construction remain unrecovered.
+class IfMarthFinalObjCallback {
+public:
+    void* unk0;
+    Vec3f m_position;
+    u8 m_executed;
+    u8 unk11[3];
+    ~IfMarthFinalObjCallback();
+    void ExecCallback_CALC_WORLD(int timing, nw4r::g3d::ScnMdl* model);
+};
+static_assert(sizeof(IfMarthFinalObjCallback) == 0x14, "Class is wrong size!");
 
 // Final Smash HP-window task, identified by its RTTI and status-process callers.
 class IfMarthFinalTask : public gfTask {
 public:
-    u8 unk40[8];
+    nw4r::g3d::ResFile m_resource;
+    u32 unk44;
     nw4r::g3d::ScnObj* unk48;
     MuObject* m_objects[1];
     nw4r::g3d::ScnObj* m_sceneObjects[1];
-    u8 unk54[0x24];
-    Vec3f m_positionConv;
-    u8 unk84;
-    u8 unk85[3];
+    u8 unk54[0x20];
+    IfMarthFinalObjCallback m_callback;
     u8 unk88;
     u8 unk89[3];
 
+    IfMarthFinalTask(void* resourceData);
+    virtual ~IfMarthFinalTask();
+    virtual void processDefault();
+    static IfMarthFinalTask* create(void* resourceData, HeapType heap, int priority);
     void initWork();
+    void initProc(nw4r::g3d::ResFile* resource, nw4r::g3d::ScnGroup* group, int priority, HeapType heap);
+    void createModel(nw4r::g3d::ResFile* resource, int priority, HeapType heap);
+    void setAnim(int index);
     void destroyModel();
     void setPosConv(const Vec3f* position);
     void dispOn(int);
