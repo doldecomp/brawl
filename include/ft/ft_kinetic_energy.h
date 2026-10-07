@@ -58,7 +58,9 @@ public:
 #ifdef FT_MODULE_BUILDER
     virtual ~ftKineticEnergyGravity() { }
 #endif
-    u8 m_pad[8];
+    u8 unk8[4];
+    // Verified by ftKineticEnergyGravity::getSpeed: vertical speed at 0xC.
+    float m_speedY;
     float m_gravity;
     float m_fallSpeedMax;
     u8 m_unk18[0x10];
