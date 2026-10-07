@@ -62,8 +62,10 @@ struct ftMarthExtendParamClass5Int {
 
 struct ftMarthExtendParamClass6 {
     float unk0;
-    float unk4;
+    int unk4;
     float unk8;
+    int unkC;
+    int unk10;
 };
 
 // TODO: Match without the const_cast hack
@@ -162,9 +164,9 @@ public:
             m_ints[i][2] = &group1(extData)->unk8;
             m_ints[i][3] = &group4(extData)->unk18;
             m_ints[i][4] = &group5Cast(extData)->unk0;
-            m_ints[i][5] = (const int*)((const u8*)group5(extData) + 4);
-            m_ints[i][6] = (const int*)((const u8*)group5(extData) + 0xC);
-            m_ints[i][7] = (const int*)((const u8*)group5(extData) + 0x10);
+            m_ints[i][5] = &group6(extData)->unk4;
+            m_ints[i][6] = &group6(extData)->unkC;
+            m_ints[i][7] = &group6(extData)->unk10;
         }
     }
 };
