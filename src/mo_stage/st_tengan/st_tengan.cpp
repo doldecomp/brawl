@@ -38,14 +38,14 @@ stTengan::stTengan() : stMelee("stTengan", Stages::Tengan) {
     m_slow = -1;
     unk1d8 = 0.0;
     unk1dc = 0.0;
-    unk1e0 = 0.0;
-    unk1e4 = 0.0;
-    unk1e8 = 0.0;
-    unk1ec = 0.0;
-    unk1f0 = 0.0;
-    unk1f4 = 0.0;
-    unk1f8 = 0.0;
-    unk1fc = 0.0;
+    m_rollTargetDegrees = 0.0;
+    m_rollDegrees = 0.0;
+    m_rollDirection = 0.0;
+    m_rollSpeed = 0.0;
+    m_reverseTargetDegrees = 0.0;
+    m_reverseDegrees = 0.0;
+    m_reverseDirection = 0.0;
+    m_reverseSpeed = 0.0;
     unk200 = 0.0;
 }
 
@@ -723,6 +723,223 @@ bool stTengan::eventDropStageUpdate() {
                 }
             }
             break;
+    }
+    return false;
+}
+
+void stTengan::setEventCrecelia() {
+    stTenganParams* params = static_cast<stTenganParams*>(m_stageData);
+    if (params == NULL) {
+        return;
+    }
+    float weightScale = 100.0f;
+    int event = 0;
+    int choice = randi(static_cast<int>(params->event_c_rate_boomerang * weightScale +
+                                       params->event_c_rate_sonicwave * weightScale) + 1);
+    int cumulative = 0;
+    bool selected = false;
+    do {
+        switch (event) {
+            case 0:
+                cumulative += static_cast<int>(params->event_c_rate_boomerang * weightScale);
+                break;
+            case 1:
+                cumulative += static_cast<int>(params->event_c_rate_sonicwave * weightScale);
+                break;
+            case 2:
+                cumulative = choice;
+                break;
+        }
+        if (cumulative >= choice) {
+            selected = true;
+        }
+        if (cumulative < choice) {
+            ++event;
+        }
+    } while (selected != true);
+    // A repeated choice does not start another event.
+    bool started = false;
+    if (m_lastCresseliaEvent != event) {
+        if (event != 1) {
+            started = eventBoomerang.start();
+        } else {
+            started = eventSonicWaveCall.start();
+        }
+    }
+    if (started == true) {
+        m_lastCresseliaEvent = event;
+        m_legendEventActive = 1;
+        static_cast<grMadein*>(getGround(19))->setMotion(1);
+        static_cast<grMadein*>(getGround(19))->startEntity();
+        event2.end();
+        event2.start();
+        m_pendingLegendSound = snd_se_stage_Tengan_cres_vc;
+        m_legendSoundDelayFrames = 100.0f;
+    }
+}
+
+bool stTengan::eventUpDownReversUpdate(float deltaFrame) {
+    if (m_stageData == NULL) {
+        return true;
+    }
+    switch (eventUpDownReverse.getPhase()) {
+        case 0:
+            m_reverseTargetDegrees = 180.0f;
+            m_reverseDegrees = 0.0f;
+            m_reverseSpeed = 0.1f;
+            eventUpDownReverse.setPhase(1);
+            if (randi(10) > 5) {
+                m_reverseDirection = 1.0f;
+            } else {
+                m_reverseDirection = -1.0f;
+            }
+            playSeBasic(snd_se_stage_Tengan_10, 0.0f);
+            break;
+        case 1: {
+            gfCameraManager* cameras = gfCameraManager::getManager();
+            if (cameras != NULL) {
+                m_reverseSpeed *= 1.1f;
+                if (m_reverseSpeed >= 8.0f) {
+                    m_reverseSpeed = 8.0f;
+                }
+                m_reverseDegrees += m_reverseSpeed * deltaFrame;
+                if (m_reverseDegrees >= m_reverseTargetDegrees) {
+                    m_reverseDegrees = m_reverseTargetDegrees;
+                }
+                cameras->m_cameras[0].m_rot.m_z =
+                    (m_rollDegrees * m_rollDirection + m_reverseDegrees * m_reverseDirection) * 0.017453292f;
+                cameras->m_cameras[0].unkFA.m_mask |= 0x40;
+                if (m_reverseDegrees == m_reverseTargetDegrees) {
+                    eventUpDownReverse.setPhase(2);
+                    m_reverseSpeed = 0.1f;
+                    Vec3f offset;
+                    offset.m_x = 0.0f;
+                    offset.m_y = 0.0f;
+                    offset.m_z = 0.0f;
+                    cmReqQuake(cmQuake::Amplitude_S, &offset);
+                    playSeBasic(snd_se_stage_Tengan_roll_finish, 0.0f);
+                }
+            }
+            break;
+        }
+        case 2:
+            cmRemoveQuake(1);
+            eventUpDownReverse.setPhase(3);
+            break;
+        case 3:
+            if (eventUpDownReverse.isReadyEnd() == true) {
+                playSeBasic(snd_se_stage_Tengan_10, 0.0f);
+                eventUpDownReverse.setPhase(4);
+            }
+            break;
+        case 4: {
+            gfCameraManager* cameras = gfCameraManager::getManager();
+            if (cameras != NULL) {
+                m_reverseSpeed *= 1.1f;
+                if (m_reverseSpeed >= 8.0f) {
+                    m_reverseSpeed = 8.0f;
+                }
+                m_reverseDegrees -= m_reverseSpeed * deltaFrame;
+                if (m_reverseDegrees < 0.0f) {
+                    m_reverseDegrees = 0.0f;
+                }
+                cameras->m_cameras[0].m_rot.m_z =
+                    (m_rollDegrees * m_rollDirection + m_reverseDegrees * m_reverseDirection) * 0.017453292f;
+                cameras->m_cameras[0].unkFA.m_mask |= 0x40;
+                if (m_reverseDegrees == 0.0f) {
+                    Vec3f offset;
+                    offset.m_x = 0.0f;
+                    offset.m_y = 0.0f;
+                    offset.m_z = 0.0f;
+                    cmReqQuake(cmQuake::Amplitude_S, &offset);
+                    eventUpDownReverse.setPhase(5);
+                    playSeBasic(snd_se_stage_Tengan_roll_finish, 0.0f);
+                }
+            }
+            break;
+        }
+        case 5:
+            cmRemoveQuake(1);
+            eventUpDownReverse.end();
+            return true;
+    }
+    return false;
+}
+
+bool stTengan::eventCameraRollUpdate(float deltaFrame) {
+    stTenganParams* params = static_cast<stTenganParams*>(m_stageData);
+    if (params == NULL) {
+        return true;
+    }
+    switch (eventCameraRoll.getPhase()) {
+        case 0: {
+            float random = randf();
+            float max = params->event_angle_rot_screen_max;
+            float min = params->event_angle_rot_screen_min;
+            float angle = (max - min) * random;
+            m_rollDegrees = 0.0f;
+            m_rollSpeed = 0.1f;
+            m_rollTargetDegrees = min + angle;
+            eventCameraRoll.setPhase(1);
+            if (randi(10) > 5) {
+                m_rollDirection = 1.0f;
+            } else {
+                m_rollDirection = -1.0f;
+            }
+            playSeBasic(snd_se_stage_Tengan_09, 0.0f);
+            break;
+        }
+        case 1: {
+            gfCameraManager* cameras = gfCameraManager::getManager();
+            if (cameras != NULL) {
+                m_rollSpeed *= 1.1f;
+                if (m_rollSpeed >= 8.0f) {
+                    m_rollSpeed = 8.0f;
+                }
+                m_rollDegrees += m_rollSpeed * deltaFrame;
+                if (m_rollDegrees >= m_rollTargetDegrees) {
+                    m_rollDegrees = m_rollTargetDegrees;
+                }
+                cameras->m_cameras[0].m_rot.m_z =
+                    (m_rollDegrees * m_rollDirection + m_reverseDegrees * m_reverseDirection) * 0.017453292f;
+                cameras->m_cameras[0].unkFA.m_mask |= 0x40;
+                if (m_rollDegrees == m_rollTargetDegrees) {
+                    eventCameraRoll.setPhase(2);
+                    m_rollSpeed = 0.1f;
+                    Vec3f offset;
+                    offset.m_x = 0.0f;
+                    offset.m_y = 0.0f;
+                    offset.m_z = 0.0f;
+                    cmReqQuake(cmQuake::Amplitude_S, &offset);
+                    playSeBasic(snd_se_stage_Tengan_roll_finish, 0.0f);
+                }
+            }
+            break;
+        }
+        case 2:
+            cmRemoveQuake(1);
+            eventCameraRoll.setPhase(3);
+            break;
+        case 3: {
+            gfCameraManager* cameras = gfCameraManager::getManager();
+            if (cameras != NULL) {
+                m_rollSpeed *= 1.1f;
+                if (m_rollSpeed >= params->event_angle_rot_return) {
+                    m_rollSpeed = params->event_angle_rot_return;
+                }
+                m_rollDegrees -= m_rollSpeed * deltaFrame;
+                if (m_rollDegrees < 0.0f) {
+                    m_rollDegrees = 0.0f;
+                }
+                cameras->m_cameras[0].m_rot.m_z =
+                    (m_rollDegrees * m_rollDirection + m_reverseDegrees * m_reverseDirection) * 0.017453292f;
+                cameras->m_cameras[0].unkFA.m_mask |= 0x40;
+                if (m_rollDegrees == 0.0f) {
+                    return true;
+                }
+            }
+            break;
+        }
     }
     return false;
 }

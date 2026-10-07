@@ -30,20 +30,20 @@ public:
 class stTengan : public stMelee {
     float unk1d8;
     float unk1dc;
-    float unk1e0;
-    float unk1e4;
-    float unk1e8;
-    float unk1ec;
-    float unk1f0;
-    float unk1f4;
-    float unk1f8;
-    float unk1fc;
+    float m_rollTargetDegrees;
+    float m_rollDegrees;
+    float m_rollDirection;
+    float m_rollSpeed;
+    float m_reverseTargetDegrees;
+    float m_reverseDegrees;
+    float m_reverseDirection;
+    float m_reverseSpeed;
     float unk200;
     s32 m_substage;
     snd3DGenerator snd_gen;
     u32 unk210;
     u32 unk214;
-    u32 unk218;
+    s32 m_lastCresseliaEvent;
     grTenganEvent event1;
     grTenganEvent event2;
     grTenganEvent eventLegendDisappear;
@@ -68,7 +68,7 @@ class stTengan : public stMelee {
     float unke48;
     u32 unke4c;
     u32 unke50;
-    u8 unke54;
+    u8 m_legendEventActive;
     u8 unke55;
     float unke58;
     float unke5c;
@@ -98,8 +98,8 @@ class stTengan : public stMelee {
     u32 m_boomerangEffectHandle;
     s32 m_auraSoundHandle;
     s32 m_boomerangSoundHandle;
-    float unkee8;
-    float unkeec;
+    SndID m_pendingLegendSound;
+    float m_legendSoundDelayFrames;
     u8 m_boomerangMotion;
     char m_slow;
 
@@ -110,6 +110,9 @@ class stTengan : public stMelee {
     bool eventBoomerangUpdate();
     bool eventAuraUpdate();
     bool eventRandomCallUpdate();
+    bool eventUpDownReversUpdate(float deltaFrame);
+    bool eventCameraRollUpdate(float deltaFrame);
+    void setEventCrecelia();
     
     stTengan();
     virtual ~stTengan();
