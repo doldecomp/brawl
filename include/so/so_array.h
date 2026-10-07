@@ -714,24 +714,20 @@ class soArrayVector : public soArrayVectorAbstract<T> {
     T m_elements[C];
 
 public:
-    virtual s32 size() const { return m_size; }
+    virtual s32 size() const;
     virtual ~soArrayVector() { }
-    virtual s32 capacity() const { return C; }
-    virtual bool isFull() const { return m_isFull; }
+    virtual s32 capacity() const;
+    virtual bool isFull() const;
 
-    virtual T& atFastAbstractSub(s32 index) const {
-        return atFast(index);
-    }
-    virtual T& getArrayValueConst(s32 index) {
-        return this->m_elements[index];
-    }
-    virtual s32 getTopIndex() const { return m_topIndex; }
-    virtual s32 getLastIndex() const { return m_lastIndex; }
-    virtual void setSize(s32 size) { m_size = size; }
-    virtual void setTopIndex(s32 topIndex) { m_topIndex = topIndex; }
-    virtual void setLastIndex(s32 lastIndex) { m_lastIndex = lastIndex; }
-    virtual void onFull() { m_isFull = true; }
-    virtual void offFull() { m_isFull = false; }
+    virtual T& atFastAbstractSub(s32 index) const;
+    virtual T& getArrayValueConst(s32 index);
+    virtual s32 getTopIndex() const;
+    virtual s32 getLastIndex() const;
+    virtual void setSize(s32 size);
+    virtual void setTopIndex(s32 topIndex);
+    virtual void setLastIndex(s32 lastIndex);
+    virtual void onFull();
+    virtual void offFull();
 
     soArrayVector() : m_topIndex(0), m_lastIndex(0), m_size(0), m_isFull(false) { }
 
@@ -757,6 +753,67 @@ public:
         return const_cast<T&>(m_elements[i]);
     }
 };
+
+// Individual member definitions permit explicit accessor instantiations.
+template <class T, s32 C>
+s32 soArrayVector<T, C>::size() const {
+    return m_size;
+}
+
+template <class T, s32 C>
+s32 soArrayVector<T, C>::capacity() const {
+    return C;
+}
+
+template <class T, s32 C>
+bool soArrayVector<T, C>::isFull() const {
+    return m_isFull;
+}
+
+template <class T, s32 C>
+T& soArrayVector<T, C>::atFastAbstractSub(s32 index) const {
+    return atFast(index);
+}
+
+template <class T, s32 C>
+T& soArrayVector<T, C>::getArrayValueConst(s32 index) {
+    return this->m_elements[index];
+}
+
+template <class T, s32 C>
+s32 soArrayVector<T, C>::getTopIndex() const {
+    return m_topIndex;
+}
+
+template <class T, s32 C>
+s32 soArrayVector<T, C>::getLastIndex() const {
+    return m_lastIndex;
+}
+
+template <class T, s32 C>
+void soArrayVector<T, C>::setSize(s32 size) {
+    m_size = size;
+}
+
+template <class T, s32 C>
+void soArrayVector<T, C>::setTopIndex(s32 topIndex) {
+    m_topIndex = topIndex;
+}
+
+template <class T, s32 C>
+void soArrayVector<T, C>::setLastIndex(s32 lastIndex) {
+    m_lastIndex = lastIndex;
+}
+
+template <class T, s32 C>
+void soArrayVector<T, C>::onFull() {
+    m_isFull = true;
+}
+
+template <class T, s32 C>
+void soArrayVector<T, C>::offFull() {
+    m_isFull = false;
+}
 
 template <class T>
 class soArrayVector<T, 0> : public soArrayNull<T> {
