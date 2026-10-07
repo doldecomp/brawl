@@ -203,110 +203,320 @@ mo_melee/sora_melee/so/so_common_data_accesser.cpp:
 	.ctors      start:0x0000004C end:0x00000050
 	.bss        start:0x00002CD0 end:0x00002E58
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_106_destructor.cpp:
+	.text       start:0x000CDFB4 end:0x000CE01C
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_106.cpp:
 	.text       start:0x000CE01C end:0x000CE0BC
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_115_destructor.cpp:
+	.text       start:0x000CE150 end:0x000CE1B8
 
 mo_melee/sora_melee/so/so_array_vector_interpolation_115.cpp:
 	.text       start:0x000CE1B8 end:0x000CE258
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_12_destructor.cpp:
+	.text       start:0x000CE2E8 end:0x000CE350
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_12.cpp:
 	.text       start:0x000CE350 end:0x000CE3F0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_14_destructor.cpp:
+	.text       start:0x000CE480 end:0x000CE4E8
 
 mo_melee/sora_melee/so/so_array_vector_interpolation_14.cpp:
 	.text       start:0x000CE4E8 end:0x000CE588
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_146_destructor.cpp:
+	.text       start:0x000CE618 end:0x000CE680
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_146.cpp:
 	.text       start:0x000CE680 end:0x000CE720
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_16_destructor.cpp:
+	.text       start:0x000CE7B0 end:0x000CE818
 
 mo_melee/sora_melee/so/so_array_vector_interpolation_16.cpp:
 	.text       start:0x000CE818 end:0x000CE8B8
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_17_destructor.cpp:
+	.text       start:0x000CE948 end:0x000CE9B0
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_17.cpp:
 	.text       start:0x000CE9B0 end:0x000CEA50
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_19_destructor.cpp:
+	.text       start:0x000CEAE0 end:0x000CEB48
 
 mo_melee/sora_melee/so/so_array_vector_interpolation_19.cpp:
 	.text       start:0x000CEB48 end:0x000CEBE8
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_22_destructor.cpp:
+	.text       start:0x000CEC78 end:0x000CECE0
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_22.cpp:
 	.text       start:0x000CECE0 end:0x000CED80
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_23_destructor.cpp:
+	.text       start:0x000CEE10 end:0x000CEE78
 
 mo_melee/sora_melee/so/so_array_vector_interpolation_23.cpp:
 	.text       start:0x000CEE78 end:0x000CEF18
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_24_destructor.cpp:
+	.text       start:0x000CEFA8 end:0x000CF010
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_24.cpp:
 	.text       start:0x000CF010 end:0x000CF0B0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_25_destructor.cpp:
+	.text       start:0x000CF140 end:0x000CF1A8
 
 mo_melee/sora_melee/so/so_array_vector_interpolation_25.cpp:
 	.text       start:0x000CF1A8 end:0x000CF248
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_26_destructor.cpp:
+	.text       start:0x000CF2D8 end:0x000CF340
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_26.cpp:
 	.text       start:0x000CF340 end:0x000CF3E0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_27_destructor.cpp:
+	.text       start:0x000CF470 end:0x000CF4D8
 
 mo_melee/sora_melee/so/so_array_vector_interpolation_27.cpp:
 	.text       start:0x000CF4D8 end:0x000CF578
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_28_destructor.cpp:
+	.text       start:0x000CF608 end:0x000CF670
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_28.cpp:
 	.text       start:0x000CF670 end:0x000CF710
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_29_destructor.cpp:
+	.text       start:0x000CF7A0 end:0x000CF808
 
 mo_melee/sora_melee/so/so_array_vector_interpolation_29.cpp:
 	.text       start:0x000CF808 end:0x000CF8A8
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_3_destructor.cpp:
+	.text       start:0x000CF938 end:0x000CF9A0
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_3.cpp:
 	.text       start:0x000CF9A0 end:0x000CFA40
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_31_destructor.cpp:
+	.text       start:0x000CFAD0 end:0x000CFB38
 
 mo_melee/sora_melee/so/so_array_vector_interpolation_31.cpp:
 	.text       start:0x000CFB38 end:0x000CFBD8
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_32_destructor.cpp:
+	.text       start:0x000CFC68 end:0x000CFCD0
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_32.cpp:
 	.text       start:0x000CFCD0 end:0x000CFD70
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_33_destructor.cpp:
+	.text       start:0x000CFE00 end:0x000CFE68
 
 mo_melee/sora_melee/so/so_array_vector_interpolation_33.cpp:
 	.text       start:0x000CFE68 end:0x000CFF08
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_34_destructor.cpp:
+	.text       start:0x000CFF98 end:0x000D0000
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_34.cpp:
 	.text       start:0x000D0000 end:0x000D00A0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_36_destructor.cpp:
+	.text       start:0x000D0130 end:0x000D0198
 
 mo_melee/sora_melee/so/so_array_vector_interpolation_36.cpp:
 	.text       start:0x000D0198 end:0x000D0238
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_37_destructor.cpp:
+	.text       start:0x000D02C8 end:0x000D0330
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_37.cpp:
 	.text       start:0x000D0330 end:0x000D03D0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_38_destructor.cpp:
+	.text       start:0x000D0460 end:0x000D04C8
 
 mo_melee/sora_melee/so/so_array_vector_interpolation_38.cpp:
 	.text       start:0x000D04C8 end:0x000D0568
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_39_destructor.cpp:
+	.text       start:0x000D05F8 end:0x000D0660
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_39.cpp:
 	.text       start:0x000D0660 end:0x000D0700
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_43_destructor.cpp:
+	.text       start:0x000D0790 end:0x000D07F8
 
 mo_melee/sora_melee/so/so_array_vector_interpolation_43.cpp:
 	.text       start:0x000D07F8 end:0x000D0898
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_44_destructor.cpp:
+	.text       start:0x000D0928 end:0x000D0990
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_44.cpp:
 	.text       start:0x000D0990 end:0x000D0A30
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_52_destructor.cpp:
+	.text       start:0x000D0AC0 end:0x000D0B28
 
 mo_melee/sora_melee/so/so_array_vector_interpolation_52.cpp:
 	.text       start:0x000D0B28 end:0x000D0BC8
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_54_destructor.cpp:
+	.text       start:0x000D0C58 end:0x000D0CC0
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_54.cpp:
 	.text       start:0x000D0CC0 end:0x000D0D60
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_61_destructor.cpp:
+	.text       start:0x000D0DF0 end:0x000D0E58
 
 mo_melee/sora_melee/so/so_array_vector_interpolation_61.cpp:
 	.text       start:0x000D0E58 end:0x000D0EF8
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_64_destructor.cpp:
+	.text       start:0x000D0F88 end:0x000D0FF0
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_64.cpp:
 	.text       start:0x000D0FF0 end:0x000D1090
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_65_destructor.cpp:
+	.text       start:0x000D1120 end:0x000D1188
 
 mo_melee/sora_melee/so/so_array_vector_interpolation_65.cpp:
 	.text       start:0x000D1188 end:0x000D1228
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_76_destructor.cpp:
+	.text       start:0x000D12B8 end:0x000D1320
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_76.cpp:
 	.text       start:0x000D1320 end:0x000D13C0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_9_destructor.cpp:
+	.text       start:0x000D1450 end:0x000D14B8
 
 mo_melee/sora_melee/so/so_array_vector_interpolation_9.cpp:
 	.text       start:0x000D14B8 end:0x000D1558
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_92_destructor.cpp:
+	.text       start:0x000D15E8 end:0x000D1650
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_92.cpp:
 	.text       start:0x000D1650 end:0x000D16F0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_92_lookup.cpp:
+	.text       start:0x000D9160 end:0x000D9188
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_9_lookup.cpp:
+	.text       start:0x000D9188 end:0x000D91B0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_76_lookup.cpp:
+	.text       start:0x000D91B0 end:0x000D91D8
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_65_lookup.cpp:
+	.text       start:0x000D91D8 end:0x000D9200
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_64_lookup.cpp:
+	.text       start:0x000D9200 end:0x000D9228
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_61_lookup.cpp:
+	.text       start:0x000D9228 end:0x000D9250
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_54_lookup.cpp:
+	.text       start:0x000D9250 end:0x000D9278
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_52_lookup.cpp:
+	.text       start:0x000D9278 end:0x000D92A0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_44_lookup.cpp:
+	.text       start:0x000D92A0 end:0x000D92C8
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_43_lookup.cpp:
+	.text       start:0x000D92C8 end:0x000D92F0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_39_lookup.cpp:
+	.text       start:0x000D92F0 end:0x000D9318
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_38_lookup.cpp:
+	.text       start:0x000D9318 end:0x000D9340
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_37_lookup.cpp:
+	.text       start:0x000D9340 end:0x000D9368
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_36_lookup.cpp:
+	.text       start:0x000D9368 end:0x000D9390
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_34_lookup.cpp:
+	.text       start:0x000D9390 end:0x000D93B8
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_33_lookup.cpp:
+	.text       start:0x000D93B8 end:0x000D93E0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_32_lookup.cpp:
+	.text       start:0x000D93E0 end:0x000D9408
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_31_lookup.cpp:
+	.text       start:0x000D9408 end:0x000D9430
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_3_lookup.cpp:
+	.text       start:0x000D9430 end:0x000D9458
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_29_lookup.cpp:
+	.text       start:0x000D9458 end:0x000D9480
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_28_lookup.cpp:
+	.text       start:0x000D9480 end:0x000D94A8
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_27_lookup.cpp:
+	.text       start:0x000D94A8 end:0x000D94D0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_26_lookup.cpp:
+	.text       start:0x000D94D0 end:0x000D94F8
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_25_lookup.cpp:
+	.text       start:0x000D94F8 end:0x000D9520
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_24_lookup.cpp:
+	.text       start:0x000D9520 end:0x000D9548
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_23_lookup.cpp:
+	.text       start:0x000D9548 end:0x000D9570
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_22_lookup.cpp:
+	.text       start:0x000D9570 end:0x000D9598
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_19_lookup.cpp:
+	.text       start:0x000D9598 end:0x000D95C0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_17_lookup.cpp:
+	.text       start:0x000D95C0 end:0x000D95E8
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_16_lookup.cpp:
+	.text       start:0x000D95E8 end:0x000D9610
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_146_lookup.cpp:
+	.text       start:0x000D9610 end:0x000D9638
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_14_lookup.cpp:
+	.text       start:0x000D9638 end:0x000D9660
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_12_lookup.cpp:
+	.text       start:0x000D9660 end:0x000D9688
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_115_lookup.cpp:
+	.text       start:0x000D9688 end:0x000D96B0
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_106_lookup.cpp:
+	.text       start:0x000D96B0 end:0x000D96D8
 
 mo_melee/sora_melee/so/so_array_vector_abstract_ptr_wnemSimple.cpp:
 	.text       start:0x000DBD1C end:0x000DC3F0
@@ -556,11 +766,23 @@ mo_melee/sora_melee/ft/ft_fighter_build_data.cpp:
 	.data       start:0x00032A98 end:0x00032BF8
 	.bss        start:0x00005040 end:0x00005050
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_1_destructor.cpp:
+	.text       start:0x0019FFEC end:0x001A0054
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_1.cpp:
 	.text       start:0x001A0054 end:0x001A00F4
 
+mo_melee/sora_melee/so/so_array_vector_interpolation_2_destructor.cpp:
+	.text       start:0x001A0184 end:0x001A01EC
+
 mo_melee/sora_melee/so/so_array_vector_interpolation_2.cpp:
 	.text       start:0x001A01EC end:0x001A028C
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_2_lookup.cpp:
+	.text       start:0x001B0124 end:0x001B014C
+
+mo_melee/sora_melee/so/so_array_vector_interpolation_1_lookup.cpp:
+	.text       start:0x001B13E8 end:0x001B1410
 
 mo_melee/sora_melee/so/so_array_vector_abstract_ptr_wnPikminPikmin.cpp:
 	.text       start:0x001B2A78 end:0x001B314C
