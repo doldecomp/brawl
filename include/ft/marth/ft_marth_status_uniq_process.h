@@ -43,6 +43,7 @@ public:
     virtual void execStatus(soModuleAccesser* moduleAccesser);
     virtual void execStop(soModuleAccesser* moduleAccesser);
     virtual void execFixPos(soModuleAccesser* moduleAccesser);
+    void updateHpWindow(soModuleAccesser* moduleAccesser);
 };
 
 extern ftMarthStatusUniqProcessSpecialS g_ftMarthStatusUniqProcessSpecialS;
