@@ -59,14 +59,11 @@ public:
     s16 m_10;
 
     soInstanceUnitFullProperty() : m_attribute(0), m_10(-1) { }
-    soInstanceUnitFullProperty(T& elm, s32 id, soAttributeFlag attr, s16 p4) :
-        soInstanceUnit<T>(elm, id), m_attribute(attr.m_mask), m_10(p4) { }
+    soInstanceUnitFullProperty(T& elm, s32 id, soAttributeFlag attr, s16 p4);
     ~soInstanceUnitFullProperty() { }
 
-    soAttributeFlag getAttribute() const {
-        // MATCH-ONLY: Preserve the signed mask load used by the original getter.
-        return soAttributeFlag(m_attribute.m_mask);
-    }
+    soAttributeFlag getAttribute() const;
+
 };
 
 // TODO: inferred class
@@ -81,3 +78,19 @@ public:
         m_attr(attr), m_prop(elm, id, m_attr, p4) { }
     ~soInstanceUnitFullPropertyWrapper() { }
 };
+
+
+// MATCH-ONLY: Managers call the separately owned record constructor.
+#ifndef SO_INSTANCE_UNIT_EXTERNAL_FULL_PROPERTY_CTOR
+template<class T>
+soInstanceUnitFullProperty<T>::soInstanceUnitFullProperty(T& elm, s32 id, soAttributeFlag attr, s16 p4) :
+    soInstanceUnit<T>(elm, id), m_attribute(attr.m_mask), m_10(p4) { }
+#endif
+
+// MATCH-ONLY: Managers call the separately owned signed mask getter.
+#ifndef SO_INSTANCE_UNIT_EXTERNAL_GET_ATTRIBUTE
+template<class T>
+soAttributeFlag soInstanceUnitFullProperty<T>::getAttribute() const {
+    return soAttributeFlag(m_attribute.m_mask);
+}
+#endif

@@ -22,7 +22,11 @@
 #undef SO_ARRAY_EXTERNAL_VECTOR_IS_FULL
 #undef SO_ARRAY_EXTERNAL_VECTOR_SIZE
 #undef SO_ARRAY_EXTERNAL_VECTOR_CAPACITY
+#define SO_INSTANCE_UNIT_EXTERNAL_FULL_PROPERTY_CTOR
+#define SO_INSTANCE_UNIT_EXTERNAL_GET_ATTRIBUTE
 #include <so/templates/so_instance_unit.h>
+#undef SO_INSTANCE_UNIT_EXTERNAL_FULL_PROPERTY_CTOR
+#undef SO_INSTANCE_UNIT_EXTERNAL_GET_ATTRIBUTE
 
 template <class T>
 class soInstanceManagerFixed : public soNullable {
@@ -395,4 +399,3 @@ s32 soInstanceManagerFullPropertyVector<T,C>::add(T& elm, s32 id, soAttributeFla
             soInstanceUnitFullProperty<T>(elm, id, attr, p4));
         return id;
     }
-
