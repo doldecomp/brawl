@@ -7,25 +7,46 @@
 
 class soGeneralWorkSimple : public soGeneralWorkAbstract {
     void clearInts() {
+#ifdef FT_MARTH_RUNTIME_HELPERS
+        u32 intWorkSize = m_intWorkSize;
+        // MATCH-ONLY: retain the original second size load before taking the minimum.
+        u32 currentSize = *(volatile u32*)&m_intWorkSize;
+        if (intWorkSize >= currentSize) intWorkSize = currentSize;
+#else
         s32 intWorkSize = m_intWorkSize;
         intWorkSize = (intWorkSize != m_intWorkSize) ? m_intWorkSize : intWorkSize;
-        for (s32 i = 0; i < intWorkSize; i++) {
+#endif
+        for (s32 i = 0; i < (s32)intWorkSize; i++) {
             m_intWorks[i] = 0;
         }
     }
 
     void clearFloats() {
+#ifdef FT_MARTH_RUNTIME_HELPERS
+        u32 floatWorkSize = m_floatWorkSize;
+        // MATCH-ONLY: retain the original second size load before taking the minimum.
+        u32 currentSize = *(volatile u32*)&m_floatWorkSize;
+        if (floatWorkSize >= currentSize) floatWorkSize = currentSize;
+#else
         s32 floatWorkSize = m_floatWorkSize;
         floatWorkSize = (floatWorkSize != m_floatWorkSize) ? m_floatWorkSize : floatWorkSize;
-        for (s32 i = 0; i < floatWorkSize; i++) {
+#endif
+        for (s32 i = 0; i < (s32)floatWorkSize; i++) {
             m_floatWorks[i] = 0;
         }
     }
 
     void clearFlags() {
+#ifdef FT_MARTH_RUNTIME_HELPERS
+        u32 flagWorkSize = m_flagWorkSize;
+        // MATCH-ONLY: retain the original second size load before taking the minimum.
+        u32 currentSize = *(volatile u32*)&m_flagWorkSize;
+        if (flagWorkSize >= currentSize) flagWorkSize = currentSize;
+#else
         s32 flagWorkSize = m_flagWorkSize;
         flagWorkSize = (flagWorkSize != m_flagWorkSize) ? m_flagWorkSize : flagWorkSize;
-        for (s32 i = 0; i < flagWorkSize; i++) {
+#endif
+        for (s32 i = 0; i < (s32)flagWorkSize; i++) {
             m_flagWorks[i] = 0;
         }
     }

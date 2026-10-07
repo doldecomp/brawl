@@ -1,3 +1,4 @@
+#define FT_MARTH_RUNTIME_HELPERS
 #define FT_MARTH_COLLISION_VEC3F_NOINLINE
 #include <ft/ft_class_info_impl.h>
 #include <ft/marth/ft_marth.h>
