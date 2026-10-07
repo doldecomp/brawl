@@ -19,7 +19,10 @@ public:
     virtual ~ftKineticEnergyMotion() { }
 #endif
     int m_motionMode; // +0x34
-    u8 m_unk38[0x18];
+    u32 unk38;
+    float unk3C;
+    float unk40;
+    u8 unk44[0xc];
 };
 
 class ftKineticEnergyStop : public soKineticEnergyNormal {

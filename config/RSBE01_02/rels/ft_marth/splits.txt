@@ -22,14 +22,14 @@ mo_fighter/ft_marth/ft_marth_status_uniq_process_special_s.cpp:
 	.text       start:0x0000A714 end:0x0000B5D8
 	.ctors      start:0x00000004 end:0x00000008
 	.rodata     start:0x00000020 end:0x00000028
-	.data       start:0x00005410 end:0x00005584
+	.data       start:0x00005410 end:0x00005538
 	.bss        start:0x00000198 end:0x000001A8
 
 mo_fighter/ft_marth/ft_marth_status_uniq_process_special_hi.cpp:
 	.text       start:0x0000B5D8 end:0x0000BFF0
 	.ctors      start:0x00000008 end:0x0000000C
 	.rodata     start:0x00000028 end:0x00000038
-	.data       start:0x00005584 end:0x00005600
+	.data       start:0x00005538 end:0x00005600
 	.bss        start:0x000001A8 end:0x000001B8
 
 mo_fighter/ft_marth/ft_marth_status_uniq_process_special_lw.cpp:
