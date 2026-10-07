@@ -28,16 +28,9 @@
 #undef SO_INSTANCE_UNIT_EXTERNAL_FULL_PROPERTY_CTOR
 #undef SO_INSTANCE_UNIT_EXTERNAL_GET_ATTRIBUTE
 
-template <class T>
-class soInstanceManagerFixed : public soNullable {
-public:
-    virtual T& at(s32 index) = 0;
-    virtual T& atIndex(s32 index) = 0;
-    virtual s32 getId(s32 index) = 0;
-    virtual u32 size() const = 0;
-    virtual bool isEmpty() const { return size() == 0; }
-    virtual bool isContain(s32) const = 0;
-};
+#define SO_INSTANCE_MANAGER_EXTERNAL_FIXED_IS_EMPTY
+#include <so/templates/so_instance_manager_fixed.h>
+#undef SO_INSTANCE_MANAGER_EXTERNAL_FIXED_IS_EMPTY
 
 template <class T>
 class soInstanceManager : public soInstanceManagerFixed<T> {

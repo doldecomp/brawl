@@ -134,6 +134,12 @@ mo_melee/sora_melee/so/so_instance_manager_free_id_soTeamEventObserver_255.cpp:
 mo_melee/sora_melee/so/so_instance_unit_full_property_soTeamEventObserver.cpp:
 	.text       start:0x000541FC end:0x00054224
 
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soTeamEventObserver.cpp:
+	.text       start:0x00054224 end:0x00054258
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soEventUnit.cpp:
+	.text       start:0x00054258 end:0x0005428C
+
 mo_melee/sora_melee/so/so_array_vector_accessors_soInstanceUnitFullProperty_ptr_soTeamEventObserver_255.cpp:
 	.text       start:0x000542E0 end:0x000543A8
 
@@ -207,6 +213,72 @@ mo_melee/sora_melee/so/so_array_vector_accessors_soArticle_24.cpp:
 mo_melee/sora_melee/so/so_array_vector_abstract_ptr_soArticle.cpp:
 	.text       start:0x0007AC18 end:0x0007B2EC
 
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soLogEventObserver.cpp:
+	.text       start:0x00084CF8 end:0x00084D2C
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soTurnEventObserver.cpp:
+	.text       start:0x00084D2C end:0x00084D60
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soGimmickEventObserver.cpp:
+	.text       start:0x00084D60 end:0x00084D94
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soDisposeInstanceEventObserver.cpp:
+	.text       start:0x00084D94 end:0x00084DC8
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soModelEventObserver.cpp:
+	.text       start:0x00084DC8 end:0x00084DFC
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soItemManageEventObserver.cpp:
+	.text       start:0x00084DFC end:0x00084E30
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soCollisionSearchEventObserver.cpp:
+	.text       start:0x00084E30 end:0x00084E64
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soSituationEventObserver.cpp:
+	.text       start:0x00084E64 end:0x00084E98
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soMotionEventObserver.cpp:
+	.text       start:0x00084E98 end:0x00084ECC
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soCollisionAbsorberEventObserver.cpp:
+	.text       start:0x00084ECC end:0x00084F00
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soCollisionReflectorEventObserver.cpp:
+	.text       start:0x00084F00 end:0x00084F34
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soCollisionShieldEventObserver.cpp:
+	.text       start:0x00084F34 end:0x00084F68
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soStatusEventObserver.cpp:
+	.text       start:0x00084F68 end:0x00084F9C
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soCatchEventObserver.cpp:
+	.text       start:0x00084F9C end:0x00084FD0
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soCaptureEventObserver.cpp:
+	.text       start:0x00084FD0 end:0x00085004
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soAnimCmdEventObserver.cpp:
+	.text       start:0x00085004 end:0x00085038
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soLinkEventObserver.cpp:
+	.text       start:0x00085038 end:0x0008506C
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soArticleEventObserver.cpp:
+	.text       start:0x0008506C end:0x000850A0
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soDamageEventObserver.cpp:
+	.text       start:0x000850A0 end:0x000850D4
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soCollisionCatchEventObserver.cpp:
+	.text       start:0x000850D4 end:0x00085108
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soCollisionHitEventObserver.cpp:
+	.text       start:0x00085108 end:0x0008513C
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soCollisionAttackEventObserver.cpp:
+	.text       start:0x0008513C end:0x00085170
+
 mo_melee/sora_melee/so/so_instance_unit_full_property_soKineticEnergy_part1.cpp:
 	.text       start:0x0008754C end:0x00087558
 
@@ -241,6 +313,9 @@ mo_melee/sora_melee/so/so_general_work_simple.cpp:
 	.rodata     start:0x00000C20 end:0x00000C24
 	.data       start:0x00013C50 end:0x00013CF0
 	.bss        start:0x00001B70 end:0x00001BA0
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soEventManager.cpp:
+	.text       start:0x0008F9F0 end:0x0008FA24
 
 mo_melee/sora_melee/so/so_array_vector_accessors_soInstanceUnit_ptr_soEventManager_500.cpp:
 	.text       start:0x0009271C end:0x000927E4
@@ -2171,6 +2246,9 @@ mo_melee/sora_melee/so/so_array_vector_accessors_soInstanceUnitFullProperty_ptr_
 mo_melee/sora_melee/so/so_array_vector_abstract_record_soInstanceUnitFullProperty_ftOutsideEventObserver.cpp:
 	.text       start:0x0010EC74 end:0x0010F3C0
 
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_ftOutsideEventObserver.cpp:
+	.text       start:0x0010F3F4 end:0x0010F428
+
 mo_melee/sora_melee/so/so_array_vector_abstract_ptr_ftEntry_part1.cpp:
 	.text       start:0x0011A958 end:0x0011AB6C
 
@@ -2215,6 +2293,9 @@ mo_melee/sora_melee/so/so_instance_manager_free_id_ftEntryEventObserver_4.cpp:
 
 mo_melee/sora_melee/so/so_instance_unit_full_property_ftEntryEventObserver.cpp:
 	.text       start:0x0011B868 end:0x0011B890
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_ftEntryEventObserver.cpp:
+	.text       start:0x0011B890 end:0x0011B8C4
 
 mo_melee/sora_melee/so/so_array_vector_accessors_ftEntry_9_part2.cpp:
 	.text       start:0x0011B918 end:0x0011B9D0
@@ -2908,6 +2989,9 @@ mo_melee/sora_melee/so/so_instance_manager_value_soAnimCmdControlUnit_11_part3.c
 mo_melee/sora_melee/so/so_instance_manager_free_id_soAnimCmdControlUnit_11.cpp:
 	.text       start:0x001AC180 end:0x001AC35C
 
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soAnimCmdControlUnit.cpp:
+	.text       start:0x001AC35C end:0x001AC390
+
 mo_melee/sora_melee/so/so_instance_manager_add_soAnimCmdControlUnit_6.cpp:
 	.text       start:0x001AC430 end:0x001AC5D8
 
@@ -2967,6 +3051,9 @@ mo_melee/sora_melee/so/so_instance_manager_members_soKineticEnergy_12_part3.cpp:
 
 mo_melee/sora_melee/so/so_instance_manager_free_id_soKineticEnergy_12.cpp:
 	.text       start:0x001AD58C end:0x001AD768
+
+mo_melee/sora_melee/so/so_instance_manager_fixed_is_empty_soKineticEnergy.cpp:
+	.text       start:0x001AD768 end:0x001AD79C
 
 mo_melee/sora_melee/so/so_instance_manager_add_soKineticEnergy_2.cpp:
 	.text       start:0x001AD83C end:0x001AD9E4
