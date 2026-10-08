@@ -3,6 +3,7 @@
 #include <gr/gr_yakumono.h>
 #include <mt/mt_matrix.h>
 #include <st/se_util.h>
+#include <gr/collision/gr_collision_joint.h>
 
 // Mute City (F-Zero) stage gimmicks. Every gimmick derives from grFzero, a thin grYakumono that carries a state byte
 // and a timer, and receives pointers into the stage object (stFzero) through virtual setters right after it is created:
@@ -114,3 +115,36 @@ public:
     virtual void setMtxWork(Matrix* mtxWork) { m_mtxWork = mtxWork; }
 };
 static_assert(sizeof(grFzeroPlateRing) == 0x160, "grFzeroPlateRing layout");
+
+// The floating platforms along the course (Ashiba = scaffold). m_scene says which course section the platform belongs
+// to; scene 7 is the platform that sinks out of and rises back into the course (the "idou" = moving variant, which also
+// owns a collision joint), the others appear when their section starts and disappear when it ends.
+class grFzeroAshiba : public grFzero {
+    u8* m_sceneWork;       // 0x158 course section the stage is in
+    u8 m_scene;            // 0x15C section this platform belongs to (7 = the moving platform)
+    u8* m_stateWork;       // 0x160 platform progress shared with the stage
+    u8* m_stateNodeWork;   // 0x164
+    Matrix* m_mtxWork;     // 0x168 stage matrix the platform is placed with
+    float m_offsetX;       // 0x16C offset applied to the matrix
+    float m_offsetY;       // 0x170
+    float m_offsetZ;       // 0x174
+    grCollisionJoint* m_joint; // 0x178 collision joint of the moving platform
+    u8 m_animId;           // 0x17C current animation (2 = none)
+    float m_timer2;        // 0x180 second timer (animation length / sink time)
+
+public:
+    grFzeroAshiba(const char* taskName);
+    virtual ~grFzeroAshiba();
+    virtual void update(float deltaFrame);
+    static grFzeroAshiba* create(int mdlIndex, const char* nodeName, const char* taskName);
+    virtual void updateActive(float deltaFrame);
+    virtual void updateActiveIdou(float deltaFrame);
+    virtual void updateCallBack(float deltaFrame);
+    virtual void setMotion(u32 animId, bool loop, bool force, float* frameCount);
+    virtual void setSceneWork(u8* sceneWork) { m_sceneWork = sceneWork; }
+    virtual void setScene(u8 scene) { m_scene = scene; }
+    virtual void setStateWork(u8* stateWork) { m_stateWork = stateWork; }
+    virtual void setStateNodeWork(u8* stateNodeWork) { m_stateNodeWork = stateNodeWork; }
+    virtual void setMtxWork(Matrix* mtxWork) { m_mtxWork = mtxWork; }
+};
+static_assert(sizeof(grFzeroAshiba) == 0x184, "grFzeroAshiba layout");
