@@ -15,7 +15,12 @@ public:
     bool isEstimate();
     bool isAdjust();
 
+#ifdef SO_SLOW_GET_INSTANCE_OUT_OF_LINE
+    // The fighter RELs keep one out-of-line copy of this accessor instead of expanding it at each call.
+    static soSlow* getInstance() __attribute__((never_inline)) {
+#else
     static soSlow* getInstance() {
+#endif
         if (ms_instance == NULL) {
             ms_instance = new (Heaps::System) soSlow();
         }

@@ -90,6 +90,7 @@ public:
     u32 getItemNum(itKind kind, int variation, int taskId, int);
     BaseItem* getItemFromInstanceId(int instanceId);
     void removeItem(BaseItem*);
+    void removeItem1(int taskId); // HYPOTHESIS: removes the item with this task id (R.O.B.'s gyro on deactivation)
     bool preloadAssist(itKind, int variation = 0); // custom parameter
 
 

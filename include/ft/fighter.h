@@ -1408,6 +1408,9 @@ public:
     virtual void notifyEventLink(soLinkEventArgs *eventInfo, soModuleAccesser* moduleAccesser, StageObject*, int unk4);
     virtual void updateRoughPos();
 
+    // HYPOTHESIS: argument meanings (R.O.B.'s Final Smash calls it with true, true, false).
+    void endFinal(bool a, bool b, bool c);
+
     // TODO: Verify parameters
     virtual void postCreate();
     Fighter* getPartner();
