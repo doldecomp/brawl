@@ -683,7 +683,7 @@ void stFzero::updateCar(float deltaFrame) {
                 for (u8 i = 0; i < 30; i++) {
                     order[i] = i;
                 }
-                for (u32 i = 0; i < 30; i++) {
+                for (u8 i = 0; i < 30; i++) {
                     u8 j = fzeroRandIndex(30.0f, 29);
                     u8 tmp = order[i];
                     order[i] = order[j];
@@ -705,28 +705,31 @@ void stFzero::updateCar(float deltaFrame) {
                 mtxOrder[12] = 12;
                 mtxOrder[13] = 13;
                 mtxOrder[14] = 14;
-                for (u32 i = 0; i < 15; i++) {
+                for (u8 i = 0; i < 15; i++) {
                     u8 j = fzeroRandIndex(15.0f, 14);
                     u8 tmp = mtxOrder[i];
                     mtxOrder[i] = mtxOrder[j];
                     mtxOrder[j] = tmp;
                 }
-                u8 type = 0;
-                for (u32 i = 0; i < 15; i++) {
+                int type = 0;
+                for (u8 i = 0; i < 15; i++) {
                     stFzeroCarData* car = &m_carData[order[i]];
                     car->m_mtx = mtx(mtxOrder[i] + 24);
                     car->m_state = 7;
                     car->m_type = type;
-                    if (type == 2) {
+                    switch (type) {
+                    case 0:
+                        type = 1;
+                        break;
+                    case 1:
+                        type = 2;
+                        break;
+                    case 2:
                         type = 3;
-                    } else if (type < 2) {
-                        if (type == 0) {
-                            type = 1;
-                        } else {
-                            type = 2;
-                        }
-                    } else if (type < 4) {
+                        break;
+                    case 3:
                         type = 0;
+                        break;
                     }
                 }
                 m_carMode = 7;
