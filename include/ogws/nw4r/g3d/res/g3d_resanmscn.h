@@ -64,9 +64,10 @@ public:
 
     bool HasResAnmAmbLight() const;
     bool HasResAnmLight() const;
+    bool HasResAnmCamera() const;
+    void Release();
 
     ResLightSet GetResLightSet(int idx) const;
-    ResLightSet GetResLightSet(u32 idx) const;
     u32 GetResLightSetNumEntries() const;
 
     ResAnmAmbLight GetResAnmAmbLight(const ResName name) const;
@@ -76,6 +77,16 @@ public:
     ResAnmLight GetResAnmLight(const ResName name) const;
     ResAnmLight GetResAnmLight(int idx) const;
     ResAnmLight GetResAnmLight(u32 idx) const;
+    u32 GetResAnmAmbLightNumEntries() const;
+    u32 GetResAnmLightNumEntries() const;
+
+    ResAnmFog GetResAnmFog(int idx) const;
+    ResAnmFog GetResAnmFog(u32 idx) const;
+    u32 GetResAnmFogNumEntries() const;
+
+    ResAnmCamera GetResAnmCamera(int idx) const;
+    ResAnmCamera GetResAnmCamera(u32 idx) const;
+    u32 GetResAnmCameraNumEntries() const;
 
     ResLightSet GetResLightSetByRefNumber(u32 refNumber) const;
 #if defined(VERSION_RSPE01_00)

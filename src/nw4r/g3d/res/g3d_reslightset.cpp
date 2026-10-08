@@ -61,5 +61,15 @@ bool ResLightSet::Bind(const ResAnmScn scene) {
     return numBound == numAllLight;
 }
 
+void ResLightSet::Release() {
+    ResLightSetData& r = ref();
+
+    r.ambLightId = ResLightSetData::INVALID_ID;
+
+    for (u32 i = 0; i < r.numLight; i++) {
+        r.lightId[i] = ResLightSetData::INVALID_ID;
+    }
+}
+
 } // namespace g3d
 } // namespace nw4r

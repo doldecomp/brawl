@@ -84,6 +84,10 @@ public:
     void PatchChrAnmResult(ChrAnmResult* pResult) const;
     void CalcChrAnmResult(ChrAnmResult* pResult) const;
 
+    void SetScale(f32 x, f32 y, f32 z);
+    void SetTranslate(f32 x, f32 y, f32 z);
+    void SetRotate(f32 x, f32 y, f32 z);
+
     const char* GetName() const {
         const ResNodeData& r = ref();
 

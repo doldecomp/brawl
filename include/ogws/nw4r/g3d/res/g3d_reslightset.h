@@ -33,6 +33,7 @@ public:
     NW4R_G3D_RESOURCE_FUNC_DEF(ResLightSet);
 
     bool Bind(const ResAnmScn scene);
+    void Release();
 
     bool HasAmbLight() const {
         return ref().ambLightName != 0;
