@@ -24,8 +24,25 @@ typedef soMotionModuleBuildConfig<463, soMotionModuleImpl, 2, 2, soTransitionMod
 typedef soCollisionShieldModuleBuildConfigGroups<2, 1, 1, soCollisionShieldEventPresenterShield, soCollisionShieldModuleImpl> ftZakoCollisionShieldModuleBuildConfig;
 typedef soCollisionReflectorModuleBuildConfigGroups<3, 20, 2, soCollisionShieldEventPresenterReflector, soCollisionShieldModuleImpl> ftZakoCollisionReflectorModuleBuildConfig;
 typedef soLinkModuleBuildConfigCap<6, soLinkModuleImpl> ftZakoLinkModuleBuildConfig;
-typedef soAreaModuleBuildConfig<ftAreaModuleImpl, 3> ftZakoAreaModuleBuildConfig;
+typedef soAreaModuleBuildConfigNullWind<3, ftAreaModuleImpl> ftZakoAreaModuleBuildConfig;
 typedef soStatusModuleBuildConfig<280, soGeneralWorkBuildConfig<18, 14, 2>, 274, 71, soTransitionModuleBuildConfig<ftStatusTransitionTypeList> > ftZakoStatusModuleBuildConfig;
+
+// Zako has no items: its item manage builder is an empty class (4 bytes as a member) and the accesser gets the shared null module.
+extern char g_soItemManageModuleNull[];
+template <typename T>
+class ftZakoNullItemManageModuleBuildConfig {
+public:
+    typedef T ModuleType;
+};
+
+template <typename T>
+class soItemManageModuleBuilder<ftZakoNullItemManageModuleBuildConfig<T> > {
+public:
+    soItemManageModuleBuilder(soModuleAccesser*, void*) { }
+    void* getModule() { return g_soItemManageModuleNull; }
+};
+
+typedef ftZakoNullItemManageModuleBuildConfig<soItemManageModuleImpl> ftZakoItemManageModuleBuildConfig;
 
 class ftZakoBuildConfig : public ftCommonBuildConfig {
 public:
@@ -41,6 +58,7 @@ public:
     typedef ftZakoLinkModuleBuildConfig LinkModuleBuildConfig;
     typedef ftZakoAreaModuleBuildConfig AreaModuleBuildConfig;
     typedef ftZakoStatusModuleBuildConfig StatusModuleBuildConfig;
+    typedef ftZakoItemManageModuleBuildConfig ItemManageModuleBuildConfig;
 };
 
 class ftZakoBoyBuildConfig : public ftZakoBuildConfig { };

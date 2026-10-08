@@ -46,11 +46,29 @@ FT_ZAKO_IMPL(Girl)
 FT_ZAKO_IMPL(Child)
 FT_ZAKO_IMPL(Ball)
 
-// FIXME: the module setup performed by onActivate is not reconstructed yet
-void ftZakoBoy::onActivate() { }
-void ftZakoGirl::onActivate() { }
-void ftZakoChild::onActivate() { }
-void ftZakoBall::onActivate() { }
+// Plays the common "other" animation layer and sets four work flags on activation.
+// HYPOTHESIS: the flags are the invincibility/ground-state flags set by the common statuses; names unknown.
+#define FT_ZAKO_ON_ACTIVATE(NAME)                                                           \
+    void ftZako##NAME::onActivate() {                                                       \
+        soModuleAccesser* acc = m_moduleAccesser;                                           \
+        float one = 1.0f;                                                                   \
+        acc->getMotionModule().addOtherAnim(0.0f, one, 1, 0x1CE, true);                     \
+        acc->getMotionModule().setOtherAnimRate(one, 1);                                    \
+        acc->getWorkManageModule().onFlag(0x12000021);                                     \
+        acc->getWorkManageModule().onFlag(0x12000022);                                     \
+        acc->getWorkManageModule().onFlag(0x12000023);                                     \
+        acc->getWorkManageModule().onFlag(0x1200001D);                                     \
+    }
+
+FT_ZAKO_ON_ACTIVATE(Boy)
+FT_ZAKO_ON_ACTIVATE(Girl)
+FT_ZAKO_ON_ACTIVATE(Child)
+FT_ZAKO_ON_ACTIVATE(Ball)
+
+// MATCH-ONLY: the REL emits Fighter's empty onActivate (the vtable base entry); keep it alive.
+#pragma dont_inline on
+void ftZakoKeepFighterOnActivate(Fighter* fighter) { fighter->Fighter::onActivate(); }
+#pragma dont_inline off
 
 // FIXME: Test code present only to emit the shared builder functions
 void testBuilder() {
