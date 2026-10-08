@@ -102,12 +102,15 @@ void ftYoshiKineticTransactor::changeKineticSub2(bool*, void*, Vec2f* speed, soM
     float horizontalSpeed = speed->m_x;
     float verticalSpeed = speed->m_y;
     float horizontalLimit = param->unk00;
-    bool useStop = horizontalSpeed * lr <= horizontalLimit && horizontalSpeed * lr >= 0.0f;
-    Vec2f stopSpeed(useStop ? horizontalSpeed * lr : 0.0f, 0.0f);
+    float directedHorizontalSpeed = horizontalSpeed * lr;
+    // Native selects Stop by branching out on H > limit or H < 0; preserve its unordered path.
+    bool useStop = !(directedHorizontalSpeed > horizontalLimit || directedHorizontalSpeed < 0.0f);
+    Vec2f stopSpeed(useStop ? directedHorizontalSpeed : 0.0f, 0.0f);
     Vec2f controllerSpeed(useStop ? 0.0f : horizontalSpeed, 0.0f);
 
     float verticalLimit = param->unk20;
-    bool useGravity = verticalSpeed >= -verticalLimit && verticalSpeed <= 0.0f;
+    // The native gravity selectors branch out only for V < -limit or V > 0.
+    bool useGravity = !(verticalSpeed < -verticalLimit || verticalSpeed > 0.0f);
     Vec2f gravitySpeed(0.0f, useGravity ? verticalSpeed : 0.0f);
     controllerSpeed.m_y = useGravity ? -verticalLimit : verticalSpeed;
     Vec3f rotation(0.0f, 0.0f, 0.0f);
@@ -161,7 +164,8 @@ void ftYoshiKineticTransactor::changeKineticSub3(bool*, void*, Vec2f* speed, soM
 
     float verticalLimit = param->unk20;
     float verticalSpeed = speed->m_y;
-    bool useGravity = verticalSpeed >= -verticalLimit && verticalSpeed <= 0.0f;
+    // The native gravity selectors branch out only for V < -limit or V > 0.
+    bool useGravity = !(verticalSpeed < -verticalLimit || verticalSpeed > 0.0f);
     Vec2f gravitySpeed(0.0f, useGravity ? verticalSpeed : 0.0f);
     Vec2f controllerSpeed(speed->m_x, useGravity ? -verticalLimit : verticalSpeed);
     Vec3f rotation(0.0f, 0.0f, 0.0f);
