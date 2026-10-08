@@ -105,7 +105,7 @@ if 'report' in sys.argv:
         return argparse.Namespace(action=action, project=str(self.root), version="V", mode=mode,
             target=[] if mode == "full" else ["build/V/a.o"], jobs=1, output=str(self.base/output), lock=str(self.lock),
             ninja="tools/ninja", dtk="tools/dtk", objdiff="tools/objdiff", baseline=str(self.base/"baseline"),
-            expected_baseline_revision=build.git(self.root, "rev-parse", "HEAD"), expected_baseline_fingerprint=None, configure_arg=[])
+            expected_baseline_revision=build.git(self.root, "rev-parse", "HEAD"), expected_baseline_fingerprint=None, configure_arg=[], fresh_report=False)
 
     def test_full_gate_runs_three_explicit_commands(self):
         state = build.run(self.args())
@@ -287,12 +287,207 @@ if 'report' in sys.argv:
         state["source"]["inputs"]["files"]["src/a.cpp"]="fake";build.write_json(p,state)
         with self.assertRaises(build.ValidationError):build.evidence(self.base/"baseline")
 
+    def baseline_and_candidate_args(self, mode="full"):
+        state=build.run(self.args())
+        a=self.args("run",mode=mode,output="candidate")
+        a.expected_baseline_fingerprint=state["source"]["source_fingerprint"]
+        return state,a
+
+    def test_identical_closure_reuses_entire_report_and_fresh_hash_gate(self):
+        baseline,a=self.baseline_and_candidate_args()
+        state=build.run(a)
+        self.assertEqual(state["report_generation"]["kind"],"reused")
+        self.assertEqual((self.base/"baseline/report.json").read_bytes(),(self.base/"candidate/report.json").read_bytes())
+        self.assertEqual([c["role"] for c in state["commands"]],
+                         ["configure","prepare-original","dependency-provenance","build","all127-hashes"])
+        self.assertEqual(state["hashes"],{"ok":127,"bad":0})
+        self.assertTrue(state["full_gate"])
+        build.evidence(self.base/"candidate")
+
+    def test_fresh_report_option_bypasses_reuse(self):
+        _,a=self.baseline_and_candidate_args();a.fresh_report=True
+        state=build.run(a)
+        self.assertEqual(state["report_generation"]["kind"],"generated")
+        self.assertEqual(state["commands"][-1]["role"],"fresh-report")
+
+    def test_v1_fresh_evidence_without_reuse_key_regenerates(self):
+        _,a=self.baseline_and_candidate_args();p=self.base/"baseline/validation.json"
+        state=build.load_json(p);del state["report_reuse"];del state["report_generation"];build.write_json(p,state)
+        self.assertEqual(build.run(a)["report_generation"]["kind"],"generated")
+
+    def test_modified_base_bytes_regenerate(self):
+        _,a=self.baseline_and_candidate_args();(self.root/"build/V/a.o").write_text("changed compiled object")
+        self.assertEqual(build.run(a)["report_generation"]["kind"],"generated")
+
+    def test_modified_target_bytes_regenerate(self):
+        _,a=self.baseline_and_candidate_args();(self.root/"build/V/orig.o").write_text("changed original object")
+        self.assertEqual(build.run(a)["report_generation"]["kind"],"generated")
+
+    def test_config_metadata_completeness_change_regenerates(self):
+        _,a=self.baseline_and_candidate_args();p=self.root/"objdiff.json";cfg=build.load_json(p)
+        cfg["units"][0]["metadata"]={"complete":True,"progress_categories":["different"]}
+        build.write_json(p,cfg)
+        self.assertEqual(build.run(a)["report_generation"]["kind"],"generated")
+
+    def prepare_second_unit(self, unavailable=False):
+        p=self.root/"objdiff.json";cfg=build.load_json(p)
+        cfg["units"].append({"name":"main/second","base_path":"build/V/b.o","target_path":"build/V/orig2.o"})
+        build.write_json(p,cfg);(self.root/"build/V/orig2.o").write_text("original2")
+        if not unavailable:(self.root/"build/V/b.o").write_text("compiled2")
+        p=self.root/"tools/objdiff";text=p.read_text()
+        text=text.replace("'virtual_address':'4096'","'virtual_address':'4096' if unit['name']=='main/example' else '4100'")
+        text=text.replace("'fuzzy_match_percent':100","'fuzzy_match_percent':100 if Path(unit['base_path']).is_file() else 0")
+        p.write_text(text)
+
+    def test_ordered_config_change_regenerates(self):
+        self.prepare_second_unit();_,a=self.baseline_and_candidate_args()
+        p=self.root/"objdiff.json";cfg=build.load_json(p);cfg["units"].reverse();build.write_json(p,cfg)
+        self.assertEqual(build.run(a)["report_generation"]["kind"],"generated")
+
+    def test_missing_base_becoming_available_regenerates(self):
+        self.prepare_second_unit(unavailable=True);_,a=self.baseline_and_candidate_args()
+        (self.root/"build/V/b.o").write_text("new compiled draft")
+        state=build.run(a)
+        self.assertEqual(state["report_generation"]["kind"],"generated")
+        self.assertEqual(state["unavailable_base_units"],[])
+        self.assertEqual(len(state["comparison"]["gained"]),1)
+
+    def test_available_base_disappearing_regenerates_and_detects_loss(self):
+        self.prepare_second_unit();_,a=self.baseline_and_candidate_args()
+        (self.root/"build/V/b.o").unlink()
+        with self.assertRaises(build.ValidationError):build.run(a)
+        state=build.load_json(self.base/"candidate/validation.json")
+        self.assertEqual(state["report_generation"]["kind"],"generated")
+        self.assertEqual(state["commands"][-1]["role"],"fresh-report")
+        self.assertEqual(len(state["comparison"]["lost"]),1)
+
+    def test_changed_tool_still_requires_new_baseline(self):
+        _,a=self.baseline_and_candidate_args();p=self.root/"tools/objdiff"
+        p.write_text(p.read_text()+"\n# new binary content\n")
+        with self.assertRaises(build.ValidationError):build.run(a)
+        self.assertFalse((self.base/"candidate").exists())
+
+    def test_changed_runtime_still_requires_new_baseline(self):
+        _,a=self.baseline_and_candidate_args();p=self.root/"build/compilers/version"
+        p.parent.mkdir();p.write_text("different runtime")
+        with self.assertRaises(build.ValidationError):build.run(a)
+        state=build.load_json(self.base/"candidate/validation.json")
+        self.assertEqual(state["status"],"failed")
+
+    def test_scope_change_regenerates_not_splices(self):
+        self.prepare_second_unit();_,a=self.baseline_and_candidate_args(mode="objects")
+        state=build.run(a)
+        self.assertEqual(state["report_generation"]["kind"],"generated")
+        self.assertEqual(state["units"],["main/example"])
+        self.assertFalse(state["full_gate"])
+
+    def test_scoped_reuse_stays_scoped(self):
+        baseline=build.run(self.args(mode="objects"));a=self.args("run",mode="objects",output="candidate")
+        a.expected_baseline_fingerprint=baseline["source"]["source_fingerprint"]
+        state=build.run(a)
+        self.assertEqual(state["report_generation"]["kind"],"reused")
+        self.assertFalse(state["full_gate"]);self.assertNotIn("hashes",state)
+        build.evidence(self.base/"candidate")
+
+    def test_report_closure_key_includes_split_tool_runtime_and_configuration(self):
+        baseline,_=self.baseline_and_candidate_args()
+        old=baseline["report_reuse"]
+        for field in ["split_config","generated","runtime","original_binaries","objdiff_tool","options","config_sha256","object_inputs","unavailable_base_units"]:
+            with self.subTest(field=field):
+                current=copy.deepcopy(old);current["inputs"][field]="different"
+                current["sha256"]=build.json_digest(current["inputs"])
+                self.assertFalse(build.may_reuse_report(baseline,current,False))
+
+    def test_split_metadata_change_regenerates(self):
+        _,a=self.baseline_and_candidate_args();(self.root/"build/V/config.json").write_text('{"changed":true}')
+        self.assertEqual(build.run(a)["report_generation"]["kind"],"generated")
+
+    def test_bad_fresh_hash_gate_blocks_reuse(self):
+        _,a=self.baseline_and_candidate_args();(self.root/"build/V/5.rel").write_text("bad")
+        with patch.object(build,"reuse_report") as reuse:
+            with self.assertRaises(build.ValidationError):build.run(a)
+            reuse.assert_not_called()
+        self.assertEqual(build.load_json(self.base/"candidate/validation.json")["status"],"failed")
+
+    def test_baseline_tampering_at_copy_rejected(self):
+        _,a=self.baseline_and_candidate_args();original=build.reuse_report
+        def tamper(path,output,state):
+            (path/"report.json").write_text("{}")
+            original(path,output,state)
+        with patch.object(build,"reuse_report",side_effect=tamper):
+            with self.assertRaises(build.ValidationError):build.run(a)
+        self.assertFalse(build.load_json(self.base/"candidate/validation.json")["full_gate"])
+
+    def test_object_drift_after_copy_rejected(self):
+        _,a=self.baseline_and_candidate_args();original=build.shutil.copyfile
+        def drift(source,destination):
+            result=original(source,destination)
+            (self.root/"build/V/a.o").write_text("drift")
+            return result
+        with patch.object(build.shutil,"copyfile",side_effect=drift):
+            with self.assertRaises(build.ValidationError):build.run(a)
+
+    def test_reused_evidence_does_not_depend_on_ancestor_path(self):
+        _,a=self.baseline_and_candidate_args();build.run(a)
+        build.shutil.rmtree(self.base/"baseline")
+        build.evidence(self.base/"candidate")
+
+    def test_nested_reuse_records_explicit_ancestry(self):
+        _,a=self.baseline_and_candidate_args();state=build.run(a)
+        a=self.args("run",output="third");a.baseline=str(self.base/"candidate")
+        a.expected_baseline_fingerprint=state["source"]["source_fingerprint"]
+        final=build.run(a)
+        self.assertEqual(len(final["report_generation"]["ancestry"]),2)
+        build.evidence(self.base/"third")
+
+    def test_reused_origin_tampering_rejected(self):
+        _,a=self.baseline_and_candidate_args();build.run(a)
+        p=self.base/"candidate/validation.json";state=build.load_json(p)
+        state["report_generation"]["origin"]["report_sha256"]="0"*64;build.write_json(p,state)
+        with self.assertRaises(build.ValidationError):build.evidence(self.base/"candidate")
+
+    def test_inconsistent_reuse_key_rejected(self):
+        build.run(self.args());p=self.base/"baseline/validation.json";state=build.load_json(p)
+        state["report_reuse"]["inputs"]["options"]=["unverified option"];build.write_json(p,state)
+        with self.assertRaises(build.ValidationError):build.evidence(self.base/"baseline")
+
     def test_command_failure_is_recorded(self):
         (self.root/"tools/ninja").write_text("#!/bin/sh\nexit 3\n")
         with self.assertRaises(build.ValidationError): build.run(self.args())
         state=build.load_json(self.base/"baseline/validation.json")
         self.assertEqual(state["commands"][1]["returncode"],3)
         self.assertEqual(state["status"],"failed")
+
+
+
+
+class DependencyPathTests(unittest.TestCase):
+    def audit(self, text, root):
+        with patch.object(build.Path, "read_text", return_value=text):
+            build.validate_dependency_paths(Path("/synthetic/deps.log"), root)
+    def test_duplicate_absolute_paths_resolved_once(self):
+        root = Path("/synthetic/project")
+        with patch.object(build.Path, "resolve", return_value=root / "include/header.h") as resolve:
+            self.audit("    /synthetic/project/include/header.h\n" * 100, root)
+        self.assertEqual(resolve.call_count, 1)
+
+    def test_foreign_absolute_path_rejected_even_when_repeated(self):
+        root = Path("/synthetic/project")
+        with self.assertRaises(build.ValidationError):
+            self.audit("    /synthetic/foreign.h\n" * 3, root)
+
+    def test_symlink_escape_rejected(self):
+        with tempfile.TemporaryDirectory() as folder:
+            base = Path(folder); root = base / "project"; root.mkdir()
+            outside = base / "outside.h"; outside.write_text("synthetic")
+            link = root / "escaped.h"; link.symlink_to(outside)
+            with self.assertRaises(build.ValidationError):
+                self.audit("    " + str(link) + "\n", root)
+
+    def test_relative_paths_keep_existing_policy(self):
+        with patch.object(build.Path, "resolve") as resolve:
+            self.audit("    ../relative/header.h\n    include/local.h\noutput.o: #deps 2\n", Path("/synthetic/project"))
+        resolve.assert_not_called()
 
 
 if __name__ == "__main__":

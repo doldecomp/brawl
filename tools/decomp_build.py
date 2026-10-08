@@ -13,6 +13,8 @@ comparison bases; absent unrelated draft bases remain explicitly unavailable.
 Requested object-scoped bases must compile successfully. Baselines are freshly generated,
 not imported reports. Evidence directories must not already exist. Cooperation
 requires every runner to use the same explicit lock path; no stale-lock bypass.
+Unchanged complete report inputs may reuse finalized baseline report bytes;
+--fresh-report disables reuse. Incompatible tools/runtime still require a new baseline.
 Warm outputs rely on Ninja dependency correctness; observed hashes are provenance,
 not an independent proof that a cached object was compiled from current inputs.
 """
@@ -275,7 +277,11 @@ def evidence(path: Path) -> tuple[dict, dict]:
     expected_roles = ["configure", "prepare-original", "dependency-provenance", "build"]
     if mode == "full":
         expected_roles.append("all127-hashes")
-    expected_roles.append("fresh-report")
+    generation = manifest.get("report_generation", {"kind": "generated"})
+    if generation.get("kind") == "generated":
+        expected_roles.append("fresh-report")
+    elif generation.get("kind") != "reused":
+        raise ValidationError("Invalid report generation provenance")
     if [c.get("role") for c in manifest.get("commands", [])] != expected_roles:
         raise ValidationError("Evidence lacks required validation commands")
     report_path = path / "report.json"
@@ -292,6 +298,31 @@ def evidence(path: Path) -> tuple[dict, dict]:
         raise ValidationError("Baseline/candidate lacks correlated command/source provenance")
     if manifest.get("mode") == "full" and manifest.get("hashes") != {"ok": 127, "bad": 0}:
         raise ValidationError("Full evidence lacks all127 hash checks")
+    signature = manifest.get("report_reuse")
+    if signature is not None:
+        try:
+            expected = report_signature(manifest)
+        except (KeyError, TypeError) as exc:
+            raise ValidationError("Incomplete report reuse provenance") from exc
+        if signature != expected:
+            raise ValidationError("Report reuse fingerprint is inconsistent")
+    if generation.get("kind") == "reused":
+        if signature is None:
+            raise ValidationError("Reused report lacks verified input closure")
+        origin = generation.get("origin", {})
+        if origin.get("report_sha256") != manifest.get("report_sha256") or origin.get("reuse_sha256") != signature["sha256"] or origin.get("validation_sha256") != manifest.get("baseline", {}).get("validation_sha256"):
+            raise ValidationError("Reused report origin does not match current evidence")
+        ancestry = generation.get("ancestry")
+        if not isinstance(ancestry, list) or not ancestry or ancestry[0] != origin:
+            raise ValidationError("Reused report lacks explicit ancestry")
+        for ancestor in ancestry:
+            if any(not re.fullmatch(r"[0-9a-f]{64}", str(ancestor.get(k, ""))) for k in ("validation_sha256", "report_sha256", "reuse_sha256")):
+                raise ValidationError("Invalid reused-report ancestry digest")
+        if generation.get("log") != "report-reuse.json" or digest(path / generation["log"]) != generation.get("log_sha256"):
+            raise ValidationError("Report reuse operation evidence is missing or modified")
+        operation = load_json(path / generation["log"])
+        if operation != {k: generation[k] for k in ("kind", "origin", "ancestry")}:
+            raise ValidationError("Report reuse operation metadata differs")
     report = load_json(report_path)
     report_index(report, manifest["version"])
     if {u["name"] for u in report["units"]} != set(manifest.get("units", [])):
@@ -339,6 +370,60 @@ def report_inputs(config: dict, allow_unavailable: bool = False) -> dict[str, st
                     raise ValidationError(f"Missing report input: {path}")
                 files[str(path)] = digest(path)
     return files
+
+
+REPORT_REUSE_SCHEMA = 1
+
+
+def report_signature(state: dict) -> dict:
+    """Complete report closure. Source fingerprints alone cannot prove reuse."""
+    inputs = state["source"]["inputs"]
+    closure = {"version": state["version"], "config_sha256": state["report_config_sha256"],
+               "object_inputs": state["report_inputs"], "units": state["units"],
+               "unavailable_base_units": state["unavailable_base_units"],
+               "split_config": state["split_config"], "generated": inputs["generated"],
+               "runtime": inputs["runtime"], "original_binaries": inputs["original_binaries"],
+               "objdiff_tool": inputs["tools"]["objdiff"], "options": ["report", "generate"]}
+    return {"schema": REPORT_REUSE_SCHEMA, "inputs": closure, "sha256": json_digest(closure)}
+
+
+def may_reuse_report(baseline: dict | None, current: dict, force_fresh: bool) -> bool:
+    if baseline is None or force_fresh:
+        return False
+    prior = baseline.get("report_reuse")
+    # Old successful fresh evidence remains valid, but it is not cache evidence.
+    return isinstance(prior, dict) and prior.get("schema") == REPORT_REUSE_SCHEMA and prior == current
+
+
+def reuse_report(baseline_path: Path, output: Path, state: dict) -> None:
+    """Recheck the finalized baseline immediately before copying whole bytes."""
+    started = time.time()
+    manifest, _ = evidence(baseline_path)
+    manifest_digest = digest(baseline_path / "validation.json")
+    if manifest_digest != state["baseline"]["validation_sha256"] or manifest.get("report_reuse") != state["report_reuse"]:
+        raise ValidationError("Baseline report evidence changed before reuse")
+    origin = {"path": str(baseline_path), "validation_sha256": manifest_digest,
+              "report_sha256": manifest["report_sha256"],
+              "reuse_sha256": state["report_reuse"]["sha256"]}
+    shutil.copyfile(baseline_path / "report.json", output / "report.json")
+    if digest(output / "report.json") != origin["report_sha256"] or digest(baseline_path / "validation.json") != manifest_digest:
+        raise ValidationError("Baseline report evidence changed during reuse")
+    generation = {"kind": "reused", "origin": origin,
+                  "ancestry": [origin, *manifest.get("report_generation", {}).get("ancestry", [])]}
+    write_json(output / "report-reuse.json", generation)
+    generation.update({"seconds": time.time() - started, "log": "report-reuse.json",
+                       "log_sha256": digest(output / "report-reuse.json")})
+    state["report_generation"] = generation
+
+
+def validate_dependency_paths(log: Path, root: Path) -> None:
+    """Check each distinct logged dependency once; retain absolute-path policy."""
+    text = log.read_text(encoding="utf-8", errors="replace")
+    dependencies = dict.fromkeys(line.strip() for line in text.splitlines() if line.startswith("    "))
+    for spelling in dependencies:
+        dependency = Path(spelling)
+        if dependency.is_absolute() and root not in dependency.resolve().parents:
+            raise ValidationError(f"Foreign cached dependency path: {dependency}")
 
 
 def run(args) -> dict:
@@ -419,11 +504,7 @@ def run(args) -> dict:
                         raise ValidationError(f"Report {field} is outside configured binary version: {unit[field]}")
             command([str(tools["ninja"]), "-t", "deps"], root, output, state["commands"], "dependency-provenance")
             dependency_log = output / state["commands"][-1]["log"]
-            for line in dependency_log.read_text(encoding="utf-8", errors="replace").splitlines():
-                if line.startswith("    "):
-                    dependency = Path(line.strip())
-                    if dependency.is_absolute() and root not in dependency.resolve().parents:
-                        raise ValidationError(f"Foreign cached dependency path: {dependency}")
+            validate_dependency_paths(dependency_log, root)
             for unit in selected["units"]:
                 if unit.get("target_path") and not Path(unit["target_path"]).is_file():
                     raise ValidationError(f"Original preparation omitted target: {unit['target_path']}")
@@ -441,7 +522,13 @@ def run(args) -> dict:
             state["unavailable_base_units"] = [u["name"] for u in selected["units"] if u.get("base_path") and not Path(u["base_path"]).is_file()]
             state["report_inputs"] = report_inputs(load_json(output / "objdiff.json"), args.mode == "full")
             generated_config = digest(root / "objdiff.json")
-            command([str(tools["nice"]), "-n", "10", str(tools["objdiff"]), "report", "generate", "-p", str(project), "-o", str(output / "report.json")], root, output, state["commands"], "fresh-report")
+            state["report_reuse"] = report_signature(state)
+            if may_reuse_report(baseline_manifest, state["report_reuse"], args.fresh_report):
+                reuse_report(Path(args.baseline).resolve(), output, state)
+            else:
+                started = time.time()
+                command([str(tools["nice"]), "-n", "10", str(tools["objdiff"]), "report", "generate", "-p", str(project), "-o", str(output / "report.json")], root, output, state["commands"], "fresh-report")
+                state["report_generation"] = {"kind": "generated", "seconds": time.time() - started}
             if state["split_config"] != {str(p.relative_to(root)): digest(p) for p in sorted((root / "build" / args.version).glob("config.json"))}:
                 raise ValidationError("Split metadata drift during report generation")
             if generated_config != digest(root / "objdiff.json") or state["report_inputs"] != report_inputs(load_json(output / "objdiff.json"), args.mode == "full"):
@@ -482,6 +569,7 @@ def parser() -> argparse.ArgumentParser:
         p.add_argument("--mode", choices=("full", "objects"), required=True)
         p.add_argument("--target", action="append", default=[])
         p.add_argument("--configure-arg", action="append", default=[], help="additional configure argv token (use --configure-arg=--flag)")
+        p.add_argument("--fresh-report", action="store_true", help="always regenerate rather than reuse an identical verified baseline report")
         p.add_argument("--jobs", type=int, choices=range(1, 5), default=1)
         p.add_argument("--output", required=True)
         p.add_argument("--lock", required=True)
