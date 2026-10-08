@@ -225,7 +225,7 @@ public:
             (void*)&m_heapModuleBuilder,
             (soParamCustomizeModule*)&m_paramCustomizeModuleBuilder,
             (void*)m_glowModuleBuilder.getModule()),
-        m_heapModuleBuilder(fbd),
+        m_heapModuleBuilder(fbd.getInstanceHeap(), fbd.getNWModelInstanceHeap(), fbd.getNWMotionInstanceHeap(), fbd.getHeapSlotNo()),
         m_paramCustomizeModuleBuilder(&m_moduleAccsr),
         m_resourceModuleBuilder(
             fbd.getMdlResId(),
