@@ -41,6 +41,7 @@ public:
     ftDataProvider();
     virtual ~ftDataProvider();
     void reqCommon(u32 a, u32 b, int c);
+    void process();
     bool isReady();
     char _4[0x109C];
     bool m_isUseCompressedMode;
@@ -251,6 +252,11 @@ public:
     void notifyEventPikminFinalAttack(float unk1, int unk2);
     void setDead(int entryId, int unk1, int unk2);
     void setDefault();
+    void setMode(int mode);
+    void stopGame();
+    bool isResourceRemoveSync() const;
+    float getFighterCursorForceDispDistance() const;
+    s16 getEntryEventManageId(int entryId) const;
 
     float getDamageMax(int excludeEntryId);
     void setParamPattern(int pattern);

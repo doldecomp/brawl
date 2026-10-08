@@ -19,9 +19,9 @@ public:
 static_assert(sizeof(soLogEventManagerStatic) == 0x74, "Class is wrong size!");
 extern soLogEventManagerStatic g_soLogEventManager;
 
-class soLogEventObserver : public soEventObserver<soDisposeInstanceEventObserver> {
+class soLogEventObserver : public soEventObserver<soLogEventObserver> {
 public:
-    soLogEventObserver() : soEventObserver<soDisposeInstanceEventObserver>(0) {
+    soLogEventObserver() : soEventObserver<soLogEventObserver>(0) {
         initialize(g_soLogEventManager.m_module.getManageId(), -1);
     }
 

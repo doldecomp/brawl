@@ -26,6 +26,7 @@ public:
     bool isValid(int entryId);
     void startSwap(int entryId1, int entryId2);
     void endSwap(bool unk);
+    void processHit();
     int enumEntryId(int entryId);
     int enumIncludeEntryId(int entryId);
     int getEntryIdFromPlayerNo(int playerNo);

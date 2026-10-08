@@ -6,7 +6,11 @@
 #include <gf/gf_task.h>
 #include <gf/gf_task_scheduler.h>
 #include <it/it_manager.h>
+#include <gm/gm_global.h>
 #include <mu/menu.h>
+#include <snd/snd_system.h>
+#include <so/collision/so_collision_manager.h>
+#include <ft/ft_audience_manager.h>
 #include <so/so_archive_db.h>
 #include <so/so_external_value_accesser.h>
 #include <sr/sr_common.h>
@@ -1063,4 +1067,99 @@ ftManager::~ftManager() {
     m_slotManager = nullptr;
     delete m_dataProvider;
     m_dataProvider = nullptr;
+}
+
+// MATCH-ONLY: unnamed sndSystem query (8-byte function at 0x80073D10)
+extern "C" bool fn_80073D10(sndSystem* system);
+extern float lbl_27_data_4B84;
+
+// The first argument is ignored: the log observer always registers with the static log event manager.
+void soLogEventObserver::addObserver(short, s8 param2) {
+    addObserverSub(g_soLogEventManager.m_module.getManageId(), this, param2);
+}
+
+// Switches the manager between versus (0) and adventure (1) rules.
+void ftManager::setMode(int mode) {
+    switch (mode) {
+    case 0:
+        g_ftParamPattern = 0;
+        m_paramPattern = 0;
+        unk7c = true;
+        unk6c_80 = true;
+        m_isGameStarted = false;
+        m_isDiscretionFinal = true;
+        unk6e_10 = true;
+        m_noOnePatternOffsett = true;
+        m_noDeadUp = false;
+        unk6f_80 = false;
+        g_ftPokemonStaminaSystem = true;
+        break;
+    case 1:
+        g_ftParamPattern = 1;
+        m_paramPattern = 1;
+        unk7c = false;
+        unk6c_80 = true;
+        m_isGameStarted = true;
+        m_isDiscretionFinal = false;
+        unk6e_10 = false;
+        m_noOnePatternOffsett = false;
+        m_noDeadUp = true;
+        unk6f_80 = true;
+        g_ftPokemonStaminaSystem = false;
+        break;
+    }
+    m_mode = mode;
+    m_isGameSet = false;
+    unk6c_10 = false;
+    unk6f_10 = true;
+    m_isHomerun = false;
+    unk6e_04 = false;
+    unk6b = 0;
+    g_ftAudienceManager->activate();
+    if (g_soCollisionManager == NULL) {
+        g_soCollisionManager = new (Heaps::System) soCollisionManager;
+    }
+    lbl_27_data_4B84 = 3.4028235e38f;
+}
+
+void ftManager::stopGame() {
+    g_ftAudienceManager->deactivate();
+    m_entryManager->endSwap(false);
+}
+
+bool ftManager::isResourceRemoveSync() const {
+    bool result = false;
+    if (m_isWaitingDraw == false) {
+        if (g_ftDataProvider->isReady() == true) {
+            if (fn_80073D10(g_sndSystem) == true) {
+                result = true;
+            }
+        }
+    }
+    return result;
+}
+
+float ftManager::getFighterCursorForceDispDistance() const {
+    return *reinterpret_cast<float*>(reinterpret_cast<u8*>(g_ftCommonDataAccesser.getParamCommon()) + 0x210);
+}
+
+// HYPOTHESIS: the entry embeds its event manage module at 0x1D4
+s16 ftManager::getEntryEventManageId(int entryId) const {
+    return reinterpret_cast<soEventManageModuleImpl*>(reinterpret_cast<u8*>(m_entryManager->getEntity(entryId)) + 0x1D4)->getManageId();
+}
+
+void ftManager::notifyDisposeInstance(bool isDispose, int, int taskId) {
+    if (isDispose == false) {
+        int entryId = m_entryManager->getEntryIdFromTaskId(taskId, NULL);
+        if (entryId != -1) {
+            m_entryManager->getEntity(entryId)->m_flags11 |= 0x80;
+        }
+    }
+}
+
+void ftManager::processHit() {
+    if (g_GameGlobal->isPrevJustGameFrame() == true) {
+        m_dataProvider->process();
+        m_entryManager->processHit();
+    }
 }

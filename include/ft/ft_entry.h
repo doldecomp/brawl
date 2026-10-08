@@ -208,14 +208,19 @@ public:
     char _0xe;
     u8 unkF; // 6 means CPU-controlled (ftManager::isCpuActive)
     char _0x10;
-    bool unk11_80 : 1;
-    bool unk11_40 : 1;
-    bool unk11_20 : 1;
-    bool unk11_10 : 1;
-    bool unk11_08 : 1;
-    bool unk11_04 : 1;
-    u8 unk11_02 : 1; // HYPOTHESIS: set on the partner entry while hearts are swapped (read through isHeartSwapped)
-    bool unk11_01 : 1;
+    union {
+        u8 m_flags11; // flag byte at 0x11, written whole by some callers
+        struct {
+            bool unk11_80 : 1;
+            bool unk11_40 : 1;
+            bool unk11_20 : 1;
+            bool unk11_10 : 1;
+            bool unk11_08 : 1;
+            bool unk11_04 : 1;
+            u8 unk11_02 : 1; // HYPOTHESIS: set on the partner entry while hearts are swapped (read through isHeartSwapped)
+            bool unk11_01 : 1;
+        };
+    };
     char _0x12[6];
     int m_slotIndex;
     char _0x1c[10];
