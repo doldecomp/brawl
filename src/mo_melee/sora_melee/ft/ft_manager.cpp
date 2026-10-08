@@ -1004,3 +1004,23 @@ void ftManager::setBeat(int losingEntryId, int winningEntryId) {
         }
     }
 }
+
+// A fighter destroyed itself. Hearts swapped entries are credited to their partner; while a Final Smash is running
+// the self-destruct counts as a beat by the Final Smash owner instead.
+void ftManager::setSuicide(int entryId) {
+    int partnerId = m_entryManager->getEntity(entryId)->m_heartSwapEntryId;
+    int ownerEntryId = partnerId != -1 ? partnerId : entryId;
+    bool redirected;
+    if (m_finalStatus == 1 && entryId != m_finalEntryId) {
+        setBeat(entryId, m_finalEntryId);
+        redirected = true;
+    } else {
+        redirected = false;
+    }
+    if (redirected == false) {
+        ftOwner* owner = m_entryManager->getEntity(ownerEntryId)->m_owner;
+        owner->setSuicideCount(owner->getSuicideCount() + 1);
+        ftOutsideEventPresenter presenter(m_eventManageModule.getManageId(), entryId);
+        presenter.notifyOutsideEventSuicide(ownerEntryId);
+    }
+}
