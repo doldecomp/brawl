@@ -38,7 +38,7 @@ void ftMarthStatusUniqProcessSpecialLw::initStatus(soModuleAccesser* moduleAcces
         float incomingPower = moduleAccesser->getWorkManageModule().getFloat(0x21000004);
         float powerMultiplier = soValueAccesser::getConstantFloat(moduleAccesser, 0xfb4, 0);
         float powerMax = soValueAccesser::getConstantFloat(moduleAccesser, 0xfb7, 0);
-        if (static_cast<u8>(g_ftManager->_104[0]) == 1) {
+        if (static_cast<u8>(g_ftManager->m_mode) == 1) {
             powerMultiplier = soValueAccesser::getConstantFloat(moduleAccesser, 0xfb5, 0);
             powerMax = soValueAccesser::getConstantFloat(moduleAccesser, 0xfb8, 0);
         }

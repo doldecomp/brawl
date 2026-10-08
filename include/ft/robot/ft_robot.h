@@ -46,7 +46,21 @@ class ftRobot : public ftFighterBuilder<ftRobotBuildConfig> {
     ftData* m_commonData; // 0x122a0
 public:
     virtual void onActivate();
+    virtual void onDeactivate();
+    virtual void onStart(int);
+    virtual void processUpdate();
+    virtual void processFixPosition();
+    virtual void notifyEventCollisionAttackFighter(soCollisionLog* collisionLog, soModuleAccesser* acc);
+    virtual void notifyEventChangeStatus(int statusKind, int prevStatusKind, soStatusData* statusData, soModuleAccesser* acc);
+    virtual void notifyEventChangeSituation(SituationKind kind, SituationKind prevKind, soModuleAccesser* acc);
     virtual void notifyEventOnDamage(soDamage* damage, bool, soModuleAccesser* acc);
+    virtual void notifyEventLink(soLinkEventArgs* eventInfo, soModuleAccesser* acc, StageObject* object, int unk4);
+    virtual bool notifyEventAnimCmd(acAnimCmd* cmd, soModuleAccesser* acc, int index);
+    virtual void analyzeSeal(void* sealInfo);
+
+    // Fuel of the Robo Burner refills on the ground.
+    void updateSpecialHi(soModuleAccesser* acc);
+    void updateFinal(soModuleAccesser* acc);
 
     ftRobot(s32 entryId,
             Heaps::HeapType instHeap,

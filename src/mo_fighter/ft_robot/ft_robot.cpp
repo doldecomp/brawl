@@ -1,7 +1,16 @@
+#define SO_SLOW_GET_INSTANCE_OUT_OF_LINE
 #include <ft/builder/ft_dol_array_list.h>
 #include <ft/ft_class_info_impl.h>
 #include <ft/robot/ft_robot.h>
 #include <ft/robot/ft_robot_extend_param_accesser.h>
+#include <ft/robot/ft_robot_link_event.h>
+#include <ft/robot/ft_robot_status_uniq_process_special_arm_spin.h>
+#include <ft/robot/ft_robot_transactor.h>
+#include <ac/ac_anim_cmd_impl.h>
+#include <it/it_manager.h>
+#include <so/link/so_link_event_presenter.h>
+#include <so/so_slow.h>
+#include <so/so_value_accesser.h>
 
 #define FT_BC ftRobotBuildConfig
 #include <ft/builder/ft_builder_noinline.h>
@@ -197,6 +206,234 @@ void ftRobot::notifyEventOnDamage(soDamage* damage, bool flag, soModuleAccesser*
     Fighter::notifyEventOnDamage(damage, flag, acc);
 }
 
+// Work variables (HYPOTHESIS names, from how the statuses and this class use them):
+//   float 0x11000015  Robo Burner fuel (refills on the ground)
+//   int   0x10000042  frames left of the Final Smash   int 0x10000043  frames until the next beam volley
+//   int   0x10000044  generation counter handed to the beam articles
+//   flag  0x12000040  the arm spin partial animation has to be restarted when landing
+//   flag  0x12000041  that partial animation is running
+//   flag  0x12000042  the Final Smash is active   0x12000043  its beams are firing   0x12000045  volley pending
+//   flag  0x12000046  the Final Smash music/camera cue was started   0x12000047  Robo Beam charge does not recover
+
+static soGenerateArticleManageModule& ftRobotGetArticleModule(soModuleAccesser* acc) {
+    return *static_cast<soGenerateArticleManageModule*>(acc->m_enumerationStart->m_generateArticleManageModule);
+}
+
+void ftRobot::onDeactivate() {
+    int taskId = m_moduleAccesser->getStageObject().m_taskId;
+    itManager::getInstance()->removeItem1(taskId);
+}
+
+void ftRobot::onStart(int param) {
+    m_moduleAccesser->getWorkManageModule().offFlag(0x12000040);
+    m_moduleAccesser->getWorkManageModule().offFlag(0x12000041);
+    m_moduleAccesser->getWorkManageModule().setFloat(soValueAccesser::getConstantFloat(m_moduleAccesser, 0xfbf, 0), 0x11000015);
+    m_moduleAccesser->getWorkManageModule().setFloat(0.0f, 0x11000014);
+    m_moduleAccesser->getWorkManageModule().offFlag(0x12000042);
+    m_moduleAccesser->getWorkManageModule().offFlag(0x12000043);
+    m_moduleAccesser->getWorkManageModule().offFlag(0x12000045);
+    m_moduleAccesser->getWorkManageModule().setInt(0, 0x10000042);
+    m_moduleAccesser->getWorkManageModule().setInt(0, 0x10000043);
+    ftRobotGetArticleModule(m_moduleAccesser).removeExist(3, 0);
+    m_moduleAccesser->getWorkManageModule().offFlag(0x12000046);
+    Fighter::onStart(param);
+    m_moduleAccesser->getMotionModule().removePartialAnimChr(2);
+    ftRobotTransactor::getInstance()->initTransact(m_moduleAccesser);
+    m_moduleAccesser->getEffectModule().removeCommon(0x1a);
+    m_moduleAccesser->getEffectModule().removeCommon(0x26);
+    m_moduleAccesser->getEffectModule().removeCommon(0x25);
+    if ((u32)(param - 4) < 2) {
+        m_moduleAccesser->getWorkManageModule().onFlag(0x12000047);
+    } else {
+        m_moduleAccesser->getWorkManageModule().offFlag(0x12000047);
+    }
+}
+
+void ftRobot::processUpdate() {
+    soModuleAccesser* acc = m_moduleAccesser;
+    if (soSlow::getInstance()->isEstimate() == 1 && acc->getStopModule().isStop() == 0 && acc->getSlowModule().isSkip() == 0) {
+        if (!acc->getWorkManageModule().isFlag(0x12000042)) {
+            ftRobotTransactor::getInstance()->processUpdateSpecialNTransact(acc);
+        }
+        updateSpecialHi(acc);
+    }
+    Fighter::processUpdate();
+}
+
+// The Robo Burner fuel refills while standing on the ground.
+void ftRobot::updateSpecialHi(soModuleAccesser* acc) {
+    if (acc->getSituationModule().getKind() == 0) {
+        if (acc->getWorkManageModule().getFloat(0x11000015) < soValueAccesser::getConstantFloat(acc, 0xfbf, 0)) {
+            acc->getWorkManageModule().addFloat(soValueAccesser::getConstantFloat(acc, 0xfcc, 0), 0x11000015);
+        }
+    }
+}
+
+void ftRobot::notifyEventCollisionAttackFighter(soCollisionLog* collisionLog, soModuleAccesser* acc) {
+    if (acc->getStatusModule().getStatusKind() == 0x113) {
+        g_ftRobotStatusUniqProcessSpecialArmSpin.setEventCollisionAttack(acc);
+    }
+}
+
+void ftRobot::notifyEventLink(soLinkEventArgs* eventInfo, soModuleAccesser* acc, StageObject* object, int unk4) {
+    switch (eventInfo->m_eventKind) {
+    case 0x456:
+        if (acc->getWorkManageModule().isFlag(0x12000042)) {
+            acc->getControllerModule().setRumble(0xe, 0, false, 8);
+        }
+        break;
+    }
+    Fighter::notifyEventLink(eventInfo, acc, object, unk4);
+}
+
+// HYPOTHESIS: layout of the seal record: a kind and a float amount.
+struct ftRobotSealInfo {
+    s32 kind;
+    float amount;
+};
+
+void ftRobot::analyzeSeal(void* sealInfo) {
+    ftRobotSealInfo* info = static_cast<ftRobotSealInfo*>(sealInfo);
+    if (info->kind == 0x3f) {
+        s32 generation = (s32)(info->amount * 0.5f);
+        m_moduleAccesser->getWorkManageModule().setInt(generation, 0x10000044);
+    }
+}
+
+void ftRobot::processFixPosition() {
+    soModuleAccesser* acc = m_moduleAccesser;
+    if (soSlow::getInstance()->isAdjust() == 1 && acc->getStopModule().isStop() == 0) {
+        if (acc->getSlowModule().isSkip() == 0) {
+            if (acc->getWorkManageModule().isFlag(0x12000042)) {
+                updateFinal(acc);
+            }
+            ftRobotTransactor::getInstance()->processUpdateEffectTransact(acc);
+        }
+        if (m_moduleAccesser->getWorkManageModule().isFlag(0x12000041) && m_moduleAccesser->getMotionModule().isEndPartial(2)) {
+            m_moduleAccesser->getMotionModule().removePartialAnimChr(2);
+            m_moduleAccesser->getWorkManageModule().offFlag(0x12000041);
+        }
+    }
+    Fighter::processFixPosition();
+}
+
+// HYPOTHESIS: the statuses that cut the Final Smash beam short (hit reactions, knockdowns, grabs, ...).
+static bool ftRobotIsFinalInterruptStatus(int status) {
+    switch (status) {
+    case 0x3d:
+    case 0x3e:
+    case 0x3f:
+    case 0x40:
+    case 0x41:
+    case 0x42:
+    case 0x43:
+    case 0x44:
+    case 0x45:
+    case 0x46:
+    case 0x47:
+    case 0x48:
+    case 0x49:
+    case 0x5c:
+    case 0x5d:
+    case 0x5e:
+    case 0x6e:
+    case 0x6f:
+    case 0x70:
+    case 0xbd:
+    case 0xcc:
+    case 0xcd:
+    case 0xce:
+    case 0xcf:
+    case 0xd0:
+    case 0xd1:
+    case 0xd2:
+    case 0xd3:
+    case 0xd4:
+    case 0xd5:
+    case 0xd6:
+    case 0xd7:
+    case 0xd8:
+    case 0xd9:
+    case 0xda:
+    case 0xdb:
+    case 0xe6:
+    case 0xe7:
+    case 0xe8:
+    case 0xe9:
+    case 0xea:
+    case 0xeb:
+    case 0xec:
+    case 0xed:
+    case 0xee:
+    case 0xef:
+    case 0xf0:
+        return true;
+    default:
+        return false;
+    }
+}
+
+void ftRobot::notifyEventChangeStatus(int statusKind, int prevStatusKind, soStatusData* statusData, soModuleAccesser* acc) {
+    if (acc->getWorkManageModule().isFlag(0x12000042)) {
+        soGenerateArticleManageModule& articles = ftRobotGetArticleModule(acc);
+        acc->getCollisionHitModule().setWhole(2, 0);
+        if (ftRobotIsFinalInterruptStatus(statusKind)) {
+            articles.removeExist(3, 0);
+            acc->getControllerModule().stopRumbleKind(2, 8);
+        } else if (articles.isGeneratable(3)) {
+            soArticle* beam = articles.generate(3, NULL, NULL);
+            if (!beam->isNull()) {
+                articles.entry(beam);
+            }
+        }
+    }
+    Fighter::notifyEventChangeStatus(statusKind, prevStatusKind, statusData, acc);
+}
+
+// While the gyro is out the arms keep the "holding" animation; landing starts the partial animation of the second hand.
+void ftRobot::notifyEventChangeSituation(SituationKind kind, SituationKind prevKind, soModuleAccesser* acc) {
+    switch (acc->getStatusModule().getStatusKind()) {
+    case 0x115:
+    case 0x11b:
+    case 0x11c:
+    case 0x11d:
+        if (kind == 2) {
+            ftRobotGyroLinkEvent event(0x83d);
+            acc->getLinkModule().sendEventNodes(-1, event, 0);
+        } else {
+            ftRobotGyroLinkEvent event(0x83c);
+            acc->getLinkModule().sendEventNodes(-1, event, 0);
+        }
+        break;
+    }
+    if (acc->getWorkManageModule().isFlag(0x12000040) && kind == 0) {
+        m_moduleAccesser->getMotionModule().removePartialAnimChr(2);
+        acc->getMotionModule().addPartialAnimChr(0.0f, 1.0f, 2, 0x1d9, 0x60, 0, 0);
+        acc->getWorkManageModule().offFlag(0x12000040);
+        acc->getWorkManageModule().onFlag(0x12000041);
+    }
+    Fighter::notifyEventChangeSituation(kind, prevKind, acc);
+}
+
+bool ftRobot::notifyEventAnimCmd(acAnimCmd* cmd, soModuleAccesser* acc, int index) {
+    bool result;
+    char group = cmd->getGroup();
+    if (!isObserv(group)) {
+        result = false;
+    } else {
+        switch (cmd->getType()) {
+        case ')':
+            acc->getVisibilityModule().set(0, 1);
+            result = true;
+            break;
+        default:
+            result = Fighter::notifyEventAnimCmd(cmd, acc, index);
+            break;
+        }
+    }
+    return result;
+}
+
 // The SDK keeps soArticle::getArticleId private. This view describes its observed
 // PPC virtual slot rather than assuming every article is a Weapon (the null
 // article is a valid input too). Replace it when the SDK interface is complete.
@@ -377,3 +614,60 @@ ftRobotTransactor* ftRobotTransactor::getInstance() {
     return &instance;
 }
 #pragma dont_inline off
+
+// Link event payload for the Final Smash articles: a kind and a result byte the receiver may set (HYPOTHESIS).
+struct ftRobotFinalLinkEvent : soLinkEventArgs {
+    s32 result;
+    ftRobotFinalLinkEvent(int kind) : soLinkEventArgs(kind), result(-1) { }
+};
+
+// Final Smash (Diffusion Beam) driver, run every frame while flag 0x12000042 is set: R.O.B. is invincible, the beam
+// article is started once the opening animation raises flag 0x12000044, then the volleys follow until the timer
+// (int 0x10000042) runs out.
+void ftRobot::updateFinal(soModuleAccesser* acc) {
+    soGenerateArticleManageModule& articles = ftRobotGetArticleModule(acc);
+    acc->getDamageModule().setReactionMul(soValueAccesser::getConstantFloat(acc, 0xfd4, 0));
+    acc->getCollisionHitModule().setWhole(2, 0);
+    if (acc->getWorkManageModule().isFlag(0x12000043) && acc->getWorkManageModule().getInt(0x10000042) > 0) {
+        acc->getWorkManageModule().subInt(1, 0x10000042);
+        int cueFrames = soValueAccesser::getConstantInt(acc, 0x5dca, 0);
+        if (acc->getWorkManageModule().getInt(0x10000042) <= cueFrames && !acc->getWorkManageModule().isFlag(0x12000046)) {
+            acc->getWorkManageModule().onFlag(0x12000046);
+            acc->getEffectModule().reqCommon(0.0f, 0x25);
+        }
+        if (acc->getWorkManageModule().getInt(0x10000042) == 0) {
+            acc->getWorkManageModule().offFlag(0x12000042);
+            acc->getWorkManageModule().offFlag(0x12000043);
+            acc->getWorkManageModule().offFlag(0x12000045);
+            articles.removeExist(3, 0);
+            acc->getCollisionHitModule().setWhole(0, 0);
+            acc->getEffectModule().removeCommon(0x26);
+            acc->getEffectModule().removeCommon(0x25);
+            endFinal(true, true, false);
+            acc->getControllerModule().stopRumbleKind(2, 8);
+        } else if (acc->getWorkManageModule().getInt(0x10000042) == 1) {
+            ftRobotGyroLinkEvent event(0x838);
+            acc->getLinkModule().sendEventNodes(1, event, 0);
+        }
+    }
+    if (acc->getWorkManageModule().isFlag(0x12000044)) {
+        soArticle* beam = articles.generate(3, NULL, NULL);
+        if (!beam->isNull()) {
+            articles.entry(beam);
+        }
+        acc->getWorkManageModule().offFlag(0x12000044);
+        acc->getWorkManageModule().onFlag(0x12000045);
+    }
+    if (acc->getWorkManageModule().isFlag(0x12000045) && soValueAccesser::getConstantInt(acc, 0x5dcb, 0) > 1) {
+        acc->getWorkManageModule().subInt(1, 0x10000043);
+        if (acc->getWorkManageModule().getInt(0x10000043) <= 0) {
+            ftRobotFinalLinkEvent event(0x839);
+            acc->getLinkModule().sendEventNodes(1, event, 0);
+            acc->getControllerModule().stopRumbleKind(2, 8);
+            if (event.result != 1) {
+                acc->getControllerModule().setRumble(2, 0, false, 8);
+            }
+            m_moduleAccesser->getWorkManageModule().setInt(soValueAccesser::getConstantInt(acc, 0x5dcc, 0), 0x10000043);
+        }
+    }
+}

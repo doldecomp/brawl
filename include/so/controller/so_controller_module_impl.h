@@ -74,8 +74,8 @@ public:
     virtual int getTrigger() = 0;
     virtual u8 getTriggerCount(u8 index) = 0;
     virtual u8 getTriggerCountPrev(u8 index) = 0;
-    virtual ipPadButton getButton() = 0;
-    virtual ipPadButton getRelease() = 0;
+    virtual int getButton() = 0; // HYPOTHESIS: plain button mask (an ipPadButton return made fighter code spill a dead temp)
+    virtual int getRelease() = 0;
     virtual void setOff(bool) = 0;
     virtual void setPrev(s32) = 0;
     virtual void clearLog() = 0;

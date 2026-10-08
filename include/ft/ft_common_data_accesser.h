@@ -75,6 +75,7 @@ public:
     u32 getFinalResId(ftKind kind) const;
     ftData* getData(ftKind kind) const;
     ftParam* getParam(ftKind kind) const;
+    ftParam* getParamCommon() const;
 };
 
 extern ftCommonData g_ftCommonData;

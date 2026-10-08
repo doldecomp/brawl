@@ -9,4 +9,6 @@ namespace ftExternalValueAccesser {
     soCollisionHitModule* getsoCollisionHitModule(Fighter* fighter);
     float getWeight(Fighter* fighter);
     Vec3f getHipPos(Fighter* fighter);
+    Vec3f getCursorPos(Fighter* fighter);
+    int getNoDiscretionFinalCount();
 }

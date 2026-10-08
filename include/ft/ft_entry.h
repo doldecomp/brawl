@@ -1,5 +1,6 @@
 #pragma once
 // SHADOW of BrawlHeaders/ft/ft_entry.h: addObserver is inline in the fighter RELs (FT_MODULE_BUILDER)
+// Also names the flag bytes at 0xF/0x11 and declares the ftEntry member functions the fighter manager (ft_manager.cpp) calls.
 
 #include <StaticAssert.h>
 #include <so/event/so_event_presenter.h>
@@ -9,6 +10,7 @@
 #include <mt/mt_vector.h>
 
 class Fighter;
+class soDamageAttackerInfo;
 class ftOwner;
 
 enum ftKind {
@@ -201,10 +203,25 @@ public:
     u8 m_entryCount;
     char _0x9;
     s8 m_activeInstanceIndex;
-    char _0xb[2];
+    char _0xb;
+    u8 unkC;
     bool m_isReady;
-    char _0xe[3];
-    u8 _0x11;
+    char _0xe;
+    u8 unkF; // 6 means CPU-controlled (ftManager::isCpuActive)
+    char _0x10;
+    union {
+        u8 m_flags11; // flag byte at 0x11, written whole by some callers
+        struct {
+            bool unk11_80 : 1;
+            bool unk11_40 : 1;
+            bool unk11_20 : 1;
+            bool unk11_10 : 1;
+            bool unk11_08 : 1;
+            bool unk11_04 : 1;
+            u8 unk11_02 : 1; // HYPOTHESIS: set on the partner entry while hearts are swapped (read through isHeartSwapped)
+            bool unk11_01 : 1;
+        };
+    };
     char _0x12[6];
     int m_slotIndex;
     char _0x1c[10];
@@ -219,5 +236,51 @@ public:
     gmCharacterKind m_characterKind;
     int m_pointTeam;
     char _0x64[480];
+
+    bool isHeartSwapped() const { return unk11_02; } // HYPOTHESIS: see unk11_02
+    void createInstance();
+    void startSubFighter();
+    void toStartSequence(u8 mode);
+    void setWarp(Vec3f* pos, float lr, u32 flags);
+    void standby(int unk);
+    void standbyAdvFollow();
+    void disappearTrainer();
+    int getTeam(bool unk2, bool unk3);
+    int getTeam2nd(bool unk);
+    void setVisibilityTrainer(bool visible);
+    bool isProcessTechnique();
+    int isExistFighter(int kind);
+    int getCurrentInstanceGmKind();
+    void notifyKirbyResourceLoaded(int index);
+    void notifyKirbyResourceUnLoaded(int index);
+    void notifyExitFighter(int slotIndex, int unk);
+    void setTemporaryCamera(float unk1, int unk2, int unk3, int unk4);
+    void setIntarpolateTemporaryCamera(float unk1, float unk2, int unk3, int unk4);
+    void startChange(int unk1, int unk2, int unk3);
+    void prepareChange(float unk1, int unk2, int unk3);
+    void setContNo(int contNo);
+    bool addDragoon(u32 variation, bool unk);
+    void removeDragoon(int index, bool unk);
+    void removeDragoonAll(bool unk);
+    int getDragoonCount(bool unk);
+    int getDragoonVariation(int index, bool unk);
+    void setSlow(bool setStatus, int strength, int duration, bool isTimer);
+    void toKnockOut(soDamageAttackerInfo* attackerInfo);
+    void notifyBeat();
+    void setCurry();
+    void setZoom(float unk1, int unk2, int unk3);
+    void setScaling(int kind, int type); // Fighter::Scaling::Kind, Fighter::Scaling::Type
+    void setSuperStar();
+    void setHeal(float heal);
+    void entryEnd();
+    void resultEnd();
+    void notifyReplacePokeTrainer(int unk);
+    bool setFinal(bool isDiscretion);
+    void exitFinal(int unk);
+    void leaveBattle(bool unk);
+    void notifyDead(int unk);
+    void notifyPikminFinalAttack(float unk1, int unk2);
+    int getRank();
+    int getRankPoint();
 };
 static_assert(sizeof(ftEntry) == 0x244, "Class is wrong size!");

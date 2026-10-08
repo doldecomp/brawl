@@ -1194,6 +1194,12 @@ config.libs = [
         "host": False,
         "objects": [
             Object(NonMatching, "mo_fighter/ft_robot/ft_robot.cpp"),
+            Object(NonMatching, "mo_fighter/ft_robot/ft_robot_status_uniq_process_special_arm_spin.cpp"),
+            Object(NonMatching, "mo_fighter/ft_robot/ft_robot_status_uniq_process_special_burner.cpp"),
+            Object(Matching, "mo_fighter/ft_robot/ft_robot_status_uniq_process_special_burner_attack.cpp"),
+            Object(NonMatching, "mo_fighter/ft_robot/ft_robot_status_uniq_process_special_burner_start.cpp"),
+            Object(NonMatching, "mo_fighter/ft_robot/ft_robot_status_uniq_process_special_gyro.cpp"),
+            Object(Matching, "mo_fighter/ft_robot/ft_robot_status_uniq_process_final.cpp"),
         ],
     },
     {
@@ -4919,6 +4925,11 @@ config.libs = [
             Object(NonMatching, "mo_melee/sora_melee/ft/ft_util.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_work_manage_module_impl.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_slope_module_impl.cpp"),
+            Object(NonMatching, "mo_melee/sora_melee/ft/ft_manager.cpp"),
+            Object(NonMatching, "mo_melee/sora_melee/ft/ft_robot_status_uniq_process_special_beam.cpp"),
+            Object(Matching, "mo_melee/sora_melee/wn/wn_robot_beam_status_uniq_process.cpp"),
+            Object(NonMatching, "mo_melee/sora_melee/ft/ft_robot_transactor.cpp"),
+            Object(NonMatching, "mo_melee/sora_melee/wn/wn_robot_beam.cpp"),
         ],
     },
     {

@@ -46,11 +46,9 @@ public:
 #include <so/area/so_area_module_impl.h>
 #include <ft/builder/ft_dol_holders.h>
 
-// NumInstances: capacity of the area instance array (9 for most fighters)
-template <typename T, s32 NumInstances = 9>
+template <typename T>
 class soAreaModuleBuildConfig {
 public:
-    enum { Instances = NumInstances };
     typedef T ModuleType;
 };
 
@@ -59,13 +57,36 @@ class soAreaModuleBuilder : public soArraySelectHolder<1, soArrayVector<soAreaWi
     typename BC::ModuleType m_module;                 // +0x10
     soAreaEnviromentElementCheckerImpl m_checker;     // +0x78
     soArrayVector<soAreaContactLog, 16> m_contactLogs; // +0x94
-    soArrayVector<soAreaInstance, BC::Instances> m_instances;     // +0x220
+    soArrayVector<soAreaInstance, 9> m_instances;     // +0x220
     u32 m_pad;
 public:
     soAreaModuleBuilder(soModuleAccesser* acc, u8 areaCategory, soEventObserverRegistrationDesc* regDesc) :
         soArraySelectHolder<1, soArrayVector<soAreaWind, 1>, soArrayNull<soAreaWind> >(1, 0),
         m_module(acc, areaCategory, &m_instances, &m_contactLogs, &m_checker, this->get(), regDesc, 8),
         m_checker(), m_contactLogs(0), m_instances(0) { }
+    void* getModule() { return &m_module; }
+};
+
+// Area module builder without the wind array holder: the module takes the shared null wind array (fn_126_6904 in ft_zako,
+// 0x290 bytes with 3 instances). The first word is not initialized by the constructor.
+template <s32 NumInstances, typename T>
+class soAreaModuleBuildConfigNullWind {
+public:
+    typedef T ModuleType;
+};
+
+template <s32 NumInstances, typename T>
+class soAreaModuleBuilder<soAreaModuleBuildConfigNullWind<NumInstances, T> > {
+    u32 m_unk0;                                                   // +0
+    T m_module;                                                   // +4
+    soAreaEnviromentElementCheckerImpl m_checker;                 // +0x6C
+    soArrayVector<soAreaContactLog, 16> m_contactLogs;            // +0x88
+    soArrayVector<soAreaInstance, NumInstances> m_instances;      // +0x214
+    u32 m_pad;
+public:
+    soAreaModuleBuilder(soModuleAccesser* acc, u8 areaCategory, soEventObserverRegistrationDesc* regDesc) :
+        m_module(acc, areaCategory, &m_instances, &m_contactLogs, &m_checker, &getNullArray<soAreaWind>(), regDesc, 8),
+        m_checker(), m_contactLogs(0), m_instances() { }
     void* getModule() { return &m_module; }
 };
 

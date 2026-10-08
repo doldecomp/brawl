@@ -66,10 +66,10 @@ public:
     void addObserverSub(s32 manageId, T* obsvr, s8 p3); // MATCH-ONLY: a call into sora_melee in the fighter RELs
 #else
     void addObserverSub(s32 manageId, T* obsvr, s8 p3) {
-        bool check4 = false;
         bool check3 = false;
-        bool check2 = false;
+        bool check4 = false;
         bool check1 = false;
+        bool check2 = false;
         s32 removeID;
         s32 checkID = m_manageID;
 

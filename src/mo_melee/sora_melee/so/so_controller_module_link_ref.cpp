@@ -86,12 +86,12 @@ void soControllerModuleLinkRef::setPrev(s32 p1) { }
 
 void soControllerModuleLinkRef::setOff(bool p1) { }
 
-ipPadButton soControllerModuleLinkRef::getRelease() {
+int soControllerModuleLinkRef::getRelease() {
     soController* controller = (!m_lkController) ? &g_soControllerNull : m_lkController;
     return controller->getRelease();
 }
 
-ipPadButton soControllerModuleLinkRef::getButton() {
+int soControllerModuleLinkRef::getButton() {
     soController* controller = (!m_lkController) ? &g_soControllerNull : m_lkController;
     return controller->getButton();
 }

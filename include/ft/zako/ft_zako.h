@@ -24,8 +24,25 @@ typedef soMotionModuleBuildConfig<463, soMotionModuleImpl, 2, 2, soTransitionMod
 typedef soCollisionShieldModuleBuildConfigGroups<2, 1, 1, soCollisionShieldEventPresenterShield, soCollisionShieldModuleImpl> ftZakoCollisionShieldModuleBuildConfig;
 typedef soCollisionReflectorModuleBuildConfigGroups<3, 20, 2, soCollisionShieldEventPresenterReflector, soCollisionShieldModuleImpl> ftZakoCollisionReflectorModuleBuildConfig;
 typedef soLinkModuleBuildConfigCap<6, soLinkModuleImpl> ftZakoLinkModuleBuildConfig;
-typedef soAreaModuleBuildConfig<ftAreaModuleImpl, 3> ftZakoAreaModuleBuildConfig;
+typedef soAreaModuleBuildConfigNullWind<3, ftAreaModuleImpl> ftZakoAreaModuleBuildConfig;
 typedef soStatusModuleBuildConfig<280, soGeneralWorkBuildConfig<18, 14, 2>, 274, 71, soTransitionModuleBuildConfig<ftStatusTransitionTypeList> > ftZakoStatusModuleBuildConfig;
+
+// Zako has no items: its item manage builder is an empty class (4 bytes as a member) and the accesser gets the shared null module.
+extern char g_soItemManageModuleNull[];
+template <typename T>
+class ftZakoNullItemManageModuleBuildConfig {
+public:
+    typedef T ModuleType;
+};
+
+template <typename T>
+class soItemManageModuleBuilder<ftZakoNullItemManageModuleBuildConfig<T> > {
+public:
+    soItemManageModuleBuilder(soModuleAccesser*, void*) { }
+    void* getModule() { return g_soItemManageModuleNull; }
+};
+
+typedef ftZakoNullItemManageModuleBuildConfig<soItemManageModuleImpl> ftZakoItemManageModuleBuildConfig;
 
 class ftZakoBuildConfig : public ftCommonBuildConfig {
 public:
@@ -41,6 +58,7 @@ public:
     typedef ftZakoLinkModuleBuildConfig LinkModuleBuildConfig;
     typedef ftZakoAreaModuleBuildConfig AreaModuleBuildConfig;
     typedef ftZakoStatusModuleBuildConfig StatusModuleBuildConfig;
+    typedef ftZakoItemManageModuleBuildConfig ItemManageModuleBuildConfig;
 };
 
 class ftZakoBoyBuildConfig : public ftZakoBuildConfig { };
@@ -50,6 +68,8 @@ class ftZakoBallBuildConfig : public ftZakoBuildConfig { };
 
 #define FT_ZAKO_CLASS(NAME)                                                 \
     class ftZako##NAME : public ftFighterBuilder<ftZako##NAME##BuildConfig> { \
+        soArrayContractibleTable<const soStatusData> m_statusTable;         \
+        ftData* m_commonData;                                               \
     public:                                                                 \
         ftZako##NAME(s32 entryId,                                           \
                      Heaps::HeapType instHeap,                              \
@@ -65,3 +85,8 @@ FT_ZAKO_CLASS(Boy)
 FT_ZAKO_CLASS(Girl)
 FT_ZAKO_CLASS(Child)
 FT_ZAKO_CLASS(Ball)
+
+static_assert(sizeof(ftZakoBoy) == 0x8140, "Zako class size is wrong!");
+static_assert(sizeof(ftZakoGirl) == 0x8140, "Zako class size is wrong!");
+static_assert(sizeof(ftZakoChild) == 0x8140, "Zako class size is wrong!");
+static_assert(sizeof(ftZakoBall) == 0x8140, "Zako class size is wrong!");

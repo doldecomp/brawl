@@ -9,18 +9,7 @@
 // name until the SDK exposes it. It receives the soArticle base pointer.
 extern "C" bool ftRobotDeactivateArticle(soArticle* article);
 
-// Construction descriptors inferred from the article holder call sites.
-struct ftRobotArticleKindInfo {
-    s32 m_kind;
-    s32 m_subKind;
-    ftRobotArticleKindInfo() : m_kind(0), m_subKind(Fighter_Robot) { }
-};
-struct ftRobotArticleConstructionInfo {
-    const ftRobotArticleKindInfo* m_kindInfo;
-    void* m_heapModule;
-    ftRobotArticleConstructionInfo(const ftRobotArticleKindInfo& kind, void* heap) :
-        m_kindInfo(&kind), m_heapModule(heap) { }
-};
+#include <ft/robot/ft_robot_article_info.h>
 // Robot-specific declaration of the shared weapon-data lookup entry point.
 // Its full SDK template type is not reconstructed yet.
 class ftRobotArticleDataAccesser {
@@ -54,12 +43,7 @@ public:
     wnRobotGyro(s32 articleId, const ftRobotArticleConstructionInfo& info, void* data);
     virtual ~wnRobotGyro();
 };
-class wnRobotBeam : public Weapon {
-    u8 m_unreconstructed[0x2020 - sizeof(Weapon)];
-public:
-    wnRobotBeam(s32 articleId, const ftRobotArticleConstructionInfo& info, void* data);
-    virtual ~wnRobotBeam();
-};
+#include <wn/robot/wn_robot_beam.h>
 class wnRobotGyroHolder : public Weapon {
     u8 m_unreconstructed[0x1bfc - sizeof(Weapon)];
 public:
@@ -73,7 +57,6 @@ public:
     virtual ~wnRobotFinalBeam();
 };
 static_assert(sizeof(wnRobotGyro) == 0x2030, "Gyro layout is wrong!");
-static_assert(sizeof(wnRobotBeam) == 0x2020, "Beam layout is wrong!");
 static_assert(sizeof(wnRobotGyroHolder) == 0x1bfc, "Gyro holder layout is wrong!");
 static_assert(sizeof(wnRobotFinalBeam) == 0x220c, "Final beam layout is wrong!");
 
@@ -87,15 +70,7 @@ template <> struct ftRobotArticleActivator<wnRobotGyroHolder> {
 template <> struct ftRobotArticleActivator<wnRobotFinalBeam> {
     static bool activate(wnRobotFinalBeam* weapon, soModuleAccesser* acc);
 };
-class ftRobotTransactor {
-public:
-    ftRobotTransactor();
-    virtual ~ftRobotTransactor();
-    // Local declaration of the REL singleton-holder entry point.
-    static ftRobotTransactor* getInstance();
-    bool activeArticle1(wnRobotBeam* weapon, soModuleAccesser* acc, u32 resourceId);
-};
-static_assert(sizeof(ftRobotTransactor) == 4, "Transactor singleton layout is wrong!");
+#include <ft/robot/ft_robot_transactor.h>
 template <> struct ftRobotArticleActivator<wnRobotBeam> {
     static bool activate(wnRobotBeam* weapon, soModuleAccesser* acc);
 };

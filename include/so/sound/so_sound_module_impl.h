@@ -69,7 +69,7 @@ public:
     virtual void setSEPitch(u32, double);
     virtual float getSEPitch();
     virtual void stopSE(int, int);
-    virtual void stopSEHandle(int);
+    virtual void stopSEHandle(int, int);
     virtual void setSESpeed(int, float);
     virtual void playLandingSE();
     virtual void setSoundIdData(SoundIdData*);
@@ -121,7 +121,7 @@ public:
     virtual void setSEPitch(u32, double);
     virtual float getSEPitch();
     virtual void stopSE(int, int);
-    virtual void stopSEHandle(int);
+    virtual void stopSEHandle(int, int);
     virtual void setSESpeed(int, float);
     virtual void playLandingSE();
     virtual void setSoundIdData(SoundIdData*);
