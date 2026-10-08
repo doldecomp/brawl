@@ -62,13 +62,12 @@ public:
 
     float length() {
         float lengthSquared = this->lengthSq();
-        if (1.17549e-38 < fabsf(lengthSquared)) {
-            return rsqrtf(lengthSquared)*lengthSquared;
-        }
-        else {
-            return 0.0;
-        }
-
+        // MATCH-ONLY: retain the original fabs double temporary and frsp at
+        // conversion. The ordered <= comparison also preserves NaN behavior.
+        double absolute = __fabs(lengthSquared);
+        float magnitude = absolute;
+        if (magnitude <= 1.17549435e-38f) return 0.0f;
+        return lengthSquared * rsqrtf(lengthSquared);
     }
 
     float distance(Vec2f* v) {
