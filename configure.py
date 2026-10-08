@@ -1167,6 +1167,12 @@ config.libs = [
         "cflags": cflags_fighter,
         "host": False,
         "objects": [
+            Object(NonMatching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_s_utility.cpp"),
+            Object(NonMatching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_s_start.cpp"),
+            Object(NonMatching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_s_loop.cpp"),
+            Object(NonMatching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_s_end.cpp"),
+            Object(NonMatching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_s_turn.cpp"),
+            Object(NonMatching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_air_s_jump.cpp"),
             Object(Matching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_catch_pull.cpp"),
             Object(Matching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_guard_func.cpp"),
             Object(Matching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_guard_on.cpp"),
