@@ -102,6 +102,7 @@ public:
     ResMatMisc CopyTo(void* pDst) const;
 
     GXBool GXGetZCompLoc() const;
+    void SetLightSetIdx(int idx);
     int GetLightSetIdx() const;
     int GetFogIdx() const;
 
@@ -475,6 +476,7 @@ public:
 
     bool Bind(const ResFile file, ResTexObj texObj, ResTlutObj tlutObj);
     void Release(ResTexObj texObj, ResTlutObj tlutObj);
+    ResTex GetResTex() const;
 
     const char* GetTexName() const {
         const ResTexPlttInfoData& r = ref();
@@ -528,8 +530,8 @@ public:
         return ref().tlutID;
     }
 
-private:
     void BindTex_(const ResTex tex, ResTexObj texObj);
+private:
     void BindPltt_(const ResPltt pltt, ResTlutObj tlutObj);
 };
 
@@ -592,6 +594,16 @@ struct ResMatData {
     ResChanData chan;           // at 0x3EC
 };
 
+// HYPOTHESIS: layout unknown; only used as an opaque pointer wrapper here.
+struct ResUserDataData {
+    u32 size; // at 0x0
+};
+
+class ResUserData : public ResCommon<ResUserDataData> {
+public:
+    NW4R_G3D_RESOURCE_FUNC_DEF(ResUserData);
+};
+
 class ResMat : public ResCommon<ResMatData> {
 public:
     NW4R_G3D_RESOURCE_FUNC_DEF(ResMat);
@@ -601,6 +613,9 @@ public:
     bool Bind(const ResFile file);
     void Release();
 
+    bool ForceBindTex(const ResTex tex, const char* pName);
+    void DCStore(bool sync);
+    ResUserData GetResUserData();
     ResMdl GetParent();
 
     const char* GetName() const {
