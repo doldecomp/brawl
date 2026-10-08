@@ -18,6 +18,13 @@ mo_fighter/ft_robot/ft_robot.cpp:
 	.data       start:0x00000000 end:0x00006F54
 	.bss        start:0x00000008 end:0x0000026C
 
+mo_fighter/ft_robot/ft_robot_status_uniq_process_special_burner.cpp:
+	.text       start:0x0000E0E8 end:0x0000EEB4
+	.ctors      start:0x00000008 end:0x0000000C
+	.rodata     start:0x00000030 end:0x00000040
+	.data       start:0x000070C8 end:0x00007148
+	.bss        start:0x000002B8 end:0x000002C8
+
 mo_fighter/ft_robot/ft_robot_status_uniq_process_final.cpp:
 	.text       start:0x00010444 end:0x00010608
 	.ctors      start:0x00000018 end:0x0000001C
