@@ -3,6 +3,7 @@
 // MATCH-ONLY: native final-move updates call the scalar Vec2 assignment.
 #define MT_VEC2F_ASSIGN_NOINLINE
 #include <wn/sonic/wn_sonic_super_sonic_kinetic_transactor.h>
+#include <wn/wn_kinetic_transactor.h>
 #include <so/so_module_accesser.h>
 #include <so/so_value_accesser.h>
 #include <so/controller/so_controller_impl.h>
@@ -26,6 +27,74 @@ bool mtIsZero(float value) {
     return result;
 }
 #pragma dont_inline reset
+
+// Kinetic 0x20 initializes the Final Move energy; 0x21 adds the vertical
+// gravity energy. Earlier kinds use the shared weapon policy.
+void wnSonicSuperSonicKineticTransactor::changeKinetic(
+    int kineticType, wnSonicSuperSonicKineticPools* pools, soModuleAccesser* acc) {
+    if (kineticType <= 0x1F) {
+        wnKineticTransactor::changeKinetic(kineticType, pools, acc);
+        return;
+    }
+    switch (kineticType) {
+    case 0x20: {
+        volatile u8 unk9 = 0; // MATCH-ONLY: native initializes the local byte before the common policy call.
+        changeKineticFinalMoveCommon(pools, acc);
+        break;
+    }
+    case 0x21: {
+        wnSonicSuperSonicKineticTransactor empty = {};
+        empty.changeKineticSub(pools, acc);
+        break;
+    }
+    }
+}
+
+// Preserve the current main-attribute velocity when re-entering either Final
+// Move mode, then reset the normal energy's targets from the article parameters.
+void wnSonicSuperSonicKineticTransactor::changeKineticFinalMoveCommon(
+    wnSonicSuperSonicKineticPools* pools, soModuleAccesser* acc) {
+    soKineticEnergy::AttributeFlag mainEnergy(soKineticEnergy::ATTRIBUTE_MASK_MAIN);
+    Vec2f previousSpeed = acc->getKineticModule().getSumSpeed(mainEnergy);
+    acc->getKineticModule().unableEnergyAll();
+
+    volatile u8 unk8 = 0; // MATCH-ONLY: native initializes this local byte after disabling energies.
+
+    wnSonicSuperSonicNormalEnergyPool* normalPool = pools;
+    soKineticEnergyNormal* normalEnergy = normalPool->getSub().getInstanceAt(0);
+    {
+        soKineticEnergyNormal setup;
+        setup.enable();
+        *normalEnergy = setup;
+    }
+
+    if (acc->getKineticModule().getKineticType() == 0x20 ||
+        acc->getKineticModule().getKineticType() == 0x21) {
+        normalEnergy->m_speed = previousSpeed;
+    }
+
+    float speedLimitY = soValueAccesser::getConstantFloat(acc, 0xfa3, 0);
+    float speedLimitX = soValueAccesser::getConstantFloat(acc, 0xfa1, 0);
+    Vec2f speedLimit(speedLimitX, speedLimitY);
+    normalEnergy->m_speedLimit = speedLimit;
+    float speedTargetY = soValueAccesser::getConstantFloat(acc, 0xfa3, 0);
+    float speedTargetX = soValueAccesser::getConstantFloat(acc, 0xfa1, 0);
+    Vec2f speedTarget(speedTargetX, speedTargetY);
+    normalEnergy->m_speedTarget = speedTarget;
+}
+
+// The aerial sub-mode keeps the common normal energy and enables vertical
+// movement with its parameterized launch speed and no gravity acceleration.
+void wnSonicSuperSonicKineticTransactor::changeKineticSub(
+    wnSonicSuperSonicKineticPools* pools, soModuleAccesser* acc) {
+    changeKineticFinalMoveCommon(pools, acc);
+    volatile u8 unk8 = 0; // MATCH-ONLY: native initializes this separate Sub local after the common policy.
+    wnKineticEnergyGravity* gravity = pools->getSub().getInstanceAt(0);
+    gravity->m_speedY = soValueAccesser::getConstantFloat(acc, 0xfa7, 0);
+    gravity->m_gravity = 0.0f;
+    gravity->m_speedLimit = -1.0f;
+    gravity->enable();
+}
 
 void wnSonicSuperSonicKineticTransactor::updateEnergy(soKineticEnergyNormal* energy, soModuleAccesser* acc) {
     if (acc->getKineticModule().getKineticType() == 0x20 || acc->getKineticModule().getKineticType() == 0x21)
@@ -108,5 +177,3 @@ void wnSonicSuperSonicKineticTransactor::updateEnergyFinalMoveCommon(wnKineticEn
     else
         energy->m_speedY = 0.0f;
 }
-// Next coherent draft: changeKinetic/changeKineticFinalMoveCommon/changeKineticSub
-// once genuine pooled template parameter spelling and constructor offsets agree.
