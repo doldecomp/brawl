@@ -1,4 +1,6 @@
 #include <wn/wario/wn_wario_bike_kinetic_transactor.h>
+#include <wn/wario/wn_wario_bike.h>
+#include <so/stop/so_stop_module_impl.h>
 #include <wn/wn_kinetic_transactor.h>
 #include <so/so_module_accesser.h>
 #include <so/so_value_accesser.h>
@@ -221,4 +223,36 @@ void wnWarioBikeKineticTransactor::updateEnergy1(
     wnKineticEnergyGravity* energy, soModuleAccesser* accesser) {
     if (energy->isEnable() == true && energy->isSuspend() == false)
         energy->updateEnergy(accesser);
+}
+
+
+void wnWarioBike::processUpdate() {
+    if (m_moduleAccesser->getWorkManageModule().isFlag(0x2200000B)) {
+        m_moduleAccesser->getWorkManageModule().offFlag(0x2200000B);
+        deactivate(false);
+        return;
+    }
+
+    Weapon::processUpdate();
+    m_moduleAccesser->getWorkManageModule().setFloat(
+        m_moduleAccesser->getPostureModule().getLr(), 0x21000008);
+}
+
+bool wnWarioBike::notifyEventCollisionAttackCheck(u32 flags) {
+    (void)flags;
+    int count = m_moduleAccesser->getWorkManageModule().getInt(0x10000007);
+    if (count > 0) {
+        struct CollisionAttackEvent : soLinkEventArgs {
+            int m_count;
+            u8 m_unk0C;
+
+            explicit CollisionAttackEvent(int value)
+                : soLinkEventArgs(2115), m_count(value), m_unk0C(0) {}
+        } event(count);
+
+        m_moduleAccesser->getLinkModule().sendEventParents(3, event);
+        m_moduleAccesser->getStopModule().setHitStopFrame(count, false);
+        m_moduleAccesser->getWorkManageModule().setInt(0, 0x10000007);
+    }
+    return false;
 }
