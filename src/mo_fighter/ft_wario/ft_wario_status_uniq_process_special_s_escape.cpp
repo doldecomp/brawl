@@ -6,7 +6,6 @@
 #include <so/so_module_accesser.h>
 
 void ftWarioStatusUniqProcessSpecialSEscape::execFixPosCounter(soModuleAccesser* a) {
-    ftWarioBikeRiderParam* param;
     soWorkManageModule* work = &a->getWorkManageModule();
     soSituationModule* situation = &a->getSituationModule();
     soGroundModule* ground = &a->getGroundModule();
@@ -15,10 +14,14 @@ void ftWarioStatusUniqProcessSpecialSEscape::execFixPosCounter(soModuleAccesser*
     soModelModule* model = &a->getModelModule();
     soLinkModule* link = &a->getLinkModule();
     StageObject* fighter = &a->getStageObject();
-    if (fighter->soGetSubKind() == 0x15)
-        param = dynamic_cast<ftWario&>(*fighter).getExtendParam()->bikeRider;
-    else
-        param = dynamic_cast<ftWarioMan&>(*fighter).getExtendParam()->bikeRider;
+    ftWarioBikeRiderParam* param;
+    if (fighter->soGetSubKind() == 0x15) {
+        ftWario& wario = dynamic_cast<ftWario&>(*fighter);
+        param = wario.getExtendParam()->bikeRider;
+    } else {
+        ftWarioMan& wario = dynamic_cast<ftWarioMan&>(*fighter);
+        param = wario.getExtendParam()->bikeRider;
+    }
     if (work->isFlag(0x22000011)) {
         float lr = posture->getLr();
         int node = model->getCorrectNodeId(0x12d);

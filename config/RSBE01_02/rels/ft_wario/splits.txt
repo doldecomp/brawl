@@ -57,6 +57,27 @@ mo_fighter/ft_wario/ft_wario_status_uniq_process_special_s_down.cpp:
 	.data       start:0x00006740 end:0x000067C8
 	.bss        start:0x000001E8 end:0x000001F8
 
+mo_fighter/ft_wario/ft_wario_status_uniq_process_special_hi_start.cpp:
+	.text       start:0x0000E2E8 end:0x0000E738
+	.ctors      start:0x00000020 end:0x00000024
+	.rodata     start:0x00000050 end:0x00000060
+	.data       start:0x000067C8 end:0x00006848
+	.bss        start:0x000001F8 end:0x00000208
+
+mo_fighter/ft_wario/ft_wario_status_uniq_process_special_hi_jump.cpp:
+	.text       start:0x0000E738 end:0x0000EB54
+	.ctors      start:0x00000024 end:0x00000028
+	.rodata     start:0x00000060 end:0x00000070
+	.data       start:0x00006848 end:0x00006910
+	.bss        start:0x00000208 end:0x00000218
+
+mo_fighter/ft_wario/ft_wario_status_uniq_process_special_lw.cpp:
+	.text       start:0x0000EB54 end:0x0000F17C
+	.ctors      start:0x00000028 end:0x0000002C
+	.rodata     start:0x00000070 end:0x00000080
+	.data       start:0x00006910 end:0x00006988
+	.bss        start:0x00000218 end:0x00000228
+
 mo_fighter/mo_fighter.cpp:
 	.text       start:0x0002122C end:0x000212C8
 	.data       start:0x0000A0A8 end:0x0000A0B7

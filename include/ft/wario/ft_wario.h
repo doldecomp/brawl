@@ -19,10 +19,22 @@ struct ftWarioSpecialHiParam {
     float unk14;
     float unk18;
 };
+// HYPOTHESIS: parameter names await setup-code reconstruction; offsets are verified.
+struct ftWarioSpecialLwParam {
+    int unk0;
+    int unk4;
+    int unk8;
+    float unkC;
+    float unk10;
+    float unk14;
+    float unk18;
+    float unk1C;
+};
 struct ftWarioExtendParam {
     void* unk0;
     ftWarioBikeRiderParam* bikeRider;
     ftWarioSpecialHiParam* specialHi;
+    ftWarioSpecialLwParam* specialLw;
 };
 // Partial fighter declarations: module-builder storage remains unreconstructed.
 // Used only for the verified inherited Fighter ABI and getExtendParam calls.
