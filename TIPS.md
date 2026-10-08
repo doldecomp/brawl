@@ -85,6 +85,7 @@ Things that moved registers, roughly in the order worth trying:
 - Jump tables for `switch` live in `.rodata` in RELs and are named `jumptable_XXXX` in `symbols.txt`; keep the split configuration identical to verified output. **MED**
 
 ## 8. Process
+- **After adding a shadow header** (a local `include/...` file that overrides a BrawlHeaders one), Ninja does NOT rebuild objects that were compiled against the old header: it only tracks the path each file resolved before. Symptom: the link fails with `Failed to find symbol <name> in any module` for a name you just changed (for example a method that became `const`). Fix: delete the objects that depend on the old header (`ninja -t deps` lists them) or do a clean build, then rebuild. Seen when `ftManager::getSlotNo` became `const` (PR #20). **HIGH**
 - Prefer real member calls over `extern "C" fn_xxxx`. Name the symbol in `symbols.txt` (mangled) and call it normally. If you find the real name, rename.
 - Never rename a REL function to a name that exists elsewhere in the symbols (it breaks the `.rel` hash).
 - Before and after a change, check the per-function numbers in `build/RSBE01_02/report.json`, not just the unit total, and run the 127-file hash check.
