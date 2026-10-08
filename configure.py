@@ -1121,7 +1121,10 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_fighter/ft_sonic/ft_sonic_status_uniq_process_special_lw_hold.cpp", extra_cflags=["-O2,s"]),
+            Object(Matching, "mo_fighter/ft_sonic/ft_sonic_status_uniq_process_special_s_wall_end.cpp", extra_cflags=["-O2,s"]),
+        ],
     },
     {
         "lib": "ft_toonlink",
@@ -1135,23 +1138,31 @@ config.libs = [
     {
         "lib": "ft_wario",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_fighter/ft_wario/ft_wario_status_uniq_process_special_s_drive.cpp"),
+        ],
     },
     {
         "lib": "ft_wolf",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_fighter/ft_wolf/ft_wolf_status_uniq_process_reflector.cpp"),
+        ],
     },
     {
         "lib": "ft_yoshi",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_hi.cpp"),
+            Object(Matching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_lw.cpp"),
+            Object(Matching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_air_lw.cpp"),
+        ],
     },
     {
         "lib": "ft_zako",

@@ -46,6 +46,10 @@ public:
     // Whether a Zako fighter is allowed to enter the status.
     static bool isValidStatusKindZako(soModuleAccesser* acc, int status);
 
+    // Pushes the fighter out of a wall (parameters as used by fighter statuses, e.g. Sonic's side special wall end).
+    // Parameter order is verified from fighter callers and the shared implementation. (Declared by the Sonic status work.)
+    static void adjustWall(soModuleAccesser*, float, float, float, int);
+
     // Global multipliers read from the common constants.
     static float getAttackReactionMul(soModuleAccesser* acc);
     static float getAttackPowerMul(soModuleAccesser* acc);

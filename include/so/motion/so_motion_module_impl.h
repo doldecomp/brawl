@@ -24,17 +24,7 @@ class soMotionAnimObjCacheModule;
 class soTransitionModule;
 #endif
 
-class soMotionChangeParam {
-public:
-    int m_kind;
-    float m_frame;
-    float m_rate;
-    u8 _12;
-    u8 _13;
-    u8 _14;
-    u8 _15;
-};
-static_assert(sizeof(soMotionChangeParam) == 16, "Class is wrong size!");
+#include <so/motion/so_motion_change_param.h>
 
 class soMotionModule {
 public:

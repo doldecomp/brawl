@@ -50,9 +50,9 @@ static_assert(sizeof(soStatusCollisionLogCopy) == 0x2C, "Class is wrong size!");
 class soStatusUniqProcess {
 public:
     virtual ~soStatusUniqProcess() { }
-    virtual void initStatus(soModuleAccesser* moduleAccesser) { }
+    virtual void initStatus(soModuleAccesser* moduleAccesser) SO_STATUS_UNIQ_PROCESS_BODY()
     virtual void exitStatus(soModuleAccesser* moduleAccesser, int) SO_STATUS_UNIQ_PROCESS_BODY()
-    virtual void execStatus(soModuleAccesser* moduleAccesser) { }
+    virtual void execStatus(soModuleAccesser* moduleAccesser) SO_STATUS_UNIQ_PROCESS_BODY()
     virtual void execStop(soModuleAccesser* moduleAccesser) SO_STATUS_UNIQ_PROCESS_BODY()
     virtual void execMapCorrection(soModuleAccesser* moduleAccesser) SO_STATUS_UNIQ_PROCESS_BODY()
     virtual void execFixPosCounter(soModuleAccesser* moduleAccesser) SO_STATUS_UNIQ_PROCESS_BODY()

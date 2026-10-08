@@ -11,6 +11,26 @@ global_destructor_chain.c:
 	.dtors      start:0x00000000 end:0x00000008
 	.bss        start:0x00000000 end:0x00000004
 
+mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_hi.cpp:
+	.text       start:0x000135D4 end:0x000138BC
+	.ctors      start:0x00000034 end:0x00000038
+	.rodata     start:0x000000F8 end:0x00000108
+	.data       start:0x000083D8 end:0x00008450
+	.bss        start:0x00000410 end:0x00000420
+
+mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_lw.cpp:
+	.text       start:0x000138BC end:0x000139DC
+	.ctors      start:0x00000038 end:0x0000003C
+	.data       start:0x00008450 end:0x000084C8
+	.bss        start:0x00000420 end:0x00000430
+
+mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_air_lw.cpp:
+	.text       start:0x000139DC end:0x00013B78
+	.ctors      start:0x0000003C end:0x00000040
+	.rodata     start:0x00000108 end:0x00000110
+	.data       start:0x000084C8 end:0x00008548
+	.bss        start:0x00000430 end:0x00000440
+
 mo_fighter/mo_fighter.cpp:
 	.text       start:0x0001D9D0 end:0x0001DA6C
 	.data       start:0x0000A040 end:0x0000A04F
