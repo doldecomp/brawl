@@ -1388,7 +1388,11 @@ public:
 
     virtual Input* getInput();
     virtual soKind soGetKind();
+#ifdef FT_MODULE_BUILDER
+    virtual int soGetSubKind() { return getFtKind(); }
+#else
     virtual int soGetSubKind();
+#endif
     virtual bool checkTransitionStatus(u32);
     virtual bool isTreadPassive();
 #ifdef FT_MODULE_BUILDER
@@ -1406,7 +1410,7 @@ public:
 
     // TODO: Verify parameters
     virtual void postCreate();
-    virtual Fighter* getPartner();
+    Fighter* getPartner();
     virtual void attachInstance();
     virtual void detachInstance();
     virtual void standbyAdvFollow();
@@ -1474,7 +1478,11 @@ public:
     virtual void analyzeSeal(void*);
 #endif
     virtual void notifyEventCollisionAttack(float power, soCollisionLog* collisionLog, soModuleAccesser* moduleAccesser);
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventCollisionAttackFighter(soCollisionLog*, soModuleAccesser*) { }
+#else
     virtual void notifyEventCollisionAttackFighter(soCollisionLog* collisionLog, soModuleAccesser* moduleAccesser);
+#endif
     virtual ftOwner* getOwner();
 #ifdef FT_MODULE_BUILDER
     virtual ftKind getFtKind() { return *(ftKind*)((u8*)this + 0x110); }

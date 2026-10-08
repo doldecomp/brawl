@@ -235,9 +235,9 @@ public:
         ),
         m_modelModuleBuilder(
             &m_moduleAccsr,
+            fbd.getModelScale(),
             fbd.getModelExtendNodeTable(),
-            &g_soEventObserverRegistrationDescNull,
-            fbd.getModelScale()
+            &g_soEventObserverRegistrationDescNull
         ),
         m_motionBuilder(&m_moduleAccsr, fbd.getMotionData()),
         m_postureModuleBuilder(&m_moduleAccsr, &g_soEventObserverRegistrationDescNull),

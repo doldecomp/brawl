@@ -98,7 +98,7 @@ public:
         m_motionData((const soMotionData*)motionData, BC::MotionDataNum),
         m_cacheBuilder(),
         m_module(acc, &m_motionData, m_transitionBuilder.getModule(), m_partialAnims.get(), m_otherAnims.get(),
-                 m_termPacks.get(), m_u32s.get(), ftGetManageId(acc), true, (soMotionAnimObjCacheModule*)&m_cacheBuilder.m_module) {
+                 m_termPacks.get(), m_u32s.get(), static_cast<soEventManager&>(acc->getEventManageModule()).getManageId(), true, (soMotionAnimObjCacheModule*)&m_cacheBuilder.m_module) {
         acc->getModelModule().isNull();
     }
     ~soMotionModuleBuilder() { }

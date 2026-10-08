@@ -90,12 +90,8 @@ public:
 static_assert(sizeof(soKineticEnergy) == 8, "Class is wrong size!");
 
 #ifdef FT_MODULE_BUILDER
-// MATCH-ONLY: weak copy in the fighter RELs.
+// The default 3D view preserves planar speed and supplies zero depth speed.
 inline Vec3f soKineticEnergy::getSpeed3f() {
-    Vec2f speed = getSpeed();
-    Vec3f result;
-    *result.xy() = speed;
-    result.m_z = 0.0f;
-    return result;
+    return Vec3f(getSpeed(), 0.0f);
 }
 #endif
