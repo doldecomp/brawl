@@ -255,6 +255,7 @@ public:
     void setMode(int mode);
     static void create();
     void stopGame();
+    void getCameraRange(int characterKind, float lr, float scale, Vec3f* pos, float* range, Vec3f* outPos);
     void startSubFighter(int entryId, float lr, Vec3f* pos);
     void startInputEvent();
     int getBeatPointDiffFromTop(int entryId) const;

@@ -13,6 +13,7 @@
 #include <snd/snd_system.h>
 #include <so/collision/so_collision_manager.h>
 #include <ft/ft_audience_manager.h>
+#include <ft/ft_kind_conversion.h>
 #include <so/so_archive_db.h>
 #include <so/so_external_value_accesser.h>
 #include <sr/sr_common.h>
@@ -1376,4 +1377,40 @@ void ftManager::startSubFighter(int entryId, float lr, Vec3f* pos) {
     owner->setStartLr(lr);
     reinterpret_cast<ftOwnerUnknownModule*>(reinterpret_cast<u8*>(owner) + 0xD54)->unk_v2(0, 0.0f);
     entry->startSubFighter();
+}
+
+// HYPOTHESIS: the per-fighter camera parameters read by getCameraRange (offsets into the common ftParam block)
+struct ftParamCameraRange {
+    char _0[0x1F8];
+    float unk1F8; // vertical offset of the camera centre, scaled by the fighter scale
+    float unk1FC;
+    float unk200;
+    float unk204;
+    float unk208;
+};
+
+// Camera focus point and rectangle for a fighter of the given character kind standing at pos facing lr.
+void ftManager::getCameraRange(int characterKind, float lr, float scale, Vec3f* pos, float* range, Vec3f* outPos) {
+    ftKind kind;
+    ftKindConversion::convertKind(static_cast<gmCharacterKind>(characterKind), &kind);
+    ftParamCameraRange* param = reinterpret_cast<ftParamCameraRange*>(g_ftCommonDataAccesser.getParam(kind));
+    float offsetY = param->unk1F8 * scale;
+    outPos->m_x = pos->m_x;
+    outPos->m_y = pos->m_y + offsetY;
+    outPos->m_z = pos->m_z;
+    if (lr == 1.0f) {
+        range[0] = param->unk200;
+        range[1] = param->unk1FC;
+        range[2] = param->unk204;
+        range[3] = param->unk208;
+    } else {
+        range[1] = -param->unk200;
+        range[0] = -param->unk1FC;
+        range[2] = param->unk204;
+        range[3] = param->unk208;
+    }
+    range[0] *= scale;
+    range[1] *= scale;
+    range[2] *= scale;
+    range[3] *= scale;
 }
