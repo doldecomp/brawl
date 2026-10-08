@@ -481,11 +481,17 @@ void AnmObjTexSrtRes::G3dProc(u32 task, u32 param, void* pInfo) {
 void ApplyTexSrtAnmResult(ResTexSrt srt, const TexSrtAnmResult* pResult) {
     ResTexSrtData& r = srt.ref();
 
+    u32 resFlags = r.flag;
     u32 flags = pResult->flags;
     u32 mask = 0x0F;
 
-    for (int i = 0; flags != 0;
-         flags >>= TexSrt::NUM_OF_FLAGS, mask <<= 4, i++) {
+    for (int i = 0; resFlags != 0 && flags != 0;
+         resFlags >>= TexSrt::NUM_OF_FLAGS, flags >>= TexSrt::NUM_OF_FLAGS,
+             mask <<= 4, i++) {
+
+        if (!(resFlags & 1)) {
+            continue;
+        }
 
         if (!(flags & 1)) {
             continue;
