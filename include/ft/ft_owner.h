@@ -24,6 +24,7 @@ private:
     u8 _11;
 
 public:
+    bool getSpycloak() const; // HYPOTHESIS: the player wears the Spycloak (hides R.O.B.'s chest lamp)
     virtual ~ftOwner();
     virtual bool isSubOwner();
     virtual void setDamage(float damage, bool);

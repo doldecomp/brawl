@@ -4922,6 +4922,7 @@ config.libs = [
             Object(NonMatching, "mo_melee/sora_melee/ft/ft_manager.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/ft/ft_robot_status_uniq_process_special_beam.cpp"),
             Object(Matching, "mo_melee/sora_melee/wn/wn_robot_beam_status_uniq_process.cpp"),
+            Object(NonMatching, "mo_melee/sora_melee/ft/ft_robot_transactor.cpp"),
         ],
     },
     {
