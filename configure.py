@@ -5307,7 +5307,7 @@ config.libs = [
         "cflags": cflags_rel,
         "host": False,
         "objects": [
-            Object(NonMatching, "mo_stage/st_fzero/gr_fzero_trainer.cpp"),
+            Object(NonMatching, "mo_stage/st_fzero/gr_fzero_trainer_warning.cpp"),
         ],
     },
     {
