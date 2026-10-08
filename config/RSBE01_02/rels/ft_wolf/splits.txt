@@ -11,6 +11,9 @@ global_destructor_chain.c:
 	.dtors      start:0x00000000 end:0x00000008
 	.bss        start:0x00000000 end:0x00000004
 
+mo_fighter/ft_wolf/ft_wolf.cpp:
+	.text       start:0x0000A028 end:0x0000A0BC
+
 mo_fighter/ft_wolf/ft_wolf_status_uniq_process_reflector.cpp:
 	.text       start:0x0000E73C end:0x0000E7D4
 

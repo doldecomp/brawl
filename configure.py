@@ -1164,6 +1164,7 @@ config.libs = [
         "host": False,
         "objects": [
             Object(Matching, "mo_fighter/ft_wolf/ft_wolf_status_uniq_process_reflector.cpp"),
+            Object(Matching, "mo_fighter/ft_wolf/ft_wolf.cpp"),
         ],
     },
     {
