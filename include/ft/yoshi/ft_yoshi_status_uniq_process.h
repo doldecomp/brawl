@@ -71,12 +71,7 @@ inline ftYoshiStatusUniqProcessGuardFunc* ftYoshiStatusUniqProcessGuardFunc::get
     return &g_ftYoshiStatusUniqProcessGuardFunc;
 }
 
-class ftStatusUniqProcessCatchPull : public soStatusUniqProcess {
-public:
-    virtual void initStatus(soModuleAccesser*);
-    // Original CatchPull vtable imports this override, rather than the generic false callback.
-    virtual bool checkDamage(soModuleAccesser*, void*);
-};
+#include <ft/ft_status_uniq_process_catch_pull.h>
 class ftYoshiStatusUniqProcessCatchPull : public ftStatusUniqProcessCatchPull {
 public:
     virtual ~ftYoshiStatusUniqProcessCatchPull() {}

@@ -64,8 +64,12 @@ private:
     soSlopeStatusParam::Status m_status;
     char _0x2c[8];
     soArrayVector<soSlopeStatusParam, 1> m_statusParamArrayVector;
-    float _0x4c;
-    char _0x50[28];
+    float m_slopeAngle; // 0x4c: angle (degrees) of the ground under the fighter; 0 means flat
+    // HYPOTHESIS: slope angle pairs (current, target) for the top, left and right statuses, then the part node's angle.
+    int m_topAngle[2]; // 0x50
+    int m_leftAngle[2]; // 0x58
+    int m_rightAngle[2]; // 0x60
+    int m_partAngle; // 0x68
     int m_0x6C;
     float m_0x70;
     int m_partNode;
@@ -87,4 +91,6 @@ public:
     virtual bool isObserv(char unk1);
     virtual bool notifyEventAnimCmd(acAnimCmd* acmd, soModuleAccesser* moduleAccesser, int unk3);
     virtual void notifyEventChangeStatus(int statusKind, int prevStatusKind, soStatusData* statusData, soModuleAccesser* moduleAccesser);
+
+    void changeStatus();
 };
