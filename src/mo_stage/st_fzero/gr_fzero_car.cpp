@@ -60,17 +60,20 @@ void grFzeroCar::updateYakumono(float deltaFrame) {
 // The engine sound that goes with a car type (-1 for none).
 static inline int grFzeroCarPassSound(u8 type) {
     int id;
-    if (type == 2) {
+    switch (type) {
+    case 0:
+        id = 0x1c66;
+        break;
+    case 1:
+        id = 0x1c67;
+        break;
+    case 2:
         id = 0x1c68;
-    } else if (type < 2) {
-        if (type == 0) {
-            id = 0x1c66;
-        } else {
-            id = 0x1c67;
-        }
-    } else if (type < 4) {
+        break;
+    case 3:
         id = 0x1c69;
-    } else {
+        break;
+    default:
         id = -1;
     }
     return id;
@@ -79,17 +82,20 @@ static inline int grFzeroCarPassSound(u8 type) {
 // The sound of a car going past the fighters.
 static inline int grFzeroCarNearSound(u8 type) {
     int id;
-    if (type == 2) {
+    switch (type) {
+    case 0:
+        id = 0x1c6a;
+        break;
+    case 1:
+        id = 0x1c6b;
+        break;
+    case 2:
         id = 0x1c6c;
-    } else if (type < 2) {
-        if (type == 0) {
-            id = 0x1c6a;
-        } else {
-            id = 0x1c6b;
-        }
-    } else if (type < 4) {
+        break;
+    case 3:
         id = 0x1c6d;
-    } else {
+        break;
+    default:
         id = -1;
     }
     return id;
@@ -106,7 +112,7 @@ static inline float grFzeroCarDistance(grCalcWorldCallBack* callback) {
     if (fzeroIsNearZero(x) && fzeroIsNearZero(y) && fzeroIsNearZero(z)) {
         atOrigin = true;
     }
-    if (atOrigin) {
+    if (atOrigin == true) {
         distance = 0.0f;
     } else {
         distance = z * z + x * x + y * y;
@@ -211,24 +217,22 @@ void grFzeroCar::updateCallBack(float deltaFrame) {
                 bool same = false;
                 calcWorldCallBack->m_nodeCallbackDatas[0].m_matrix = *mtx;
                 Matrix* node = &calcWorldCallBack->m_nodeCallbackDatas[0].m_matrix;
-                Vec3f pos;
-                pos.m_z = node->m[2][3];
-                pos.m_y = node->m[1][3];
-                pos.m_x = node->m[0][3];
-                if (fzeroIsNearZero(pos.m_x - m_carData->m_pos.m_x) && fzeroIsNearZero(pos.m_y - m_carData->m_pos.m_y) &&
-                    fzeroIsNearZero(pos.m_z - m_carData->m_pos.m_z)) {
+                Vec3f pos(node->m[0][3], node->m[1][3], node->m[2][3]);
+                Vec3f subResult;
+                Vec3fSub(&subResult, &pos, &m_carData->m_pos);
+                Vec3f diff;
+                diff = subResult;
+                if (fzeroIsNearZero(diff.m_x) && fzeroIsNearZero(diff.m_y) && fzeroIsNearZero(diff.m_z)) {
                     same = true;
                 }
-                if (same && deltaFrame != 0.0f) {
+                if (same == true && deltaFrame != 0.0f) {
                     if (m_isVisible) {
                         setVisibility(0);
                     }
                 } else if (!m_isVisible) {
                     setVisibility(1);
                 }
-                m_carData->m_pos.m_x = pos.m_x;
-                m_carData->m_pos.m_y = pos.m_y;
-                m_carData->m_pos.m_z = pos.m_z;
+                m_carData->m_pos = pos;
                 m_sndGen.setPos(&pos);
             }
         }
