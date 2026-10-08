@@ -62,6 +62,18 @@ public:
         return GetRevision() == REVISION;
     }
 
+    int GetNumFrame() const {
+        return ref().info.numFrame;
+    }
+
+    AnmPolicy GetAnmPolicy() const {
+        return ref().info.policy;
+    }
+
+    u32 GetNumSpecularLight() const {
+        return ref().info.numSpecularLight;
+    }
+
     bool HasResAnmAmbLight() const;
     bool HasResAnmLight() const;
     bool HasResAnmCamera() const;
