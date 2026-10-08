@@ -1210,7 +1210,9 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_snake/wn_snake_nikita_missile_status_uniq_process_fly.cpp"),
+        ],
     },
     {
         "lib": "ft_sonic",

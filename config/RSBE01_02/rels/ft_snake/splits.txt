@@ -11,6 +11,13 @@ global_destructor_chain.c:
 	.dtors      start:0x00000000 end:0x00000008
 	.bss        start:0x00000000 end:0x00000004
 
+mo_fighter/ft_snake/wn_snake_nikita_missile_status_uniq_process_fly.cpp:
+	.text       start:0x000272CC end:0x00027B24
+	.ctors      start:0x00000020 end:0x00000024
+	.rodata     start:0x00000180 end:0x000001B0
+	.data       start:0x00010758 end:0x000107D8
+	.bss        start:0x000004D8 end:0x000004E8
+
 mo_fighter/mo_fighter.cpp:
 	.text       start:0x00027B24 end:0x00027BC0
 	.data       start:0x000107D8 end:0x000107E7

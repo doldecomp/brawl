@@ -21,6 +21,9 @@ public:
     // callback; its additional virtual slot is proved by the concrete table.
     virtual void projectionNormalFollow();
 
+    // Native ft_snake helper copies a Vec3f into m_speedTarget (+0x20).
+    void setStableSpeed(Vec3f* speed);
+
     Vec3f m_rotSpeed;     // +0x08: getRotation and clearRotSpeed
     Vec3f m_accel;        // +0x14: mulAccel and reflectAccel
     Vec3f m_speedTarget;  // +0x20: updateEnergy
