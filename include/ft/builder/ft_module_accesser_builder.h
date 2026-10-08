@@ -234,7 +234,8 @@ public:
             (void*)&m_heapModuleBuilder,
             (soParamCustomizeModule*)&m_paramCustomizeModuleBuilder,
             (void*)m_glowModuleBuilder.getModule()),
-        m_heapModuleBuilder(fbd.getInstanceHeap(), ftPassT(fbd.getNWModelInstanceHeap()), fbd.getNWMotionInstanceHeap(), ftPassT(fbd.getHeapSlotNo())),
+        // MATCH-ONLY: the comma operator and the pass-through give the two queries the original's saved registers.
+        m_heapModuleBuilder(fbd.getInstanceHeap(), ((void)0, fbd.getNWModelInstanceHeap()), fbd.getNWMotionInstanceHeap(), ftPassT(fbd.getHeapSlotNo())),
         m_paramCustomizeModuleBuilder(&m_moduleAccsr),
         m_resourceModuleBuilder(
             fbd.getMdlResId(),
