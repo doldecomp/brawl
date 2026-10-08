@@ -549,8 +549,9 @@ void stFzero::updateFloor(float deltaFrame) {
 
     Vec3f a(mtx(22)->m[0][3], mtx(22)->m[1][3], 0.0f);
     Vec3f b(mtx(23)->m[0][3], mtx(23)->m[1][3], 0.0f);
-    Vec3f diff;
-    Vec3fSub(&diff, &b, &a);
+    Vec3f subResult;
+    Vec3fSub(&subResult, &b, &a);
+    Vec3f diff = subResult;
     bool same = false;
     if (fzeroIsNearZero(diff.m_x) && fzeroIsNearZero(diff.m_y) && fzeroIsNearZero(diff.m_z)) {
         same = true;
@@ -582,17 +583,37 @@ void stFzero::updateFloor(float deltaFrame) {
         vtx[3] = b.m_y;
     }
 
-    if (m_state < 6 && m_state != 0) {
+    switch (m_state) {
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
         if (m_floorCollision->m_isEnabled == true) {
             m_floorCollision->setDisable();
         }
-    } else if (b.m_y < m_limitMax.m_y || a.m_y < m_limitMax.m_y) {
-        if (m_floorCollision->m_isEnabled == true) {
-            m_floorCollision->setDisable();
+        break;
+    default:
+        if (b.m_y < m_limitMax.m_y || a.m_y < m_limitMax.m_y) {
+            if (m_floorCollision->m_isEnabled == true) {
+                m_floorCollision->setDisable();
+            }
+        } else if (!m_floorCollision->m_isEnabled) {
+            m_floorCollision->setEnable();
         }
-    } else if (!m_floorCollision->m_isEnabled) {
-        m_floorCollision->setEnable();
     }
+}
+
+// Picks a random index below count (the original clamps a truncated float to the last index).
+static inline u8 fzeroRandIndex(float count, u8 last) {
+    u32 value = (u32)(int)(count * randf());
+    u8 low = value;
+    value = low ? value : 0;
+    u8 index = last;
+    if ((u8)value < last) {
+        index = value;
+    }
+    return index;
 }
 
 // The cars: while the course is running (state 0/1) the timer counts down to the next wave of cars, whose length depends
@@ -604,76 +625,11 @@ void stFzero::updateCar(float deltaFrame) {
         m_carTimer = 0.0f;
     }
 
-    u8 carState = m_carState;
-    if (carState == 2) {
-        if (m_carMode != 6) {
-            if (m_carMode == 8) {
-                m_carState = 0;
-            } else {
-                u8 order[32];
-                for (u8 i = 0; i < 30; i++) {
-                    order[i] = i;
-                }
-                for (u32 i = 0; i < 30; i++) {
-                    u8 j = (u8)(30.0f * randf());
-                    if (j > 29) {
-                        j = 29;
-                    }
-                    u8 tmp = order[i];
-                    order[i] = order[j];
-                    order[j] = tmp;
-                }
-                u8 mtxOrder[16];
-                mtxOrder[0] = 0;
-                mtxOrder[1] = 1;
-                mtxOrder[2] = 2;
-                mtxOrder[3] = 3;
-                mtxOrder[4] = 4;
-                mtxOrder[5] = 5;
-                mtxOrder[6] = 6;
-                mtxOrder[7] = 7;
-                mtxOrder[8] = 8;
-                mtxOrder[9] = 9;
-                mtxOrder[10] = 10;
-                mtxOrder[11] = 11;
-                mtxOrder[12] = 12;
-                mtxOrder[13] = 13;
-                mtxOrder[14] = 14;
-                for (u32 i = 0; i < 15; i++) {
-                    u8 j = (u8)(15.0f * randf());
-                    if (j > 14) {
-                        j = 14;
-                    }
-                    u8 tmp = mtxOrder[i];
-                    mtxOrder[i] = mtxOrder[j];
-                    mtxOrder[j] = tmp;
-                }
-                u8 type = 0;
-                for (u32 i = 0; i < 15; i++) {
-                    stFzeroCarData* car = &m_carData[order[i]];
-                    car->m_mtx = mtx(mtxOrder[i] + 24);
-                    car->m_state = 7;
-                    car->m_type = type;
-                    if (type == 2) {
-                        type = 3;
-                    } else if (type < 2) {
-                        if (type == 0) {
-                            type = 1;
-                        } else {
-                            type = 2;
-                        }
-                    } else if (type < 4) {
-                        type = 0;
-                    }
-                }
-                m_carMode = 7;
-                m_carState = 3;
-            }
-        }
-    } else if (carState < 2) {
-        if (carState == 0) {
-            m_carState = 1;
-        }
+    switch (m_carState) {
+    case 0:
+        m_carState = 1;
+        // fall through
+    case 1:
         if (m_carTimer == 0.0f) {
             switch (m_scene) {
             case 0:
@@ -717,11 +673,75 @@ void stFzero::updateCar(float deltaFrame) {
                 m_carState = 2;
             }
         }
-    } else if (carState < 4 && m_carMode == 8) {
-        for (u8 i = 0; i < 30; i++) {
-            m_carData[i].m_mtx = NULL;
-            m_carData[i].m_state = 8;
+        break;
+    case 2:
+        if (m_carMode != 6) {
+            if (m_carMode == 8) {
+                m_carState = 0;
+            } else {
+                u8 order[32];
+                for (u8 i = 0; i < 30; i++) {
+                    order[i] = i;
+                }
+                for (u32 i = 0; i < 30; i++) {
+                    u8 j = fzeroRandIndex(30.0f, 29);
+                    u8 tmp = order[i];
+                    order[i] = order[j];
+                    order[j] = tmp;
+                }
+                u8 mtxOrder[16];
+                mtxOrder[0] = 0;
+                mtxOrder[1] = 1;
+                mtxOrder[2] = 2;
+                mtxOrder[3] = 3;
+                mtxOrder[4] = 4;
+                mtxOrder[5] = 5;
+                mtxOrder[6] = 6;
+                mtxOrder[7] = 7;
+                mtxOrder[8] = 8;
+                mtxOrder[9] = 9;
+                mtxOrder[10] = 10;
+                mtxOrder[11] = 11;
+                mtxOrder[12] = 12;
+                mtxOrder[13] = 13;
+                mtxOrder[14] = 14;
+                for (u32 i = 0; i < 15; i++) {
+                    u8 j = fzeroRandIndex(15.0f, 14);
+                    u8 tmp = mtxOrder[i];
+                    mtxOrder[i] = mtxOrder[j];
+                    mtxOrder[j] = tmp;
+                }
+                u8 type = 0;
+                for (u32 i = 0; i < 15; i++) {
+                    stFzeroCarData* car = &m_carData[order[i]];
+                    car->m_mtx = mtx(mtxOrder[i] + 24);
+                    car->m_state = 7;
+                    car->m_type = type;
+                    if (type == 2) {
+                        type = 3;
+                    } else if (type < 2) {
+                        if (type == 0) {
+                            type = 1;
+                        } else {
+                            type = 2;
+                        }
+                    } else if (type < 4) {
+                        type = 0;
+                    }
+                }
+                m_carMode = 7;
+                m_carState = 3;
+            }
         }
-        m_carState = 0;
+        break;
+    case 3:
+        if (m_carMode == 8) {
+            for (u8 i = 0; i < 30; i++) {
+                m_carData[i].m_mtx = NULL;
+                m_carData[i].m_state = 8;
+            }
+            m_carState = 0;
+        }
+        break;
     }
 }
