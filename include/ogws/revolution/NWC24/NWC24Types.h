@@ -1,0 +1,159 @@
+#ifndef RVL_SDK_NWC24_TYPES_H
+#define RVL_SDK_NWC24_TYPES_H
+#include <types.h>
+
+#include <revolution/NAND.h>
+#include <revolution/VF.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#define NWC24_FRIEND_LIST_CAPACITY 100
+
+typedef enum {
+    NWC24_ERR_OTHER_REGION = -52,
+    NWC24_ERR_GIVE_UP,
+    NWC24_ERR_SCRIPT_VERSION,
+    NWC24_ERR_OLD_SYSTEM,
+    NWC24_ERR_CANCELLED,
+    NWC24_ERR_INVALID_CHAR,
+    NWC24_ERR_FILE_BROKEN,
+    NWC24_ERR_VERIFY_SIGNATURE,
+    NWC24_ERR_ID_NOT_REGISTERED,
+    NWC24_ERR_INTERNAL_VF,
+    NWC24_ERR_INTERNAL_IPC,
+    NWC24_ERR_FILE_EXISTS,
+    NWC24_ERR_INVALID_OPERATION,
+    NWC24_ERR_DISABLED,
+    NWC24_ERR_NAND_CORRUPT,
+    NWC24_ERR_ID_CRC,
+    NWC24_ERR_ID_REGISTERED,
+    NWC24_ERR_ID_GENERATED,
+    NWC24_ERR_ID_NOEXISTS,
+    NWC24_ERR_CONFIG_NETWORK,
+    NWC24_ERR_SERVER,
+    NWC24_ERR_NETWORK,
+    NWC24_ERR_NOT_READY,
+    NWC24_ERR_INPROGRESS,
+    NWC24_ERR_HIDDEN,
+    NWC24_ERR_VER_MISMATCH,
+    NWC24_ERR_BUSY,
+    NWC24_ERR_STRING_END,
+    NWC24_ERR_FORMAT,
+    NWC24_ERR_ALIGNMENT,
+    NWC24_ERR_MUTEX,
+    NWC24_ERR_FILE_OTHER,
+    NWC24_ERR_FILE_NOEXISTS,
+    NWC24_ERR_FILE_WRITE,
+    NWC24_ERR_FILE_READ,
+    NWC24_ERR_FILE_CLOSE,
+    NWC24_ERR_FILE_OPEN,
+    NWC24_ERR_DONE,
+    NWC24_ERR_BROKEN,
+    NWC24_ERR_NOT_FOUND,
+    NWC24_ERR_CONFIG,
+    NWC24_ERR_NOMEM,
+    NWC24_ERR_LIB_OPENED,
+    NWC24_ERR_LIB_NOT_OPENED,
+    NWC24_ERR_OVERFLOW,
+    NWC24_ERR_PROTECTED,
+    NWC24_ERR_FULL,
+    NWC24_ERR_NULL,
+    NWC24_ERR_NOT_SUPPORTED,
+    NWC24_ERR_INVALID_VALUE,
+    NWC24_ERR_FAILED,
+    NWC24_ERR_FATAL,
+    NWC24_OK
+} NWC24Err;
+
+typedef enum {
+    NWC24_APPLICATION_OCTET_STREAM = 0x00030000,
+    NWC24_X_WII_MINIDATA = 0x00030002,
+    NWC24_X_WII_MSGBOARD = 0x00030001,
+    NWC24_IMAGE_JPEG = 0x00020000,
+    NWC24_X_WII_PICTURE = 0x00020001,
+    NWC24_MULTIPART_ALTERNATIVE = 0x000F0001,
+    NWC24_MULTIPART_MIXED = 0x000F0000,
+    NWC24_MULTIPART_RELATED = 0x000F0002,
+    NWC24_TEXT_HTML = 0x00010001,
+    NWC24_TEXT_PLAIN = 0x00010000
+} NWC24MIMEType;
+
+typedef enum {
+    NWC24_EUC_JP = 0x00020002,
+    NWC24_ISO_2022_JP = 0x00020000,
+    NWC24_ISO_8859_1 = 0x00080001,
+    NWC24_ISO_8859_10 = 0x0008000A,
+    NWC24_ISO_8859_15 = 0x0008000F,
+    NWC24_ISO_8859_2 = 0x00080002,
+    NWC24_ISO_8859_3 = 0x00080003,
+    NWC24_ISO_8859_5 = 0x00080005,
+    NWC24_ISO_8859_7 = 0x00080007,
+    NWC24_ISO_8859_9 = 0x00080009,
+    NWC24_SHIFT_JIS = 0x00020001,
+    NWC24_US_ASCII = 0x00000000,
+    NWC24_UTF_16BE = 0x00010010,
+    NWC24_UTF_32BE = 0x00010020,
+    NWC24_UTF_8 = 0x00010008,
+    NWC24_WINDOWS_1252 = 0x000F1252,
+    NWC24_CHARSET_UNKNOWN = 0xFFFFFFFF
+} NWC24Charset;
+
+typedef enum {
+    NWC24_ENC_7BIT,
+    NWC24_ENC_8BIT,
+    NWC24_ENC_BASE64,
+    NWC24_ENC_QUOTED_PRINTABLE,
+    NWC24_MAX_ENCODINGS
+} NWC24Encoding;
+
+typedef enum NWC24MsgBoxId {
+    NWC24_MSGBOX_SEND,
+    NWC24_MSGBOX_RECV,
+    NWC24_MSGBOX_MAX
+} NWC24MsgBoxId;
+
+typedef struct NWC24File {
+    u32 id;             // at 0x0
+    u32 mode;           // at 0x4
+    u32 align;          // at 0x8
+    NANDFileInfo nandf; // at 0xC
+    VFFile vff;         // at 0x98
+} NWC24File;
+
+typedef struct NWC24Data {
+    union {
+        const void* pData;
+        u32 offset;
+    }; // at 0x0
+
+    u32 size; // at 0x4
+} NWC24Data;
+
+typedef struct NWC24Date {
+    u16 year; // at 0x0
+    u8 month; // at 0x2
+    u8 day;   // at 0x3
+    u8 hour;  // at 0x4
+    u8 sec;   // at 0x5
+    u8 min;   // at 0x6
+    u8 BYTE_0x7;
+} NWC24Date;
+
+typedef struct NWC24Calendar {
+    u32 sec;      // at 0x0
+    u32 min;      // at 0x4
+    u32 hour;     // at 0x8
+    u32 day;      // at 0xC
+    u32 month;    // at 0x10
+    u32 year;     // at 0x14
+    u32 UNK_0x18; // at 0x18
+    u32 UNK_0x1C; // at 0x1C
+    u32 UNK_0x20; // at 0x20
+} NWC24Calendar;
+
+#ifdef __cplusplus
+}
+#endif
+#endif
