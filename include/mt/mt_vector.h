@@ -12,7 +12,22 @@ public:
     float m_y;
 
     Vec2f() { }
-    Vec2f(float x, float y) : m_x(x), m_y(y) { }
+    Vec2f(float x, float y)
+#ifdef MT_VEC2F_CTOR_NOINLINE
+        __attribute__((never_inline)) // MATCH-ONLY: retain a proved out-of-line constructor call.
+#endif
+        : m_x(x), m_y(y) { }
+
+    Vec2f& operator=(const Vec2f& source)
+#ifdef MT_VEC2F_ASSIGN_NOINLINE
+        __attribute__((never_inline)) // MATCH-ONLY: preserve evidenced out-of-line assignments.
+#endif
+    {
+        // MATCH-ONLY: retain the original assignment's scalar float copies.
+        m_x = source.m_x;
+        m_y = source.m_y;
+        return *this;
+    }
 
     friend Vec2f operator+(const Vec2f& lhs, const Vec2f& rhs) {
         Vec2f res;
@@ -108,7 +123,7 @@ public:
 
     Vec3f() { }
     Vec3f(float x, float y, float z)
-#ifdef FT_MARTH_COLLISION_VEC3F_NOINLINE
+#if defined(FT_MARTH_COLLISION_VEC3F_NOINLINE) || defined(MT_VEC3F_CTOR_NOINLINE)
         __attribute__((never_inline)) // MATCH-ONLY: retain the original out-of-line constructor.
 #endif
         : m_x(x), m_y(y), m_z(z) { }
@@ -204,10 +219,27 @@ public:
         Vec3f disp = *this - *v;
         return disp.length();
     }
+    // HYPOTHESIS: source argument order is unresolved; axis/angle/output roles are verified.
+    // Original DOL fn_8003DF50 stays unrenamed until its source signature is established.
+    void rot(Vec3f* axis, float angle, Vec3f* out);
     void normalize();
     void normalize(Vec3f* input);
 };
 static_assert(sizeof(Vec3f) == 12, "Class is wrong size!");
+
+// Native Wario Utility callers identify these member operators and hidden returns.
+// HYPOTHESIS: source const qualifiers retain the established declarations.
+inline Vec3f Vec3f::operator+(const Vec3f& v) {
+    Vec3f result;
+    Vec3fAdd(&result, this, &v);
+    return result;
+}
+inline Vec3f Vec3f::operator-(const Vec3f& v) {
+    Vec3f result;
+    Vec3fSub(&result, this, &v);
+    return result;
+}
+
 
 class Rect2D {
 public:

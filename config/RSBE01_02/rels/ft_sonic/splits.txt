@@ -38,6 +38,9 @@ mo_fighter/ft_sonic/ft_sonic_status_uniq_process_special_s_wall_end.cpp:
 	.data       start:0x000067C0 end:0x00006840
 	.bss        start:0x00000328 end:0x00000338
 
+mo_fighter/ft_sonic/wn_sonic_gimmick_jump.cpp:
+	.text       start:0x00010A34 end:0x00014430
+
 mo_fighter/ft_sonic/wn_sonic_super_sonic.cpp:
 	.text       start:0x00014430 end:0x00017B48
 

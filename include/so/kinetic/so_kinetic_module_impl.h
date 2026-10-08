@@ -24,6 +24,7 @@ public:
     virtual void unableEnergyAll();
     // Nonvirtual indexed helper, named by the symbol map and fighter callers.
     void unableEnergy(int index);
+    void enableEnergy(int index);
     virtual Vec2f getSumSpeed(soKineticEnergy::AttributeFlag);
     virtual Vec3f getSumSpeed3f(soKineticEnergy::AttributeFlag);
     virtual Vec3f getSumRotation(soKineticEnergy::AttributeFlag);

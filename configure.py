@@ -1125,6 +1125,7 @@ config.libs = [
             Object(NonMatching, "mo_fighter/ft_sonic/ft_sonic_status_uniq_process_special_s_dash.cpp", extra_cflags=["-O2,s"]),
             Object(Matching, "mo_fighter/ft_sonic/ft_sonic_status_uniq_process_special_lw_hold.cpp", extra_cflags=["-O2,s"]),
             Object(Matching, "mo_fighter/ft_sonic/ft_sonic_status_uniq_process_final_end.cpp", extra_cflags=["-O2,s"]),
+            Object(NonMatching, "mo_fighter/ft_sonic/wn_sonic_gimmick_jump.cpp", extra_cflags=["-O2,s"]),
             Object(NonMatching, "mo_fighter/ft_sonic/wn_sonic_super_sonic.cpp", extra_cflags=["-O2,s"]),
             Object(NonMatching, "mo_fighter/ft_sonic/wn_sonic_super_sonic_kinetic_transactor.cpp", extra_cflags=["-O2,s"]),
             Object(Matching, "mo_fighter/ft_sonic/ft_sonic_status_uniq_process_special_s_wall_end.cpp", extra_cflags=["-O2,s"]),
@@ -1155,6 +1156,10 @@ config.libs = [
             Object(Matching, "mo_fighter/ft_wario/ft_wario_status_uniq_process_special_hi_start.cpp"),
             Object(Matching, "mo_fighter/ft_wario/ft_wario_status_uniq_process_special_hi_jump.cpp"),
             Object(NonMatching, "mo_fighter/ft_wario/ft_wario_status_uniq_process_special_lw.cpp"),
+            Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_utility.cpp"),
+            Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_start.cpp"),
+            Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_drive.cpp"),
+            Object(Matching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_wheelie.cpp"),
         ],
     },
     {

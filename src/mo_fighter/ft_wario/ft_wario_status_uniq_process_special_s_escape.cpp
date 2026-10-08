@@ -6,9 +6,11 @@
 #include <so/so_module_accesser.h>
 
 void ftWarioStatusUniqProcessSpecialSEscape::execFixPosCounter(soModuleAccesser* a) {
+    // MATCH-ONLY: declaration order preserves native module and vector allocation.
+    soGroundModule* ground;
     soWorkManageModule* work = &a->getWorkManageModule();
     soSituationModule* situation = &a->getSituationModule();
-    soGroundModule* ground = &a->getGroundModule();
+    ground = &a->getGroundModule();
     soKineticModule* kinetic = &a->getKineticModule();
     soPostureModule* posture = &a->getPostureModule();
     soModelModule* model = &a->getModelModule();
@@ -26,8 +28,8 @@ void ftWarioStatusUniqProcessSpecialSEscape::execFixPosCounter(soModuleAccesser*
         float lr = posture->getLr();
         int node = model->getCorrectNodeId(0x12d);
         Vec3f nodePos = model->getNodeGlobalOffsetFromTop(node);
-        Vec3f posturePos = posture->getPos();
         Vec3f pos;
+        Vec3f posturePos = posture->getPos();
         Vec3fAdd(&pos, &posturePos, &nodePos);
         Vec2f speed(param->unk10 * lr, param->unk14);
         float angle = 0.0f;
@@ -37,7 +39,8 @@ void ftWarioStatusUniqProcessSpecialSEscape::execFixPosCounter(soModuleAccesser*
             ftWarioBikeSpeedEvent event(0x457);
             link->sendEventParents(6, event);
             Vec3f rot = link->getParentRot(6);
-            angle = rot.m_x * 0.5f;
+            float parentAngleX = rot.m_x;
+            angle = parentAngleX * 0.5f;
             link->removeModelConstraint(true);
             link->unlink(6);
             a->getSituationModule().setKind(Situation_Air, false);

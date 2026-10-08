@@ -59,6 +59,8 @@ mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_catch_pull.cpp:
 
 mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_s_utility.cpp:
 	.text       start:0x0000FDD8 end:0x000109E0
+	.rodata     start:0x00000068 end:0x00000080
+	.data       start:0x00007FA0 end:0x000080D0
 
 mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_s_start.cpp:
 	.text       start:0x000109E0 end:0x0001101C
@@ -67,6 +69,9 @@ mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_s_start.cpp:
 mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_s_loop.cpp:
 	.text       start:0x0001101C end:0x00011CA4
 	.ctors      start:0x00000024 end:0x00000028
+	.rodata     start:0x00000098 end:0x000000B0
+	.data       start:0x00008190 end:0x00008260
+	.bss        start:0x000003D0 end:0x000003E0
 
 mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_s_end.cpp:
 	.text       start:0x00011CA4 end:0x000121EC

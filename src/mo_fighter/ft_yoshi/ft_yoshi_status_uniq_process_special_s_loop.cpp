@@ -53,7 +53,9 @@ void ftYoshiStatusUniqProcessSpecialSLoop::execFixPosCounter(soModuleAccesser* a
     soMotionModule& motion = acc->getMotionModule();
     soModelModule& model = acc->getModelModule();
     ftYoshiSpecialSParam* param = static_cast<ftYoshiSpecialSParam*>(g_ftCommonDataAccesser.getData(Fighter_Yoshi)->extendParam[0]);
-    Vec2f velocity = kinetic.getSumSpeed(soKineticEnergy::AttributeFlag(1));
+    // MATCH-ONLY: retain the original aggregate word copy.
+    Vec2f velocity;
+    Vec2f::copy(velocity, kinetic.getSumSpeed(soKineticEnergy::AttributeFlag(1)));
     float lr = posture.getLr();
     float speed = work.getFloat(0x21000006);
     float angle = work.getFloat(0x21000005);
@@ -74,9 +76,14 @@ void ftYoshiStatusUniqProcessSpecialSLoop::execFixPosCounter(soModuleAccesser* a
             }
         }
     }
-    int touch = lr == 1.0f ? 4 : 2;
-    bool hitWall = ground.isTouch(static_cast<grCollStatus::TouchMask>(touch), 0);
-    if (hitWall) ftYoshiStatusUniqProcessSpecialSUtility::procHitWall(acc, touch);
+    bool hitWall;
+    if (lr == 1.0f) {
+        hitWall = ground.isTouch(static_cast<grCollStatus::TouchMask>(4), 0);
+        if (hitWall) ftYoshiStatusUniqProcessSpecialSUtility::procHitWall(acc, 4);
+    } else {
+        hitWall = ground.isTouch(static_cast<grCollStatus::TouchMask>(2), 0);
+        if (hitWall) ftYoshiStatusUniqProcessSpecialSUtility::procHitWall(acc, 2);
+    }
     if (hitWall) {
         work.setInt(0x11A, 0x20000008);
         velocity.m_x *= -param->wallReboundHorizontal;
@@ -120,9 +127,8 @@ void ftYoshiStatusUniqProcessSpecialSLoop::execFixPosCounter(soModuleAccesser* a
         ground.setCorrect(static_cast<soGroundShapeImpl::CorrectKind>(1), 0);
         kinetic.changeKinetic(0x64, acc);
         ftKineticEnergyStop& stop = dynamic_cast<ftKineticEnergyStop&>(*kinetic.getEnergy(3));
-        Vec2f horizontal;
-        horizontal.m_x = velocity.m_x; horizontal.m_y = 0.0f;
-        stop.setSpeed(&horizontal);
+        // MATCH-ONLY: retain the original call-temporary stack order.
+        stop.setSpeed(&Vec2f(velocity.m_x, 0.0f));
         work.incInt(0x20000006);
     } else {
         situation.setKind(Situation_Air, false);
@@ -130,9 +136,8 @@ void ftYoshiStatusUniqProcessSpecialSLoop::execFixPosCounter(soModuleAccesser* a
         kinetic.changeKinetic(0x65, acc);
         ftKineticEnergyController& control = dynamic_cast<ftKineticEnergyController&>(*kinetic.getEnergy(2));
         ftKineticEnergyGravity& gravity = dynamic_cast<ftKineticEnergyGravity&>(*kinetic.getEnergy(1));
-        Vec2f horizontal;
-        horizontal.m_x = velocity.m_x; horizontal.m_y = 0.0f;
-        control.setSpeed(&horizontal);
+        // MATCH-ONLY: retain the original call-temporary stack order.
+        control.setSpeed(&Vec2f(velocity.m_x, 0.0f));
         gravity.m_speedY = velocity.m_y;
         work.setInt(0, 0x20000006);
     }

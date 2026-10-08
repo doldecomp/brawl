@@ -1,3 +1,5 @@
+// MATCH-ONLY: preserve the original DF08 vector-assignment call.
+#define MT_VEC2F_ASSIGN_NOINLINE
 #define SO_STATUS_UNIQ_PROCESS_OUT_OF_LINE
 #include <ft/yoshi/ft_yoshi_status_uniq_process.h>
 #include <ft/yoshi/ft_yoshi_special_s_param.h>
@@ -16,7 +18,11 @@ void ftYoshiStatusUniqProcessSpecialAirSJump::initStatus(soModuleAccesser* acc) 
         float lr = posture.getLr();
         speed.m_x = work.getFloat(0x21000006) * lr;
         speed.m_y = 0.0f;
-    } else speed = kinetic.getSumSpeed(soKineticEnergy::AttributeFlag(-1));
+    } else {
+        Vec2f incoming = kinetic.getSumSpeed(soKineticEnergy::AttributeFlag(-1));
+        speed.m_x = incoming.m_x;
+        speed.m_y = incoming.m_y;
+    }
     kinetic.changeKinetic(0x65, acc);
     ftKineticEnergyController& control = dynamic_cast<ftKineticEnergyController&>(*kinetic.getEnergy(2));
     ftKineticEnergyGravity& gravity = dynamic_cast<ftKineticEnergyGravity&>(*kinetic.getEnergy(1));
@@ -44,13 +50,20 @@ void ftYoshiStatusUniqProcessSpecialAirSJump::execFixPosCounter(soModuleAccesser
     soPostureModule& posture = acc->getPostureModule();
     soGroundModule& ground = acc->getGroundModule();
     ftYoshiSpecialSParam* param = static_cast<ftYoshiSpecialSParam*>(g_ftCommonDataAccesser.getData(Fighter_Yoshi)->extendParam[0]);
-    Vec2f velocity = kinetic.getSumSpeed(soKineticEnergy::AttributeFlag(1));
+    // MATCH-ONLY: retain the original aggregate word copy.
+    Vec2f velocity;
+    Vec2f::copy(velocity, kinetic.getSumSpeed(soKineticEnergy::AttributeFlag(1)));
     float speed = work.getFloat(0x21000006);
     float lr = posture.getLr();
     bool grounded = situation.getKind() == Situation_Ground;
-    int touch = lr == 1.0f ? 4 : 2;
-    bool hitWall = ground.isTouch(static_cast<grCollStatus::TouchMask>(touch), 0);
-    if (hitWall) ftYoshiStatusUniqProcessSpecialSUtility::procHitWall(acc, touch);
+    bool hitWall;
+    if (lr == 1.0f) {
+        hitWall = ground.isTouch(static_cast<grCollStatus::TouchMask>(4), 0);
+        if (hitWall) ftYoshiStatusUniqProcessSpecialSUtility::procHitWall(acc, 4);
+    } else {
+        hitWall = ground.isTouch(static_cast<grCollStatus::TouchMask>(2), 0);
+        if (hitWall) ftYoshiStatusUniqProcessSpecialSUtility::procHitWall(acc, 2);
+    }
     if (hitWall) {
         work.setInt(0x11A, 0x20000008);
         velocity.m_x *= -param->wallReboundHorizontal;
@@ -85,9 +98,8 @@ void ftYoshiStatusUniqProcessSpecialAirSJump::execFixPosCounter(soModuleAccesser
     }
     work.setFloat(speed, 0x21000006);
     ftKineticEnergyController& control = dynamic_cast<ftKineticEnergyController&>(*kinetic.getEnergy(2));
-    Vec2f horizontal;
-    horizontal.m_x = velocity.m_x; horizontal.m_y = 0.0f;
-    control.m_speed = horizontal;
+    // MATCH-ONLY: retain the original temporary assignment lifetime.
+    control.m_speed = Vec2f(velocity.m_x, 0.0f);
     ftKineticEnergyGravity& gravity = dynamic_cast<ftKineticEnergyGravity&>(*kinetic.getEnergy(1));
     gravity.m_speedY = velocity.m_y;
 }
@@ -98,6 +110,9 @@ void ftYoshiStatusUniqProcessSpecialAirSJump::execFixPos(soModuleAccesser* acc) 
     if (target != -1) status.changeStatusRequest(target, acc);
 }
 void ftYoshiStatusUniqProcessSpecialAirSJump::exitStatus(soModuleAccesser* acc, int nextStatus) {
-    if (nextStatus == 0x113 || static_cast<unsigned>(nextStatus - 0x119) <= 3) ftYoshiStatusUniqProcessSpecialSUtility::resetYoshiSpecialS2(acc);
+    if (nextStatus != 0x113) {
+        if (static_cast<unsigned>(nextStatus - 0x119) > 3) return;
+    }
+    ftYoshiStatusUniqProcessSpecialSUtility::resetYoshiSpecialS2(acc);
 }
 ftYoshiStatusUniqProcessSpecialAirSJump g_ftYoshiStatusUniqProcessSpecialAirSJump;

@@ -22,7 +22,7 @@ private:
 public:
     virtual void activate();
     virtual void setData(soVisibilityData*);
-    virtual void set(u32, u8);
+    virtual void set(u32, int);
     virtual void setStatusDefault(u32, u8, bool);
     virtual void setDefaultAll();
     virtual void update();

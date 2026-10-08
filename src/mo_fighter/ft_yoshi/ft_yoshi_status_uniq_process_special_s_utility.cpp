@@ -1,3 +1,5 @@
+// MATCH-ONLY: use the existing vector guard to preserve both original constructor calls.
+#define FT_MARTH_COLLISION_VEC3F_NOINLINE
 // MATCH-ONLY: preserve the shared out-of-line vector constructor calls.
 #pragma dont_inline on
 #include <mt/mt_vector.h>
@@ -9,7 +11,7 @@
 #include <so/model/so_model_module_impl.h>
 #include <math.h>
 
-// Original module-owned template specialization; ownership still under review.
+// Original module-owned template specialization, identified by map and call relocations.
 // HYPOTHESIS: source namespace spelling inferred from the original map.
 namespace ftyoshi { template <class T> T ABS(T); }
 int g_ftYoshiSpecialSBodyChange[15] = {0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1};
@@ -30,7 +32,8 @@ bool ftYoshiStatusUniqProcessSpecialSUtility::checkCancel(soModuleAccesser* acc)
     if (acc->getWorkManageModule().getInt(0x20000000) < param->life - param->cancelDelay) {
         soControllerModule& controller = acc->getControllerModule();
         int button = soController::getButtonMask(soController::Pad_Button_Special);
-        if (button & controller.getTrigger()) return true;
+        int trigger = controller.getTrigger();
+        if (trigger & button) return true;
     }
     return false;
 }
@@ -87,9 +90,9 @@ void ftYoshiStatusUniqProcessSpecialSUtility::resetYoshiSpecialS2(soModuleAccess
 }
 void ftYoshiStatusUniqProcessSpecialSUtility::audioDash(soModuleAccesser*) {}
 void ftYoshiStatusUniqProcessSpecialSUtility::procHit(soModuleAccesser* acc) {
-    ftYoshiSpecialSParam* param = static_cast<ftYoshiSpecialSParam*>(g_ftCommonDataAccesser.getData(Fighter_Yoshi)->extendParam[0]);
     soWorkManageModule& work = acc->getWorkManageModule();
     soSituationModule& situation = acc->getSituationModule();
+    ftYoshiSpecialSParam* param = static_cast<ftYoshiSpecialSParam*>(g_ftCommonDataAccesser.getData(Fighter_Yoshi)->extendParam[0]);
     int life = work.getInt(0x20000000);
     int counter = work.getInt(0x20000003);
     float speed = work.getFloat(0x21000006);
@@ -108,9 +111,14 @@ void ftYoshiStatusUniqProcessSpecialSUtility::procHit(soModuleAccesser* acc) {
 void ftYoshiStatusUniqProcessSpecialSUtility::procHitWall(soModuleAccesser* acc, int touch) {
     // HYPOTHESIS: the original wrapper forwards int unchanged; the existing
     // ground interface narrows to u8. Observed Egg Roll callers use only 2/4/8.
-    Vec2f normal = acc->getGroundModule().getTouchNormal(static_cast<grCollStatus::TouchMask>(touch), 0);
-    Vec2f position = acc->getGroundModule().getTouchPos(static_cast<grCollStatus::TouchMask>(touch), 0);
-    float angle = atan2(-normal.m_x, normal.m_y);
+    // MATCH-ONLY: retain the original aggregate word copy.
+    Vec2f normal;
+    Vec2f::copy(normal, acc->getGroundModule().getTouchNormal(static_cast<grCollStatus::TouchMask>(touch), 0));
+    // MATCH-ONLY: retain the original aggregate word copy.
+    Vec2f position;
+    Vec2f::copy(position, acc->getGroundModule().getTouchPos(static_cast<grCollStatus::TouchMask>(touch), 0));
+    float normalY = normal.m_y;
+    float angle = atan2(-normal.m_x, normalY);
     acc->getEffectModule().req(static_cast<EfID>(9), &Vec3f(position.m_x, position.m_y, 0.0f), &Vec3f(0.0f, 0.0f, angle), 1.0f, 0, -1);
 }
 bool ftYoshiStatusUniqProcessSpecialSUtility::getFlick(soModuleAccesser* acc) {
@@ -142,7 +150,9 @@ void ftYoshiStatusUniqProcessSpecialSUtility::setPower(soModuleAccesser* acc) {
     soCollisionAttackModule& attack = acc->getCollisionAttackModule();
     ftYoshiSpecialSParam* param = static_cast<ftYoshiSpecialSParam*>(g_ftCommonDataAccesser.getData(Fighter_Yoshi)->extendParam[0]);
     if (attack.isAttack(0, false)) {
-        Vec2f speed = acc->getKineticModule().getSumSpeed(soKineticEnergy::AttributeFlag(-1));
+        // MATCH-ONLY: retain the original aggregate word copy.
+        Vec2f speed;
+        Vec2f::copy(speed, acc->getKineticModule().getSumSpeed(soKineticEnergy::AttributeFlag(-1)));
         int power = (param->attackPowerBase + ftyoshi::ABS(speed.m_x)) * param->attackPowerMultiplier;
         if (power < 1) power = 1;
         attack.setPower(0, power, false);

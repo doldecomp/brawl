@@ -12,7 +12,9 @@ void ftYoshiStatusUniqProcessSpecialSEnd::initStatus(soModuleAccesser* acc) {
     soPostureModule& posture = acc->getPostureModule();
     soModelModule& model = acc->getModelModule();
     ftYoshiSpecialSParam* param = static_cast<ftYoshiSpecialSParam*>(g_ftCommonDataAccesser.getData(Fighter_Yoshi)->extendParam[0]);
-    Vec2f speed = kinetic.getSumSpeed(soKineticEnergy::AttributeFlag(-1));
+    // MATCH-ONLY: retain the original aggregate word copy.
+    Vec2f speed;
+    Vec2f::copy(speed, kinetic.getSumSpeed(soKineticEnergy::AttributeFlag(-1)));
     if (situation.getKind() == Situation_Ground) {
         kinetic.changeKinetic(6, acc);
         speed.m_x *= param->endHorizontalMultiplier;
@@ -65,6 +67,9 @@ void ftYoshiStatusUniqProcessSpecialSEnd::execFixPosCounter(soModuleAccesser* ac
     }
 }
 void ftYoshiStatusUniqProcessSpecialSEnd::exitStatus(soModuleAccesser* acc, int nextStatus) {
-    if (nextStatus == 0x113 || static_cast<unsigned>(nextStatus - 0x119) <= 3) ftYoshiStatusUniqProcessSpecialSUtility::resetYoshiSpecialS2(acc);
+    if (nextStatus != 0x113) {
+        if (static_cast<unsigned>(nextStatus - 0x119) > 3) return;
+    }
+    ftYoshiStatusUniqProcessSpecialSUtility::resetYoshiSpecialS2(acc);
 }
 ftYoshiStatusUniqProcessSpecialSEnd g_ftYoshiStatusUniqProcessSpecialSEnd;

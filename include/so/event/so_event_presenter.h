@@ -30,7 +30,12 @@ public:
     s16 m_unitID;
     s16 m_sendID;
 
+#ifdef SO_EVENT_OBSERVER_ID_OUT_OF_LINE
+    // MATCH-ONLY: retain an original external specialization's symbol owner.
+    s32 getObserverId() const;
+#else
     s32 getObserverId() const { return m_sendID; }
+#endif
 
     soEventObserver(s16 unitID) {
         m_manageID = -1;
@@ -225,6 +230,11 @@ public:
         if (manageId > 0) {
             getObserverListHelper();
         }
+    }
+    // Spring's original constructor tests the untruncated manage ID before
+    // looking up the list; it uses the established local-result lookup.
+    soEventPresenter(int manageId, short unitId) : m_manageID(manageId), m_unitID(unitId), m_obsrvrList(nullptr) {
+        if (manageId > 0) getObserverListHelperLocal();
     }
     // HYPOTHESIS: constructor with the list lookup storing through a local (soAnimCmdInterpreter)
     soEventPresenter(s16 manageId, s16 unitId, bool useLocalLookup) : m_manageID(manageId), m_unitID(unitId), m_obsrvrList(nullptr) {
