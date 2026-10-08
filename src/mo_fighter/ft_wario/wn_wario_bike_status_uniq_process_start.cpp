@@ -28,19 +28,23 @@ void wnWarioBikeStatusUniqProcessStart::exitStatus(soModuleAccesser* a, int next
         wnKineticEnergyGravity& gravity = dynamic_cast<wnKineticEnergyGravity&>(*kinetic.getEnergy(1));
         float angle = work.getFloat(0x21000000);
         float lr = posture.getLr();
-        if (!link.isLink(3)) {
+        // The rider's situation selects the grounded launch or airborne escape speed.
+        if (link.getParentSituationKind(3) == Situation_Ground) {
             float speed = params->getParamFloat(a, 0xfa0, 0);
             Vec2f direction(1.0f, 0.0f);
             direction.rot(&direction, 0.017453292f * angle);
             direction.m_x *= lr;
-            Vec2f velocity(direction.m_x * speed, direction.m_y * speed);
-            normal.setSpeed(&velocity);
+            Vec2f velocity = direction * speed;
+            Vec2f launchVelocity;
+            Vec2f::copy(launchVelocity, velocity);
+            normal.setSpeed(&launchVelocity);
             gravity.m_speedY = 0.0f;
             work.onFlag(0x22000006);
             work.onFlag(0x22000004);
             work.onFlag(0x22000005);
         } else {
-            Vec2f previous = kinetic.getSumSpeed(soKineticEnergy::AttributeFlag(1));
+            Vec2f previous;
+            Vec2f::copy(previous, kinetic.getSumSpeed(soKineticEnergy::AttributeFlag(1)));
             float speedX = params->getParamFloat(a, 0xfa1, 0);
             float speedY = params->getParamFloat(a, 0xfa2, 0);
             Vec2f velocity(speedX * lr, 0.0f);

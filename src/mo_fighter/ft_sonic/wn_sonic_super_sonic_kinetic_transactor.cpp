@@ -1,5 +1,7 @@
 // MATCH-ONLY: preserve the original instruction scheduling.
 #pragma scheduling off
+// MATCH-ONLY: native final-move updates call the scalar Vec2 assignment.
+#define MT_VEC2F_ASSIGN_NOINLINE
 #include <wn/sonic/wn_sonic_super_sonic_kinetic_transactor.h>
 #include <so/so_module_accesser.h>
 #include <so/so_value_accesser.h>

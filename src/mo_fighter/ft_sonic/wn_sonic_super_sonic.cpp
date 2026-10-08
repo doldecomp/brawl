@@ -1,10 +1,10 @@
+// MATCH-ONLY: original article callbacks use the unscheduled compiler policy.
+#pragma scheduling off
 #include <wn/sonic/wn_sonic_super_sonic.h>
 #include <so/so_module_accesser.h>
 #include <so/so_value_accesser.h>
 #include <cm/cm_camera_controller.h>
 
-// MATCH-ONLY: original article callbacks use the unscheduled compiler policy.
-#pragma scheduling off
 
 void wnSonicSuperSonic::processUpdate() {
     Weapon::processUpdate();

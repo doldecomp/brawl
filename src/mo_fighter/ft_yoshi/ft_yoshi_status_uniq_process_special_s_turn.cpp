@@ -1,3 +1,5 @@
+// MATCH-ONLY: preserve the original DF08 vector-assignment calls.
+#define MT_VEC2F_ASSIGN_NOINLINE
 #define SO_STATUS_UNIQ_PROCESS_OUT_OF_LINE
 #include <ft/yoshi/ft_yoshi_status_uniq_process.h>
 #include <ft/yoshi/ft_yoshi_special_s_param.h>
@@ -50,10 +52,24 @@ void ftYoshiStatusUniqProcessSpecialSTurn::execStatus(soModuleAccesser* acc) {
     float denominator = ftyoshi::ABS(oldSpeed) + transitionMagnitude;
     float yaw;
     if (oldSpeed > 0.0f) {
-        float delta = velocity.m_x > 0.0f ? ftyoshi::ABS(oldSpeed) - ftyoshi::ABS(velocity.m_x) : ftyoshi::ABS(oldSpeed) + ftyoshi::ABS(velocity.m_x);
+        float delta;
+        if (velocity.m_x > 0.0f) {
+            float currentMagnitude = ftyoshi::ABS(velocity.m_x);
+            delta = ftyoshi::ABS(oldSpeed) - currentMagnitude;
+        } else {
+            float currentMagnitude = ftyoshi::ABS(velocity.m_x);
+            delta = ftyoshi::ABS(oldSpeed) + currentMagnitude;
+        }
         yaw = 1.5707964f + 3.1415927f * (delta / denominator);
     } else {
-        float delta = velocity.m_x < 0.0f ? ftyoshi::ABS(oldSpeed) - ftyoshi::ABS(velocity.m_x) : ftyoshi::ABS(oldSpeed) + ftyoshi::ABS(velocity.m_x);
+        float delta;
+        if (velocity.m_x < 0.0f) {
+            float currentMagnitude = ftyoshi::ABS(velocity.m_x);
+            delta = ftyoshi::ABS(oldSpeed) - currentMagnitude;
+        } else {
+            float currentMagnitude = ftyoshi::ABS(velocity.m_x);
+            delta = ftyoshi::ABS(oldSpeed) + currentMagnitude;
+        }
         yaw = 4.712389f + 3.1415927f * (delta / denominator);
     }
     while (yaw < 0.0f) yaw += 6.2831855f;
@@ -96,9 +112,8 @@ void ftYoshiStatusUniqProcessSpecialSTurn::execFixPosCounter(soModuleAccesser* a
         speed.m_x *= -param->wallReboundHorizontal;
         speed.m_y = param->wallReboundVertical;
         ftKineticEnergyStop& stop = dynamic_cast<ftKineticEnergyStop&>(*kinetic.getEnergy(3));
-        Vec2f horizontal;
-        horizontal.m_x = speed.m_x; horizontal.m_y = 0.0f;
-        stop.m_speed = horizontal;
+        // MATCH-ONLY: retain the original temporary assignment lifetime.
+        stop.m_speed = Vec2f(speed.m_x, 0.0f);
         situation.setKind(Situation_Air, false);
         ground.setCorrect(static_cast<soGroundShapeImpl::CorrectKind>(5), 0);
         work.setInt(0x11A, 0x20000008);
@@ -116,12 +131,18 @@ void ftYoshiStatusUniqProcessSpecialSTurn::execFixPosCounter(soModuleAccesser* a
         model.setNodeRotateZ(2, 0.0f);
     }
     if (grounded) {
-        ground.setCorrect(static_cast<soGroundShapeImpl::CorrectKind>(ftyoshi::ABS(speed.m_x) > param->groundCorrectThreshold ? 1 : 2), 0);
+        if (ftyoshi::ABS(speed.m_x) > param->groundCorrectThreshold)
+            ground.setCorrect(static_cast<soGroundShapeImpl::CorrectKind>(1), 0);
+        else
+            ground.setCorrect(static_cast<soGroundShapeImpl::CorrectKind>(2), 0);
         int counter = work.getInt(0x20000004);
         if (counter % param->dustInterval == 0) {
-            Vec2f normal = ground.getTouchNormal(static_cast<grCollStatus::TouchMask>(8), 0);
+            // MATCH-ONLY: retain the original aggregate word copy.
+            Vec2f normal;
+            Vec2f::copy(normal, ground.getTouchNormal(static_cast<grCollStatus::TouchMask>(8), 0));
             float yaw = speed.m_x < 0.0f ? -1.5707964f : 1.5707964f;
-            float slope = atan2(-normal.m_x, normal.m_y);
+            float normalY = normal.m_y;
+            float slope = atan2(-normal.m_x, normalY);
             Vec3f rotation;
             rotation.m_x = 0.0f; rotation.m_y = yaw; rotation.m_z = slope;
             soEffectModule& effect = acc->getEffectModule();

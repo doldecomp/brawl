@@ -10,10 +10,11 @@
 
 void wnWarioBikeStatusUniqProcessDrive::initStatus(soModuleAccesser* a) {
     soWorkManageModule& work = a->getWorkManageModule();
+    soLinkModule& link = a->getLinkModule();
     if (work.isFlag(0x22000000)) work.offFlag(0x22000000);
     else {
         ftWarioBikeLinkEvent event(0x838);
-        a->getLinkModule().sendEventParents(3, event);
+        link.sendEventParents(3, event);
     }
     work.offFlag(0x22000002);
     int previous = a->getStatusModule().getPrevStatusKind(0);
@@ -23,10 +24,11 @@ void wnWarioBikeStatusUniqProcessDrive::initStatus(soModuleAccesser* a) {
 }
 void wnWarioBikeStatusUniqProcessDrive::execFixPosCounter(soModuleAccesser* a) {
     soWorkManageModule& work = a->getWorkManageModule();
+    soKineticModule& kinetic = a->getKineticModule();
     soCollisionAttackModule& attack = a->getCollisionAttackModule();
     wnWarioBike& bike = dynamic_cast<wnWarioBike&>(a->getStageObject());
     wnWarioBikeParam* param = bike.m_param;
-    float speed = a->getKineticModule().getSumSpeed(soKineticEnergy::AttributeFlag(1)).length();
+    float speed = kinetic.getSumSpeed(soKineticEnergy::AttributeFlag(1)).length();
     if (speed <= param->unk34) {
         if (attack.isAttack(0, false)) {
             attack.clear(0);
@@ -46,9 +48,12 @@ void wnWarioBikeStatusUniqProcessDrive::execFixPosCounter(soModuleAccesser* a) {
 void wnWarioBikeStatusUniqProcessDrive::execFixPos(soModuleAccesser* a) {
     soWorkManageModule& work = a->getWorkManageModule();
     soControllerModule& controller = a->getControllerModule();
+    soSituationModule& situation = a->getSituationModule();
     soKineticModule& kinetic = a->getKineticModule();
     soPostureModule& posture = a->getPostureModule();
     soStatusModule& status = a->getStatusModule();
+    soMotionModule& motion = a->getMotionModule();
+    soGroundModule& ground = a->getGroundModule();
     wnWarioBike& bike = dynamic_cast<wnWarioBike&>(a->getStageObject());
     wnWarioBikeParam* param = bike.m_param;
     bool front = work.isFlag(0x22000004);
@@ -82,13 +87,12 @@ void wnWarioBikeStatusUniqProcessDrive::execFixPos(soModuleAccesser* a) {
             launch = true;
         }
     }
-    float stickSign = stickX < 0.0f ? -1.0f : 1.0f;
     if (launch) {
         gravity.m_speedY = launchSpeed;
         gravity.enable();
         kinetic.changeKinetic(0x21, a);
-        a->getSituationModule().setKind(Situation_Air, false);
-        a->getGroundModule().setCorrect(soGroundShapeImpl::Correct_Air, false);
+        situation.setKind(Situation_Air, false);
+        ground.setCorrect(soGroundShapeImpl::Correct_Air, false);
         work.offFlag(0x22000004);
         work.offFlag(0x22000005);
         work.offFlag(0x22000006);
@@ -102,7 +106,8 @@ void wnWarioBikeStatusUniqProcessDrive::execFixPos(soModuleAccesser* a) {
             status.changeStatusRequest(3, a);
             angle += increase;
         } else {
-            normal.m_accel = Vec2f(stickSign == lr ? param->unk54 * stickX : 0.0f, 0.0f);
+            int stickSign = stickX < 0.0f ? -1 : 1;
+            normal.m_accel = Vec2f(lr == (float)stickSign ? param->unk54 * stickX : 0.0f, 0.0f);
             if (!work.isFlag(0x2200000c) && stickX * lr >= param->unk94) {
                 work.onFlag(0x2200000c);
                 a->getSoundModule().playSENo3d(SndID(0x12ba), false);
@@ -123,10 +128,10 @@ void wnWarioBikeStatusUniqProcessDrive::execFixPos(soModuleAccesser* a) {
                 angle += param->unk64;
                 if (angle > 45.0f) angle = 45.0f;
             }
-            if (touch && fabsf(stickX) != 0.0f && stickSign != lr)
+            if (touch && 0.0f != fabsf(stickX) && lr != (float)(stickX < 0.0f ? -1 : 1))
                 status.changeStatusRequest(5, a);
         }
-    } else if (stickSign == lr) {
+    } else if (lr == (float)(stickX < 0.0f ? -1 : 1)) {
         angle -= param->unk4C * fabsf(stickX);
         if (angle < -45.0f) angle = -45.0f;
     } else if (fabsf(stickX) > 0.0f) {
@@ -142,6 +147,6 @@ void wnWarioBikeStatusUniqProcessDrive::execFixPos(soModuleAccesser* a) {
     if (elapsed < 0.0f) elapsed = 0.0f;
     else if (elapsed > range) elapsed = range;
     float fraction = elapsed / range;
-    a->getMotionModule().setRate(param->unk44 + fraction * (param->unk40 - param->unk44));
+    motion.setRate(param->unk44 + fraction * (param->unk40 - param->unk44));
 }
 wnWarioBikeStatusUniqProcessDrive g_wnWarioBikeStatusUniqProcessDrive;

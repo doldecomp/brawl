@@ -128,6 +128,14 @@ public:
 #endif
         : m_x(x), m_y(y), m_z(z) { }
 
+    // Native spring callers construct XYZ from an XY vector and a separate Z.
+    // HYPOTHESIS: the original XY parameter's const qualifier is unresolved.
+    Vec3f(const Vec2f& xy, float z)
+#ifdef MT_VEC3F_FROM_VEC2_CTOR_NOINLINE
+        __attribute__((never_inline)) // MATCH-ONLY: retain the native constructor call.
+#endif
+        : m_x(xy.m_x), m_y(xy.m_y), m_z(z) { }
+
     Vec3f& operator=(const Vec3f& orig) {
         m_x = orig.m_x;
         m_y = orig.m_y;

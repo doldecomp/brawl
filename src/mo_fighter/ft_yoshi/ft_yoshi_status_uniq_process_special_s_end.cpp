@@ -25,9 +25,8 @@ void ftYoshiStatusUniqProcessSpecialSEnd::initStatus(soModuleAccesser* acc) {
         speed.m_x *= param->endHorizontalMultiplier;
         speed.m_y *= param->endVerticalMultiplier;
         ftKineticEnergyStop& stop = dynamic_cast<ftKineticEnergyStop&>(*kinetic.getEnergy(3));
-        Vec2f horizontal;
-        horizontal.m_x = speed.m_x; horizontal.m_y = 0.0f;
-        stop.setSpeed(&horizontal);
+        // MATCH-ONLY: retain the original call-temporary stack order.
+        stop.setSpeed(&Vec2f(speed.m_x, 0.0f));
         stop.suspend();
         ftKineticEnergyGravity& gravity = dynamic_cast<ftKineticEnergyGravity&>(*kinetic.getEnergy(1));
         gravity.m_speedY = speed.m_y;
