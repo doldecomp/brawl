@@ -72,7 +72,7 @@ public:
                            this),
         m_cancelModule(m_moduleAccesser),
         m_virtualNodeMtxPool(),
-        m_gimmickProcPool(m_moduleAccesser),
+        m_gimmickProcPool(((void)0, m_moduleAccesser)), // MATCH-ONLY: keeps the module accesser in the original saved register
         m_cameraRangeSet(static_cast<soCameraRange*>(soValueAccesser::getConstantIndefinite(m_moduleAccesser, 0xA7F9, 0)), 1),
         m_cameraClipSphereSet(static_cast<soCameraClipSphere*>(soValueAccesser::getConstantIndefinite(m_moduleAccesser, 0xA7FC, 0)), 1) {
         // Modules now own their backing storage, camera sets and gimmick processes.
