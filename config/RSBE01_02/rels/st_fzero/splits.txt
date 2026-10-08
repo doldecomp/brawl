@@ -18,6 +18,9 @@ mo_stage/st_fzero/st_fzero.cpp:
 mo_stage/st_fzero/gr_fzero_trainer_warning.cpp:
 	.text       start:0x00002320 end:0x00003A84
 
+mo_stage/st_fzero/gr_fzero_bg.cpp:
+	.text       start:0x00003A84 end:0x00005D50
+
 mo_stage/st_fzero/gr_fzero_startline.cpp:
 	.text       start:0x00005D50 end:0x00006024
 

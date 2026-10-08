@@ -158,17 +158,41 @@ struct stFzeroCarData {
 };
 static_assert(sizeof(stFzeroCarData) == 0x14, "stFzeroCarData layout");
 
-// The course background (Mute City). HYPOTHESIS name for most fields; the fields are filled in as its functions are
-// reconstructed.
+// The course background (Mute City): the big backdrop model, the course sections that slide in and out, and the
+// platform ("asiba") and dash plate ("Dplate") nodes whose collision it switches. The course section animations are
+// numbered like the stage's own scene (0..6); the sound effects of a section are triggered by the animation frame.
+struct grFzeroBgData {
+    u8 unk0[8];
+    float m_chance;   // 0x08 probability the section animation is not replayed
+    u8 unkC[8];
+    float m_minWait;  // 0x14 shortest wait before the next section is started
+    float m_maxWait;  // 0x18 longest wait
+};
+
 class grFzeroBg : public grFzero {
-    u8 unk158[0x15C - 0x158];
-    u8* m_sceneWork;           // 0x15C
-    float* m_frameSceneWork;   // 0x160
-    u8* m_stateWork;           // 0x164
-    u8* m_carMotionWork;       // 0x168
-    u8 unk16C[0x170 - 0x16C];
-    Matrix* m_mtxGimmickWork;  // 0x170
-    u8 unk174[0x20C - 0x174];
+    u8 m_phase;                       // 0x158 progress of the current section's animation (0..7)
+    u8 m_count;                       // 0x159 how many times the section animation has been replayed
+    u8* m_sceneWork;                  // 0x15C
+    float* m_frameSceneWork;          // 0x160
+    u8* m_stateWork;                  // 0x164
+    u8* m_carMotionWork;              // 0x168
+    bool m_unk16C;                    // 0x16C HYPOTHESIS: the section animation is running
+    bool m_unk16D;                    // 0x16D
+    Matrix* m_mtxGimmickWork;         // 0x170 25 matrices, one per node below
+    u32 m_nodeHaikei[2];              // 0x174 "haikei_A_rotate", "haikei_A_trans"
+    u32 m_nodeAsiba[7];               // 0x17C "L_asiba01".."L_asiba07"
+    u32 m_nodeDplate[11];             // 0x198 "L_Dplate_a".."L_Dplate_k"
+    u32 m_nodeDplateRing;             // 0x1C4 "Dplate_e_ring"
+    u32 m_nodeCourseStart;            // 0x1C8
+    u32 m_nodeCourseCol[2];           // 0x1CC "courseColN01", "courseColN02"
+    grCollisionJoint* m_joint[7];     // 0x1D4
+    float m_motionRate;               // 0x1F0
+    u8 m_animId;                      // 0x1F4 current animation (7 = none)
+    float m_unk1F8;                   // 0x1F8
+    float m_frameLimit;               // 0x1FC frame the current animation ends at
+    u8 m_seIndex;                     // 0x200 next sound effect of the section
+    int m_seHandle;                   // 0x204
+    bool m_isEvent;                   // 0x208 HYPOTHESIS: event match (the test stFzero::isEventEnd relies on)
 
 public:
     grFzeroBg(const char* taskName);
@@ -182,8 +206,8 @@ public:
     virtual void updateScene(float deltaFrame);
     virtual void updateSceneMotion(float deltaFrame);
     virtual void updateSE(float deltaFrame);
-    virtual void playSECoursePass(float deltaFrame);
-    virtual void playSEMarkPass(float deltaFrame);
+    virtual void playSECoursePass();
+    virtual void playSEMarkPass();
     virtual void setMotion(u32 animId, bool loop, bool force, float* frameCount);
     virtual float getMotionTotalFrame(u32 sceneModelIndex);
     virtual void setSceneWork(u8* sceneWork) { m_sceneWork = sceneWork; }

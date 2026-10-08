@@ -5308,6 +5308,7 @@ config.libs = [
         "host": False,
         "objects": [
             Object(NonMatching, "mo_stage/st_fzero/gr_fzero_trainer_warning.cpp"),
+            Object(NonMatching, "mo_stage/st_fzero/gr_fzero_bg.cpp"),
             Object(NonMatching, "mo_stage/st_fzero/gr_fzero_startline.cpp"),
             Object(NonMatching, "mo_stage/st_fzero/gr_fzero_platering.cpp"),
             Object(NonMatching, "mo_stage/st_fzero/gr_fzero_ashiba.cpp"),
