@@ -5306,7 +5306,9 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_stage/st_fzero/gr_fzero_trainer.cpp"),
+        ],
     },
     {
         "lib": "st_greenhill",
