@@ -951,7 +951,9 @@ def generate_build_ninja(
                     outputs=plf_path,
                     rule="link",
                     inputs=self.inputs,
-                    implicit=[self.ldscript, preplf_path, *mwld_implicit],
+                    # The diagnostic -r prelink is an independent target. The final
+                    # -r1 link consumes the original objects and linker script directly.
+                    implicit=[self.ldscript, *mwld_implicit],
                     implicit_outputs=plf_map,
                     variables={"ldflags": plf_ldflags},
                     order_only="post-compile",
