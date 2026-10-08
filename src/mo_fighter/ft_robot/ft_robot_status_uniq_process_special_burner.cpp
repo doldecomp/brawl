@@ -72,8 +72,8 @@ void ftRobotStatusUniqProcessSpecialBurner::exitStatus(soModuleAccesser* moduleA
 void ftRobotStatusUniqProcessSpecialBurner::specialButtonPushCheck(soModuleAccesser* moduleAccesser) {
     soControllerModule& controller = moduleAccesser->getControllerModule();
     u32 specialMask = soController::getButtonMask(soController::Pad_Button_Special);
-    ipPadButton held = controller.getButton();
-    if ((held.m_mask & specialMask) != 0) {
+    int held = controller.getButton();
+    if (held & specialMask) {
         moduleAccesser->getWorkManageModule().onFlag(0x22000012);
     } else {
         moduleAccesser->getWorkManageModule().offFlag(0x22000012);

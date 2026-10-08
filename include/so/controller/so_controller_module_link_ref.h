@@ -45,8 +45,8 @@ public:
     virtual int getTrigger();
     virtual u8 getTriggerCount(u8 index);
     virtual u8 getTriggerCountPrev(u8 index);
-    virtual ipPadButton getButton();
-    virtual ipPadButton getRelease();
+    virtual int getButton();
+    virtual int getRelease();
     virtual void setOff(bool);
     virtual void setPrev(s32);
     virtual void clearLog();
