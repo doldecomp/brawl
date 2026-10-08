@@ -1472,6 +1472,8 @@ public:
 #endif
     virtual void dropItemCheck(soDamage *, bool);
     virtual bool isHeartSwapEnableCondition();
+    void activateControllerLog(bool active); // sora_melee fn_27_12AE90
+    bool isEnableWarp(); // sora_melee fn_27_13C984
 #ifdef FT_MODULE_BUILDER
     virtual void analyzeSeal(void*) { }
 #else

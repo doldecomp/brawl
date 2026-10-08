@@ -4914,6 +4914,7 @@ config.libs = [
             Object(NonMatching, "mo_melee/sora_melee/ft/ft_util.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_work_manage_module_impl.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_slope_module_impl.cpp"),
+            Object(NonMatching, "mo_melee/sora_melee/ft/ft_manager.cpp"),
         ],
     },
     {
