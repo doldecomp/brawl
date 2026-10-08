@@ -6,17 +6,17 @@
 
 soModelModuleImplVariable::soModelModuleImplVariable(soModuleAccesser* acc,
                                                      soArray<soModelNodeSetUp>* nodeSetUps,
+                                                     float modelScale,
                                                      void* extendNodeTbl,
                                                      soArray<soModelVirtualNode>* virtualNodes,
-                                                     soEventObserverRegistrationDesc* regDesc,
-                                                     float f1) :
+                                                     soEventObserverRegistrationDesc* regDesc) :
     soModelModuleImpl(
         acc,
         nodeSetUps,
+        modelScale,
         extendNodeTbl,
         virtualNodes,
-        regDesc,
-        f1
+        regDesc
     ),
     unkCC(0) {
 }

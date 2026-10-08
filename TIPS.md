@@ -43,6 +43,8 @@ The same assembly can come from very different C++ (`add r3,r3,r4` could be `x +
 - **Weak copies (templates, inline functions):** the linker keeps one copy, so the original file boundary for template code is unknowable. Splits are by contiguous address range, which is why file names like `_part2` exist. They are scaffolding. Use `tools/weak_dups.py` to name original weak RTTI/vtable copies, and keep a unit `NonMatching` if the hash check fails. **HIGH**
 - **Mangled names depend on exact types** (`int` vs `s32`, enum vs int). Spell the original type. **HIGH**
 
+- **A float move appears in the wrong place among constructor arguments:** verify the float's position in the prototype, not just its register type. Moving a float among pointer arguments preserves the PowerPC argument register assignments but changes MWCC's save/move order and mangling. Restore the builder and callee prototypes together, update forwarded calls and symbols, and check already-exact callers. Model scale is second in `soModelModuleBuilder` and follows node setup in `soModelModuleImpl`; this matched Marth and Kirby's builders while retaining the variable-model constructor. Seen: `include/ft/builder/ft_module_builders.h`, `include/so/model/so_model_module_impl.h`. **HIGH**
+
 ## 5. Integers and bools
 - The source type decides extension: `u8` gives `clrlwi r,r,24`, `s8` gives `extsb`, `s16` gives `extsh`, `bool` gives `clrlwi 24`. Many "mysterious" extra instructions are a wrong type (often `s8` that should be `int`, or `u8` that should be `s32`). **HIGH**
 - **Bitfield reads as `lwz` plus `rlwinm`:** read through a raw `*(u32*)((u8*)p + off)` and shift/mask, not through a declared signed bitfield (`so_damage_module_impl.cpp`). **MED**

@@ -36,7 +36,7 @@ __ct__119soResourceModuleBuilder<92soResourceModuleBuildConfigDynamic<0,29ftKirb
 __dt__34soArrayFixed<18soModelVirtualNode>Fv = .text:0x00002E34; // type:function size:0x40
 __dt__29ftKirbyResourceIdAccesserImplFv = .text:0x00002E74; // type:function size:0x60
 __dt__119soResourceModuleBuilder<92soResourceModuleBuildConfigDynamic<0,29ftKirbyResourceIdAccesserImpl,20soResourceModuleImpl>>Fv = .text:0x00002ED4; // type:function size:0x6C
-__ct__81soModelModuleBuilder<57soModelModuleBuildConfig<8,3,25soModelModuleImplVariable>>FP16soModuleAccesserPvP31soEventObserverRegistrationDescf = .text:0x00002F40; // type:function size:0x88
+__ct__81soModelModuleBuilder<57soModelModuleBuildConfig<8,3,25soModelModuleImplVariable>>FP16soModuleAccesserfPvP31soEventObserverRegistrationDesc = .text:0x00002F40; // type:function size:0x88
 fn_96_2FC8 = .text:0x00002FC8; // type:function size:0x5C
 __dt__81soModelModuleBuilder<57soModelModuleBuildConfig<8,3,25soModelModuleImplVariable>>Fv = .text:0x00003024; // type:function size:0x78
 fn_96_309C = .text:0x0000309C; // type:function size:0x19C

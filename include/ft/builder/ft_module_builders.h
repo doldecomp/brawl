@@ -109,10 +109,11 @@ public:
         return &b->m_modelModule;
     }
 
-    soModelModuleBuilder(soModuleAccesser* acc, void* extendNodeTbl, soEventObserverRegistrationDesc* regDesc, float modelScale) :
+    soModelModuleBuilder(soModuleAccesser* acc, float modelScale, void* extendNodeTbl, soEventObserverRegistrationDesc* regDesc) :
         m_nodeSetUps(S, 0),
         m_virtualNodes(N, 0),
-        m_modelModule(acc, &m_nodeSetUps, extendNodeTbl, m_virtualNodes.get(), regDesc, modelScale) { }
+        m_modelModule(acc, &m_nodeSetUps, modelScale, extendNodeTbl, m_virtualNodes.get(), regDesc) { }
+
 };
 
 ////////////////////////////////////////
