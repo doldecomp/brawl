@@ -214,7 +214,7 @@ public:
     bool unk11_10 : 1;
     bool unk11_08 : 1;
     bool unk11_04 : 1;
-    bool unk11_02 : 1; // HYPOTHESIS: set on the partner entry while hearts are swapped (read through isHeartSwapped)
+    u8 unk11_02 : 1; // HYPOTHESIS: set on the partner entry while hearts are swapped (read through isHeartSwapped)
     bool unk11_01 : 1;
     char _0x12[6];
     int m_slotIndex;

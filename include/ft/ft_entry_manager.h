@@ -15,7 +15,9 @@ public:
     ftEntry* m_entries;
     u32 m_entryCount;
     soArrayVector<ftEntry*, 9> m_entryArrayVector;
-    char _0x38[20];
+    char _0x38[4];
+    bool m_isProcessHeartSwap; // 0x3C
+    char _0x3d[15];
 
     ftEntryManager(int entryCapacity);
     virtual ~ftEntryManager();

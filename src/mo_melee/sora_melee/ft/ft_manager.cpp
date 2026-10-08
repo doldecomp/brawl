@@ -94,13 +94,15 @@ void ftManager::addItemResource(int slotIndex, int itemId) {
 }
 
 void ftManager::removeTechniqResourceAll() {
-    for (int i = 0; i < g_ftSlotManager->m_slotCount; i++) {
+    int slotCount = g_ftSlotManager->m_slotCount;
+    for (int i = 0; i < slotCount; i++) {
         g_ftSlotManager->m_slots[i].remove(0xFF, 0x7000, 0);
     }
 }
 
 void ftManager::removeResourceAll() {
-    for (int i = 0; i < g_ftSlotManager->m_slotCount; i++) {
+    int slotCount = g_ftSlotManager->m_slotCount;
+    for (int i = 0; i < slotCount; i++) {
         g_ftSlotManager->m_slots[i].removeAll();
     }
 }
@@ -144,8 +146,9 @@ int ftManager::getEntryId(int playerNo) const {
 int ftManager::getScoreEntryId(int entryId) const {
     if (m_entryManager->getEntity(entryId)->m_heartSwapEntryId != -1) {
         return m_entryManager->getEntity(entryId)->m_heartSwapEntryId;
+    } else {
+        return entryId;
     }
-    return entryId;
 }
 
 int ftManager::getEntryIdFromAreaId(int areaId) const {
@@ -169,7 +172,7 @@ bool ftManager::isReadyFinalResource(int entryId) const {
 
 // With heart swap in a stock match, a defeated fighter's stock may be spent by the swap partner instead.
 // HYPOTHESIS: the rule is 1 for stock matches, and the flag at ftEntry+0x11 (mask 0x02) marks the entry whose body is swapped.
-int ftManager::getRealRebirthEntryId(int entryId) const {
+int ftManager::getRealRebirthEntryId(int entryId) {
     if (m_gameRule == 1) {
         ftEntry* entry = m_entryManager->getEntity(entryId);
         int partnerId = entry->m_heartSwapEntryId;
@@ -212,10 +215,9 @@ void ftManager::standbyFighterAdvFollow(int entryId) {
 }
 
 void ftManager::standbyAllFighter() {
-    soArray<ftEntry*>& entries = m_entryManager->m_entryArrayVector;
-    int count = entries.size();
+    int count = getEntries(this).size();
     for (int i = 0; i < count; i++) {
-        ftEntry* entry = entries.at(i);
+        ftEntry* entry = getEntries(this).at(i);
         m_entryManager->getEntity(entry->m_entryId)->standby(1);
     }
 }
@@ -261,10 +263,9 @@ int ftManager::getFighterOperationStatus(int entryId) {
 }
 
 void ftManager::setFighterOperationStatusAll(int status) {
-    soArray<ftEntry*>& entries = m_entryManager->m_entryArrayVector;
-    int count = entries.size();
+    int count = getEntries(this).size();
     for (int i = 0; i < count; i++) {
-        entries.at(i)->m_input->setWhole(status);
+        getEntries(this).at(i)->m_input->setWhole(status);
     }
 }
 
@@ -291,15 +292,15 @@ void ftManager::setFighterOperationCpuType(int entryId, int cpuType) {
 
 // True while any technique-related resource group is loading or an entry is running a technique, or the data provider is busy.
 bool ftManager::isProcessTechnique() const {
-    for (int i = 0; i < g_ftSlotManager->m_slotCount; i++) {
+    int slotCount = g_ftSlotManager->m_slotCount;
+    for (int i = 0; i < slotCount; i++) {
         if (g_ftSlotManager->m_slots[i].isLoaded(0x7000) == true) {
             return true;
         }
     }
-    soArray<ftEntry*>& entries = m_entryManager->m_entryArrayVector;
-    int count = entries.size();
+    int count = getEntries(this).size();
     for (int i = 0; i < count; i++) {
-        if (entries.at(i)->isProcessTechnique() == true) {
+        if (getEntries(this).at(i)->isProcessTechnique() == true) {
             return true;
         }
     }
@@ -420,7 +421,7 @@ bool ftManager::isFighterEnableWarp(int entryId) const {
 }
 
 int ftManager::getCurrentFighterNo(int entryId) const {
-    return m_entryManager->getEntity(entryId)->m_activeInstanceIndex;
+    return static_cast<u8>(m_entryManager->getEntity(entryId)->m_activeInstanceIndex);
 }
 
 int ftManager::getFighterNo(int entryId, int kind) const {
@@ -614,7 +615,7 @@ void ftManager::setHeartSwap(int entryId1, int entryId2) {
 
 // True while hearts are swapped.
 bool ftManager::isProcessHeartSwap() const {
-    return *reinterpret_cast<u8*>(reinterpret_cast<u8*>(m_entryManager) + 0x3C);
+    return m_entryManager->m_isProcessHeartSwap;
 }
 
 bool ftManager::isProcessHeartSwap(int entryId) const {

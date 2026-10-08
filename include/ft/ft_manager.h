@@ -43,7 +43,7 @@ public:
     void reqCommon(u32 a, u32 b, int c);
     bool isReady();
     char _4[0x109C];
-    u8 m_isUseCompressedMode;
+    bool m_isUseCompressedMode;
     char _10a1[3];
 };
 static_assert(sizeof(ftDataProvider) == 0x10A4, "Class is wrong size!");
@@ -202,7 +202,7 @@ public:
     void set2PGamesHeapLayout(int layout);
     bool isReadyKirbyCopyResource(int entryId, int kirbyKind) const;
     bool isReadyFinalResource(int entryId) const;
-    int getRealRebirthEntryId(int entryId) const;
+    int getRealRebirthEntryId(int entryId);
     void startFighter(int entryId, bool unk);
     void startFighter(int entryId, Vec3f* pos, float lr);
     void disappearTrainer(int entryId);
