@@ -26,6 +26,7 @@ public:
     ftStatusUniqProcessGuardFunc* m_guardFunc;
 
     ftStatusUniqProcessGuardOn() : m_guardFunc(&g_ftStatusUniqProcessGuardFunc) { }
+    ftStatusUniqProcessGuardOn(ftStatusUniqProcessGuardFunc* helper) : m_guardFunc(helper) {}
     virtual ~ftStatusUniqProcessGuardOn() { }
     virtual void initStatus(soModuleAccesser* moduleAccesser);
     virtual void exitStatus(soModuleAccesser* moduleAccesser, int);
@@ -37,6 +38,8 @@ public:
 // Status process while the shield is held (Guard).
 class ftStatusUniqProcessGuard : public ftStatusUniqProcessGuardOn {
 public:
+    ftStatusUniqProcessGuard() {}
+    ftStatusUniqProcessGuard(ftStatusUniqProcessGuardFunc* helper) : ftStatusUniqProcessGuardOn(helper) {}
     virtual ~ftStatusUniqProcessGuard() { }
     virtual void initStatus(soModuleAccesser* moduleAccesser);
     virtual void exitStatus(soModuleAccesser* moduleAccesser, int);
@@ -48,6 +51,8 @@ extern ftStatusUniqProcessGuard g_ftStatusUniqProcessGuard;
 // Status process for the shield being hit (GuardDamage / shield stun).
 class ftStatusUniqProcessGuardDamage : public ftStatusUniqProcessGuardOn {
 public:
+    ftStatusUniqProcessGuardDamage() {}
+    ftStatusUniqProcessGuardDamage(ftStatusUniqProcessGuardFunc* helper) : ftStatusUniqProcessGuardOn(helper) {}
     virtual ~ftStatusUniqProcessGuardDamage() { }
     virtual void initStatus(soModuleAccesser* moduleAccesser);
     virtual void exitStatus(soModuleAccesser* moduleAccesser, int);

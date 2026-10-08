@@ -11,6 +11,52 @@ global_destructor_chain.c:
 	.dtors      start:0x00000000 end:0x00000008
 	.bss        start:0x00000000 end:0x00000004
 
+mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_guard_func.cpp:
+	.text       start:0x0000F0BC end:0x0000F214
+	.ctors      start:0x00000004 end:0x00000008
+	.data       start:0x00007B28 end:0x00007BA8
+	.bss        start:0x00000338 end:0x00000348
+
+mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_guard_on.cpp:
+	.text       start:0x0000F214 end:0x0000F3E0
+	.ctors      start:0x00000008 end:0x0000000C
+	.data       start:0x00007BA8 end:0x00007C70
+	.bss        start:0x00000348 end:0x00000360
+
+mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_guard.cpp:
+	.text       start:0x0000F3E0 end:0x0000F610
+	.ctors      start:0x0000000C end:0x00000010
+	.rodata     start:0x00000028 end:0x00000038
+	.data       start:0x00007C70 end:0x00007D30
+	.bss        start:0x00000360 end:0x00000378
+
+mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_guard_damage.cpp:
+	.text       start:0x0000F610 end:0x0000F798
+	.ctors      start:0x00000010 end:0x00000014
+	.data       start:0x00007D30 end:0x00007DF8
+	.bss        start:0x00000378 end:0x00000390
+
+mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_escape_fb.cpp:
+	.text       start:0x0000F798 end:0x0000F938
+	.ctors      start:0x00000014 end:0x00000018
+	.rodata     start:0x00000038 end:0x00000048
+	.data       start:0x00007DF8 end:0x00007E70
+	.bss        start:0x00000390 end:0x000003A0
+
+mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_jump_aerial.cpp:
+	.text       start:0x0000F938 end:0x0000FB5C
+	.ctors      start:0x00000018 end:0x0000001C
+	.rodata     start:0x00000048 end:0x00000060
+	.data       start:0x00007E70 end:0x00007EE8
+	.bss        start:0x000003A0 end:0x000003B0
+
+mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_catch_pull.cpp:
+	.text       start:0x0000FB5C end:0x0000FDD8
+	.ctors      start:0x0000001C end:0x00000020
+	.rodata     start:0x00000060 end:0x00000068
+	.data       start:0x00007EE8 end:0x00007FA0
+	.bss        start:0x000003B0 end:0x000003C0
+
 mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_hi.cpp:
 	.text       start:0x000135D4 end:0x000138BC
 	.ctors      start:0x00000034 end:0x00000038
