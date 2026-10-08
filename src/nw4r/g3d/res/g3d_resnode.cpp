@@ -21,14 +21,14 @@ void ResNode::PatchChrAnmResult(ChrAnmResult* pResult) const {
             pResult->s.y = 1.0f;
             pResult->s.x = 1.0f;
         } else {
-            flags &= ~ChrAnmResult::FLAG_SCALE_UNIFORM;
+            u32 uniform = flags & ~ChrAnmResult::FLAG_SCALE_UNIFORM;
 
             if (r.flags & ResNodeData::FLAG_SCALE_UNIFORM) {
-                flags |= ChrAnmResult::FLAG_SCALE_UNIFORM;
+                uniform = flags | ChrAnmResult::FLAG_SCALE_UNIFORM;
             }
 
-            flags &= ~(ChrAnmResult::FLAG_MTX_IDENT |
-                       ChrAnmResult::FLAG_SCALE_ONE);
+            flags = uniform & ~(ChrAnmResult::FLAG_MTX_IDENT |
+                                ChrAnmResult::FLAG_SCALE_ONE);
 
             pResult->s.x = r.scale.x;
             pResult->s.y = r.scale.y;
@@ -37,9 +37,7 @@ void ResNode::PatchChrAnmResult(ChrAnmResult* pResult) const {
     }
 
     if (flags & ChrAnmResult::FLAG_PATCH_ROT) {
-        f32 tz = pResult->rt._23;
-        f32 ty = pResult->rt._13;
-        f32 tx = pResult->rt._03;
+        math::VEC3 trans(pResult->rt._03, pResult->rt._13, pResult->rt._23);
 
         if (r.flags & ResNodeData::FLAG_ROT_ZERO) {
             math::MTX34Identity(&pResult->rt);
@@ -53,9 +51,9 @@ void ResNode::PatchChrAnmResult(ChrAnmResult* pResult) const {
 
         flags |= ChrAnmResult::FLAG_ROT_RAW_FMT;
 
-        pResult->rt._03 = tx;
-        pResult->rt._13 = ty;
-        pResult->rt._23 = tz;
+        pResult->rt._03 = trans.x;
+        pResult->rt._13 = trans.y;
+        pResult->rt._23 = trans.z;
     }
 
     if (flags & ChrAnmResult::FLAG_PATCH_TRANS) {

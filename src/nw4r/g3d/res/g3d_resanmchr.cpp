@@ -909,6 +909,70 @@ void ChrAnmResult::SetScale(const math::VEC3* pScale) {
     s = *pScale;
 }
 
+void ChrAnmResult::SetRotateDeg(const math::VEC3* pRotate) {
+    if (pRotate->x == 0.0f && pRotate->y == 0.0f && pRotate->z == 0.0f) {
+        u32 newFlags = FLAG_ROT_ZERO;
+
+        if (flags & FLAG_TRANS_ZERO) {
+            newFlags |= FLAG_ROT_TRANS_ZERO;
+
+            if (flags & FLAG_SCALE_ONE) {
+                newFlags |= FLAG_MTX_IDENT;
+            }
+        }
+
+        flags |= newFlags;
+
+        rt._00 = 1.0f;
+        rt._01 = 0.0f;
+        rt._02 = 0.0f;
+        rt._10 = 0.0f;
+        rt._11 = 1.0f;
+        rt._12 = 0.0f;
+        rt._20 = 0.0f;
+        rt._21 = 0.0f;
+        rt._22 = 1.0f;
+    } else {
+        math::VEC3 trans(rt._03, rt._13, rt._23);
+
+        math::MTX34RotXYZDeg(&rt, pRotate->x, pRotate->y, pRotate->z);
+
+        rt._03 = trans.x;
+        rt._13 = trans.y;
+        rt._23 = trans.z;
+
+        rawR.x = pRotate->x;
+        rawR.y = pRotate->y;
+        rawR.z = pRotate->z;
+
+        flags &= ~(FLAG_ROT_ZERO | FLAG_ROT_TRANS_ZERO | FLAG_MTX_IDENT);
+    }
+
+    flags |= FLAG_ROT_RAW_FMT;
+}
+
+void ChrAnmResult::SetTranslate(const math::VEC3* pTrans) {
+    if (pTrans->x == 0.0f && pTrans->y == 0.0f && pTrans->z == 0.0f) {
+        u32 newFlags = FLAG_TRANS_ZERO;
+
+        if (flags & FLAG_ROT_ZERO) {
+            newFlags |= FLAG_ROT_TRANS_ZERO;
+
+            if (flags & FLAG_SCALE_ONE) {
+                newFlags |= FLAG_MTX_IDENT;
+            }
+        }
+
+        flags |= newFlags;
+    } else {
+        flags &= ~(FLAG_TRANS_ZERO | FLAG_ROT_TRANS_ZERO | FLAG_MTX_IDENT);
+    }
+
+    rt._03 = pTrans->x;
+    rt._13 = pTrans->y;
+    rt._23 = pTrans->z;
+}
+
 void ChrAnmResult::SetRotTrans(const math::MTX34* pRotTrans) {
     bool rotZero = pRotTrans->_00 == 1.0f && pRotTrans->_01 == 0.0f &&
                    pRotTrans->_02 == 0.0f && pRotTrans->_10 == 0.0f &&

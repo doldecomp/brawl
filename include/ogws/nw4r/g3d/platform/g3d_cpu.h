@@ -145,6 +145,7 @@ namespace detail {
 
 void Copy32ByteBlocks(void* pDst, const void* pSrc, u32 size);
 void ZeroMemory32ByteBlocks(void* pDst, u32 size);
+void ZeroMemory16ByteBlocks(void* pDst, u32 size);
 
 } // namespace detail
 

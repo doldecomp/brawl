@@ -66,13 +66,27 @@ class ResTev : public ResCommon<ResTevData> {
 public:
     NW4R_G3D_RESOURCE_FUNC_DEF(ResTev);
 
-    bool GXGetTevSwapModeTable(GXTevSwapSel swap, GXTevColorChan* pR,
-                               GXTevColorChan* pG, GXTevColorChan* pB,
-                               GXTevColorChan* pA) const;
     void GXSetTevSwapModeTable(GXTevSwapSel swap, GXTevColorChan r,
                                GXTevColorChan g, GXTevColorChan b,
                                GXTevColorChan a);
 
+    void GXSetTevSwapMode(GXTevStageID stage, GXTevSwapSel ras,
+                          GXTevSwapSel tex);
+    void GXSetTevAlphaIn(GXTevStageID stage, GXTevAlphaArg a, GXTevAlphaArg b,
+                         GXTevAlphaArg c, GXTevAlphaArg d);
+    void GXSetTevAlphaOp(GXTevStageID stage, GXTevOp op, GXTevBias bias,
+                         GXTevScale scale, GXBool clamp, GXTevRegID out);
+    bool GXGetTevKColorSel(GXTevStageID stage, GXTevKColorSel* pSel) const;
+    void GXSetTevKColorSel(GXTevStageID stage, GXTevKColorSel sel);
+    void GXSetTevKAlphaSel(GXTevStageID stage, GXTevKAlphaSel sel);
+    void GXSetTevOrder(GXTevStageID stage, GXTexCoordID coord, GXTexMapID map,
+                       GXChannelID channel);
+    bool GXGetTevColorIn(GXTevStageID stage, GXTevColorArg* pA,
+                         GXTevColorArg* pB, GXTevColorArg* pC,
+                         GXTevColorArg* pD) const;
+    void GXSetTevColorOp(GXTevStageID stage, GXTevOp op, GXTevBias bias,
+                         GXTevScale scale, GXBool clamp, GXTevRegID out);
+    void SetNumTevStages(u8 num);
     bool GXGetTevOrder(GXTevStageID stage, GXTexCoordID* pCoord,
                        GXTexMapID* pMap, GXChannelID* pChannel) const;
 

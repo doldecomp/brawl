@@ -43,6 +43,19 @@ void ZeroMemory32ByteBlocks(register void* pDst, register u32 size) {
     }
 }
 
+void ZeroMemory16ByteBlocks(register void* pDst, register u32 size) {
+    register f32 zero = 0.0f;
+
+    for (size /= 16; size > 0; size--) {
+        ASM (
+            psq_st zero, 0(pDst), 0, 0
+            psq_st zero, 8(pDst), 0, 0
+        )
+
+        pDst = static_cast<u8*>(pDst) + 16;
+    }
+}
+
 } // namespace detail
 } // namespace g3d
 } // namespace nw4r
