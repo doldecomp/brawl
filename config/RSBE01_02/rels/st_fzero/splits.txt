@@ -30,6 +30,9 @@ mo_stage/st_fzero/gr_fzero_platering.cpp:
 mo_stage/st_fzero/gr_fzero_ashiba.cpp:
 	.text       start:0x000062D0 end:0x00006F70
 
+mo_stage/st_fzero/gr_fzero_car.cpp:
+	.text       start:0x00006F70 end:0x00008368
+
 mo_stage/st_fzero/gr_fzero_node.cpp:
 	.text       start:0x00008368 end:0x000091B4
 

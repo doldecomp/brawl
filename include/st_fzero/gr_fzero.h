@@ -2,6 +2,7 @@
 
 #include <gr/gr_yakumono.h>
 #include <mt/mt_matrix.h>
+#include <snd/snd_3d_generator.h>
 #include <st/se_util.h>
 #include <gr/collision/gr_collision_joint.h>
 #include <math.h>
@@ -325,8 +326,15 @@ static_assert(sizeof(grFzeroNode) == 0x1C4, "grFzeroNode layout");
 class grFzeroCar : public grFzero {
     u8* m_sceneWork;           // 0x158
     u8* m_stateWork;           // 0x15C
-    stFzeroCarData* m_carData; // 0x160
-    u8 unk164[0x184 - 0x164];
+    stFzeroCarData* m_carData; // 0x160 the stage's record of this car
+    u8 m_animId;               // 0x164 current animation (2 = none)
+    float m_animFrames;        // 0x168 frame count of the current animation
+    u8 m_hasYakumono;          // 0x16C
+    u8 m_attackEnabled;        // 0x16D
+    grFzeroAttackWork* m_work; // 0x170
+    snd3DGenerator m_sndGen;   // 0x174 the car's engine sound source
+    s32 m_seHandle;            // 0x17C sound of the car driving by
+    s32 m_seHandleNear;        // 0x180 sound of the car passing close to the fighters
 
 public:
     grFzeroCar(const char* taskName);
