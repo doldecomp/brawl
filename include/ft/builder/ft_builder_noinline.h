@@ -22,7 +22,9 @@ void ftKeepObserverVtables(s16 id) {
 
 #pragma dont_inline on
 ftStatusGimmickUniqProcessPool::~ftStatusGimmickUniqProcessPool() { }
+#pragma dont_inline off
 soKineticModuleImpl::~soKineticModuleImpl() { }
+#pragma dont_inline on
 ftTeam::~ftTeam() { }
 ftTeamIndirect::~ftTeamIndirect() { }
 ftSound3dGeneratorAccesserImpl::~ftSound3dGeneratorAccesserImpl() { } // MATCH-ONLY: out of line in the REL
@@ -39,6 +41,7 @@ soGeneralWorkSimple::soGeneralWorkSimple(s32* ints, u32 numInts, float* floats, 
 
 
 #pragma dont_inline on
+template soInsideEventManageModuleBuilder<FT_BC::InsideEventManageModuleBuildConfig, ftInsideEventManageModuleTypes>::soInsideEventManageModuleBuilder();
 template soDamageModuleBuilder<FT_BC::DamageModuleBuildConfig>::soDamageModuleBuilder(soModuleAccesser*, soEventObserverRegistrationDesc*);
 template soCameraModuleBuilder<FT_BC::CameraModuleBuildConfig>::soCameraModuleBuilder(soModuleAccesser*, soSet<soCameraRange>*, soSet<soCameraClipSphere>*, soEventObserverRegistrationDesc*);
 template soResourceModuleBuilder<FT_BC::ResourceModuleBuildConfig>::soResourceModuleBuilder(u32, u32, u8, soModuleAccesser*);

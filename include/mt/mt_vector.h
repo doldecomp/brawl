@@ -122,6 +122,7 @@ public:
     };
 
     Vec3f() { }
+    Vec3f(const Vec2f& xy, float z) : m_x(xy.m_x), m_y(xy.m_y), m_z(z) { }
     Vec3f(float x, float y, float z)
 #if defined(FT_MARTH_COLLISION_VEC3F_NOINLINE) || defined(MT_VEC3F_CTOR_NOINLINE)
         __attribute__((never_inline)) // MATCH-ONLY: retain the original out-of-line constructor.

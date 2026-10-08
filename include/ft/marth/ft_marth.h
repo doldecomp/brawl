@@ -43,6 +43,7 @@ public:
             Heaps::HeapType nwModelInstHeap,
             Heaps::HeapType nwMotionInstHeap);
     virtual ~ftMarth();
+    virtual void processUpdate();
     virtual void photoMoved();
     virtual void photoExit();
     virtual bool notifyEventCollisionShieldCheck();
