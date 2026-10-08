@@ -16,6 +16,10 @@
 #include <ft/ft_param_customize_module_impl.h>
 #include <ft/ft_resource_id_accesser_impl.h>
 
+// HYPOTHESIS: the module builders of the fighter RELs receive the second null registration descriptor (sora_melee
+// .bss+0xA48, named g_soTeamModuleNullArg after its first user, the team builder) instead of g_soEventObserverRegistrationDescNull.
+#define FT_NULL_OBSERVER_DESC reinterpret_cast<soEventObserverRegistrationDesc*>(g_soTeamModuleNullArg)
+
 // MATCH-ONLY: routing the area category through an inline function makes MWCC narrow it to u8 only when the
 // out-of-line area builder constructor arguments are set up, as in the original.
 static inline s32 ftPassS32(s32 v) { return v; }
@@ -241,39 +245,39 @@ public:
             &m_moduleAccsr,
             fbd.getModelScale(),
             fbd.getModelExtendNodeTable(),
-            &g_soEventObserverRegistrationDescNull
+            FT_NULL_OBSERVER_DESC
         ),
         m_motionBuilder(&m_moduleAccsr, fbd.getMotionData()),
-        m_postureModuleBuilder(&m_moduleAccsr, &g_soEventObserverRegistrationDescNull),
+        m_postureModuleBuilder(&m_moduleAccsr, FT_NULL_OBSERVER_DESC),
         m_groundModuleBuilder(&m_moduleAccsr, fbd.getGroundConditionChecker()),
-        m_situationModuleBuilder(ftGetManageId(&m_moduleAccsr), &m_moduleAccsr, &g_soEventObserverRegistrationDescNull),
+        m_situationModuleBuilder(ftGetManageId(&m_moduleAccsr), &m_moduleAccsr, FT_NULL_OBSERVER_DESC),
         m_teamBuilder(fbd.getTeam(), &m_moduleAccsr),
-        m_attackModuleBuilder(&m_moduleAccsr, owner->m_taskId, static_cast<gfTask::Category>(static_cast<u8>(owner->m_taskCategory)), &g_soEventObserverRegistrationDescNull),
-        m_hitModuleBuilder(&m_moduleAccsr, owner->m_taskId, static_cast<gfTask::Category>(static_cast<u8>(owner->m_taskCategory)), &g_soEventObserverRegistrationDescNull),
+        m_attackModuleBuilder(&m_moduleAccsr, owner->m_taskId, static_cast<gfTask::Category>(static_cast<u8>(owner->m_taskCategory)), FT_NULL_OBSERVER_DESC),
+        m_hitModuleBuilder(&m_moduleAccsr, owner->m_taskId, static_cast<gfTask::Category>(static_cast<u8>(owner->m_taskCategory)), FT_NULL_OBSERVER_DESC),
         m_shieldModuleBuilder(&m_moduleAccsr, owner->m_taskId, static_cast<gfTask::Category>(static_cast<u8>(owner->m_taskCategory))),
         m_reflectorModuleBuilder(&m_moduleAccsr, owner->m_taskId, static_cast<gfTask::Category>(static_cast<u8>(owner->m_taskCategory))),
-        m_collisionCatchModuleBuilder(&m_moduleAccsr, owner->m_taskId, static_cast<gfTask::Category>(static_cast<u8>(owner->m_taskCategory)), &g_soEventObserverRegistrationDescNull),
+        m_collisionCatchModuleBuilder(&m_moduleAccsr, owner->m_taskId, static_cast<gfTask::Category>(static_cast<u8>(owner->m_taskCategory)), FT_NULL_OBSERVER_DESC),
         m_searchBuilder(&m_moduleAccsr, owner->m_taskId, static_cast<gfTask::Category>(static_cast<u8>(owner->m_taskCategory))),
-        m_damageModuleBuilder(&m_moduleAccsr, &g_soEventObserverRegistrationDescNull),
+        m_damageModuleBuilder(&m_moduleAccsr, FT_NULL_OBSERVER_DESC),
         m_catchModuleBuilder(&m_moduleAccsr),
         m_captureModuleBuilder(&m_moduleAccsr),
         m_stopModuleBuilder(&m_moduleAccsr),
         m_turnModuleBuilder(&m_moduleAccsr),
         m_shakeModuleBuilder(&m_moduleAccsr, fbd.getShakeData()),
-        m_soundModuleBuilder(&m_moduleAccsr, fbd.getSoundIdExchanger(), &g_soEventObserverRegistrationDescNull),
+        m_soundModuleBuilder(&m_moduleAccsr, fbd.getSoundIdExchanger(), FT_NULL_OBSERVER_DESC),
         m_linkModuleBuilder(&m_moduleAccsr),
         m_visibilityModuleBuilder(&m_moduleAccsr, fbd.getVisibilityData()),
         m_controllerModuleBuilder(&m_moduleAccsr, ftGetManageId(&m_moduleAccsr)),
-        m_cameraModuleBuilder(&m_moduleAccsr, (soSet<soCameraRange>*)fbd.getCameraRangeSet(), (soSet<soCameraClipSphere>*)fbd.getCameraClipSphereSet(), &g_soEventObserverRegistrationDescNull),
+        m_cameraModuleBuilder(&m_moduleAccsr, (soSet<soCameraRange>*)fbd.getCameraRangeSet(), (soSet<soCameraClipSphere>*)fbd.getCameraClipSphereSet(), FT_NULL_OBSERVER_DESC),
         m_workManageModuleBuilder(&m_moduleAccsr, fbd.getParamAccesser()),
         m_animCmdBuilder(ftGetManageId(&m_moduleAccsr)),
         m_statusBuilder(&m_moduleAccsr, fbd.getStatusData(), fbd.getPreCheckAnimCmdData()),
         m_kineticBuilder(&m_moduleAccsr),
         m_generalWorkBuilder(),
         m_generateArticleBuilder(&m_moduleAccsr),
-        m_effectModuleBuilder(&m_moduleAccsr, fbd.getEffectNodeData(), fbd.getEffectEmitData(), fbd.getEffectCommonData(), fbd.getEffectScreenData(), &g_soEventObserverRegistrationDescNull),
+        m_effectModuleBuilder(&m_moduleAccsr, fbd.getEffectNodeData(), fbd.getEffectEmitData(), fbd.getEffectCommonData(), fbd.getEffectScreenData(), FT_NULL_OBSERVER_DESC),
         m_comboModuleBuilder(&m_moduleAccsr),
-        m_areaBuilder(&m_moduleAccsr, ftPassS32(fbd.getAreaCategory()), &g_soEventObserverRegistrationDescNull),
+        m_areaBuilder(&m_moduleAccsr, ftPassS32(fbd.getAreaCategory()), FT_NULL_OBSERVER_DESC),
         m_physicsModuleBuilder(&m_moduleAccsr, (fbd.getTerritoryRect(), fbd.getTerritoryParam(), fbd.getTargetSearchParam(), fbd.getIkData())), // HYPOTHESIS: the territory/target search null builders have no storage
         m_slopeModuleBuilder(&m_moduleAccsr, fbd.getSlopeAngleLimit()),
         m_shadowModuleBuilder(&m_moduleAccsr),
