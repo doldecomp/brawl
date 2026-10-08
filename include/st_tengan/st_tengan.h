@@ -77,7 +77,7 @@ class stTengan : public stMelee {
     u8 m_stateFloor[3]; // Left, center, right; shared with grTenganFloor.
     u8 unke6b;
     Vec3f posAshibaWork[4];
-    u32 unke9c;
+    u32 m_laserSoundHandle;
     u32 m_dropSoundHandle;
     float unkea4;
     u8 unkea8;
@@ -104,6 +104,13 @@ class stTengan : public stMelee {
     char m_slow;
 
   public:
+    bool eventLaserUpdate(float deltaFrame);
+    bool eventSlowUpdate(float deltaFrame);
+    bool eventPokemonUpdate(float deltaFrame);
+    bool eventSonicWaveCallUpdate(float deltaFrame);
+    // HYPOTHESIS: the setters return values are ignored by updateEvent.
+    void setEventDialga(float deltaFrame);
+    void setEventValkia(float deltaFrame);
     bool eventRebuildStageUpdate();
     bool eventGravityHalfUpdate();
     bool eventDropStageUpdate();
