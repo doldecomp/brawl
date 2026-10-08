@@ -1,6 +1,9 @@
 #include <ft/builder/ft_dol_array_list.h>
+#define FT_KINETIC_MEDIATOR_TRANSACTOR ftLuigiKineticTransactor
+#include <ft/luigi/ft_luigi_kinetic_transactor.h>
 #include <ft/ft_class_info_impl.h>
 #include <ft/luigi/ft_luigi.h>
+#undef FT_KINETIC_MEDIATOR_TRANSACTOR
 #include <ft/luigi/ft_luigi_extend_param_accesser.h>
 
 #define FT_BC ftLuigiBuildConfig
