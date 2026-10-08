@@ -7,6 +7,8 @@
 #include <types.h>
 
 // NOTE: shadows the BrawlHeaders copy to add getConstantFloat/getKineticModule.
+class soStopModule;
+
 class soExternalValueAccesser {
 public:
     static int getTeamNo(StageObject* stageObject);
@@ -25,5 +27,6 @@ public:
     static soCollisionAttackModule* getCollisionAttackModule(StageObject* stageObject);
     static soLinkModule* getLinkModule(StageObject* stageObject);
     static void* getGlowModule(StageObject* stageObject);
+    static soStopModule* getStopModule(StageObject* stageObject);
 };
 // TODO size assertion

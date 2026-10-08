@@ -3,6 +3,7 @@
 #include <ft/ft_fighter_builder.h>
 #include <ft/marth/ft_marth_extend_param_accesser.h>
 #include <sr/sr_common.h>
+#include <ft/ft_common_data_accesser.h>
 #include <so/so_photo_call_back.h>
 #include <types.h>
 
@@ -30,16 +31,24 @@ public:
     typedef ftMarthModelModuleBuildConfig ModelModuleBuildConfig;
 };
 
+// This specialization is provided out of line by sora_melee.
+template<> soArrayContractibleTable<const soStatusData>::soArrayContractibleTable();
+
 class ftMarth : public ftFighterBuilder<ftMarthBuildConfig>, public soPhotoCallBack {
-    u8 unkTail[0x8574 - sizeof(ftFighterBuilder<ftMarthBuildConfig>) - sizeof(soPhotoCallBack)];
+    soArrayContractibleTable<const soStatusData> m_statusDataTable;
+    ftData* m_data;
 public:
     ftMarth(s32 entryId,
             Heaps::HeapType instHeap,
             Heaps::HeapType nwModelInstHeap,
             Heaps::HeapType nwMotionInstHeap);
+    virtual ~ftMarth();
     virtual void photoMoved();
     virtual void photoExit();
     virtual bool notifyEventCollisionShieldCheck();
+    virtual bool notifyEventCollisionAttackCheck(u32 flags);
+    virtual void notifyEventCollisionAttackFighter(soCollisionLog* collisionLog, soModuleAccesser* moduleAccesser);
+    virtual void notifyEventCollisionShield(soCollisionAttackModule* attackModule, float power, soCollisionLog* collisionLog, int groupIndex, float posX, float posY, soModuleAccesser* moduleAccesser);
 };
 static_assert(sizeof(ftFighterBuilder<ftMarthBuildConfig>) == 0x8554, "Photo callback offset is wrong!");
 static_assert(sizeof(ftMarth) == 0x8574, "Class is the wrong size!");

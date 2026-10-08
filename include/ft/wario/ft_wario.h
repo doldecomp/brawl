@@ -34,4 +34,3 @@ class ftWarioMan : public Fighter {
 public:
     ftWarioExtendParam* getExtendParam();
 };
-

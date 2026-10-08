@@ -1,4 +1,4 @@
-// SHADOW of BrawlHeaders mt/mt_vector.h: adds canonical inline Vec3fAdd.
+// Local BrawlHeaders shadow: allow the original Marth collision constructor call.
 #pragma once
 
 #include <StaticAssert.h>
@@ -75,7 +75,7 @@ public:
         Vec2f disp = *this - *v;
         return disp.length();
     }
-    
+
     void normalize();
     void normalize(Vec2f* input);
 
@@ -108,7 +108,11 @@ public:
     };
 
     Vec3f() { }
-    Vec3f(float x, float y, float z) : m_x(x), m_y(y), m_z(z) { }
+    Vec3f(float x, float y, float z)
+#ifdef FT_MARTH_COLLISION_VEC3F_NOINLINE
+        __attribute__((never_inline)) // MATCH-ONLY: retain the original out-of-line constructor.
+#endif
+        : m_x(x), m_y(y), m_z(z) { }
 
     Vec3f& operator=(const Vec3f& orig) {
         m_x = orig.m_x;

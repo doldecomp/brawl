@@ -32,7 +32,7 @@ public:
     virtual void onFlag(u32 index);
     virtual void offFlag(u32 index);
     virtual void setFlag(bool on, u32 index);
-    virtual bool turnOffFlag(u32 index);
+    virtual u32 turnOffFlag(u32 index);
     virtual void clearAll(u32 index);
     virtual void* getParamAccesser();
 };
@@ -46,9 +46,12 @@ private:
 #endif
 
 public:
-    char _spacer[4];
-    soGeneralWorkAbstract* m_generalWorks[2];
-    char _spacer2[8];
+    // The module owns three general works selected by the top nibble of a work variable ID (0x1... = LA, 0x2... = RA in
+    // the BrawlRE variable lists), followed by the param accesser handed out by getParamAccesser(). (The BrawlHeaders
+    // original models two work slots between spacers, which cannot hold the third work.)
+    soGeneralWorkAbstract* m_generalWorks[3]; // 0x1c
+    void* m_paramAccesser; // 0x28
+    u32 m_unk2C; // 0x2c
 
     virtual ~soWorkManageModuleImpl();
     virtual void activate();
@@ -70,7 +73,7 @@ public:
     virtual void onFlag(u32 index);
     virtual void offFlag(u32 index);
     virtual void setFlag(bool on, u32 index);
-    virtual bool turnOffFlag(u32 index);
+    virtual u32 turnOffFlag(u32 index);
     virtual void clearAll(u32 index);
     virtual void* getParamAccesser();
 
