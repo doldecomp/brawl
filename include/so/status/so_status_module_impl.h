@@ -117,6 +117,11 @@ public:
 };
 static_assert(sizeof(soStatusModule) == 8, "Class is wrong size!");
 
+#if defined(FT_MODULE_BUILDER) && defined(FT_REL_LINK_EXTERN)
+// MATCH-ONLY: the fighter RELs call the sora_melee constructor/destructor of the change request queue.
+#include <ft/builder/ft_dol_instances.h>
+FT_DOL_ARRAY_VECTOR(s32, 8);
+#endif
 class soStatusModuleImpl : public soStatusModule, public soEventPresenter<soStatusEventObserver>, public soAnimCmdEventObserver, public soCollisionAttackEventObserver {
 
 public:

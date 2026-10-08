@@ -1,3 +1,5 @@
+#define FT_FIGHTER_ANIMCMD_LONG // MATCH-ONLY: Fighter::notifyEventAnimCmd(long) overrides StageObject's slot (thunk at -0x48 for soAnimCmdEventObserver)
+#define FT_KINETIC_MEDIATOR_MODE_ARG // MATCH-ONLY: the REL passes (mode, pools, accesser) to the sora_melee dispatcher
 #define FT_MARTH_RUNTIME_HELPERS
 #define FT_MARTH_PHOTO_CALLBACK_NOINLINE
 #define FT_MARTH_COLLISION_VEC3F_NOINLINE
@@ -42,7 +44,9 @@ static_assert(sizeof(MarthCounterShieldGroupData) == sizeof(soCollisionShieldGro
 // Status teardown destroys its owned change-request queue before observers.
 #pragma dont_inline on
 soResourceIdAccesser::~soResourceIdAccesser() { }
+#ifndef FT_REL_LINK_EXTERN // with FT_REL_LINK_EXTERN the queue destructor is the sora_melee function (ft_dol_instances.h)
 template soArrayVector<s32, 8>::~soArrayVector();
+#endif
 #pragma dont_inline off
 soStatusModuleImpl::~soStatusModuleImpl() { }
 
