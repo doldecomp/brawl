@@ -131,7 +131,7 @@ public:
     bool unk6c_02 : 1;
     bool unk6c_01 : 1;
     u8 m_isStamina; // stamina (HP) match flag, tested as "!= 0"
-    bool m_isTeams : 1;
+    u8 m_isTeams : 1;
     bool m_isTeamAttack : 1;
     bool m_isDiscretionFinal : 1; // HYPOTHESIS: Final Smash may be triggered at will (see isEnableDiscretionFinal)
     bool unk6e_10 : 1;
@@ -254,6 +254,11 @@ public:
     void setDefault();
     void setMode(int mode);
     void stopGame();
+    bool isExistLoseFighterResult(int unk, int kind) const;
+    void createFighter(int entryId);
+    void setControllerRumble(int entryId, int unk1, int unk2, u32 isOn, int unk3);
+    void setControllerRumbleAll(int unk1, int unk2, u32 isOn, int unk3);
+    void stopControllerRumbleAll(int unk1, int unk2);
     bool isResourceRemoveSync() const;
     float getFighterCursorForceDispDistance() const;
     s16 getEntryEventManageId(int entryId) const;

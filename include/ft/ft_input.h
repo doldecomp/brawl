@@ -8,6 +8,24 @@
 
 class ftEntry;
 
+// HYPOTHESIS: the controller object behind ftInput::getInput; its vtable pointer sits at +4 and the rumble calls
+// are virtual slots 7 and 10 (offsets 0x24 and 0x30 in the vtable).
+class ftInputController {
+public:
+    int unk0;
+    virtual void unk_v0();
+    virtual void unk_v1();
+    virtual void unk_v2();
+    virtual void unk_v3();
+    virtual void unk_v4();
+    virtual void unk_v5();
+    virtual void unk_v6();
+    virtual void setRumble(int unk1, int unk2, int unk3, u8 unk4);
+    virtual void unk_v8();
+    virtual void unk_v9();
+    virtual void stopRumble(int unk1, int unk2);
+};
+
 class ftInput {
 public:
     bool unk0_80 : 1; // read by ftManager::getFighterOperationStatus
@@ -23,6 +41,7 @@ public:
     u8 unk8;
     char _0x9[23];
 
+    ftInputController* getInput();
     void setWhole(int status);
     int getType();
     void setType(s8 type);

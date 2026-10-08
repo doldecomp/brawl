@@ -1163,3 +1163,68 @@ void ftManager::processHit() {
         m_entryManager->processHit();
     }
 }
+
+void ftManager::setControllerRumble(int entryId, int unk1, int unk2, u32 isOn, int unk3) {
+    u8 flag = 0;
+    if (isOn == 1) {
+        flag |= 1;
+    }
+    m_entryManager->getEntity(entryId)->m_input->getInput()->setRumble(unk3, unk1, unk2, flag);
+}
+
+void ftManager::setControllerRumbleAll(int unk1, int unk2, u32 isOn, int unk3) {
+    u8 flag = 0;
+    if (isOn == 1) {
+        flag |= 1;
+    }
+    int count = getEntries(this).size();
+    for (int i = 0; i < count; i++) {
+        ftEntry* entry = getEntries(this).at(i);
+        if (!entry->unk11_02) {
+            entry->m_input->getInput()->setRumble(unk3, unk1, unk2, flag);
+        }
+    }
+}
+
+void ftManager::stopControllerRumbleAll(int unk1, int unk2) {
+    int count = getEntries(this).size();
+    for (int i = 0; i < count; i++) {
+        getEntries(this).at(i)->m_input->getInput()->stopRumble(unk2, unk1);
+    }
+}
+
+void ftManager::createFighter(int entryId) {
+    ftEntry* entry = m_entryManager->getEntity(entryId);
+    entry->createInstance();
+    entry->unkC = 0;
+}
+
+static inline bool isTeamBattle(const ftManager* manager) {
+    return manager->m_isTeams;
+}
+
+// True when a result entry of the given character kind exists that did not finish as a winner (in team battles: not on the winning team).
+bool ftManager::isExistLoseFighterResult(int, int kind) const {
+    gmPlayerResultInfo* player;
+    int i;
+    gmResultInfo* info = g_GameGlobal->m_resultInfo;
+    for (i = 0; i < 7; i++) {
+        player = &info->m_playersResultInfo[i];
+        if (isTeamBattle(this) == true) {
+            if (player->m_state != 3) {
+                if (*reinterpret_cast<u8*>(player) == kind) {
+                    if (player->m_teamNo != reinterpret_cast<u8*>(info)[0x1E]) {
+                        return true;
+                    }
+                }
+            }
+        } else {
+            if (player->m_state != 3) {
+                if (*reinterpret_cast<u8*>(player) == kind) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}

@@ -203,7 +203,8 @@ public:
     u8 m_entryCount;
     char _0x9;
     s8 m_activeInstanceIndex;
-    char _0xb[2];
+    char _0xb;
+    u8 unkC;
     bool m_isReady;
     char _0xe;
     u8 unkF; // 6 means CPU-controlled (ftManager::isCpuActive)
@@ -237,6 +238,7 @@ public:
     char _0x64[480];
 
     bool isHeartSwapped() const { return unk11_02; } // HYPOTHESIS: see unk11_02
+    void createInstance();
     void toStartSequence(u8 mode);
     void setWarp(Vec3f* pos, float lr, u32 flags);
     void standby(int unk);
