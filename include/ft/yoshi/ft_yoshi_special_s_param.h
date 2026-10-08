@@ -15,11 +15,16 @@ struct ftYoshiSpecialSParam {
     float flickSpeedMultiplier;     // 20
     float gravity;                  // 24
     float gravityLimit;             // 28
-    u8 _2C[8];
+    // HYPOTHESIS: raw kinetic-tuning scalars; Yoshi kinetic mode 0x64 reads
+    // these floats at 0x2C, 0x30 and 0x38. Their semantic names are unknown.
+    float unk2C;
+    float unk30;
     float minimumGroundSpeed;       // 34
-    u8 _38[12];
+    float unk38;
+    u8 _3C[8];
     float minimumAirSpeed;          // 44
-    u8 _48[8];
+    float unk48;                    // 48, read by Yoshi custom kinetic mode 0x65
+    u8 _4C[4];
     float flickThreshold;           // 50
     float turnStickThreshold;       // 54
     float turnRotation;             // 58
@@ -38,6 +43,6 @@ struct ftYoshiSpecialSParam {
     float endVerticalMultiplier;    // 8C
     float rollRotationMultiplier;   // 90
     int attackInterval;             // 94
-    u8 _98[4];
+    float unk98;                    // 98, read by Yoshi custom kinetic mode 0x65
     float turnModelAngle;           // 9C
 };

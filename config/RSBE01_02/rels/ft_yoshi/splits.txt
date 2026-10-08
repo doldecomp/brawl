@@ -117,6 +117,10 @@ mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_air_lw.cpp:
 	.data       start:0x000084C8 end:0x00008548
 	.bss        start:0x00000430 end:0x00000440
 
+mo_fighter/ft_yoshi/ft_yoshi_kinetic_transactor.cpp:
+	.text       start:0x000144B8 end:0x00015174
+	.rodata     start:0x00000120 end:0x00000128
+
 mo_fighter/ft_yoshi/wn_yoshi_star.cpp:
 	.text       start:0x00015174 end:0x00017974
 
