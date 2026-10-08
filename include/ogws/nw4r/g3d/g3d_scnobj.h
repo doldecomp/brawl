@@ -242,6 +242,11 @@ public:
 
     virtual void DrawOpa(ResMdlDrawMode* pForceMode) = 0; // at 0x20
     virtual void DrawXlu(ResMdlDrawMode* pForceMode) = 0; // at 0x24
+
+    // HYPOTHESIS: present in this revision only; always returns false here.
+    virtual bool CheckScnObj(ScnObj* pObj) {
+        return false;
+    } // at 0x28
 };
 
 /******************************************************************************

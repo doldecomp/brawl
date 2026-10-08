@@ -49,6 +49,9 @@ public:
     Fog GetFog(int idx);
     LightSet GetLightSet(int idx);
 
+    bool SetAnmScn(AnmScn* pAnmScn);
+    AnmScn* RemoveAnmScn();
+
     void UpdateFrame();
     void SetGlbSettings();
 
@@ -62,6 +65,8 @@ public:
     void ZSort();
     void DrawOpa();
     void DrawXlu();
+    void DrawOpaAndXlu();
+    void ForceDrawMode(bool force, ResMdlDrawMode mode);
 
     u32 TestScnRootFlag(ScnRootFlag flag) const {
         return (mScnRootFlags & flag) != 0;

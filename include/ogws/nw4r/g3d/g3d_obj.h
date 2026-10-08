@@ -107,6 +107,8 @@ public:
     G3dObj(MEMAllocator* pAllocator, G3dObj* pParent)
         : mpHeap(pAllocator), mpParent(pParent) {}
 
+    G3dObj* DetachFromParent();
+
     G3dObj* GetParent() const {
         return mpParent;
     }

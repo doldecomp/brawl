@@ -10,6 +10,7 @@ extern "C" {
 
 GX_PUBLIC_STRUCT_DECL(GXLightObj, 64);
 
+void GXGetLightColor(const GXLightObj* light, GXColor* color);
 void GXInitLightAttn(GXLightObj* light, f32 aa, f32 ab, f32 ac, f32 ka, f32 kb,
                      f32 kc);
 void GXInitLightAttnA(GXLightObj* light, f32 a, f32 b, f32 c);

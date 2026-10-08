@@ -35,6 +35,8 @@ public:
     void SetFogRangeAdjParam(u16 width, u16 center,
                              const math::MTX44& rProjMtx);
     void SetGP() const;
+    void GetFog(GXFogType* pType, f32* pStartZ, f32* pEndZ, f32* pNearZ,
+                f32* pFarZ, GXColor* pColor);
 
     void SetFogType(GXFogType type) {
         if (!IsValid()) {

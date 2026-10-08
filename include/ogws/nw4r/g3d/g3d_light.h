@@ -41,6 +41,7 @@ public:
                            GXDistAttnFn distAttnFn);
     void InitLightAttnK(f32 ka, f32 kb, f32 kc);
     void InitLightShininess(f32 shininess);
+    void GetLightColor(GXColor* pColor) const;
 
     void GetLightPos(math::VEC3* pPos) const;
     void GetLightDir(math::VEC3* pDir) const;
@@ -124,6 +125,7 @@ public:
         return mpSetting != NULL && mpLightSetData != NULL;
     }
 
+    LightObj* GetLightObj(u32 lightIdx);
     bool SelectLightObj(u32 lightIdx, int lightObjIdx);
     bool SelectAmbLightObj(int lightObjIdx);
 

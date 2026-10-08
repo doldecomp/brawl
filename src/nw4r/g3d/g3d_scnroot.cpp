@@ -130,6 +130,28 @@ LightSet ScnRoot::GetLightSet(int idx) {
     return mLightSetting.GetLightSet(idx);
 }
 
+bool ScnRoot::SetAnmScn(AnmScn* pAnmScn) {
+    if (mpAnmScn != NULL) {
+        mpAnmScn->G3dProc(G3DPROC_DETACH_PARENT, 0, this);
+        mpAnmScn = NULL;
+    }
+
+    mpAnmScn = pAnmScn;
+    pAnmScn->G3dProc(G3DPROC_ATTACH_PARENT, 0, this);
+    return true;
+}
+
+AnmScn* ScnRoot::RemoveAnmScn() {
+    AnmScn* pAnmScn = mpAnmScn;
+
+    if (pAnmScn != NULL) {
+        pAnmScn->G3dProc(G3DPROC_DETACH_PARENT, 0, this);
+        mpAnmScn = NULL;
+    }
+
+    return pAnmScn;
+}
+
 void ScnRoot::UpdateFrame() {
     if (mpAnmScn != NULL) {
         mpAnmScn->UpdateFrame();
@@ -297,6 +319,29 @@ void ScnRoot::DrawXlu() {
     }
 
     G3DState::Invalidate(G3DState::INVALIDATE_TEV);
+}
+
+void ScnRoot::DrawOpaAndXlu() {
+    SetGlbSettings();
+
+    if (TestScnRootFlag(SCNROOTFLAG_FORCE_RESMDLDRAWMODE)) {
+        mpCollection->DrawOpa(&mDrawMode);
+        mpCollection->DrawXlu(&mDrawMode);
+    } else {
+        mpCollection->DrawOpa(NULL);
+        mpCollection->DrawXlu(NULL);
+    }
+
+    G3DState::Invalidate(G3DState::INVALIDATE_TEV);
+}
+
+void ScnRoot::ForceDrawMode(bool force, ResMdlDrawMode mode) {
+    if (force) {
+        mDrawMode = mode;
+        SetScnRootFlag(SCNROOTFLAG_FORCE_RESMDLDRAWMODE, TRUE);
+    } else {
+        SetScnRootFlag(SCNROOTFLAG_FORCE_RESMDLDRAWMODE, FALSE);
+    }
 }
 
 ScnRoot::ScnRoot(MEMAllocator* pAllocator, IScnObjGather* pGather,

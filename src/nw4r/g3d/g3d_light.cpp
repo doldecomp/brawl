@@ -40,13 +40,6 @@ void LightObj::InitLightDir(f32 nx, f32 ny, f32 nz) {
     mFlag |= FLAG_SPOT;
 }
 
-void LightObj::InitSpecularDir(f32 nx, f32 ny, f32 nz) {
-    GXInitLightDir(&mObj, nx, ny, nz);
-    mFlag &= ~FLAG_SPOT;
-    mFlag |= FLAG_SPECULAR;
-    mFlag |= FLAG_SPECULAR_DIR;
-}
-
 void LightObj::InitLightSpot(f32 cutoff, GXSpotFn spotFn) {
     GXInitLightSpot(&mObj, cutoff, spotFn);
     mFlag &= ~FLAG_SPECULAR;
@@ -70,6 +63,13 @@ void LightObj::InitLightAttnK(f32 ka, f32 kb, f32 kc) {
     GXInitLightAttnK(&mObj, ka, kb, kc);
     mFlag &= ~FLAG_SPECULAR;
     mFlag |= FLAG_SPOT;
+}
+
+void LightObj::InitSpecularDir(f32 nx, f32 ny, f32 nz) {
+    GXInitLightDir(&mObj, nx, ny, nz);
+    mFlag &= ~FLAG_SPOT;
+    mFlag |= FLAG_SPECULAR;
+    mFlag |= FLAG_SPECULAR_DIR;
 }
 
 void LightObj::InitLightShininess(f32 shininess) {
@@ -117,6 +117,12 @@ void LightObj::ApplyViewMtx(const math::MTX34& rCamera) {
  * LightSetting
  *
  ******************************************************************************/
+void LightObj::GetLightColor(GXColor* pColor) const {
+    if (pColor != NULL) {
+        GXGetLightColor(&mObj, pColor);
+    }
+}
+
 LightSetting::LightSetting(LightObj* pLightObjArray,
                            AmbLightObj* pAmbLightObjArray, u32 numLight,
                            LightSetData* pLightSetDataArray, u32 numLightSet)
@@ -225,6 +231,15 @@ void LightSetting::ApplyViewMtx(const math::MTX34& rCamera, u32 numLight) {
  * LightSet
  *
  ******************************************************************************/
+LightObj* LightSet::GetLightObj(u32 lightIdx) {
+    if (IsValid() && lightIdx < G3DState::NUM_LIGHT_IN_LIGHT_SET &&
+        mpLightSetData->idxLight[lightIdx] >= 0) {
+        return &mpSetting->GetLightObjArray()[mpLightSetData->idxLight[lightIdx]];
+    }
+
+    return NULL;
+}
+
 bool LightSet::SelectLightObj(u32 lightIdx, int lightObjIdx) {
     if (IsValid() && lightIdx < G3DState::NUM_LIGHT_IN_LIGHT_SET) {
         if (lightObjIdx < 0) {

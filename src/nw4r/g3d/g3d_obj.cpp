@@ -19,6 +19,16 @@ void G3dObj::Destroy() {
     delete this;
 }
 
+G3dObj* G3dObj::DetachFromParent() {
+    G3dObj* pParent = GetParent();
+
+    if (pParent != NULL) {
+        pParent->G3dProc(G3DPROC_CHILD_DETACHED, 0, this);
+    }
+
+    return pParent;
+}
+
 DECOMP_FORCEACTIVE(g3d_obj_cpp,
                    G3dObj::IsDerivedFrom);
 
