@@ -4,6 +4,23 @@
 
 class soModuleAccesser;
 
+class ftYoshiStatusUniqProcessFinalCommon : public soStatusUniqProcess {
+public:
+    virtual ~ftYoshiStatusUniqProcessFinalCommon() {}
+    virtual void execStatus(soModuleAccesser*);
+    virtual void execFixPosCounter(soModuleAccesser*);
+    virtual void execFixPos(soModuleAccesser*);
+    virtual void exitStatus(soModuleAccesser*, int);
+    virtual bool checkDamage(soModuleAccesser*, void*);
+};
+extern ftYoshiStatusUniqProcessFinalCommon g_ftYoshiStatusUniqProcessFinalCommon;
+
+class ftYoshiStatusUniqProcessFinalStart : public ftYoshiStatusUniqProcessFinalCommon {
+public:
+    virtual ~ftYoshiStatusUniqProcessFinalStart() {}
+    virtual void initStatus(soModuleAccesser*);
+};
+extern ftYoshiStatusUniqProcessFinalStart g_ftYoshiStatusUniqProcessFinalStart;
 class ftYoshiStatusUniqProcessSpecialLw : public soStatusUniqProcess {
 public:
     virtual ~ftYoshiStatusUniqProcessSpecialLw() { }
