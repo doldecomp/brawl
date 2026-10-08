@@ -55,6 +55,8 @@ public:
 // The parameter accessor10054 indexes this storage through offset98.
 class wnWarioBike : public wnWeaponBuilder<wnWarioBikeModuleAccesserBuildConfig> {
 public:
+    virtual void processUpdate();
+    virtual bool notifyEventCollisionAttackCheck(u32 flags);
     wnWarioBikeParam* m_param;
 private:
     u8 unk2984[0xBC]; // Native parameter accessor; detailed fields remain opaque.
