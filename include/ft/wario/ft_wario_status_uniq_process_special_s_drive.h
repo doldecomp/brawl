@@ -1,13 +1,5 @@
 #pragma once
-#include <so/status/so_status_module_impl.h>
-class ftWarioStatusUniqProcessSpecialSCommon : public soStatusUniqProcess {
-public:
-    virtual ~ftWarioStatusUniqProcessSpecialSCommon() { }
-    virtual void initStatus(soModuleAccesser*);
-    virtual void exitStatus(soModuleAccesser*, int);
-    virtual void execFixPos(soModuleAccesser*);
-    virtual bool checkDamage(soModuleAccesser*, void*);
-};
+#include <ft/wario/ft_wario_status_uniq_process_special_s.h>
 class ftWarioStatusUniqProcessSpecialSDrive : public ftWarioStatusUniqProcessSpecialSCommon {
 public:
     virtual ~ftWarioStatusUniqProcessSpecialSDrive() { }
