@@ -86,3 +86,36 @@ public:
     virtual void setMtxGimmickWork(Matrix* mtxGimmickWork) { m_mtxGimmickWork = mtxGimmickWork; }
 };
 static_assert(sizeof(grFzeroWarning) == 0x1C4, "grFzeroWarning layout");
+
+// The start/finish line of the course (HYPOTHESIS name). It hides itself while the scene is in section 1 and follows
+// a stage matrix.
+class grFzeroStartLine : public grFzero {
+    u8* m_sceneWork;     // 0x158
+    Matrix* m_mtxWork;   // 0x15C
+
+public:
+    grFzeroStartLine(const char* taskName);
+    virtual ~grFzeroStartLine();
+    virtual void update(float deltaFrame);
+    static grFzeroStartLine* create(int mdlIndex, const char* nodeName, const char* taskName);
+    virtual void updateCallBack(float deltaFrame);
+    virtual void setSceneWork(u8* sceneWork) { m_sceneWork = sceneWork; }
+    virtual void setMtxWork(Matrix* mtxWork) { m_mtxWork = mtxWork; }
+};
+static_assert(sizeof(grFzeroStartLine) == 0x160, "grFzeroStartLine layout");
+
+// The ring on the plate (HYPOTHESIS name): same shape as the start line, but it never hides.
+class grFzeroPlateRing : public grFzero {
+    u8* m_sceneWork;     // 0x158
+    Matrix* m_mtxWork;   // 0x15C
+
+public:
+    grFzeroPlateRing(const char* taskName);
+    virtual ~grFzeroPlateRing();
+    virtual void update(float deltaFrame);
+    static grFzeroPlateRing* create(int mdlIndex, const char* nodeName, const char* taskName);
+    virtual void updateCallBack(float deltaFrame);
+    virtual void setSceneWork(u8* sceneWork) { m_sceneWork = sceneWork; }
+    virtual void setMtxWork(Matrix* mtxWork) { m_mtxWork = mtxWork; }
+};
+static_assert(sizeof(grFzeroPlateRing) == 0x160, "grFzeroPlateRing layout");

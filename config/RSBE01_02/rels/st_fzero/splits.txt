@@ -14,6 +14,12 @@ global_destructor_chain.c:
 mo_stage/st_fzero/gr_fzero_trainer_warning.cpp:
 	.text       start:0x00002320 end:0x00003A84
 
+mo_stage/st_fzero/gr_fzero_startline.cpp:
+	.text       start:0x00005D50 end:0x00006024
+
+mo_stage/st_fzero/gr_fzero_platering.cpp:
+	.text       start:0x00006024 end:0x000062D0
+
 mo_stage/mo_stage.cpp:
 	.text       start:0x0000E800 end:0x0000E89C
 	.data       start:0x00003C48 end:0x00003C55
