@@ -88,3 +88,17 @@ public:
     virtual void execStatus(soModuleAccesser*);
     virtual void execFixPos(soModuleAccesser*);
 };
+
+// Appeal and Item have native RTTI/vtable entries and distinct status TUs.
+class wnWarioBikeStatusUniqProcessAppeal : public wnWarioBikeStatusUniqProcessUtility {
+public:
+    virtual ~wnWarioBikeStatusUniqProcessAppeal() {}
+    virtual void execFixPosCounter(soModuleAccesser*);
+    virtual void execFixPos(soModuleAccesser*);
+};
+
+class wnWarioBikeStatusUniqProcessItem : public soStatusUniqProcess {
+public:
+    virtual ~wnWarioBikeStatusUniqProcessItem() {}
+    virtual void initStatus(soModuleAccesser*);
+};

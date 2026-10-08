@@ -302,6 +302,11 @@ public:
     char _15708[4];
 
     BaseItem(itCreate* create);
+    // Wario Bike Item calls these four nonvirtual item controls (main map/REL relocations).
+    void resetRotation(Vec3f* rotation);
+    void resetDamage();
+    void addSpeed(Vec3f* speed, bool);
+    void setOwnerScale(float scale);
     virtual void processUpdate();
     virtual void processMapCorrection();
     virtual void processFixPosition();
