@@ -16,6 +16,10 @@
 #include <ft/ft_param_customize_module_impl.h>
 #include <ft/ft_resource_id_accesser_impl.h>
 
+// MATCH-ONLY: routing the area category through an inline function makes MWCC narrow it to u8 only when the
+// out-of-line area builder constructor arguments are set up, as in the original.
+static inline s32 ftPassS32(s32 v) { return v; }
+
 // Size checks of the pieces. Fails to compile if a member layout is wrong.
 #define FT_ASSERT_SIZE(T, N) typedef char ft_assert_size_##__LINE__[(sizeof(T) == (N)) ? 1 : -1]
 
@@ -269,7 +273,7 @@ public:
         m_generateArticleBuilder(&m_moduleAccsr),
         m_effectModuleBuilder(&m_moduleAccsr, fbd.getEffectNodeData(), fbd.getEffectEmitData(), fbd.getEffectCommonData(), fbd.getEffectScreenData(), &g_soEventObserverRegistrationDescNull),
         m_comboModuleBuilder(&m_moduleAccsr),
-        m_areaBuilder(&m_moduleAccsr, fbd.getAreaCategory(), &g_soEventObserverRegistrationDescNull),
+        m_areaBuilder(&m_moduleAccsr, ftPassS32(fbd.getAreaCategory()), &g_soEventObserverRegistrationDescNull),
         m_physicsModuleBuilder(&m_moduleAccsr, (fbd.getTerritoryRect(), fbd.getTerritoryParam(), fbd.getTargetSearchParam(), fbd.getIkData())), // HYPOTHESIS: the territory/target search null builders have no storage
         m_slopeModuleBuilder(&m_moduleAccsr, fbd.getSlopeAngleLimit()),
         m_shadowModuleBuilder(&m_moduleAccsr),
