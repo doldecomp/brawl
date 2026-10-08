@@ -9224,6 +9224,25 @@ mo_melee/sora_melee/so/so_instance_manager_value_soAnimCmdControlUnit_7_part3.cp
 mo_melee/sora_melee/so/so_instance_manager_free_id_soAnimCmdControlUnit_7.cpp:
 	.text       start:0x003198D0 end:0x00319AAC
 
+mo_melee/sora_melee/ft/ft_marth_status_uniq_process_special_n_start.cpp:
+	.text       start:0x0034DACC end:0x0034E174
+	.ctors      start:0x00000424 end:0x00000428
+	.rodata     start:0x00007908 end:0x0000790C
+	.data       start:0x0008D7D0 end:0x0008D850
+	.bss        start:0x00007F28 end:0x00007F38
+
+mo_melee/sora_melee/ft/ft_marth_status_uniq_process_special_n_loop.cpp:
+	.text       start:0x0034E174 end:0x0034E238
+	.ctors      start:0x00000428 end:0x0000042C
+	.data       start:0x0008D850 end:0x0008D8D0
+	.bss        start:0x00007F38 end:0x00007F48
+
+mo_melee/sora_melee/ft/ft_marth_status_uniq_process_special_n_end.cpp:
+	.text       start:0x0034E238 end:0x0034E3B8
+	.ctors      start:0x0000042C end:0x00000430
+	.data       start:0x0008D8D0 end:0x0008D948
+	.bss        start:0x00007F48 end:0x00007F58
+
 mo_melee/sora_melee/so/so_array_vector_destructor_const_acAnimCmdConv_299.cpp:
 	.text       start:0x00384E6C end:0x00384EAC
 
