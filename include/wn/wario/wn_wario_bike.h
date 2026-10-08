@@ -35,7 +35,7 @@ struct wnWarioBikeParam {
     int unk80;
     u8 unk84[0x8];
     float unk8C;
-    u8 unk90[0x4];
+    float unk90;
     float unk94;
     float unk98;
 };
@@ -57,6 +57,8 @@ class wnWarioBike : public wnWeaponBuilder<wnWarioBikeModuleAccesserBuildConfig>
 public:
     virtual void processUpdate();
     virtual bool notifyEventCollisionAttackCheck(u32 flags);
+    virtual void notifyEventCollisionAttack(float power, soCollisionLog*, soModuleAccesser*);
+    virtual void notifyEventLink(soLinkEventArgs*, soModuleAccesser*, StageObject*, int);
     wnWarioBikeParam* m_param;
 private:
     u8 unk2984[0xBC]; // Native parameter accessor; detailed fields remain opaque.
