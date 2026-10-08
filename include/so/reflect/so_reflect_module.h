@@ -22,7 +22,8 @@ public:
     virtual bool isReflect() = 0;
     virtual float getSpeedMul() = 0;
     // HYPOTHESIS: original source bool types; native return/store widths agree.
-    virtual bool isCountMax(soModuleAccesser*) = 0;
+    // Native Nikita search callback invokes the secondary vptr slot +0x3C with no argument.
+    virtual bool isCountMax() = 0;
     virtual void setNoSpeedMul(bool) = 0;
 };
 static_assert(sizeof(soReflectModule) == 0xC, "Reflect interface layout");
