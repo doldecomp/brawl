@@ -1217,6 +1217,7 @@ config.libs = [
         "cflags": cflags_rel,
         "host": False,
         "objects": [
+            Object(NonMatching, "mo_fighter/ft_snake/wn_snake_nikita.cpp"),
             Object(NonMatching, "mo_fighter/ft_snake/wn_snake_nikita_missile_status_uniq_process_fly.cpp"),
         ],
     },
@@ -1261,6 +1262,7 @@ config.libs = [
             Object(Matching, "mo_fighter/ft_wario/ft_wario_status_uniq_process_special_hi_jump.cpp"),
             Object(NonMatching, "mo_fighter/ft_wario/ft_wario_status_uniq_process_special_lw.cpp"),
             Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike.cpp"),
+            Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_damage_transactor.cpp"),
             Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_utility.cpp"),
             Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_start.cpp"),
             Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_drive.cpp"),
