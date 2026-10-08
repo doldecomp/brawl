@@ -20,7 +20,7 @@ void ftYoshiStatusUniqProcessSpecialSStart::initStatus(soModuleAccesser* acc) {
     posture.setLr(lr);
     ftYoshiSpecialSParam* param = static_cast<ftYoshiSpecialSParam*>(g_ftCommonDataAccesser.getData(Fighter_Yoshi)->extendParam[0]);
     float speed = situation.getKind() == Situation_Air ? param->startAirSpeed : param->startSpeed;
-    if (static_cast<float>(controller.getFlickX()) < param->flickThreshold) speed *= param->flickSpeedMultiplier;
+    if (static_cast<float>(controller.getFlickNoResetX()) < param->flickThreshold) speed *= param->flickSpeedMultiplier;
     work.setFloat(speed, 0x21000006);
     work.setInt(param->life, 0x20000000);
     work.setInt(-1, 0x20000001);

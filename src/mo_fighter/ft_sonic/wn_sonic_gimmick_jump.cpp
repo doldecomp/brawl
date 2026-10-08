@@ -5,6 +5,10 @@
 #define SO_EVENT_OBSERVER_ID_OUT_OF_LINE
 // MATCH-ONLY: the spring offset uses its original module-local Vec2 constructor.
 #define MT_VEC2F_CTOR_NOINLINE
+// MATCH-ONLY: status resets call the original scalar Vec2 assignment.
+#define MT_VEC2F_ASSIGN_NOINLINE
+// MATCH-ONLY: the spring emits its native XY-plus-Z constructor.
+#define MT_VEC3F_FROM_VEC2_CTOR_NOINLINE
 // MATCH-ONLY: retain the original named zero-rotation constructor in reset.
 #define MT_VEC3F_CTOR_NOINLINE
 #include <wn/sonic/wn_sonic_gimmick_jump.h>
@@ -67,16 +71,18 @@ void wnSonicGimmickJump::notifyEventChangeStatus(int kind, int prevKind, soStatu
         float minimum = soValueAccesser::getConstantFloat(acc, 0xFA7, 0);
         float range = soValueAccesser::getConstantFloat(acc, 0xFA8, 0) - minimum;
         float rate = randf() * range;
-        rate += soValueAccesser::getConstantFloat(acc, 0xFA7, 0);
-        // Ordered >= gives -1 for an unordered LR in both status branches.
-        int sign = m_moduleAccesser->getPostureModule().getLr() >= 0.0f ? 1 : -1;
+        rate = soValueAccesser::getConstantFloat(acc, 0xFA7, 0) + rate;
+        // Native bge takes the positive direction when LR is unordered as well.
+        int sign = m_moduleAccesser->getPostureModule().getLr() < 0.0f ? -1 : 1;
+        float signedRate = rate * sign;
         Vec3f angularSpeed;
         angularSpeed.m_x = 0.0f;
         angularSpeed.m_y = 0.0f;
-        angularSpeed.m_z = rate * sign;
+        angularSpeed.m_z = signedRate;
         angular.m_rotSpeed = angularSpeed;
         m_moduleAccesser->getKineticModule().enableEnergy(1);
-    } else if (kind == 3) {
+    }
+    if (kind == 3) {
         soKineticEnergyNormal& normal = dynamic_cast<soKineticEnergyNormal&>(
             *m_moduleAccesser->getKineticModule().getEnergy(0));
         soModuleAccesser* ownAcc = m_moduleAccesser;
@@ -99,13 +105,14 @@ void wnSonicGimmickJump::notifyEventChangeStatus(int kind, int prevKind, soStatu
         m_moduleAccesser->getKineticModule().enableEnergy(0);
         soKineticEnergyRotNormal& angular = dynamic_cast<soKineticEnergyRotNormal&>(
             *m_moduleAccesser->getKineticModule().getEnergy(1));
-        int sign = m_moduleAccesser->getPostureModule().getLr() >= 0.0f ? 1 : -1;
+        int sign = m_moduleAccesser->getPostureModule().getLr() < 0.0f ? -1 : 1;
         float direction = sign;
         float rate = soValueAccesser::getConstantFloat(acc, 0xFAA, 0);
+        float signedRate = rate * direction;
         Vec3f angularSpeed;
         angularSpeed.m_x = 0.0f;
         angularSpeed.m_y = 0.0f;
-        angularSpeed.m_z = rate * direction;
+        angularSpeed.m_z = signedRate;
         angular.m_rotSpeed = angularSpeed;
         m_moduleAccesser->getKineticModule().enableEnergy(1);
     }
@@ -126,23 +133,22 @@ void wnSonicGimmickJump::updateNodeSRT() {
 
 void wnSonicGimmickJump::notifyEventGimmick(soGimmickEventArgs* args, int*) {
     if (args->m_kind == Gimmick::Event_Exit) return;
-    if (args->m_kind < Gimmick::Spring_Event_On || args->m_kind > Gimmick::Spring_Event_Pos) return;
+    // MATCH-ONLY: preserve the original exclusive range comparisons.
+    if (args->m_kind <= Gimmick::Spring_Event_On - 1 || args->m_kind >= Gimmick::Spring_Event_Pos + 1) return;
     switch (args->m_kind) {
     case Gimmick::Spring_Event_On: {
-        float offsetY = soValueAccesser::getConstantFloat(m_moduleAccesser, 0xFA2, 0);
-        float offsetX = soValueAccesser::getConstantFloat(m_moduleAccesser, 0xFA1, 0);
+        soModuleAccesser* acc = m_moduleAccesser;
+        float offsetY = soValueAccesser::getConstantFloat(acc, 0xFA2, 0);
+        float offsetX = soValueAccesser::getConstantFloat(acc, 0xFA1, 0);
         Vec2f offset(offsetX, offsetY);
         Vec3f position = m_moduleAccesser->getPostureModule().getPos();
         Vec2f position2;
         position2.m_x = position.m_x;
         position2.m_y = position.m_y;
         Vec2f top2 = position2 + offset;
-        Vec3f top;
-        top.m_x = top2.m_x;
-        top.m_y = top2.m_y;
-        top.m_z = 0.0f;
+        Vec3f top(top2, 0.0f);
         static_cast<soGimmickSpringEventArgs*>(args)->m_topPos = top;
-        soGimmickSpringEventArgs_Shoot event(top,
+        soGimmickSpringEventArgs_Shoot event(Vec3f(top2, 0.0f),
             soValueAccesser::getConstantFloat(m_moduleAccesser, 0xFA0, 0), 0.0f);
         soEventManageModule& events = m_moduleAccesser->getEventManageModule();
         int sender = static_cast<s16>(soGimmickEventObserver::getObserverId());
