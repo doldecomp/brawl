@@ -177,7 +177,7 @@ int ftManager::getRealRebirthEntryId(int entryId) const {
         ftEntry* entry = m_entryManager->getEntity(entryId);
         int partnerId = entry->m_heartSwapEntryId;
         if (partnerId != -1) {
-            if (m_entryManager->getEntity(partnerId)->unk11_02 == true) {
+            if (m_entryManager->getEntity(partnerId)->isHeartSwapped() == true) {
                 if (entry->m_owner->getStockCount() > 0) {
                     return partnerId;
                 }
@@ -699,6 +699,11 @@ void ftManager::notifyDrawDone() {
     m_isWaitingDraw = false;
 }
 
+// HYPOTHESIS: selects the parameter pattern (0 or 1) the data lookups use; written by setMode and setParamPattern.
+extern int g_ftParamPattern;
+// Whether the Pokemon Trainer stamina system is used; setMode sets it for versus (mode 0) and clears it for adventure (mode 1).
+extern u8 g_ftPokemonStaminaSystem;
+
 // HYPOTHESIS: set while items are enabled in the match.
 extern int g_ftItemEnabled;
 
@@ -744,10 +749,12 @@ void ftManager::setFinalTask(u32 category, u32 taskId) {
             taskId = soExternalValueAccesser::getTeamOwnerId(&dynamic_cast<StageObject&>(*task));
         }
     }
+    int entryId;
+    int i;
     int count = getEntries(this).size();
-    for (int i = 0; i < count; i++) {
+    for (i = 0; i < count; i++) {
         if ((u8)getEntries(this).at(i)->isExistFighter(taskId) != 0xFF) {
-            int entryId = getEntries(this).at(i)->m_entryId;
+            entryId = getEntries(this).at(i)->m_entryId;
             if (entryId != m_finalEntryId) {
                 if (m_entryManager->getEntity(entryId)->setFinal(false) == true) {
                     m_finalEntryId = entryId;
@@ -763,5 +770,237 @@ void ftManager::notifyEventPikminFinalAttack(float unk1, int unk2) {
     int count = getEntries(this).size();
     for (int i = 0; i < count; i++) {
         getEntries(this).at(i)->notifyPikminFinalAttack(unk1, unk2);
+    }
+}
+
+// An entry lost a stock (or its stamina): updates the dead count and stock, handles heart swap and tells the observers.
+void ftManager::setDead(int entryId, int unk1, int unk2) {
+    ftEntry* entry = m_entryManager->getEntity(entryId);
+    int reportedEntryId = entryId;
+    int ownerEntryId = entryId;
+    bool skipRespawn = false;
+    if (entry->m_heartSwapEntryId != -1) {
+        ownerEntryId = entry->m_heartSwapEntryId;
+    }
+    ftEntry* ownerEntry = m_entryManager->getEntity(ownerEntryId);
+    ftOwner* owner = ownerEntry->m_owner;
+    owner->setDeadCount(owner->getDeadCount() + 1);
+    bool isStamina = m_isStamina;
+    if (isStamina == true || m_gameRule == 1) {
+        if (isStamina == true) {
+            entry->leaveBattle(false);
+            if (ownerEntry->isHeartSwapped() == true) {
+                reportedEntryId = ownerEntryId;
+            }
+            skipRespawn = true;
+        } else {
+            int stock = owner->getStockCount();
+            int newStock;
+            if (stock < 0) {
+                newStock = -1;
+            } else {
+                newStock = stock - 1;
+                if (newStock < 0) {
+                    newStock = 0;
+                }
+            }
+            owner->setStockCount(newStock);
+            if (newStock == 0) {
+                if (m_gameRule == 1) {
+                    entry->leaveBattle(false);
+                    if (entry->m_heartSwapEntryId != -1) {
+                        skipRespawn = true;
+                    }
+                }
+            }
+        }
+        if (entry->m_heartSwapEntryId != -1) {
+            if (ownerEntry->isHeartSwapped() == true) {
+                m_entryManager->endSwap(false);
+                reportedEntryId = ownerEntryId;
+            }
+        }
+    }
+    ftOutsideEventPresenter presenter(m_eventManageModule.getManageId(), entryId);
+    presenter.notifyOutsideEventDead(reportedEntryId, owner->getDeadCount(), unk1, skipRespawn == true ? -1 : unk2);
+    entry->notifyDead(unk1);
+}
+
+// Resets the manager to its default (versus) state.
+void ftManager::setDefault() {
+    m_mode = 0;
+    m_paramPattern = 0;
+    unk7c = 0;
+    m_isStamina = 0;
+    unk6c_80 = false;
+    m_isGameStarted = false;
+    m_isGameSet = false;
+    unk6c_10 = false;
+    unk6f_80 = false;
+    unk6f_10 = true;
+    m_isTeams = false;
+    m_isTeamAttack = false;
+    m_isDiscretionFinal = false;
+    unk6e_10 = false;
+    m_noOnePatternOffsett = false;
+    m_isHomerun = false;
+    unk6e_04 = false;
+    unk6b = 0;
+    m_gameRule = 0;
+    getSystemData(this)->m_isUseCompressedMode = true;
+}
+
+void ftManager::setParamPattern(int pattern) {
+    switch (pattern) {
+    case 0:
+        g_ftParamPattern = 0;
+        break;
+    case 1:
+        g_ftParamPattern = 1;
+        break;
+    }
+    m_paramPattern = pattern;
+}
+
+void ftManager::setPokemonStaminaSystem(bool enabled) {
+    g_ftPokemonStaminaSystem = enabled;
+}
+
+// "Ready, GO!": the match starts.
+void ftManager::readyGo() {
+    m_isGameStarted = true;
+    m_isGameSet = false;
+    unk6f_40 = false;
+    m_noDiscretionFinalCount = ftExternalValueAccesser::getNoDiscretionFinalCount();
+}
+
+// "GAME!": the match ended; every owner's transient state is cleared.
+void ftManager::gameSet() {
+    m_isGameSet = true;
+    int count = getEntries(this).size();
+    for (int i = 0; i < count; i++) {
+        ftEntry* entry = getEntries(this).at(i);
+        entry->m_owner->unkA = 0;
+        *reinterpret_cast<u8*>(reinterpret_cast<u8*>(entry->m_owner) + 0xD5E) = 0;
+    }
+}
+
+// Heart swap ends with the opposite fighter's knockout.
+void ftManager::toKnockOutHeartSwapOpposite(int entryId, soDamageAttackerInfo* attackerInfo) {
+    int partnerId = m_entryManager->getEntity(entryId)->m_heartSwapEntryId;
+    m_entryManager->endSwap(false);
+    if (m_entryManager->isValid(partnerId) == true) {
+        ftEntry* partner = m_entryManager->getEntity(partnerId);
+        if (partnerId == attackerInfo->m_indirectEntryId) {
+            attackerInfo->m_indirectEntryId = entryId;
+        }
+        partner->toKnockOut(attackerInfo);
+    }
+}
+
+// Highest damage among the other entries.
+float ftManager::getDamageMax(int excludeEntryId) {
+    float damageMax = 0.0f;
+    int count = getEntries(this).size();
+    for (int i = 0; i < count; i++) {
+        if (excludeEntryId != getEntries(this).at(i)->m_entryId) {
+            float damage = getEntries(this).at(i)->m_owner->getDamage();
+            if (damageMax < damage) {
+                damageMax = damage;
+            }
+        }
+    }
+    return damageMax;
+}
+
+// Thunder (Thunder item): shrinks everyone who is not on the thunder user's team.
+void ftManager::setThunder(int inflictingEntryId, int scalingType) {
+    ftEntry* entry;
+    int i;
+    int count = getEntries(this).size();
+    for (i = 0; i < count; i++) {
+        entry = getEntries(this).at(i);
+        if (inflictingEntryId != entry->m_entryId) {
+            if (getTeam(inflictingEntryId, true, true) != getTeam(entry->m_entryId, true, true)) {
+                entry->setScaling(Fighter::Scaling::Kind_Thunder, scalingType);
+            }
+        }
+    }
+}
+
+// Slows every entry that is not on the given team.
+void ftManager::setSlow(int inflictingTeam, bool setStatus, int slowStrength, int slowDuration) {
+    ftEntry* entry;
+    int i;
+    int count = getEntries(this).size();
+    for (i = 0; i < count; i++) {
+        entry = getEntries(this).at(i);
+        if (inflictingTeam != getTeam(entry->m_entryId, true, true)) {
+            entry->setSlow(setStatus, slowStrength, slowDuration, false);
+        }
+    }
+}
+
+// Timer-based slow (Timer item): slows everyone who is not on the user's team.
+void ftManager::setTimerSlow(int inflictingEntryId, bool setStatus, int slowStrength, int slowDuration) {
+    m_entryManager->getEntity(inflictingEntryId);
+    ftEntry* entry;
+    int i;
+    int count = getEntries(this).size();
+    for (i = 0; i < count; i++) {
+        entry = getEntries(this).at(i);
+        if (inflictingEntryId != entry->m_entryId) {
+            if (getTeam(inflictingEntryId, true, true) != getTeam(entry->m_entryId, true, true)) {
+                entry->setSlow(setStatus, slowStrength, slowDuration, true);
+            }
+        }
+    }
+}
+
+
+// A fighter was knocked out. With the same entry id twice it is a self-destruct (suicide count); otherwise the
+// winner gets a beat count against the loser's player number. Hearts swapped entries are credited to their partners.
+void ftManager::setBeat(int losingEntryId, int winningEntryId) {
+    if (losingEntryId == winningEntryId) {
+        int ownerEntryId = losingEntryId;
+        int partnerId = m_entryManager->getEntity(losingEntryId)->m_heartSwapEntryId;
+        if (partnerId != -1) {
+            ownerEntryId = partnerId;
+        }
+        bool redirected;
+        // While a Final Smash is running the self-destruct counts as a beat by the Final Smash owner.
+        if (m_finalStatus == 1 && losingEntryId != m_finalEntryId) {
+            setBeat(losingEntryId, m_finalEntryId);
+            redirected = true;
+        } else {
+            redirected = false;
+        }
+        if (redirected == false) {
+            ftOwner* owner = m_entryManager->getEntity(ownerEntryId)->m_owner;
+            owner->setSuicideCount(owner->getSuicideCount() + 1);
+            ftOutsideEventPresenter presenter(m_eventManageModule.getManageId(), losingEntryId);
+            presenter.notifyOutsideEventSuicide(ownerEntryId);
+        }
+    } else {
+        ftEntry* winningEntry = m_entryManager->getEntity(winningEntryId);
+        if (winningEntry->unkF != 7) {
+            ftEntry* losingEntry = m_entryManager->getEntity(losingEntryId);
+            if (winningEntry->m_heartSwapEntryId != -1) {
+                winningEntryId = winningEntry->m_heartSwapEntryId;
+            }
+            int loserId = losingEntryId;
+            if (losingEntry->m_heartSwapEntryId != -1) {
+                loserId = losingEntry->m_heartSwapEntryId;
+            }
+            int loserPlayerNo = m_entryManager->getEntity(loserId)->m_playerNo;
+            ftOwner* owner = m_entryManager->getEntity(winningEntryId)->m_owner;
+            owner->setBeatCount(loserPlayerNo, owner->getBeatCount(loserPlayerNo) + 1);
+            winningEntry->notifyBeat();
+            ftOutsideEventPresenter presenter(m_eventManageModule.getManageId(), losingEntryId);
+            presenter.notifyOutsideEventBeat(winningEntryId, loserId);
+            if (m_noDiscretionFinalCount > 0) {
+                m_noDiscretionFinalCount--;
+            }
+        }
     }
 }

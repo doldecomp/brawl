@@ -18,7 +18,9 @@ class ftOwner {
     ftOwnerData* m_data;
     void* m_input;
     short _8;
-    u8 _10;
+public:
+    u8 unkA; // cleared by ftManager::gameSet
+private:
     u8 _11;
 
 public:
@@ -31,7 +33,7 @@ public:
     virtual float getHitPoint();
     virtual void setBeatCount(int playerIndex, int beatCount);
     virtual u32 getCheerDefeatFrame();
-    virtual void setSuicideCount(short suicideCount);
+    virtual void setSuicideCount(u16 suicideCount);
     virtual void setLogFloat(float, u32 index1, u32 index2);
     virtual void addLogFloat(float, u32 index1, u32 index2);
     virtual void setLogInt(int, u32 index1, u32 index2);
@@ -49,6 +51,7 @@ public:
     void setTeam(int team);
     void setPointTeam(int pointTeam);
     int setDeadCount(int deadCount);
+    void setStockCount(int stockCount);
     int getDeadCount();
     void addLostCoin(int numCoinsToAdd);
     int getCoin();

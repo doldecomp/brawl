@@ -10,6 +10,7 @@
 #include <mt/mt_vector.h>
 
 class Fighter;
+class soDamageAttackerInfo;
 class ftOwner;
 
 enum ftKind {
@@ -213,7 +214,7 @@ public:
     bool unk11_10 : 1;
     bool unk11_08 : 1;
     bool unk11_04 : 1;
-    bool unk11_02 : 1; // HYPOTHESIS: set on the partner entry while hearts are swapped (read by ftManager::getRealRebirthEntryId)
+    bool unk11_02 : 1; // HYPOTHESIS: set on the partner entry while hearts are swapped (read through isHeartSwapped)
     bool unk11_01 : 1;
     char _0x12[6];
     int m_slotIndex;
@@ -230,6 +231,7 @@ public:
     int m_pointTeam;
     char _0x64[480];
 
+    bool isHeartSwapped() const { return unk11_02; } // HYPOTHESIS: see unk11_02
     void toStartSequence(u8 mode);
     void setWarp(Vec3f* pos, float lr, u32 flags);
     void standby(int unk);
@@ -254,6 +256,9 @@ public:
     void removeDragoonAll(bool unk);
     int getDragoonCount(bool unk);
     int getDragoonVariation(int index, bool unk);
+    void setSlow(bool setStatus, int strength, int duration, bool isTimer);
+    void toKnockOut(soDamageAttackerInfo* attackerInfo);
+    void notifyBeat();
     void setCurry();
     void setZoom(float unk1, int unk2, int unk3);
     void setScaling(int kind, int type); // Fighter::Scaling::Kind, Fighter::Scaling::Type
@@ -264,6 +269,8 @@ public:
     void notifyReplacePokeTrainer(int unk);
     bool setFinal(bool isDiscretion);
     void exitFinal(int unk);
+    void leaveBattle(bool unk);
+    void notifyDead(int unk);
     void notifyPikminFinalAttack(float unk1, int unk2);
     int getRank();
     int getRankPoint();

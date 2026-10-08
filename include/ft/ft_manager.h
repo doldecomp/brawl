@@ -14,6 +14,7 @@
 #include <so/event/so_log_event_presenter.h>
 #include <ft/ft_entry_manager.h>
 #include <ft/ft_slot_manager.h>
+#include <ft/ft_outside_event_presenter.h>
 #include <it/item.h>
 #include <so/so_null.h>
 #include <so/ground/so_ground_util.h>
@@ -78,6 +79,10 @@ public:
 };
 static_assert(sizeof(ftOutsideEventObserver) == 12, "Class is wrong size!");
 
+// The event lookup of the presenter constructor is inlined at every use in the original (list stored through a local).
+inline ftOutsideEventPresenter::ftOutsideEventPresenter(s16 manageId, int entryId) :
+    soEventPresenter<ftOutsideEventObserver>(manageId, 0, true), m_entryId(entryId) { }
+
 class ftManagerAbstract : public soNull, public gfTask, public ftOutsideEventObserver, public soDisposeInstanceEventObserver, public soLogEventObserver {
     // Note: Done so that vtable placement is proper
 };
@@ -94,7 +99,7 @@ public:
             u8 m_paramPattern; // 0x69: setParamPattern
         };
     };
-    GameRule m_gameRule : 8;
+    u8 m_gameRule; // GameRule (read as a plain byte by the code: 1 is stock, 2 is coin/bonus)
     u8 unk6b;
     // 0x6c: game progress flags
     bool unk6c_80 : 1;
@@ -105,7 +110,7 @@ public:
     bool unk6c_04 : 1;
     bool unk6c_02 : 1;
     bool unk6c_01 : 1;
-    bool m_isStamina;
+    u8 m_isStamina; // stamina (HP) match flag, tested as "!= 0"
     bool m_isTeams : 1;
     bool m_isTeamAttack : 1;
     bool m_isDiscretionFinal : 1; // HYPOTHESIS: Final Smash may be triggered at will (see isEnableDiscretionFinal)
@@ -224,6 +229,14 @@ public:
     bool isAvailableFinal(bool unk) const;
     void setFinalTask(u32 category, u32 taskId);
     void notifyEventPikminFinalAttack(float unk1, int unk2);
+    void setDead(int entryId, int unk1, int unk2);
+    void setDefault();
+
+    float getDamageMax(int excludeEntryId);
+    void setParamPattern(int pattern);
+    void setPokemonStaminaSystem(bool enabled);
+    void readyGo();
+    void gameSet();
     void setFinalStatus(int status);
     void cancelFinalStatus();
     int getRank(int entryId) const;
@@ -268,7 +281,6 @@ public:
     bool addDragoon(int entryId, u32 variation);
 
     void pickupCoin(int entryId, int amount);
-    void setDead(int entryId, int unk1, int unk2);
     void setBeat(int losingEntryId, int winningEntryId);
     void setSuicide(int entryId);
     bool isProcessHeartSwap(int entryId) const;

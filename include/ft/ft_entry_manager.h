@@ -22,6 +22,7 @@ public:
     ftEntry* getEntity(u32 entryId);
     bool isValid(int entryId);
     void startSwap(int entryId1, int entryId2);
+    void endSwap(bool unk);
     int enumEntryId(int entryId);
     int enumIncludeEntryId(int entryId);
     int getEntryIdFromPlayerNo(int playerNo);
