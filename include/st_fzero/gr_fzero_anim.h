@@ -2,166 +2,132 @@
 
 // The F-Zero gimmicks bind their animations with the same sequence as gf_model.h's helpers (character, visibility,
 // texture pattern, texture SRT, material colour), but their animation index stays a full 32-bit value (the shared
-// helpers take a u8). These copies keep the original code shape.
+// helpers take a u8 and add a clrlwi). These copies keep the nested two-level helper shape of the originals.
 
 #include <gf/gf_model.h>
 #include <gr/ground.h>
 
-static inline void grFzeroBindChr(u32 animId, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
-    if (animId < modelAnim->m_resFile.GetResAnmChrNumEntries()) {
-        int instanceSize;
-        nw4r::g3d::ResAnmChr anim = modelAnim->m_resFile.GetResAnmChr((u32)animId);
-        MEMAllocator* allocator = gfHeapManager::getMEMAllocator(heap);
-        if (anim.IsValid()) {
-            nw4r::g3d::AnmObjChrRes* anmObj = nw4r::g3d::AnmObjChrRes::Construct(allocator, &instanceSize, anim, model, false);
-            if (anmObj != NULL) {
-                anmObj->Bind(model);
-                if (modelAnim->m_anmObjChrRes != NULL) {
-                    modelAnim->m_anmObjChrRes->Destroy();
-                }
-                modelAnim->m_anmObjChrRes = anmObj;
+static inline void grFzeroSetVisibilityAnim(u32 animId, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
+    int instanceSize;
+    nw4r::g3d::ResAnmVis anim = modelAnim->m_resFile.GetResAnmVis(animId);
+
+    MEMAllocator* allocator = gfHeapManager::getMEMAllocator(heap);
+    if (anim.IsValid()) {
+        nw4r::g3d::AnmObjVisRes* anmObj = nw4r::g3d::AnmObjVisRes::Construct(allocator, &instanceSize, anim, model);
+        if (anmObj != NULL) {
+            anmObj->Bind(model);
+
+            if (modelAnim->m_anmObjVisRes != NULL) {
+                modelAnim->m_anmObjVisRes->Destroy();
             }
+
+            modelAnim->m_anmObjVisRes = anmObj;
         }
     }
 }
 
-static inline void grFzeroBindTexPat(u32 animId, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
-    if (animId < modelAnim->m_resFile.GetResAnmTexPatNumEntries()) {
-        int instanceSize;
-        nw4r::g3d::ResAnmTexPat anim = modelAnim->m_resFile.GetResAnmTexPat((u32)animId);
-        if (anim.IsValid()) {
-            MEMAllocator* allocator = gfHeapManager::getMEMAllocator(heap);
-            nw4r::g3d::AnmObjTexPatRes* anmObj = nw4r::g3d::AnmObjTexPatRes::Construct(allocator, &instanceSize, anim, model, false);
-            if (anmObj != NULL) {
-                anmObj->Bind(model);
-                if (modelAnim->m_anmObjTexPatRes != NULL) {
-                    modelAnim->m_anmObjTexPatRes->Destroy();
-                }
-                modelAnim->m_anmObjTexPatRes = anmObj;
-            }
-        }
-    }
-}
-
-static inline void grFzeroBindTexSrt(u32 animId, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
-    if (animId < modelAnim->m_resFile.GetResAnmTexSrtNumEntries()) {
-        int instanceSize;
-        nw4r::g3d::ResAnmTexSrt anim = modelAnim->m_resFile.GetResAnmTexSrt((u32)animId);
-        if (anim.IsValid()) {
-            MEMAllocator* allocator = gfHeapManager::getMEMAllocator(heap);
-            nw4r::g3d::AnmObjTexSrtRes* anmObj = nw4r::g3d::AnmObjTexSrtRes::Construct(allocator, &instanceSize, anim, model, false);
-            if (anmObj != NULL) {
-                anmObj->Bind(model);
-                if (modelAnim->m_anmObjTexSrtRes != NULL) {
-                    modelAnim->m_anmObjTexSrtRes->Destroy();
-                }
-                modelAnim->m_anmObjTexSrtRes = anmObj;
-            }
-        }
-    }
-}
-
-static inline void grFzeroBindMatClr(u32 animId, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
-    if (animId < modelAnim->m_resFile.GetResAnmClrNumEntries()) {
-        int instanceSize;
-        nw4r::g3d::ResAnmClr anim = modelAnim->m_resFile.GetResAnmClr((u32)animId);
-        if (anim.IsValid()) {
-            MEMAllocator* allocator = gfHeapManager::getMEMAllocator(heap);
-            nw4r::g3d::AnmObjMatClrRes* anmObj = nw4r::g3d::AnmObjMatClrRes::Construct(allocator, &instanceSize, anim, model, false);
-            if (anmObj != NULL) {
-                anmObj->Bind(model);
-                if (modelAnim->m_anmObjMatClrRes != NULL) {
-                    modelAnim->m_anmObjMatClrRes->Destroy();
-                }
-                modelAnim->m_anmObjMatClrRes = anmObj;
-            }
-        }
-    }
-}
-
-static inline void grFzeroBindVis(u32 animId, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
+static inline void grFzeroSetVisibilityAnim2(u32 animId, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
     if (animId < modelAnim->m_resFile.GetResAnmVisNumEntries()) {
-        int instanceSize;
-        nw4r::g3d::ResAnmVis anim = modelAnim->m_resFile.GetResAnmVis((u32)animId);
-        MEMAllocator* allocator = gfHeapManager::getMEMAllocator(heap);
-        if (anim.IsValid()) {
-            nw4r::g3d::AnmObjVisRes* anmObj = nw4r::g3d::AnmObjVisRes::Construct(allocator, &instanceSize, anim, model);
-            if (anmObj != NULL) {
-                anmObj->Bind(model);
-                if (modelAnim->m_anmObjVisRes != NULL) {
-                    modelAnim->m_anmObjVisRes->Destroy();
-                }
-                modelAnim->m_anmObjVisRes = anmObj;
+        grFzeroSetVisibilityAnim(animId, model, modelAnim, heap);
+    }
+}
+
+static inline void grFzeroSetChrAnim(u32 animId, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
+    int instanceSize;
+    nw4r::g3d::ResAnmChr anim = modelAnim->m_resFile.GetResAnmChr(animId);
+
+    MEMAllocator* allocator = gfHeapManager::getMEMAllocator(heap);
+    if (anim.IsValid()) {
+        nw4r::g3d::AnmObjChrRes* anmObj = nw4r::g3d::AnmObjChrRes::Construct(allocator, &instanceSize, anim, model, false);
+        if (anmObj != NULL) {
+            anmObj->Bind(model);
+
+            if (modelAnim->m_anmObjChrRes != NULL) {
+                modelAnim->m_anmObjChrRes->Destroy();
             }
+
+            modelAnim->m_anmObjChrRes = anmObj;
         }
     }
 }
 
-// Shared body of the gimmick setMotion functions: switch the model to animation animId (below animCount),
-// rebinding every animation type, and report the frame count of the new animation.
-static inline void grFzeroSetMotion(Ground* ground, u8& currentAnim, u32 animCount, u32 animId, bool shouldLoop,
-                                        bool force, float* frameCount) {
-    if (currentAnim == animId && force == 0) {
-        return;
+static inline void grFzeroSetChrAnim2(u32 animId, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
+    if (animId < modelAnim->m_resFile.GetResAnmChrNumEntries()) {
+        grFzeroSetChrAnim(animId, model, modelAnim, heap);
     }
+}
 
-    nw4r::g3d::ScnMdl* sceneMdl = *ground->m_sceneModels;
-    if (sceneMdl == NULL) {
-        return;
+static inline void grFzeroSetTexPatAnim(u32 animId, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
+    int instanceSize;
+    nw4r::g3d::ResAnmTexPat anim = modelAnim->m_resFile.GetResAnmTexPat(animId);
+
+    if (anim.IsValid()) {
+        MEMAllocator* allocator = gfHeapManager::getMEMAllocator(heap);
+        nw4r::g3d::AnmObjTexPatRes* anmObj = nw4r::g3d::AnmObjTexPatRes::Construct(allocator, &instanceSize, anim, model, false);
+        if (anmObj != NULL) {
+            anmObj->Bind(model);
+
+            if (modelAnim->m_anmObjTexPatRes != NULL) {
+                modelAnim->m_anmObjTexPatRes->Destroy();
+            }
+
+            modelAnim->m_anmObjTexPatRes = anmObj;
+        }
     }
+}
 
-    gfModelAnimation* modelAnim = *ground->m_modelAnims;
-    if (modelAnim == NULL) {
-        return;
+static inline void grFzeroSetTexPatAnim2(u32 animId, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
+    if (animId < modelAnim->m_resFile.GetResAnmTexPatNumEntries()) {
+        grFzeroSetTexPatAnim(animId, model, modelAnim, heap);
     }
+}
 
-    nw4r::g3d::ResMdl model = sceneMdl->m_resMdl;
-    if (!model.IsValid()) {
-        return;
+static inline void grFzeroSetTexSrtAnim(u32 animId, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
+    int instanceSize;
+    nw4r::g3d::ResAnmTexSrt anim = modelAnim->m_resFile.GetResAnmTexSrt(animId);
+
+    if (anim.IsValid()) {
+        MEMAllocator* allocator = gfHeapManager::getMEMAllocator(heap);
+        nw4r::g3d::AnmObjTexSrtRes* anmObj = nw4r::g3d::AnmObjTexSrtRes::Construct(allocator, &instanceSize, anim, model, false);
+        if (anmObj != NULL) {
+            anmObj->Bind(model);
+
+            if (modelAnim->m_anmObjTexSrtRes != NULL) {
+                modelAnim->m_anmObjTexSrtRes->Destroy();
+            }
+
+            modelAnim->m_anmObjTexSrtRes = anmObj;
+        }
     }
+}
 
-    modelAnim->unbindNodeAnim(sceneMdl);
-    modelAnim->unbindVisibleAnim(sceneMdl);
-    modelAnim->unbindTexAnim(sceneMdl);
-    modelAnim->unbindTexSrtAnim(sceneMdl);
-    modelAnim->unbindMatColAnim(sceneMdl);
-    currentAnim = animId;
-
-    if (animId >= animCount) {
-        return;
+static inline void grFzeroSetTexSrtAnim2(u32 animId, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
+    if (animId < modelAnim->m_resFile.GetResAnmTexSrtNumEntries()) {
+        grFzeroSetTexSrtAnim(animId, model, modelAnim, heap);
     }
+}
 
-    bool result = (modelAnim->m_resFile.GetResAnmChrNumEntries() > animId);
-    if (result) {
-        grFzeroBindChr(animId, model, modelAnim, Heaps::StageInstance);
+static inline void grFzeroSetColorAnim(u32 animId, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
+    int instanceSize;
+    nw4r::g3d::ResAnmClr anim = modelAnim->m_resFile.GetResAnmClr(animId);
+
+    if (anim.IsValid()) {
+        MEMAllocator* allocator = gfHeapManager::getMEMAllocator(heap);
+        nw4r::g3d::AnmObjMatClrRes* anmObj = nw4r::g3d::AnmObjMatClrRes::Construct(allocator, &instanceSize, anim, model, false);
+        if (anmObj != NULL) {
+            anmObj->Bind(model);
+
+            if (modelAnim->m_anmObjMatClrRes != NULL) {
+                modelAnim->m_anmObjMatClrRes->Destroy();
+            }
+
+            modelAnim->m_anmObjMatClrRes = anmObj;
+        }
     }
+}
 
-    result = (modelAnim->m_resFile.GetResAnmVisNumEntries() > animId);
-    if (result) {
-        grFzeroBindVis(animId, model, modelAnim, Heaps::StageInstance);
-    }
-
-    result = (modelAnim->m_resFile.GetResAnmTexPatNumEntries() > animId);
-    if (result) {
-        grFzeroBindTexPat(animId, model, modelAnim, Heaps::StageInstance);
-    }
-
-    result = (modelAnim->m_resFile.GetResAnmTexSrtNumEntries() > animId);
-    if (result) {
-        grFzeroBindTexSrt(animId, model, modelAnim, Heaps::StageInstance);
-    }
-
-    result = (modelAnim->m_resFile.GetResAnmClrNumEntries() > animId);
-    if (result) {
-        grFzeroBindMatClr(animId, model, modelAnim, Heaps::StageInstance);
-    }
-
-    gfModelAnimation::bind(sceneMdl, modelAnim);
-    modelAnim->setFrame(0.0);
-    modelAnim->setUpdateRate(1.0);
-    modelAnim->setLoop(shouldLoop);
-
-    if (frameCount != NULL) {
-        *frameCount = modelAnim->getFrameCount();
+static inline void grFzeroSetColorAnim2(u32 animId, nw4r::g3d::ResMdl model, gfModelAnimation* modelAnim, Heaps::HeapType heap) {
+    if (animId < modelAnim->m_resFile.GetResAnmClrNumEntries()) {
+        grFzeroSetColorAnim(animId, model, modelAnim, heap);
     }
 }

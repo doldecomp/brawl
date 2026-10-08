@@ -200,7 +200,69 @@ void grFzeroTrainer::updateCallBack(float deltaFrame) {
 
 // Only the seven section animations exist.
 void grFzeroTrainer::setMotion(u32 animId, bool shouldLoop, bool force, float* frameCount) {
-    grFzeroSetMotion(this, m_animId, 7, animId, shouldLoop, force, frameCount);
+    if (m_animId == animId && force == 0) {
+        return;
+    }
+
+    nw4r::g3d::ScnMdl* sceneMdl = *m_sceneModels;
+    if (sceneMdl == NULL) {
+        return;
+    }
+
+    gfModelAnimation* modelAnim = *m_modelAnims;
+    if (modelAnim == NULL) {
+        return;
+    }
+
+    nw4r::g3d::ResMdl model = sceneMdl->m_resMdl;
+    if (!model.IsValid()) {
+        return;
+    }
+
+    modelAnim->unbindNodeAnim(sceneMdl);
+    modelAnim->unbindVisibleAnim(sceneMdl);
+    modelAnim->unbindTexAnim(sceneMdl);
+    modelAnim->unbindTexSrtAnim(sceneMdl);
+    modelAnim->unbindMatColAnim(sceneMdl);
+    m_animId = animId;
+
+    if (animId >= 7) {
+        return;
+    }
+
+    bool result = (modelAnim->m_resFile.GetResAnmChrNumEntries() > animId);
+    if (result) {
+        grFzeroSetChrAnim2(animId, model, modelAnim, Heaps::StageInstance);
+    }
+
+    result = (modelAnim->m_resFile.GetResAnmVisNumEntries() > animId);
+    if (result) {
+        grFzeroSetVisibilityAnim2(animId, model, modelAnim, Heaps::StageInstance);
+    }
+
+    result = (modelAnim->m_resFile.GetResAnmTexPatNumEntries() > animId);
+    if (result) {
+        grFzeroSetTexPatAnim2(animId, model, modelAnim, Heaps::StageInstance);
+    }
+
+    result = (modelAnim->m_resFile.GetResAnmTexSrtNumEntries() > animId);
+    if (result) {
+        grFzeroSetTexSrtAnim2(animId, model, modelAnim, Heaps::StageInstance);
+    }
+
+    result = (modelAnim->m_resFile.GetResAnmClrNumEntries() > animId);
+    if (result) {
+        grFzeroSetColorAnim2(animId, model, modelAnim, Heaps::StageInstance);
+    }
+
+    gfModelAnimation::bind(sceneMdl, modelAnim);
+    modelAnim->setFrame(0.0);
+    modelAnim->setUpdateRate(1.0);
+    modelAnim->setLoop(shouldLoop);
+
+    if (frameCount != NULL) {
+        *frameCount = modelAnim->getFrameCount();
+    }
 }
 
 grFzeroWarning* grFzeroWarning::create(int mdlIndex, const char* nodeName, const char* taskName) {
@@ -340,5 +402,67 @@ void grFzeroWarning::updateCallBack(float deltaFrame) {
 }
 
 void grFzeroWarning::setMotion(u32 animId, bool shouldLoop, bool force, float* frameCount) {
-    grFzeroSetMotion(this, m_animId, 3, animId, shouldLoop, force, frameCount);
+    if (m_animId == animId && force == 0) {
+        return;
+    }
+
+    nw4r::g3d::ScnMdl* sceneMdl = *m_sceneModels;
+    if (sceneMdl == NULL) {
+        return;
+    }
+
+    gfModelAnimation* modelAnim = *m_modelAnims;
+    if (modelAnim == NULL) {
+        return;
+    }
+
+    nw4r::g3d::ResMdl model = sceneMdl->m_resMdl;
+    if (!model.IsValid()) {
+        return;
+    }
+
+    modelAnim->unbindNodeAnim(sceneMdl);
+    modelAnim->unbindVisibleAnim(sceneMdl);
+    modelAnim->unbindTexAnim(sceneMdl);
+    modelAnim->unbindTexSrtAnim(sceneMdl);
+    modelAnim->unbindMatColAnim(sceneMdl);
+    m_animId = animId;
+
+    if (animId >= 3) {
+        return;
+    }
+
+    bool result = (modelAnim->m_resFile.GetResAnmChrNumEntries() > animId);
+    if (result) {
+        grFzeroSetChrAnim2(animId, model, modelAnim, Heaps::StageInstance);
+    }
+
+    result = (modelAnim->m_resFile.GetResAnmVisNumEntries() > animId);
+    if (result) {
+        grFzeroSetVisibilityAnim2(animId, model, modelAnim, Heaps::StageInstance);
+    }
+
+    result = (modelAnim->m_resFile.GetResAnmTexPatNumEntries() > animId);
+    if (result) {
+        grFzeroSetTexPatAnim2(animId, model, modelAnim, Heaps::StageInstance);
+    }
+
+    result = (modelAnim->m_resFile.GetResAnmTexSrtNumEntries() > animId);
+    if (result) {
+        grFzeroSetTexSrtAnim2(animId, model, modelAnim, Heaps::StageInstance);
+    }
+
+    result = (modelAnim->m_resFile.GetResAnmClrNumEntries() > animId);
+    if (result) {
+        grFzeroSetColorAnim2(animId, model, modelAnim, Heaps::StageInstance);
+    }
+
+    gfModelAnimation::bind(sceneMdl, modelAnim);
+    modelAnim->setFrame(0.0);
+    modelAnim->setUpdateRate(1.0);
+    modelAnim->setLoop(shouldLoop);
+
+    if (frameCount != NULL) {
+        *frameCount = modelAnim->getFrameCount();
+    }
 }
