@@ -259,17 +259,14 @@ public:
                     soEventManager* mgr = soEventSystem::getInstance()->getManager(m_manageID);
                     if (mgr->getObserverCapacity(uid) == 0) {
                         result = nullptr;
-                        m_obsrvrList = result;
                     } else {
                         soEventUnitWrapper<T>* evtUnitWrapper =
                             dynamic_cast<soEventUnitWrapper<T>* >(mgr->getEventUnit(uid));
-                        if (!evtUnitWrapper) {
-                            m_obsrvrList = result;
-                        } else {
+                        if (evtUnitWrapper) {
                             result = evtUnitWrapper->getObserverListSub();
-                            m_obsrvrList = result;
                         }
                     }
+                    m_obsrvrList = result;
                 }
             }
         }

@@ -35,6 +35,7 @@ The same assembly can come from very different C++ (`add r3,r3,r4` could be `x +
 
 ## 4. Classes and the C++ runtime
 - **Deleting destructors:** write a normal virtual destructor and `delete p`. Do not write the `if (this)` or the `-1` flag by hand. **MED**
+- **A template destructor calls its whole base instead of destroying the base's member:** check the vptr owner and declaration order before changing inline limits. In Marth's kinetic hierarchy, representing the root as empty and declaring the pool's virtual destructor before its subpool member preserved the native member offset and matched the hierarchy teardown. Declaring that destructor after the member made MWCC use offset zero. Keep this model scoped until other units are reviewed: applying it globally lost exact functions in other fighters. Seen: `include/ft/builder/ft_builder_kinetic.h`. **MED**
 - **Vtables and RTTI:** a vtable is emitted in the unit that defines the class's first non-inline virtual (the key function). To force a vtable and its this-adjusting thunks into a unit, construct and destroy an instance under `dont_inline`: `new (p) V(); delete p;`. Hundreds of `so_*_thunks_*` and `so_vtable_ct_*` units rely on this. **HIGH**
 - **`-RTTI off` per unit** when the original has no `__RTTI__`. **HIGH**
 - **`__dynamic_cast(..., isRef=1)` with no null check:** write `T* p = &dynamic_cast<T&>(*expr);` (reference cast), not `dynamic_cast<T*>(expr)`. About 60 `em_*_param_accesser.cpp` files and `ft_status_uniq_process_damage_fly.cpp`. **HIGH**

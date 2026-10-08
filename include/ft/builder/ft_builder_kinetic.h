@@ -130,13 +130,10 @@ template <typename Info, typename Holder>
 class soInstancePoolSub {
 public:
 #ifdef FT_MARTH_RUNTIME_HELPERS
-#pragma push
-#pragma dont_inline on
-#endif
     // MATCH-ONLY: Marth retains the subpool teardown as a separate call.
+    virtual ~soInstancePoolSub() __attribute__((never_inline)) { }
+#else
     virtual ~soInstancePoolSub() { }
-#ifdef FT_MARTH_RUNTIME_HELPERS
-#pragma pop
 #endif
 private:
     soInstancePoolSubNull<typename Info::Type> m_next;
@@ -162,13 +159,22 @@ public:
 class soInstancePoolRoot {
 public:
     soInstancePoolRoot(soModuleAccesser* acc) { }
+#ifndef FT_MARTH_RUNTIME_HELPERS
     virtual ~soInstancePoolRoot() { }
+#endif
     template <typename Helper>
     int forEachHolderModuleAccesser(const Helper&, soModuleAccesser*) { return 0; }
 };
 
 template <typename Info, typename Holder, typename Base>
 class soInstancePool : public Base {
+#ifdef FT_MARTH_RUNTIME_HELPERS
+public:
+    // HYPOTHESIS: Marth's empty root is non-polymorphic; this pool owns its vptr.
+    // Declare this before m_sub so MWCC reserves the pool's vptr first.
+    virtual ~soInstancePool() { }
+private:
+#endif
     soInstancePoolSub<Info, Holder> m_sub;
 public:
     soInstancePool(soModuleAccesser* acc) : Base(acc), m_sub(acc) { }
