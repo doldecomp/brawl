@@ -18,6 +18,73 @@ mo_stage/st_greenhill/st_greenhill.cpp:
 	.data       start:0x00000000 end:0x00000538
 	.bss        start:0x00000008 end:0x00000018
 
+mo_stage/st_greenhill/gr_greenhill_bg.cpp:
+	.text       start:0x00001128 end:0x00001ACC
+
+mo_stage/st_greenhill/gr_greenhill_check_glue.cpp:
+	.text       start:0x00001ACC end:0x00001E48
+	.data       start:0x00001078 end:0x000012B0
+
+mo_stage/st_greenhill/gr_greenhill_check_active.cpp:
+	.text       start:0x00001E48 end:0x000026B8
+
+mo_stage/st_greenhill/gr_greenhill_check_callback.cpp:
+	.text       start:0x000026B8 end:0x00002774
+
+mo_stage/st_greenhill/gr_greenhill_check_attack.cpp:
+	.text       start:0x00002FBC end:0x00003158
+
+mo_stage/st_greenhill/gr_greenhill_check_color.cpp:
+	.text       start:0x00003158 end:0x000032B0
+
+mo_stage/st_greenhill/gr_greenhill_check_motion.cpp:
+	.text       start:0x000032B0 end:0x000036F8
+
+mo_stage/st_greenhill/gr_greenhill_check_damage.cpp:
+	.text       start:0x000036F8 end:0x00003790
+
+mo_stage/st_greenhill/gr_greenhill_break_glue.cpp:
+	.text       start:0x00009D54 end:0x0000A0D8
+
+mo_stage/st_greenhill/gr_greenhill_break_yakumono.cpp:
+	.text       start:0x0000A0D8 end:0x0000A3B4
+
+mo_stage/st_greenhill/gr_greenhill_break_update.cpp:
+	.text       start:0x0000A3B4 end:0x0000A918
+
+mo_stage/st_greenhill/gr_greenhill_break_node.cpp:
+	.text       start:0x0000A918 end:0x0000A9D0
+
+mo_stage/st_greenhill/gr_greenhill_break_attack.cpp:
+	.text       start:0x0000B3E4 end:0x0000B464
+
+mo_stage/st_greenhill/gr_greenhill_break_attack_index.cpp:
+	.text       start:0x0000B464 end:0x0000B714
+
+mo_stage/st_greenhill/gr_greenhill_break_motion.cpp:
+	.text       start:0x0000B714 end:0x0000BB5C
+
+mo_stage/st_greenhill/gr_greenhill_break_damage.cpp:
+	.text       start:0x0000BB5C end:0x0000BC58
+
+mo_stage/st_greenhill/gr_greenhill_guest_glue.cpp:
+	.text       start:0x0000C06C end:0x0000C248
+
+mo_stage/st_greenhill/gr_greenhill_guest_active.cpp:
+	.text       start:0x0000C248 end:0x0000C410
+
+mo_stage/st_greenhill/gr_greenhill_guest_callback.cpp:
+	.text       start:0x0000C410 end:0x0000C5CC
+
+mo_stage/st_greenhill/gr_greenhill_guestline_glue.cpp:
+	.text       start:0x0000C5CC end:0x0000C7A8
+
+mo_stage/st_greenhill/gr_greenhill_guestline_active.cpp:
+	.text       start:0x0000C7A8 end:0x0000C8D4
+
+mo_stage/st_greenhill/gr_greenhill_guestline_motion.cpp:
+	.text       start:0x0000C8D4 end:0x0000CD70
+
 mo_stage/mo_stage.cpp:
 	.text       start:0x0000CD70 end:0x0000CE0C
 	.data       start:0x000046E0 end:0x000046ED
