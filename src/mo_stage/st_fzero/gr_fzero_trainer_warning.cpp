@@ -4,6 +4,17 @@
 #include <st_fzero/gr_fzero_anim.h>
 #include <mt/mt_prng.h>
 
+// The base class is defined first in this unit, so the Trainer and Warning constructors expand it; the other gimmick
+// units call these two out of line.
+grFzero::grFzero(const char* taskName) : grYakumono(taskName) {
+    m_state = 0;
+    m_timer = 0.0f;
+    setupMelee();
+}
+
+grFzero::~grFzero() {
+}
+
 // MATCH-ONLY: the stage's node name strings ("PTposition01" .. "PTposition04", 16 bytes apart).
 extern const char g_fzeroTrainerNodeNames[][16];
 

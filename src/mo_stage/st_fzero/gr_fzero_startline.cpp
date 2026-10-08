@@ -1,5 +1,3 @@
-// MATCH-ONLY: this unit calls the grFzero constructor/destructor out of line.
-#define GR_FZERO_BASE_EXTERNAL
 #include <st_fzero/gr_fzero.h>
 #include <gr/gr_calc_world_callback.h>
 
