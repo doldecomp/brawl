@@ -7,6 +7,7 @@
 #include <memory.h>
 #include <mt/mt_prng.h>
 #include <nw4r/g3d/g3d_resfile.h>
+#include <nw4r/math/math_triangular.h>
 #include <snd/snd_id.h>
 #include <snd/snd_system.h>
 #include <st_tengan/gr_tengan.h>
@@ -948,6 +949,234 @@ bool stTengan::eventDropStageUpdate() {
     return false;
 }
 
+
+// HYPOTHESIS: grounds 33-36 are the Sonic Wave visual elements; their exact
+// resource roles are not named by the native call sites.
+bool stTengan::eventSonicWaveCallUpdate(float deltaFrame) {
+    if (eventSonicWaveCall.getPhase() == 0) {
+        unkeb8 = 0; unkeb9 = 0; unkeba = 0;
+        eventSonicWaveCall.setPhase(eventSonicWaveCall.getPhase() + 1);
+        unkebc = posDialga.m_x; unkec0 = posDialga.m_y + 50.0f;
+        unkec4 = posDialga.m_z;
+        int choice = randi(8);
+        if (choice >= 8) choice = 7;
+        unkec8 = static_cast<u8>(choice + 3);
+        unkecc = 0.0f; unked0 = 0.0f; unked4 = 0.0f; unked8 = 0.0f;
+    }
+    unked8 += deltaFrame;
+    float cycle = unked8 / 60.0f;
+    if (cycle > 1.0f) { unked8 -= 60.0f; cycle -= 1.0f; }
+    if (cycle < 0.0f) cycle = 0.0f;
+    if (cycle > 1.0f) cycle = 1.0f;
+    s16 angle = static_cast<s16>(65535.0f * cycle);
+    float sinValue = nw4r::math::SinFIdx(static_cast<float>(angle) * (1.0f / 256.0f));
+    float cosValue = nw4r::math::CosFIdx(static_cast<float>(angle) * (1.0f / 256.0f));
+    unkecc = 20.0f + 5.0f * sinValue;
+    unked0 = 40.0f * cosValue;
+    unked4 = 2.5f * cosValue;
+    Vec3f rotation;
+    rotation.m_x = unkecc; rotation.m_y = unked0; rotation.m_z = unked4;
+    static_cast<grMadein*>(getGround(33))->setRot(&rotation);
+    switch (unkeb9) {
+    case 0:
+        if (unkeb8 >= 2) {
+            Vec3f scale; scale.m_x = 1.0f; scale.m_y = 1.0f; scale.m_z = 1.0f;
+            Vec3f position; position.m_x = unkebc; position.m_y = unkec0; position.m_z = unkec4;
+            static_cast<grMadein*>(getGround(33))->setPos(&position); static_cast<grMadein*>(getGround(33))->setScale(&scale);
+            static_cast<grMadein*>(getGround(33))->setMotion(0);
+            static_cast<grMadein*>(getGround(33))->startEntity(); ++unkeb9;
+        }
+        break;
+    case 1:
+        if (static_cast<grMadein*>(getGround(33))->isEndEntity()) {
+            static_cast<grMadein*>(getGround(33))->setMotion(1);
+            static_cast<grMadein*>(getGround(33))->startEntityAutoLoop(); ++unkeb9;
+        }
+        break;
+    case 2:
+        if (unkeba == 2) {
+            static_cast<grMadein*>(getGround(33))->setMotion(2);
+            static_cast<grMadein*>(getGround(33))->startEntity(); ++unkeb9;
+        }
+        break;
+    case 3:
+        if (static_cast<grMadein*>(getGround(33))->isEndEntity()) {
+            static_cast<grMadein*>(getGround(33))->endEntity(); ++unkeb9;
+        }
+        break;
+    }
+    switch (unkeba) {
+    case 0:
+        if (unkeb9 >= 2) {
+            Vec3f scale; scale.m_x = 0.0f; scale.m_y = 0.0f; scale.m_z = 0.0f;
+            unked0 = -40.0f + (10.0f * randf()) * -78.0f;
+            static_cast<grMadein*>(getGround(34))->setScale(&scale); static_cast<grMadein*>(getGround(34))->setRot(&rotation);
+            Vec3f position; position.m_x = unkebc; position.m_y = unkec0; position.m_z = unkec4;
+            static_cast<grMadein*>(getGround(34))->setPos(&position);
+            static_cast<grMadein*>(getGround(34))->setMotion(0);
+            static_cast<grMadein*>(getGround(34))->startEntity();
+            static_cast<grMadein*>(getGround(35))->setRot(&rotation); static_cast<grMadein*>(getGround(35))->setPos(&position);
+            static_cast<grMadein*>(getGround(35))->setMotion(0);
+            static_cast<grMadein*>(getGround(35))->startEntity();
+            static_cast<grMadein*>(getGround(36))->setRot(&rotation);
+            playSeBasic(snd_se_stage_Tengan_cres_sonic, 0.0f); ++unkeba;
+        }
+        break;
+    case 1:
+        // HYPOTHESIS: native samples the Palkia jaw node for this visual.
+        {
+            Vec3f nodePosition;
+            static_cast<grMadein*>(getGround(35))->getNodePosition(&nodePosition, 0, "shotPosition");
+            Vec3f left; left.m_x = nodePosition.m_x - 7.5f;
+            left.m_y = nodePosition.m_y - 5.0f; left.m_z = nodePosition.m_z + 5.0f;
+            static_cast<grMadein*>(getGround(36))->setPos(&left); static_cast<grMadein*>(getGround(36))->startEntity();
+            if (static_cast<grMadein*>(getGround(33))->isEndEntity()) {
+                static_cast<grMadein*>(getGround(33))->endEntity();
+                static_cast<grMadein*>(getGround(34))->endEntity();
+                static_cast<grMadein*>(getGround(35))->endEntity();
+                static_cast<grMadein*>(getGround(36))->endEntity();
+                if (unkec8 == 0) ++unkeba;
+                else { --unkec8; unkeba = 0; }
+            }
+        }
+        break;
+    }
+    switch (unkeb8) {
+    case 0:
+        if (static_cast<grMadein*>(getGround(19))->isEndEntity()) {
+            static_cast<grMadein*>(getGround(19))->setMotion(6);
+            static_cast<grMadein*>(getGround(19))->startEntity(); ++unkeb8;
+            playSeBasic(snd_se_stage_Tengan_cres_wing, 0.0f);
+        }
+        break;
+    case 1:
+        if (static_cast<grMadein*>(getGround(19))->isEndEntity()) {
+            static_cast<grMadein*>(getGround(19))->setMotion(7);
+            static_cast<grMadein*>(getGround(19))->startEntityAutoLoop();
+            zoomOutCamera(300.0f, 340.0f); ++unkeb8;
+        }
+        break;
+    case 2:
+        if (unkeba == 2 && unkeb9 == 4) {
+            static_cast<grMadein*>(getGround(19))->setMotion(8);
+            static_cast<grMadein*>(getGround(19))->startEntity(); ++unkeb8;
+            zoomInCamera();
+        }
+        break;
+    case 3:
+        if (static_cast<grMadein*>(getGround(19))->isEndEntity()) {
+            eventSonicWaveCall.end(); return true;
+        }
+        break;
+    }
+    return false;
+}
+
+void stTengan::setEventDialga(float deltaFrame) {
+    (void)deltaFrame;
+    stTenganParams* params = static_cast<stTenganParams*>(m_stageData);
+    if (params == NULL) return;
+    const float scale = 100.0f;
+    float weights[5] = {params->event_d_rate_rot_screen, params->event_d_rate_quake,
+        params->event_d_rate_laser_y + params->event_d_rate_laser_x,
+        params->event_d_rate_slow, params->event_d_rate_aura};
+    float total = params->event_d_rate_rot_screen * scale + params->event_d_rate_quake * scale +
+        params->event_d_rate_laser_y * scale + params->event_d_rate_laser_x * scale +
+        params->event_d_rate_slow * scale + params->event_d_rate_aura * scale;
+    int choice = randi(static_cast<int>(total) + 1);
+    int selected = 0, cumulative = 0;
+    while (selected < 5) {
+        cumulative += static_cast<int>(weights[selected] * scale);
+        if (cumulative >= choice) break;
+        ++selected;
+    }
+    bool started = false;
+    if (selected != m_lastCresseliaEvent) {
+        switch (selected) {
+        case 0: started = eventCameraRoll.start(); break;
+        case 1: {
+            int broken = (m_stateFloor[0] == 1) + (m_stateFloor[1] == 1) + (m_stateFloor[2] == 1);
+            if (!eventDropStage.isEvent() && !eventRebuildStage.isEvent() && broken < 3) {
+                started = eventQuake.start();
+                eventDropStage.start();
+            }
+            break;
+        }
+        case 2:
+            started = eventQuake.start();
+            if (started) {
+                if (!eventLaser.start()) { eventQuake.end(); started = false; }
+                else unkea8 = 1;
+            }
+            break;
+        case 3: started = eventSlow.start(); break;
+        case 4: started = eventAura.start(); break;
+        }
+    }
+    if (!started) return;
+    m_lastCresseliaEvent = selected; m_legendEventActive = 1;
+    static_cast<grMadein*>(getGround(3))->setMotion(1);
+    static_cast<grMadein*>(getGround(3))->startEntity();
+    event2.end(); event2.start();
+    m_pendingLegendSound = snd_se_stage_Tengan_03; m_legendSoundDelayFrames = 45.0f;
+    u32 effect = g_ecMgr->setEffect(static_cast<EfID>(0x0104004C));
+    g_ecMgr->setParent(effect, getGround(3)->m_sceneModels[0], "StgTenganDialga_jaw", false);
+}
+
+void stTengan::setEventValkia(float deltaFrame) {
+    (void)deltaFrame;
+    stTenganParams* params = static_cast<stTenganParams*>(m_stageData);
+    if (params == NULL) return;
+    const float scale = 100.0f;
+    float weights[6] = {params->event_p_rate_rot_screen, params->event_p_rate_quake,
+        params->event_p_rate_laser_y + params->event_p_rate_laser_x,
+        params->event_p_rate_gravity_half, params->event_p_rate_reverse_y,
+        params->event_p_rate_reverse_x};
+    float total = params->event_p_rate_rot_screen * scale + params->event_p_rate_quake * scale +
+        params->event_p_rate_laser_y * scale + params->event_p_rate_laser_x * scale +
+        params->event_p_rate_gravity_half * scale + params->event_p_rate_reverse_y * scale +
+        params->event_p_rate_reverse_x * scale;
+    int choice = randi(static_cast<int>(total) + 1);
+    int selected = 0, cumulative = 0;
+    while (selected < 6) {
+        cumulative += static_cast<int>(weights[selected] * scale);
+        if (cumulative >= choice) break;
+        ++selected;
+    }
+    bool started = false;
+    if (selected != m_lastCresseliaEvent) {
+        switch (selected) {
+        case 0: started = eventCameraRoll.start(); break;
+        case 1: {
+            int broken = (m_stateFloor[0] == 1) + (m_stateFloor[1] == 1) + (m_stateFloor[2] == 1);
+            if (!eventDropStage.isEvent() && !eventRebuildStage.isEvent() && broken < 3) {
+                started = eventQuake.start();
+                if (started) eventDropStage.start();
+            }
+            break;
+        }
+        case 2:
+            started = eventQuake.start();
+            if (started) {
+                if (!eventLaser.start()) { eventQuake.end(); started = false; }
+                else unkea8 = 1;
+            }
+            break;
+        case 3: started = eventGravityHalf.start(); break;
+        case 4: started = eventUpDownReverse.start(); break;
+        case 5: started = eventLeftRightReverse.start(); break;
+        }
+    }
+    if (!started) return;
+    m_lastCresseliaEvent = selected; m_legendEventActive = 1;
+    static_cast<grMadein*>(getGround(18))->setMotion(1);
+    static_cast<grMadein*>(getGround(18))->startEntity();
+    event2.end(); event2.start();
+    m_pendingLegendSound = snd_se_stage_Tengan_05; m_legendSoundDelayFrames = 60.0f;
+    u32 effect = g_ecMgr->setEffect(static_cast<EfID>(0x0104004C));
+    g_ecMgr->setParent(effect, getGround(18)->m_sceneModels[0], "StgTenganPalkia_Jaw", false);
+}
+
 void stTengan::setEventCrecelia() {
     stTenganParams* params = static_cast<stTenganParams*>(m_stageData);
     if (params == NULL) {
@@ -1497,7 +1726,7 @@ void stTengan::updateEvent(float deltaFrame) {
         if (m_legendSoundDelayFrames < 0.0f) {
             s32 handle = snd_gen.prepareSE(m_pendingLegendSound, 0);
             if (handle != -1) {
-                Vec3f position; position.m_x = 0.0f; position.m_y = 100.0f; position.m_z = 0.0f;
+                Vec3f position; position.m_x = 0.0f; position.m_y = 40.0f; position.m_z = 0.0f;
                 snd_gen.setPos(&position);
                 snd_gen.startSE(handle, 0);
             }
@@ -1591,7 +1820,6 @@ void stTengan::updateEvent(float deltaFrame) {
         event15.start();
     }
     if (event15.isReadyEnd() && unk210 != -1) {
-        grMadein* moving = static_cast<grMadein*>(getGround(unk210));
         Vec3f zero;
         zero.m_x = 0.0f; zero.m_y = 0.0f; zero.m_z = 0.0f;
         switch (event15.getPhase()) {
@@ -1608,23 +1836,18 @@ void stTengan::updateEvent(float deltaFrame) {
             if (static_cast<grMadein*>(getGround(unk210))->isEndEntity()) {
                 Vec3f rotation = zero;
                 rotation.m_y = unk214 == 0 ? 180.0f : 0.0f;
-                moving->setRot(&rotation);
+                static_cast<grMadein*>(getGround(unk210))->setRot(&rotation);
                 static_cast<grMadein*>(getGround(unk210))->setMotion(1);
                 static_cast<grMadein*>(getGround(unk210))->startEntityAutoLoop();
                 event15.setPhase(event15.getPhase() + 1);
             }
             break;
         case 3:
-            if (moving->isEndEntity()) {
-                Vec3f rotation = zero;
-                rotation.m_y = unk214 == 0 ? 180.0f : 0.0f;
-                moving->setRot(&rotation);
-                moving->setMotion(1);
-                moving->startEntityAutoLoop();
-                event15.setPhase(event15.getPhase() + 1);
-            }
+            static_cast<grMadein*>(getGround(unk210))->endEntity();
+            event15.end();
             break;
         case 2: {
+            grMadein* moving = static_cast<grMadein*>(getGround(unk210));
             Vec3f position = moving->getPos();
             position.m_x += unk214 == 0 ? -0.5f : 0.5f;
             moving->setPos(&position);
@@ -1633,8 +1856,6 @@ void stTengan::updateEvent(float deltaFrame) {
             break;
         }
         case 4:
-            static_cast<grMadein*>(getGround(unk210))->endEntity();
-            event15.end();
             break;
         }
     }
