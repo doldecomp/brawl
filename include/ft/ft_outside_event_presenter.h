@@ -20,6 +20,7 @@ public:
     virtual ~ftOutsideEventPresenter() { }
 
     void notifyOutsideEventKnockout();
+    void notifyOutsideEventOnInput();
     void notifyOutsideEventSuicide(int entryId);
     void notifyOutsideEventBeat(int winningEntryId, int losingEntryId);
     void notifyOutsideEventDead(int entryId, int deadCount, int deadReason, int respawnFrames);

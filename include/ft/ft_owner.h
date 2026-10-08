@@ -61,6 +61,10 @@ public:
     int getPickupCoin();
     void addGenerateCoin(int coins);
     int getBeatCount(int playerIndex);
+    int getBeatCountTotal();
+    void process();
+    void setController(int kind, u64* buttons0, u64* buttons1);
+    bool sameCheckController(int kind, u64* buttons0, u64* buttons1);
     int getSuicideCount();
     int getStockCount();
     float getHitPointMax();

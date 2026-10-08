@@ -15,9 +15,9 @@ public:
     int unk0;
     virtual void unk_v0();
     virtual void unk_v1();
-    virtual void unk_v2();
-    virtual void unk_v3();
-    virtual void unk_v4();
+    virtual u64 getButtons1();
+    virtual u64 getButtons0();
+    virtual int getControllerKind();
     virtual void unk_v5();
     virtual void unk_v6();
     virtual void setRumble(int unk1, int unk2, int unk3, u8 unk4);

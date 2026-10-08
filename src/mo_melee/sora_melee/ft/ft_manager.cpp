@@ -6,6 +6,7 @@
 #include <gf/gf_task.h>
 #include <gf/gf_task_scheduler.h>
 #include <it/it_manager.h>
+#include <gf/gf_camera.h>
 #include <gm/gm_global.h>
 #include <mu/menu.h>
 #include <snd/snd_system.h>
@@ -1227,4 +1228,121 @@ bool ftManager::isExistLoseFighterResult(int, int kind) const {
         }
     }
     return false;
+}
+
+// Horizontal offset of a fighter from the camera target.
+float ftManager::getFighterScreenX(int entryId, int instanceIndex) const {
+    Fighter* fighter = getFighter(entryId, instanceIndex);
+    Vec3f pos = soExternalValueAccesser::getPrevRoughPos(fighter);
+    float cameraX = gfCameraManager::getManager()->getCamera(0)->m_targetPos.m_x;
+    return pos.m_x - cameraX;
+}
+
+// HYPOTHESIS: the loupe arrow is shown while the fighter is clipped out of view on one side only
+bool ftManager::isDispLoupeArrow(int entryId, int instanceIndex) const {
+    u32 clipOut = soExternalValueAccesser::getClipOutStatus(getFighter(entryId, instanceIndex));
+    bool result = false;
+    if (clipOut & 1) {
+        if (!(clipOut & 2)) {
+            result = true;
+        }
+    }
+    return result;
+}
+
+// How far an entry is behind the best other entry: by stock in stock matches, by points (KOs minus falls, suicides not counted) otherwise.
+int ftManager::getBeatPointDiffFromTop(int entryId) const {
+    int top;
+    int own;
+    if (m_gameRule == 1) {
+        top = 0;
+        own = 0;
+        int count = getEntries(this).size();
+        for (int i = 0; i < count; i++) {
+            ftEntry* entry = getEntries(this).at(i);
+            int stock = entry->m_owner->getStockCount();
+            if (entryId != entry->m_entryId) {
+                if (top < stock) {
+                    top = stock;
+                }
+            } else {
+                own = stock;
+            }
+        }
+        return top - own;
+    }
+    top = 0;
+    own = 0;
+    int count = getEntries(this).size();
+    for (int i = 0; i < count; i++) {
+        ftEntry* entry = getEntries(this).at(i);
+        ftOwner* owner = entry->m_owner;
+        int lost = owner->getDeadCount() - static_cast<u16>(owner->getSuicideCount());
+        int score = entry->m_owner->getBeatCountTotal() - lost;
+        if (entryId != entry->m_entryId) {
+            if (top < score) {
+                top = score;
+            }
+        } else {
+            own = score;
+        }
+    }
+    return top - own;
+}
+
+void ftManager::processBegin() {
+    if (unk6b != 0) {
+        unk6b--;
+    }
+    if (g_GameGlobal->isJustGameFrame() == true) {
+        g_ftSlotManager->process();
+        m_entryManager->process();
+        int count = getEntries(this).size();
+        for (int i = 0; i < count; i++) {
+            getEntries(this).at(i)->m_owner->process();
+        }
+    }
+}
+
+// While the input event is running, tells the observers whenever an entry's controller changed.
+void ftManager::processUpdate() {
+    if (g_GameGlobal->isJustGameFrame() == true) {
+        if (unk6c_10 == true) {
+            int count = getEntries(this).size();
+            for (int i = 0; i < count; i++) {
+                ftEntry* entry = getEntries(this).at(i);
+                ftInputController* controller = entry->m_input->getInput();
+                u64 buttons1;
+                u64 buttons0;
+                buttons0 = controller->getButtons0();
+                buttons1 = controller->getButtons1();
+                ftOwner* owner = entry->m_owner;
+                if (owner->sameCheckController(controller->getControllerKind(), &buttons1, &buttons0) == false) {
+                    u64 buttons1b;
+                    u64 buttons0b;
+                    buttons0b = controller->getButtons0();
+                    buttons1b = controller->getButtons1();
+                    owner = entry->m_owner;
+                    owner->setController(controller->getControllerKind(), &buttons1b, &buttons0b);
+                    ftOutsideEventPresenter presenter(m_eventManageModule.getManageId(), entry->m_entryId);
+                    presenter.notifyOutsideEventOnInput();
+                }
+            }
+        }
+    }
+}
+
+void ftManager::startInputEvent() {
+    int count = getEntries(this).size();
+    for (int i = 0; i < count; i++) {
+        ftEntry* entry = getEntries(this).at(i);
+        ftInputController* controller = entry->m_input->getInput();
+        u64 buttons1;
+        u64 buttons0;
+        buttons0 = controller->getButtons0();
+        buttons1 = controller->getButtons1();
+        ftOwner* owner = entry->m_owner;
+        owner->setController(controller->getControllerKind(), &buttons1, &buttons0);
+    }
+    unk6c_10 = true;
 }

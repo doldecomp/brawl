@@ -16,6 +16,7 @@ public:
 
     ftSlotManager(int slotCapacity);
     ~ftSlotManager();
+    void process();
     int addSlot();
     bool removeSlot(int slotIndex);
     void set2PGamesFlexHeapLayout(int layout);

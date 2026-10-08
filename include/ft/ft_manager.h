@@ -254,6 +254,10 @@ public:
     void setDefault();
     void setMode(int mode);
     void stopGame();
+    void startInputEvent();
+    int getBeatPointDiffFromTop(int entryId) const;
+    float getFighterScreenX(int entryId, int instanceIndex) const;
+    bool isDispLoupeArrow(int entryId, int instanceIndex) const;
     bool isExistLoseFighterResult(int unk, int kind) const;
     void createFighter(int entryId);
     void setControllerRumble(int entryId, int unk1, int unk2, u32 isOn, int unk3);
