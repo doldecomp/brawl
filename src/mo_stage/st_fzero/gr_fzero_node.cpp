@@ -39,6 +39,7 @@ grFzeroNode::~grFzeroNode() {
 }
 
 void grFzeroNode::processAnim() {
+    Ground::processAnim();
 }
 
 void grFzeroNode::update(float deltaFrame) {
@@ -89,28 +90,20 @@ static inline u32 grFzeroNodeMotionOfScene(u32 scene) {
 void grFzeroNode::updateActive(float deltaFrame) {
     u8 state = m_state;
     m_motionTimer += deltaFrame;
-    if (state == 2) {
-        if (*m_stateWork == 7) {
-            u32 motion = grFzeroNodeMotionOfScene(*m_sceneWork);
-            setMotion(motion, 0, 1, &m_animFrames);
-            *m_motionWork = motion;
-            m_motionId = motion;
-            m_motionTimer = 0.0f;
-            m_state = 3;
-        }
-    } else if (state < 2) {
-        if (state == 0) {
-            setMotion(5, 0, 1, 0);
-            m_state = 1;
-        }
+    switch (state) {
+    case 0:
+        setMotion(5, 0, 1, 0);
+        m_state = 1;
+        // fall through
+    case 1: {
         u8* stateWork = m_stateWork;
         if (*stateWork == 6) {
-            u32 motion = grFzeroNodeMotionOfScene(*m_sceneWork);
+            u8 motion = grFzeroNodeMotionOfScene(*m_sceneWork);
             bool keep = false;
             if (motion == 5) {
                 keep = true;
             } else {
-                u32 current = m_motionId;
+                u8 current = m_motionId;
                 if (motion == current) {
                     keep = true;
                 } else if (motion == 0) {
@@ -121,18 +114,33 @@ void grFzeroNode::updateActive(float deltaFrame) {
                     keep = true;
                 }
             }
-            if (keep) {
-                *stateWork = 8;
-            } else {
+            if (!keep) {
                 *stateWork = 7;
                 m_state = 2;
+            } else {
+                *stateWork = 8;
             }
         }
-    } else if (state < 4 && !(getMotionFrame(0) < m_animFrames)) {
-        setMotion(5, 0, 1, 0);
-        *m_motionWork = 5;
-        *m_stateWork = 8;
-        m_state = 1;
+        break;
+    }
+    case 2:
+        if (*m_stateWork == 7) {
+            u8 motion = grFzeroNodeMotionOfScene(*m_sceneWork);
+            setMotion(motion, 0, 1, &m_animFrames);
+            *m_motionWork = motion;
+            m_motionId = motion;
+            m_motionTimer = 0.0f;
+            m_state = 3;
+        }
+        break;
+    case 3:
+        if (getMotionFrame(0) >= m_animFrames) {
+            setMotion(5, 0, 1, 0);
+            *m_motionWork = 5;
+            *m_stateWork = 8;
+            m_state = 1;
+        }
+        break;
     }
 }
 
