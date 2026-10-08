@@ -127,6 +127,33 @@ mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_turn_end.cpp:
 	.data       start:0x00008520 end:0x00008598
 	.bss        start:0x00000378 end:0x00000388
 
+mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_turn_down.cpp:
+	.text       start:0x00018FD0 end:0x00019220
+	.ctors      start:0x00000050 end:0x00000054
+	.rodata     start:0x00000170 end:0x00000178
+	.data       start:0x00008598 end:0x00008618
+	.bss        start:0x00000388 end:0x00000398
+
+mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_escape.cpp:
+	.text       start:0x00019220 end:0x00019578
+	.ctors      start:0x00000054 end:0x00000058
+	.rodata     start:0x00000178 end:0x00000180
+	.data       start:0x00008618 end:0x00008698
+	.bss        start:0x00000398 end:0x000003A8
+
+mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_bump.cpp:
+	.text       start:0x00019578 end:0x00019660
+	.ctors      start:0x00000058 end:0x0000005C
+	.data       start:0x00008698 end:0x00008718
+	.bss        start:0x000003A8 end:0x000003B8
+
+mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_down.cpp:
+	.text       start:0x00019660 end:0x000198F0
+	.ctors      start:0x0000005C end:0x00000060
+	.rodata     start:0x00000180 end:0x00000188
+	.data       start:0x00008718 end:0x00008790
+	.bss        start:0x000003B8 end:0x000003C8
+
 mo_fighter/mo_fighter.cpp:
 	.text       start:0x0002122C end:0x000212C8
 	.data       start:0x0000A0A8 end:0x0000A0B7

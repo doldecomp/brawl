@@ -13,11 +13,12 @@ void wnWarioBikeStatusUniqProcessUtility::execStatus(soModuleAccesser* a) {
     float speed = kinetic.getSumSpeed(soKineticEnergy::AttributeFlag(-1)).length();
     float phase17 = work.getFloat(0x21000004);
     float phase11 = work.getFloat(0x21000005);
-    float step17;
+    // MATCH-ONLY: both paths assign step17 before use; retain the original
+    // zero literal at the start of this translation unit's constant pool.
+    float step17 = 0.0f;
     if (work.isFlag(0x22000004)) {
-        float radius = 2.4f * a->getPostureModule().getScale();
-        float circumference = 6.2831855f * radius;
-        step17 = 360.0f * speed / circumference;
+        step17 = 360.0f * speed /
+                 (6.2831855f * (2.4f * a->getPostureModule().getScale()));
         work.setFloat(step17, 0x21000006);
     } else {
         step17 = work.getFloat(0x21000006) * 0.99f;
@@ -25,9 +26,8 @@ void wnWarioBikeStatusUniqProcessUtility::execStatus(soModuleAccesser* a) {
     }
     float step11;
     if (work.isFlag(0x22000005)) {
-        float radius = 5.5f * a->getPostureModule().getScale();
-        float circumference = 6.2831855f * radius;
-        step11 = 360.0f * speed / circumference;
+        step11 = 360.0f * speed /
+                 (6.2831855f * (5.5f * a->getPostureModule().getScale()));
         work.setFloat(step11, 0x21000007);
     } else {
         step11 = work.getFloat(0x21000007);
@@ -63,6 +63,8 @@ void wnWarioBikeStatusUniqProcessUtility::execMapCorrection(soModuleAccesser* a)
     work.setFloat(groundAngle, 0x21000003);
     Vec3f rot(-angle, 0.0f, 0.0f);
     posture.setRot(&rot, 0);
+    // Rotate the two wheel-node offsets by this frame's pitch change, then
+    // probe beneath their world positions to find the bike's stage support.
     Vec3f node17 = model.getNodeGlobalOffsetFromTop(0x17);
     Vec3f node11 = model.getNodeGlobalOffsetFromTop(0x11);
     Vec3f axis(0.0f, 0.0f, lr);
@@ -103,6 +105,8 @@ void wnWarioBikeStatusUniqProcessUtility::execMapCorrection(soModuleAccesser* a)
         contact11 = true;
     }
     bool touch = ground.isTouch((grCollStatus::TouchMask)8, 0);
+    // Normal riding uses both wheel hits when available, otherwise the ground
+    // collision normal. Wheelie keeps the single-probe angle/height correction.
     if (touch && !wheelie) {
         if (contact17 && contact11) {
             Vec3f difference = hit17 - hit11;
@@ -125,6 +129,9 @@ void wnWarioBikeStatusUniqProcessUtility::execMapCorrection(soModuleAccesser* a)
     work.setFloat(groundAngle, 0x21000002);
     if (wheelie && contact11) posture.setPos(&pos);
     a->getStageObject().updateNodeSRT();
+    // Flag 2 marks a transition between no support contacts and any support
+    // contact. Drive consumes it for the one-time launch check; bits 4-6 below
+    // store this frame's two wheel probes and ground touch for the next frame.
     if (!work.isFlag(0x22000004) && !work.isFlag(0x22000005) && !work.isFlag(0x22000006)) {
         if (contact17 || contact11 || touch) work.onFlag(0x22000002);
     } else if (work.isFlag(0x22000004) || work.isFlag(0x22000005) || work.isFlag(0x22000006)) {
