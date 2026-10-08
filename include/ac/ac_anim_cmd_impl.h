@@ -77,15 +77,19 @@ struct acAnimCmdConv
     const acCmdArgConv* args;
 };
 
-// Currently, no real functions use this wrapper class.
-// TODO: Confirm that this is really acCmdArgList, and
-// use it in a legitimate way
+// Canonical argument-list wrapper, established by Sonic SpecialSDash RTTI,
+// construction, and its out-of-line destructor at original text+0xF608.
 struct acCmdArgList {
     soArrayContractibleTable<const acCmdArgConv> argList;
 
     acCmdArgList() : argList() { }
     acCmdArgList(const acCmdArgConv* p1, s32 p2) : argList(p1, p2) { }
 
+    acCmdArgList& operator=(const acCmdArgList& other) {
+        if (this == &other) return *this;
+        argList = other.argList;
+        return *this;
+    }
     ~acCmdArgList() { }
     bool isEmpty() const { return argList.isEmpty(); }
 };
