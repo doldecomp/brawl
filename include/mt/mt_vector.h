@@ -12,7 +12,11 @@ public:
     float m_y;
 
     Vec2f() { }
-    Vec2f(float x, float y) : m_x(x), m_y(y) { }
+    Vec2f(float x, float y)
+#ifdef MT_VEC2F_CTOR_NOINLINE
+        __attribute__((never_inline)) // MATCH-ONLY: retain a proved out-of-line constructor call.
+#endif
+        : m_x(x), m_y(y) { }
 
     Vec2f& operator=(const Vec2f& source)
 #ifdef MT_VEC2F_ASSIGN_NOINLINE
@@ -119,7 +123,7 @@ public:
 
     Vec3f() { }
     Vec3f(float x, float y, float z)
-#ifdef FT_MARTH_COLLISION_VEC3F_NOINLINE
+#if defined(FT_MARTH_COLLISION_VEC3F_NOINLINE) || defined(MT_VEC3F_CTOR_NOINLINE)
         __attribute__((never_inline)) // MATCH-ONLY: retain the original out-of-line constructor.
 #endif
         : m_x(x), m_y(y), m_z(z) { }
