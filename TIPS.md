@@ -64,6 +64,8 @@ Things that moved registers, roughly in the order worth trying:
 - **Tail calls:** `return f(x)` at -O4 is `b f`; a virtual tail call ends in `bctr` with no `blr`.
 - **`decomp-permuter`** (see `tools/permuter/README.md` on the build server) is worth running once only register differences remain. It matched `execNormalDamageCommon`, `hkArrayUtil::_reduce`, `hkGameCubeDvdReader::isOk` and others. Review its output: results can be unnatural, and a clean temp beats an odd rewrite of the logic.
 
+- **Only helper-copy stack slots differ in a hierarchy visitor:** preserve the recursive owner traversal instead of flattening all leaf calls. Pass the shared helper by const reference through hierarchy levels and by value into each leaf visitor. Recovered `soInstancePool::forEachHolderModuleAccesser` made Marth's `ftKineticMediatorImpl::updateEnergy1` exact without stack padding. Seen: `include/ft/builder/ft_builder_kinetic.h`. **HIGH**
+
 ## 7. Data and sections
 - REL units build with `-sdata 0 -sdata2 0`, so nothing goes to small data; the DOL has them. From the third reference to `.data` or `.bss` items in one function, MWCC pools them (offsets from one section base), which looks like a struct that does not exist. `.sbss` never pools. **HIGH**
 - Strings: `-str reuse` shares identical literals in a unit; compile with `-enc SJIS` or non-ASCII literals differ.
@@ -75,3 +77,5 @@ Things that moved registers, roughly in the order worth trying:
 - Never rename a REL function to a name that exists elsewhere in the symbols (it breaks the `.rel` hash).
 - Before and after a change, check the per-function numbers in `build/RSBE01_02/report.json`, not just the unit total, and run the 127-file hash check.
 - Add a tip here when something cost you more than ~15 minutes, with a file path.
+
+- **An unnamed four-byte function follows a near-matching function with one extra terminal return:** verify map boundaries and all references before adding an empty stand-in. It may be the previous function's unreachable epilogue. Marth's `getEntryList` ends at the following `setupDisguiseList`; extending its symbol by four bytes removed the false `fn_106_701C` boundary and matched the entire getter. Function totals change when repairing such boundaries; report that separately from gains. Seen: `config/RSBE01_02/rels/ft_marth/symbols.txt`; full hash check passed. **HIGH**

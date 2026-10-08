@@ -145,6 +145,8 @@ class soInstancePoolRoot {
 public:
     soInstancePoolRoot(soModuleAccesser* acc) { }
     virtual ~soInstancePoolRoot() { }
+    template <typename Helper>
+    int forEachHolderModuleAccesser(const Helper&, soModuleAccesser*) { return 0; }
 };
 
 template <typename Info, typename Holder, typename Base>
@@ -153,6 +155,11 @@ class soInstancePool : public Base {
 public:
     soInstancePool(soModuleAccesser* acc) : Base(acc), m_sub(acc) { }
     soInstancePoolSub<Info, Holder>& getSub() { return m_sub; }
+    template <typename Helper>
+    int forEachHolderModuleAccesser(const Helper& helper, soModuleAccesser* acc) {
+        m_sub.forEachHolderModuleAccesser(helper, acc);
+        return Base::forEachHolderModuleAccesser(helper, acc);
+    }
 
 };
 
@@ -168,7 +175,7 @@ template <typename Info, typename Holder>
 class soLineInvertHierarchy<Info, Holder, soInstancePoolRoot> : public soInstancePool<Info, Holder, soInstancePoolRoot> {
 public:
     soLineInvertHierarchy(soModuleAccesser* acc) : soInstancePool<Info, Holder, soInstancePoolRoot>(acc) { }
-    ~soLineInvertHierarchy() { }
+    ~soLineInvertHierarchy() __attribute__((never_inline)) { } // MATCH-ONLY: shared first-level teardown.
 };
 
 // ---- the energies of a fighter (index, attribute: the ids passed to soKineticModule::addEnergy) ---------------
@@ -189,7 +196,6 @@ FT_KINETIC_POOL(ftKineticPoolJostle, soKineticEnergyJostle, 7, 4, ftKineticPoolG
 #define FT_KINETIC_EACH_POOL(M) M(Jostle) M(Ground) M(Wind) M(Damage) M(Stop) M(Controller) M(Gravity) M(Motion)
 #define FT_KINETIC_SUB(L) static_cast<ftKineticPool##L##Pool&>(m_pools).getSub()
 
-#define FT_KINETIC_FOR_EACH(L) FT_KINETIC_SUB(L).forEachHolderModuleAccesser(helper, acc);
 
 class ftKineticMediatorImpl : public soKineticMediator {
     ftKineticPoolJostle m_pools; // +0x4
@@ -210,7 +216,7 @@ public:
 
     virtual void updateEnergy1(soModuleAccesser* acc, soKineticAttributeMask flag) {
         soKineticUpdateEnergyHolderHelper<ftKineticTransactor> helper(flag);
-        FT_KINETIC_EACH_POOL(FT_KINETIC_FOR_EACH)
+        m_pools.forEachHolderModuleAccesser(helper, acc);
     }
 
     virtual void updateEnergy2(soArray<soKineticEnergy**>* energies, soModuleAccesser* acc) {
@@ -260,7 +266,7 @@ public:
 
     virtual void updateEnergy1(soModuleAccesser* acc, soKineticAttributeMask flag) {
         soKineticUpdateEnergyHolderHelper<UpdateTransactor> helper(flag);
-        FT_KINETIC_EACH_POOL(FT_KINETIC_FOR_EACH)
+        m_pools.forEachHolderModuleAccesser(helper, acc);
     }
 
     virtual void updateEnergy2(soArray<soKineticEnergy**>* energies, soModuleAccesser* acc) {

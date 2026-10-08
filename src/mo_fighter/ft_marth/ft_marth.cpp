@@ -101,6 +101,14 @@ ftMarth::ftMarth(s32 entryId,
 
 ftMarth::~ftMarth() { }
 
+ftKineticEnergyController::~ftKineticEnergyController() { }
+
+// ftManager::setParamPattern selects the shared parameter-table variation.
+extern int g_soValueVariation;
+#pragma dont_inline on
+int soValueAccesser::getValueVariation() { return g_soValueVariation; }
+#pragma dont_inline off
+
 void ftMarth::processUpdate() { Fighter::processUpdate(); }
 
 #pragma dont_inline off
