@@ -1263,6 +1263,8 @@ config.libs = [
             Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_escape.cpp"),
             Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_bump.cpp"),
             Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_down.cpp"),
+            Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_appeal.cpp"),
+            Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_item.cpp"),
         ],
     },
     {
