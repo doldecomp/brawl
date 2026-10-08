@@ -15,8 +15,24 @@ struct wnActivateDesc {
     float lr;
     int team, life;
     int unk38, unk3C, unk40, unk44, unk48;
-    u8 flags;
-    u8 unk4D;
+    // The two flag bytes are also written field-wise by some activators (HYPOTHESIS: the bit grouping follows the
+    // native masks used by the Robo Beam).
+    union {
+        u8 flags;
+        struct {
+            u8 flagsHigh : 1;
+            u8 flagsMidHigh : 3;
+            u8 flagsMidLow : 1;
+            u8 flagsLow : 3;
+        };
+    };
+    union {
+        u8 unk4D;
+        struct {
+            u8 unk4DHigh : 2;
+            u8 unk4DLow : 6;
+        };
+    };
     u8 unk4E[2];
 };
 static_assert(sizeof(wnActivateDesc) == 0x50, "Weapon activation descriptor size");
