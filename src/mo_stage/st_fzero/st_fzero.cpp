@@ -2,6 +2,7 @@
 #include <gf/gf_archive.h>
 #include <gm/gm_global.h>
 #include <gr/collision/gr_collision.h>
+#include <math.h>
 #include <memory.h>
 #include <mt/mt_prng.h>
 #include <nw4r/g3d/g3d_resfile.h>
@@ -17,11 +18,18 @@ extern "C" void fn_27_239F6C(stCollisionWork* work);
 // HYPOTHESIS: an inline helper of the original (a tolerance test used by both the stage and its cars).
 static inline bool fzeroIsNearZero(float value) {
     bool result = false;
-    if (fabsf(value) < 1e-5f) {
+    if ((float)fabs(value) < 1e-5f) {
         result = true;
     }
     return result;
 }
+
+// MATCH-ONLY: a view of the joint's flag word (HYPOTHESIS: byte 2 selects the joint's collision mode).
+struct fzeroJointBits {
+    unsigned m_hi : 8;
+    unsigned m_mode : 8;
+    unsigned m_lo : 16;
+};
 
 stClassInfoImpl<Stages::FZero, stFzero> stFzero::bss_loc_14;
 
@@ -460,10 +468,14 @@ void stFzero::updateLimit() {
     CameraController* camera = CameraController::getInstance();
     float minY = camera->unk160;
     float minX = camera->unk158;
-    m_limitMin = Vec3f(minX, minY, 0.0f);
+    m_limitMin.m_x = minX;
+    m_limitMin.m_y = minY;
+    m_limitMin.m_z = 0.0f;
     float maxY = camera->unk164;
     float maxX = camera->unk15C;
-    m_limitMax = Vec3f(maxX, maxY, 0.0f);
+    m_limitMax.m_x = maxX;
+    m_limitMax.m_y = maxY;
+    m_limitMax.m_z = 0.0f;
 }
 
 bool stFzero::isEventEnd(int param1, int* eventState, int* eventDecision) {
@@ -545,12 +557,15 @@ void stFzero::updateFloor(float deltaFrame) {
     }
 
     if (!same) {
-        if (m_scene < 7 && m_scene > 4) {
+        switch (m_scene) {
+        case 5:
+        case 6:
             if (a.m_y < b.m_y) {
                 b.m_y = a.m_y;
             } else if (a.m_y > b.m_y) {
                 a.m_y = b.m_y;
             }
+            break;
         }
         grCollisionJoint* joint = m_floorCollision->getJoint(0);
         if (joint == NULL) {
@@ -560,8 +575,7 @@ void stFzero::updateFloor(float deltaFrame) {
         if (vtx == NULL) {
             return;
         }
-        u32* flags = reinterpret_cast<u32*>(reinterpret_cast<u8*>(joint) + 0x48);
-        *flags = (*flags & 0xFF00FFFF) | 0x30000;
+        reinterpret_cast<fzeroJointBits*>(reinterpret_cast<u8*>(joint) + 0x48)->m_mode = 3;
         vtx[0] = a.m_x;
         vtx[1] = a.m_y;
         vtx[2] = b.m_x;
