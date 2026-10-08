@@ -1,6 +1,8 @@
 #pragma once
 
 #include <so/so_array.h>
+#include <so/collision/so_collision_search_event_presenter.h>
+#include <so/damage/so_damage_event_presenter.h>
 #include <wn/wn_weapon_builder.h>
 #include <wn/weapon.h>
 
@@ -14,11 +16,14 @@ class wnWeaponBuilder<wnSnakeNikitaModuleAccesserBuildConfig> : public Weapon {
     char m_unkBeforeMissileTaskIds[0x67B0 - sizeof(Weapon)];
 };
 
-// HYPOTHESIS: The missile builder's embedded module layout is omitted here.
-// Its primary Weapon base and RTTI identity are verified; callbacks do not
-// allocate this type or access the omitted builder storage.
+// HYPOTHESIS: The config-specific builder owns the opaque region through +0x24F8.
+// Constructor calls place the appended observer bases immediately afterward.
 template <>
-class wnWeaponBuilder<wnSnakeNikitaMissileModuleAccesserBuildConfig> : public Weapon {};
+class wnWeaponBuilder<wnSnakeNikitaMissileModuleAccesserBuildConfig> : public Weapon {
+    char m_unkBuilderStorage[0x24F8 - sizeof(Weapon)];
+};
+static_assert(sizeof(wnWeaponBuilder<wnSnakeNikitaMissileModuleAccesserBuildConfig>) == 0x24F8,
+              "Snake Nikita missile builder size is wrong");
 
 class wnSnakeNikita : public wnWeaponBuilder<wnSnakeNikitaModuleAccesserBuildConfig> {
 public:
