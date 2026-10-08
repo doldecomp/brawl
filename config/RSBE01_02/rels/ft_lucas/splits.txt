@@ -18,6 +18,22 @@ mo_fighter/ft_lucas/ft_lucas.cpp:
 	.data       start:0x00000000 end:0x0000B538
 	.bss        start:0x00000008 end:0x00000510
 
+mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_hi.cpp:
+	.text       start:0x00010DE4 end:0x000113A4
+	.ctors      start:0x00000010 end:0x00000014
+
+mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_hi_attack.cpp:
+	.text       start:0x000113A4 end:0x00012378
+	.ctors      start:0x00000014 end:0x00000018
+
+mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_hi_attack_end.cpp:
+	.text       start:0x00012378 end:0x000126F4
+	.ctors      start:0x00000018 end:0x0000001C
+
+mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_hi_reflect.cpp:
+	.text       start:0x000126F4 end:0x00012800
+	.ctors      start:0x0000001C end:0x00000020
+
 mo_fighter/mo_fighter.cpp:
 	.text       start:0x00020EA4 end:0x00020F40
 	.data       start:0x0000B538 end:0x0000B547
