@@ -46,9 +46,11 @@ public:
 #include <so/area/so_area_module_impl.h>
 #include <ft/builder/ft_dol_holders.h>
 
-template <typename T>
+// NumInstances: capacity of the area instance array (9 for most fighters)
+template <typename T, s32 NumInstances = 9>
 class soAreaModuleBuildConfig {
 public:
+    enum { Instances = NumInstances };
     typedef T ModuleType;
 };
 
@@ -57,7 +59,7 @@ class soAreaModuleBuilder : public soArraySelectHolder<1, soArrayVector<soAreaWi
     typename BC::ModuleType m_module;                 // +0x10
     soAreaEnviromentElementCheckerImpl m_checker;     // +0x78
     soArrayVector<soAreaContactLog, 16> m_contactLogs; // +0x94
-    soArrayVector<soAreaInstance, 9> m_instances;     // +0x220
+    soArrayVector<soAreaInstance, BC::Instances> m_instances;     // +0x220
     u32 m_pad;
 public:
     soAreaModuleBuilder(soModuleAccesser* acc, u8 areaCategory, soEventObserverRegistrationDesc* regDesc) :

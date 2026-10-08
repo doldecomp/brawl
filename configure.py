@@ -1167,9 +1167,11 @@ config.libs = [
     {
         "lib": "ft_zako",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(NonMatching, "mo_fighter/ft_zako/ft_zako.cpp"),
+        ],
     },
     {
         "lib": "ft_zelda",
