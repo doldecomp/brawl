@@ -90,6 +90,7 @@ public:
 #ifdef FT_MODULE_BUILDER
     virtual ~soKineticEnergyGroundMovement() { }
 #endif
+    void enableRot(Vec2f* normal); // sora_melee; angle from the ground normal.
     u8 m_unk08[0x28];
 };
 
