@@ -55,8 +55,8 @@ stFzero::stFzero() : stMelee("stFzero", Stages::FZero) {
     m_stateWall = 8;
     m_eventFlag = 0;
     m_collisionWork.initialize();
-    unkBF2 = 0;
-    unkBF0 = 2;
+    m_collisionWork.m_isClosed = false;
+    m_collisionWork.m_vtxLen = 2;
     m_floorCollision = NULL;
 }
 

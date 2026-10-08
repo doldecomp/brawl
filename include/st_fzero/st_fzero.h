@@ -50,8 +50,6 @@ class stFzero : public stMelee {
     u8 m_stateWall;              // 0xBE0 wall progress (8 = idle)
     u8 m_eventFlag;              // 0xBE1 set in the adventure mode level this stage is used by
     stCollisionWork m_collisionWork; // 0xBE4
-    u16 unkBF0;                  // 0xBF0
-    u8 unkBF2;                   // 0xBF2
     grCollision* m_floorCollision; // 0xBF4 collision of the floor that is enabled while the course is out
 
 public:
