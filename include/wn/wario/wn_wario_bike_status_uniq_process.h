@@ -30,3 +30,31 @@ public:
     virtual void execFixPos(soModuleAccesser*);
     virtual void execFixPosCounter(soModuleAccesser*);
 };
+
+// RTTI8494 lists only soStatusUniqProcess; TurnStart does not inherit Utility.
+class wnWarioBikeStatusUniqProcessTurnStart : public soStatusUniqProcess {
+public:
+    virtual ~wnWarioBikeStatusUniqProcessTurnStart() {}
+    virtual void initStatus(soModuleAccesser*);
+    virtual void exitStatus(soModuleAccesser*, int);
+    virtual void execStatus(soModuleAccesser*);
+    virtual void execFixPos(soModuleAccesser*);
+};
+
+class wnWarioBikeStatusUniqProcessTurnLoop : public soStatusUniqProcess {
+public:
+    virtual ~wnWarioBikeStatusUniqProcessTurnLoop() {}
+    virtual void initStatus(soModuleAccesser*);
+    virtual void execStatus(soModuleAccesser*);
+    virtual void execFixPosCounter(soModuleAccesser*);
+    virtual void execFixPos(soModuleAccesser*);
+};
+
+class wnWarioBikeStatusUniqProcessTurnEnd : public soStatusUniqProcess {
+public:
+    virtual ~wnWarioBikeStatusUniqProcessTurnEnd() {}
+    virtual void initStatus(soModuleAccesser*);
+    virtual void exitStatus(soModuleAccesser*, int);
+    virtual void execStatus(soModuleAccesser*);
+    virtual void execFixPos(soModuleAccesser*);
+};

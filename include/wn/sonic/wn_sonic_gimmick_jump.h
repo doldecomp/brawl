@@ -27,6 +27,9 @@ public:
     virtual void notifyEventChangeStatus(int, int, soStatusData*, soModuleAccesser*);
     virtual void updateNodeSRT();
     virtual void notifyEventGimmick(soGimmickEventArgs*, int*);
+    // HYPOTHESIS: relative source ordering of lr; original caller establishes
+    // f1 facing and r8 boolean independently of source ordering.
+    void activate(int founderTaskId, int resourceId, int team, Vec2f* pos, float lr, bool unk);
     void shoot();
 };
 static_assert(sizeof(wnSonicGimmickJump) == 0x21EC, "Spring article layout");
