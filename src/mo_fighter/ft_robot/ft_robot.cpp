@@ -1,10 +1,19 @@
 #define SO_SLOW_GET_INSTANCE_OUT_OF_LINE
+// The constructor calls the status table's default constructor in sora_melee instead of inlining it.
+#define FT_ROBOT_SHARED_STATUS_TABLE_CTOR
 #include <ft/builder/ft_dol_array_list.h>
 #include <ft/ft_class_info_impl.h>
 #include <ft/robot/ft_robot.h>
 #include <ft/robot/ft_robot_extend_param_accesser.h>
 #include <ft/robot/ft_robot_link_event.h>
+#include <ft/robot/ft_robot_unk8.h>
 #include <ft/robot/ft_robot_status_uniq_process_special_arm_spin.h>
+#include <ft/robot/ft_robot_status_uniq_process_final.h>
+#include <ft/robot/ft_robot_status_uniq_process_special_beam.h>
+#include <ft/robot/ft_robot_status_uniq_process_special_burner.h>
+#include <ft/robot/ft_robot_status_uniq_process_special_burner_attack.h>
+#include <ft/robot/ft_robot_status_uniq_process_special_burner_start.h>
+#include <ft/robot/ft_robot_status_uniq_process_special_gyro.h>
 #include <ft/robot/ft_robot_transactor.h>
 #include <ac/ac_anim_cmd_impl.h>
 #include <it/it_manager.h>
@@ -15,8 +24,21 @@
 #define FT_BC ftRobotBuildConfig
 #include <ft/builder/ft_builder_noinline.h>
 
+// The fighter and Gyro status translation units each construct their own pair of article tags.
+// HYPOTHESIS: their values select the two shared item/article template instances.
+static ftRobotUnk8 s_unkTag0(0xff, 0);
+static ftRobotUnk8 s_unkTag1(0xff, 1);
+
 ftRobotExtendParamAccesser g_ftRobotExtendParamAccesser;
 ftClassInfoImpl<Fighter_Robot, ftRobot> g_ftClassInfoRobot;
+
+// The physics module's second interface is not declared yet: the constructor calls slot 0x54 of the vtable at +8
+// with the module pointer itself and a zero argument (HYPOTHESIS: resets the physics state).
+static void ftRobotPhysicsModuleCall54(void* module, int arg) {
+    typedef void (*Fn)(void*, int);
+    void** table = *reinterpret_cast<void***>(reinterpret_cast<u8*>(module) + 8);
+    reinterpret_cast<Fn>(table[0x54 / sizeof(void*)])(module, arg);
+}
 
 ftRobot::ftRobot(s32 entryId,
                  Heaps::HeapType instHeap,
@@ -28,7 +50,26 @@ ftRobot::ftRobot(s32 entryId,
                                         nwModelInstHeap,
                                         nwMotionInstHeap) {
     m_commonData = g_ftCommonDataAccesser.getData(Fighter_Robot);
-    // TODO: install Robot status processes, model/node conversion and physics configuration.
+    // Register the character-specific status processes in action order (index 6 is unused).
+    soStatusUniqProcess* processes[12] = {0};
+    processes[0] = &g_ftRobotStatusUniqProcessSpecialBeam;
+    processes[1] = &g_ftRobotStatusUniqProcessSpecialArmSpin;
+    processes[2] = &g_ftRobotStatusUniqProcessSpecialBurnerStart;
+    processes[3] = &g_ftRobotStatusUniqProcessSpecialGyro;
+    processes[4] = &g_ftRobotStatusUniqProcessFinal;
+    processes[5] = &g_ftRobotStatusUniqProcessSpecialArmSpin;
+    processes[7] = &g_ftRobotStatusUniqProcessSpecialBurner;
+    processes[8] = &g_ftRobotStatusUniqProcessSpecialBurnerAttack;
+    processes[9] = &g_ftRobotStatusUniqProcessSpecialGyro;
+    processes[10] = &g_ftRobotStatusUniqProcessSpecialGyro;
+    processes[11] = &g_ftRobotStatusUniqProcessSpecialGyro;
+    m_moduleAccesser->getStatusModule().addRangeUniqProc(processes, 12);
+
+    // HYPOTHESIS: the common data record points at the reflector shape groups (+0xb0); group index 2 is the one added.
+    soCollisionReflectorGroupData* reflectors = *reinterpret_cast<soCollisionReflectorGroupData**>(reinterpret_cast<u8*>(m_commonData) + 0xb0);
+    m_moduleAccesser->getCollisionReflectorModule().add(reflectors, 2);
+    m_moduleAccesser->getCollisionReflectorModule().setStatus(0, 0, 2);
+    ftRobotPhysicsModuleCall54(m_moduleAccesser->m_enumerationStart->m_physicsModule, 0);
     soSlopeModule* slope = static_cast<soSlopeModule*>(m_moduleAccesser->m_enumerationStart->m_slopeModule);
     slope->setPartNode(0x5D);
     slope->setInvalidStatus(6);
@@ -107,6 +148,8 @@ template wnRobotFinalBeam* ftRobotArticleSubPool<wnRobotFinalBeam, 1>::getInstan
 
 #pragma dont_inline off
 
+ftRobotUnk8::ftRobotUnk8(int a, int b) : unk0(a), unk4(b) { }
+
 s32 ftRobotArticleMediator::getMediateNum() { return 4; }
 void ftRobotArticleMediator::setAutoRecycle(bool enabled) { m_autoRecycle = enabled; }
 
@@ -139,15 +182,85 @@ void ftRobotArticleMediator::deactivate() {
 }
 #pragma dont_inline off
 
+// The mediator walks a list of 17 article slots (only the first four are used by R.O.B.; the original code has one
+// switch case per slot). Every case builds a two-byte empty tag on the stack, which is why each case owns its own slot
+// of the frame (HYPOTHESIS: the tag is the per-slot type-list marker of the generic mediator template).
+struct ftRobotArticleSlotTag {
+    u8 m_pad0;
+    u8 m_pad1;
+    ftRobotArticleSlotTag() : m_pad0(0), m_pad1(0) { }
+    ~ftRobotArticleSlotTag() { } // MATCH-ONLY: a non-trivial destructor keeps the otherwise dead tag stores
+};
+
+#define FT_ROBOT_UNUSED_SLOT(n, value) \
+    case n: { \
+        ftRobotArticleSlotTag tag; \
+        return value; \
+    }
+#define FT_ROBOT_UNUSED_SLOTS(value) \
+    FT_ROBOT_UNUSED_SLOT(4, value) FT_ROBOT_UNUSED_SLOT(5, value) FT_ROBOT_UNUSED_SLOT(6, value) \
+    FT_ROBOT_UNUSED_SLOT(7, value) FT_ROBOT_UNUSED_SLOT(8, value) FT_ROBOT_UNUSED_SLOT(9, value) \
+    FT_ROBOT_UNUSED_SLOT(10, value) FT_ROBOT_UNUSED_SLOT(11, value) FT_ROBOT_UNUSED_SLOT(12, value) \
+    FT_ROBOT_UNUSED_SLOT(13, value) FT_ROBOT_UNUSED_SLOT(14, value) FT_ROBOT_UNUSED_SLOT(15, value) \
+    FT_ROBOT_UNUSED_SLOT(16, value)
+
+s32 ftRobotArticleMediator::getGenerateMaxNum(s32 articleId) {
+    switch (articleId) {
+    case 0: { ftRobotArticleSlotTag tag; return 1; }
+    case 1: { ftRobotArticleSlotTag tag; return 2; }
+    case 2: { ftRobotArticleSlotTag tag; return 1; }
+    case 3: { ftRobotArticleSlotTag tag; return 1; }
+    FT_ROBOT_UNUSED_SLOTS(0)
+    default: return 0;
+    }
+}
+
+// The original counts with a small functor on the stack: the first word is the address of a thunk that calls the
+// article's isActiveArticle virtual on the article subobject (a weak function at 0xAFB0), followed by the number of
+// active and of inactive articles seen so far.
+static bool ftRobotIsActiveArticle(soArticle* article) { return article->isActiveArticle(); }
+
+struct ftRobotArticleActiveCounter {
+    bool (*m_isActive)(soArticle*);
+    s32 m_activeNum;
+    s32 m_inactiveNum;
+    ftRobotArticleActiveCounter() : m_isActive(ftRobotIsActiveArticle), m_activeNum(0), m_inactiveNum(0) { }
+};
+
 template <class W, int N>
 static s32 ftRobotCountActiveArticles(ftRobotArticleSubPool<W, N>& pool) {
-    s32 count = 0;
+    ftRobotArticleActiveCounter counter;
     for (s32 i = 0; i < N; ++i) {
-        if (pool.getInstanceAt(i)->isActiveArticle() == true) {
-            ++count;
+        if (counter.m_isActive(pool.getInstanceAt(i)) == true) {
+            ++counter.m_activeNum;
+        } else {
+            ++counter.m_inactiveNum;
         }
     }
-    return count;
+    return counter.m_activeNum;
+}
+
+s32 ftRobotArticleMediator::getActiveNum(soModuleAccesser*, s32 articleId) {
+    switch (articleId) {
+    case 0: {
+        ftRobotArticleSlotTag tag;
+        return ftRobotCountActiveArticles(static_cast<ftRobotArticlePool<wnRobotGyro, 1, ftRobotBeamPool> &>(m_pools).getSub());
+    }
+    case 1: {
+        ftRobotArticleSlotTag tag;
+        return ftRobotCountActiveArticles(static_cast<ftRobotArticlePool<wnRobotBeam, 2, ftRobotGyroHolderPool> &>(m_pools).getSub());
+    }
+    case 2: {
+        ftRobotArticleSlotTag tag;
+        return ftRobotCountActiveArticles(static_cast<ftRobotArticlePool<wnRobotGyroHolder, 1, ftRobotFinalBeamPool> &>(m_pools).getSub());
+    }
+    case 3: {
+        ftRobotArticleSlotTag tag;
+        return ftRobotCountActiveArticles(static_cast<ftRobotArticlePool<wnRobotFinalBeam, 1, soInstancePoolRoot> &>(m_pools).getSub());
+    }
+    FT_ROBOT_UNUSED_SLOTS(0)
+    default: return 0;
+    }
 }
 
 template <class W, int N>
@@ -160,40 +273,25 @@ static bool ftRobotCanGenerateArticle(ftRobotArticleSubPool<W, N>& pool) {
     return false;
 }
 
-s32 ftRobotArticleMediator::getGenerateMaxNum(s32 articleId) {
-    switch (articleId) {
-    case 0: return 1;
-    case 1: return 2;
-    case 2: return 1;
-    case 3: return 1;
-    default: return 0;
-    }
-}
-
-s32 ftRobotArticleMediator::getActiveNum(soModuleAccesser*, s32 articleId) {
-    switch (articleId) {
-    case 0:
-        return ftRobotCountActiveArticles(static_cast<ftRobotArticlePool<wnRobotGyro, 1, ftRobotBeamPool> &>(m_pools).getSub());
-    case 1:
-        return ftRobotCountActiveArticles(static_cast<ftRobotArticlePool<wnRobotBeam, 2, ftRobotGyroHolderPool> &>(m_pools).getSub());
-    case 2:
-        return ftRobotCountActiveArticles(static_cast<ftRobotArticlePool<wnRobotGyroHolder, 1, ftRobotFinalBeamPool> &>(m_pools).getSub());
-    case 3:
-        return ftRobotCountActiveArticles(static_cast<ftRobotArticlePool<wnRobotFinalBeam, 1, soInstancePoolRoot> &>(m_pools).getSub());
-    default: return 0;
-    }
-}
-
 bool ftRobotArticleMediator::isGeneratable(soModuleAccesser*, s32 articleId) {
     switch (articleId) {
-    case 0:
+    case 0: {
+        ftRobotArticleSlotTag tag;
         return ftRobotCanGenerateArticle(static_cast<ftRobotArticlePool<wnRobotGyro, 1, ftRobotBeamPool> &>(m_pools).getSub());
-    case 1:
+    }
+    case 1: {
+        ftRobotArticleSlotTag tag;
         return ftRobotCanGenerateArticle(static_cast<ftRobotArticlePool<wnRobotBeam, 2, ftRobotGyroHolderPool> &>(m_pools).getSub());
-    case 2:
+    }
+    case 2: {
+        ftRobotArticleSlotTag tag;
         return ftRobotCanGenerateArticle(static_cast<ftRobotArticlePool<wnRobotGyroHolder, 1, ftRobotFinalBeamPool> &>(m_pools).getSub());
-    case 3:
+    }
+    case 3: {
+        ftRobotArticleSlotTag tag;
         return ftRobotCanGenerateArticle(static_cast<ftRobotArticlePool<wnRobotFinalBeam, 1, soInstancePoolRoot> &>(m_pools).getSub());
+    }
+    FT_ROBOT_UNUSED_SLOTS(false)
     default: return false;
     }
 }
@@ -480,30 +578,37 @@ static soArticle* ftRobotGenerateFromPool(ftRobotArticleSubPool<W, N>& pool, soM
 
 soArticle* ftRobotArticleMediator::generate(s32 articleId, soModuleAccesser* acc) {
     switch (articleId) {
-    case 0:
+    case 0: {
+        ftRobotArticleSlotTag tag;
         return ftRobotGenerateFromPool(static_cast<ftRobotArticlePool<wnRobotGyro, 1, ftRobotBeamPool> &>(m_pools).getSub(), acc);
-    case 1:
+    }
+    case 1: {
+        ftRobotArticleSlotTag tag;
         return ftRobotGenerateFromPool(static_cast<ftRobotArticlePool<wnRobotBeam, 2, ftRobotGyroHolderPool> &>(m_pools).getSub(), acc);
-    case 2:
+    }
+    case 2: {
+        ftRobotArticleSlotTag tag;
         return ftRobotGenerateFromPool(static_cast<ftRobotArticlePool<wnRobotGyroHolder, 1, ftRobotFinalBeamPool> &>(m_pools).getSub(), acc);
-    case 3:
+    }
+    case 3: {
+        ftRobotArticleSlotTag tag;
         return ftRobotGenerateFromPool(static_cast<ftRobotArticlePool<wnRobotFinalBeam, 1, soInstancePoolRoot> &>(m_pools).getSub(), acc);
+    }
+    FT_ROBOT_UNUSED_SLOTS(ftRobotGetNullArticle())
     default: return ftRobotGetNullArticle();
     }
 }
 
+// Shooting only type-checks the article; the unused slots accept anything.
 bool ftRobotArticleMediator::shoot(soModuleAccesser*, soArticle* article) {
-    s32 articleId = ftRobotGetArticleId(article);
-    switch (articleId) {
-    case 0: (void)dynamic_cast<wnRobotGyro&>(*article); break;
-    case 1: (void)dynamic_cast<wnRobotBeam&>(*article); break;
-    case 2: (void)dynamic_cast<wnRobotGyroHolder&>(*article); break;
-    case 3: (void)dynamic_cast<wnRobotFinalBeam&>(*article); break;
-    default:
-        // The remaining generated article kinds have no Robot-specific action.
-        return articleId >= 4 && articleId <= 16;
+    switch (ftRobotGetArticleId(article)) {
+    case 0: { ftRobotArticleSlotTag tag; (void)dynamic_cast<wnRobotGyro&>(*article); return true; }
+    case 1: { ftRobotArticleSlotTag tag; (void)dynamic_cast<wnRobotBeam&>(*article); return true; }
+    case 2: { ftRobotArticleSlotTag tag; (void)dynamic_cast<wnRobotGyroHolder&>(*article); return true; }
+    case 3: { ftRobotArticleSlotTag tag; (void)dynamic_cast<wnRobotFinalBeam&>(*article); return true; }
+    FT_ROBOT_UNUSED_SLOTS(true)
+    default: return false;
     }
-    return true;
 }
 
 // The abstract matrix pool still needs its base destructor for derived pools.
