@@ -320,7 +320,9 @@ public:
 
 template <typename BC>
 class ftAnimCmdModuleSubBuilder {
+public:
     soAnimCmdControlUnitBuilderDisguise<typename BC::Unit0Config> m_unit0; // +0
+private:
     soAnimCmdControlUnitBuilder<typename BC::Unit1Config> m_unit1;
     soAnimCmdControlUnitBuilder<typename BC::Unit2Config> m_unit2;
     soAnimCmdControlUnitBuilder<typename BC::Unit3Config> m_unit3;

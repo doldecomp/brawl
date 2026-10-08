@@ -302,14 +302,18 @@ public:
         soModuleAccesserBuilder<BC>(fbd, owner),
         unkTable(*(const soStatusData**)(((u8**)&fbd)[3] + 0x18), 0xF), // HYPOTHESIS: fbd + 0xC is the ftData pointer
         unkAnimCmdModuleSubBuilder(&this->m_moduleAccsr, fbd) {
-        soAnimCmdControlUnitBuilderDisguise<typename BC::AnimCmdModuleSubBuildConfig::Unit0Config>* disguiseUnit =
-            unkAnimCmdModuleSubBuilder.getDisguiseUnit();
-        soArrayUtility::pushRange<const acAnimCmdConv*>(disguiseUnit->getEntryList(0), (const acAnimCmdConv* const*)fbd.getAnimCmdData(0, 0), 0x112);
-        soArrayUtility::pushRange<const acAnimCmdConv*>(disguiseUnit->getEntryList(1), (const acAnimCmdConv* const*)fbd.getAnimCmdData(0, 1), 0x112);
-        soArrayUtility::pushRange<const acAnimCmdConv*>(disguiseUnit->getEntryList(0), *(const acAnimCmdConv* const**)(((u8**)&fbd)[3] + 0x24), 0xF);
-        soArrayUtility::pushRange<const acAnimCmdConv*>(disguiseUnit->getEntryList(1), *(const acAnimCmdConv* const**)(((u8**)&fbd)[3] + 0x28), 0xF);
-        disguiseUnit->setupDisguiseList(0, (soAnimCmdDisguiseListEntry*)fbd.getAnimCmdDisguiseList(false, 0));
-        disguiseUnit->setupDisguiseList(1, (soAnimCmdDisguiseListEntry*)fbd.getAnimCmdDisguiseList(false, 1));
+        // MATCH-ONLY: the unit is named through the member (not an accessor) and every query result is held in a
+        // local first, so MWCC forms the unit address after the queries as the original does.
+        const acAnimCmdConv* const* cmds00 = (const acAnimCmdConv* const*)fbd.getAnimCmdData(0, 0);
+        soArrayUtility::pushRange<const acAnimCmdConv*>(unkAnimCmdModuleSubBuilder.m_unit0.getEntryList(0), cmds00, 0x112);
+        const acAnimCmdConv* const* cmds01 = (const acAnimCmdConv* const*)fbd.getAnimCmdData(0, 1);
+        soArrayUtility::pushRange<const acAnimCmdConv*>(unkAnimCmdModuleSubBuilder.m_unit0.getEntryList(1), cmds01, 0x112);
+        const acAnimCmdConv* const* cmds0F = *(const acAnimCmdConv* const**)(((u8**)&fbd)[3] + 0x24);
+        soArrayUtility::pushRange<const acAnimCmdConv*>(unkAnimCmdModuleSubBuilder.m_unit0.getEntryList(0), cmds0F, 0xF);
+        const acAnimCmdConv* const* cmds1F = *(const acAnimCmdConv* const**)(((u8**)&fbd)[3] + 0x28);
+        soArrayUtility::pushRange<const acAnimCmdConv*>(unkAnimCmdModuleSubBuilder.m_unit0.getEntryList(1), cmds1F, 0xF);
+        unkAnimCmdModuleSubBuilder.m_unit0.setupDisguiseList(0, (soAnimCmdDisguiseListEntry*)fbd.getAnimCmdDisguiseList(false, 0));
+        unkAnimCmdModuleSubBuilder.m_unit0.setupDisguiseList(1, (soAnimCmdDisguiseListEntry*)fbd.getAnimCmdDisguiseList(false, 1));
         this->m_moduleAccsr.getStatusModule().connectStatusDataList(&unkTable);
         // Apply fighter-specific area dimensions before registering the areas.
         soSet<soAreaData>* areas = static_cast<soSet<soAreaData>*>(
