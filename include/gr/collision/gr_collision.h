@@ -1,6 +1,6 @@
 #pragma once
 
-// Local shadow: adds the verified grCollision::setEnable member.
+// Local shadow: adds the verified grCollision::setEnable / setDisable members.
 
 #include <StaticAssert.h>
 #include <gr/collision/gr_collision_handle.h>
@@ -33,7 +33,8 @@ public:
     // 28
     clAABBox2D m_aabBox;
     // 44
-    char _spacer[4];
+    bool m_isEnabled : 1; // verified: bit 0x80 of byte 0x2C, set by setEnable and cleared by setDisable
+    char _spacer[3];
     // 48
     void* m_next;
     // 52
@@ -45,6 +46,7 @@ public:
     ~grCollision();
 
     void setEnable();
+    void setDisable();
     grCollisionJoint* getJoint(u16 nodeIndex);
     grCollisionLine* getLine(u16 index);
     void getSegment(clSegment2D* outSegment, grCollisionLine* line);

@@ -5311,6 +5311,7 @@ config.libs = [
             Object(NonMatching, "mo_stage/st_fzero/gr_fzero_startline.cpp"),
             Object(NonMatching, "mo_stage/st_fzero/gr_fzero_platering.cpp"),
             Object(NonMatching, "mo_stage/st_fzero/gr_fzero_ashiba.cpp"),
+            Object(NonMatching, "mo_stage/st_fzero/st_fzero.cpp"),
         ],
     },
     {

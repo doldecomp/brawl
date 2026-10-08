@@ -275,9 +275,9 @@ grFzeroWarning* grFzeroWarning::create(int mdlIndex, const char* nodeName, const
 }
 
 grFzeroWarning::grFzeroWarning(const char* taskName) : grFzero(taskName) {
+    m_stateWork = NULL;
     m_sceneWork = NULL;
     m_frameSceneWork = NULL;
-    m_stateWork = NULL;
     m_mtxGimmickWork = NULL;
     m_warned = 0;
     m_animId = 3;
@@ -330,7 +330,7 @@ void grFzeroWarning::updateActive(float deltaFrame) {
         m_state = 1;
         // fall through
     case 1:
-        if (*m_sceneWork == 4) {
+        if (*m_stateWork == 4) {
             setMotion(0, false, true, &m_animFrames);
             m_warned = 0;
             g_sndSystem->playSE(static_cast<SndID>(0x1c70), 0, 0, 0, -1);
