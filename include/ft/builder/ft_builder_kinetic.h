@@ -33,6 +33,7 @@ public:
     static void changeKinetic(soModuleAccesser* acc, void* pools);
     // Native generic dispatcher: mode in r3, pool in r4, accesser in r5.
     static void changeKinetic(int mode, void* pools, soModuleAccesser* acc);
+    static void changeKineticImpl(int mode);
     static void addSpeed(void* speed, void* pools, soModuleAccesser* acc);
     static void addSpeedOutside(int type, void* speed, void* pools, soModuleAccesser* acc);
     // The accesser enumeration at +0xD8 drives outside-energy flags.
