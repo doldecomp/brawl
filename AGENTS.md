@@ -11,7 +11,6 @@ Instructions for AI agents (Claude, Codex, ...) working on this matching decompi
 - Pick a short name for yourself (lowercase, e.g. `hawk`). Use it for your claims, worktrees and branches.
 - Work alone unless the human explicitly authorizes parallel agents. When authorized, obey the runtime concurrency limit, give workers exclusive subsystem/file ownership, and designate one coordinator for shared interfaces, builds, review, and integration. Reuse workers and their context for follow-on work.
 - **Do not ask questions** and do not wait for replies. Decide with the rules below and keep going until your queue is done or you are blocked.
-- If a command is refused, an approval is needed, or the server returns a TLS/auth error: stop and print a 3-line report (what blocked you, what you finished, where your branch is). Do not work around a block.
 - No docs/notes files in this repo (this file and the README are the exceptions). Keep notes outside the repo (on the server in `/srv/brawl-native/notes/`).
 - Never push to `doldecomp/brawl`. Never put keys, tokens or server details in commits.
 
