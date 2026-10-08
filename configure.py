@@ -1252,6 +1252,7 @@ config.libs = [
             Object(Matching, "mo_fighter/ft_wario/ft_wario_status_uniq_process_special_hi_start.cpp"),
             Object(Matching, "mo_fighter/ft_wario/ft_wario_status_uniq_process_special_hi_jump.cpp"),
             Object(NonMatching, "mo_fighter/ft_wario/ft_wario_status_uniq_process_special_lw.cpp"),
+            Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike.cpp"),
             Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_utility.cpp"),
             Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_start.cpp"),
             Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_drive.cpp"),
