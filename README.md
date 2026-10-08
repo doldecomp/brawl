@@ -146,8 +146,16 @@ python3 tools/decomp_build.py baseline --mode full --jobs 4 \
 ```
 
 The tool configures the selected version, builds, checks all 127 output hashes,
-and generates a fresh report. Existing comparison objects are refreshed; absent
+and generates a report. Existing comparison objects are refreshed; absent
 unlinked draft objects are recorded as unavailable rather than compiled implicitly.
+Candidate runs can reuse the entire validated baseline report when its complete
+comparison configuration, object contents (including unavailable objects), and
+report-generation inputs are identical. This does not skip the build, output-hash
+checks, or source-drift checks. Changed compatible inputs regenerate the report;
+incompatible tools or original binaries still require a new baseline. Older
+evidence without a reuse key also regenerates. Use `--fresh-report` to force
+independent generation. The manifest records whether the report was generated
+or reused and identifies the evidence it came from.
 `validation.json` records command logs and timings,
 working-source/configuration/tool/artifact fingerprints, and the Git revision.
 The working snapshot is identified separately from its Git HEAD; it may include
