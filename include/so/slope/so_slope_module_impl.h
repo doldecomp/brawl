@@ -55,7 +55,8 @@ public:
 class soSlopeModuleImpl : public soSlopeModule, public soStatusEventObserver, public soAnimCmdEventObserver {
 #ifdef FT_MODULE_BUILDER
 public:
-    soSlopeModuleImpl(soModuleAccesser* acc, int a, int b, int c, float angle);
+    // HYPOTHESIS: the byte axis selector is boolean; both update paths test zero/nonzero.
+    soSlopeModuleImpl(soModuleAccesser* acc, int a, int b, bool useZAxis, float angle);
 private:
 #endif
     soModuleAccesser* m_moduleAccesser;
@@ -74,7 +75,7 @@ private:
     float m_0x70;
     int m_partNode;
     soSlopeStatusParam::Status m_invalidStatus;
-    u8 m_0x7C;
+    bool m_0x7C;
     bool m_isTopAngleUnlimit;
     char _0x7E[2];
 public:

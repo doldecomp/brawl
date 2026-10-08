@@ -12,11 +12,30 @@ global_destructor_chain.c:
 	.bss        start:0x00000000 end:0x00000004
 
 mo_fighter/ft_luigi/ft_luigi.cpp:
-	.text       start:0x00000070 end:0x0000B8E4
+	.text       start:0x00000070 end:0x0000BBD0
 	.ctors      start:0x00000000 end:0x00000004
-	.rodata     start:0x00000000 end:0x00000070
-	.data       start:0x00000000 end:0x00006ED8
-	.bss        start:0x00000008 end:0x000002C0
+	.rodata     start:0x00000000 end:0x00000010
+	.data       start:0x00000000 end:0x000062E8
+	.bss        start:0x00000008 end:0x000001C0
+
+mo_fighter/ft_luigi/ft_luigi_kinetic_transactor.cpp:
+	.text       start:0x0000BBD0 end:0x0000CA80
+	.rodata     start:0x00000010 end:0x00000028
+	.data       start:0x000062E8 end:0x000063A8
+
+mo_fighter/ft_luigi/ft_luigi_status_special_s_ram.cpp:
+	.text       start:0x0000CE18 end:0x0000D184
+	.ctors      start:0x00000008 end:0x0000000C
+	.rodata     start:0x00000030 end:0x00000040
+	.data       start:0x00006434 end:0x000064B8
+	.bss        start:0x000001D0 end:0x000001E0
+
+mo_fighter/ft_luigi/ft_luigi_status_special_s_wall.cpp:
+	.text       start:0x0000D184 end:0x0000D428
+	.ctors      start:0x0000000C end:0x00000010
+	.rodata     start:0x00000040 end:0x00000070
+	.data       start:0x000064B8 end:0x0000659C
+	.bss        start:0x000001E0 end:0x000001F0
 
 mo_fighter/mo_fighter.cpp:
 	.text       start:0x00010EAC end:0x00010F48
