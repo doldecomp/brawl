@@ -33,7 +33,9 @@ struct wnWarioBikeParam {
     u8 unk74[0x8];
     int unk7C;
     int unk80;
-    u8 unk84[0x10];
+    u8 unk84[0x8];
+    float unk8C;
+    u8 unk90[0x4];
     float unk94;
     float unk98;
 };

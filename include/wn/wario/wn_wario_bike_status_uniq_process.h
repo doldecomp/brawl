@@ -58,3 +58,33 @@ public:
     virtual void execStatus(soModuleAccesser*);
     virtual void execFixPos(soModuleAccesser*);
 };
+// Native RTTI and vtables establish these source class bases and overrides.
+class wnWarioBikeStatusUniqProcessTurnDown : public soStatusUniqProcess {
+public:
+    virtual ~wnWarioBikeStatusUniqProcessTurnDown() {}
+    virtual void initStatus(soModuleAccesser*);
+    virtual void execStatus(soModuleAccesser*);
+    virtual void execFixPos(soModuleAccesser*);
+};
+
+class wnWarioBikeStatusUniqProcessEscape : public wnWarioBikeStatusUniqProcessUtility {
+public:
+    virtual ~wnWarioBikeStatusUniqProcessEscape() {}
+    virtual void execFixPos(soModuleAccesser*);
+};
+
+class wnWarioBikeStatusUniqProcessBump : public wnWarioBikeStatusUniqProcessUtility {
+public:
+    virtual ~wnWarioBikeStatusUniqProcessBump() {}
+    virtual void initStatus(soModuleAccesser*);
+    virtual void execFixPos(soModuleAccesser*);
+};
+
+// RTTI confirms Down derives directly from soStatusUniqProcess.
+class wnWarioBikeStatusUniqProcessDown : public soStatusUniqProcess {
+public:
+    virtual ~wnWarioBikeStatusUniqProcessDown() {}
+    virtual void initStatus(soModuleAccesser*);
+    virtual void execStatus(soModuleAccesser*);
+    virtual void execFixPos(soModuleAccesser*);
+};
