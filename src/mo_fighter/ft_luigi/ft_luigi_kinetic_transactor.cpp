@@ -1,3 +1,5 @@
+// MATCH-ONLY: Keep the native out-of-line Vec3f constructor call.
+#define MT_VEC3F_CTOR_NOINLINE
 #include <ft/builder/ft_dol_array_list.h>
 #include <ft/luigi/ft_luigi_kinetic_transactor.h>
 #include <ft/builder/ft_builder_kinetic.h>
@@ -5,6 +7,9 @@
 #include <so/so_kinetic_utility.h>
 #include <so/so_module_accesser.h>
 #include <so/so_value_accesser.h>
+
+#undef MT_VEC3F_CTOR_NOINLINE
+
 
 void ftLuigiKineticTransactor::changeKinetic(int mode, void* pools, soModuleAccesser* moduleAccesser) {
     if (mode <= 0x63) {
@@ -156,7 +161,8 @@ void ftLuigiKineticTransactor::changeKineticSub6(bool*, void*, Vec2f* speed, soM
     controller.enable();
 
     Vec2f gravitySpeed(0.0f, initialSpeed.m_y);
-    soKineticUtility::resetEnableEnergy(1, moduleAccesser, 0, &gravitySpeed, &rotation);
+    Vec3f gravityRotation(0.0f, 0.0f, 0.0f);
+    soKineticUtility::resetEnableEnergy(1, moduleAccesser, 0, &gravitySpeed, &gravityRotation);
 }
 
 void ftLuigiKineticTransactor::changeKineticSub7(bool*, void*, Vec2f*, soModuleAccesser* moduleAccesser) {
