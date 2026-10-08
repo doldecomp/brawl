@@ -19,19 +19,19 @@ void ftYoshiStatusUniqProcessFinalCommon::execStatus(soModuleAccesser* acc) {
     Vec2f stopSpeed = stop->getSpeed();
     Vec2f gravitySpeed = gravity->getSpeed();
     Vec2f controllerSpeed = controller->getSpeed();
-    float stickAngle = acc->getControllerModule().getStickAngle();
+    float lr = acc->getPostureModule().getLr();
     float stickY = acc->getControllerModule().getStickY();
     int status = acc->getStatusModule().getStatusKind();
     // HYPOTHESIS: extension offsets are speed limits and animation-rate tuning values.
     if (status == 0x120 || status == 0x122) {
-        if (stickAngle != 0.0f) {
+        if (acc->getControllerModule().getStickX() != 0.0f) {
             controllerSpeed.m_x += stopSpeed.m_x;
             stopSpeed.m_x = 0.0f;
             stop->disable();
         } else {
-            float directedSpeed = controllerSpeed.m_x * stickAngle;
+            float directedSpeed = controllerSpeed.m_x * lr;
             if (directedSpeed >= 0.0f && directedSpeed <= param->unk00 && !stop->isEnable()) {
-                stopSpeed.m_x = param->unk00 * stickAngle;
+                stopSpeed.m_x = param->unk00 * lr;
                 controllerSpeed.m_x = 0.0f;
                 stop->enable();
             }
@@ -74,8 +74,8 @@ void ftYoshiStatusUniqProcessFinalCommon::execFixPosCounter(soModuleAccesser* ac
         bool keepGravity = false;
         if (attached) {
             float threshold = soValueAccesser::getConstantFloat(acc, 0xC5F, 0);
-            float stickAngle = acc->getControllerModule().getStickAngle();
-            keepGravity = !(stickAngle >= threshold);
+            float stickY = acc->getControllerModule().getStickY();
+            keepGravity = stickY < threshold;
         }
         if (keepGravity) {
             // Native calls isOnDynamicCollision(8) here; its result is unused.
