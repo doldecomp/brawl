@@ -68,6 +68,8 @@ class ftZakoBallBuildConfig : public ftZakoBuildConfig { };
 
 #define FT_ZAKO_CLASS(NAME)                                                 \
     class ftZako##NAME : public ftFighterBuilder<ftZako##NAME##BuildConfig> { \
+        soArrayContractibleTable<const soStatusData> m_statusTable;         \
+        ftData* m_commonData;                                               \
     public:                                                                 \
         ftZako##NAME(s32 entryId,                                           \
                      Heaps::HeapType instHeap,                              \
@@ -83,3 +85,8 @@ FT_ZAKO_CLASS(Boy)
 FT_ZAKO_CLASS(Girl)
 FT_ZAKO_CLASS(Child)
 FT_ZAKO_CLASS(Ball)
+
+static_assert(sizeof(ftZakoBoy) == 0x8140, "Zako class size is wrong!");
+static_assert(sizeof(ftZakoGirl) == 0x8140, "Zako class size is wrong!");
+static_assert(sizeof(ftZakoChild) == 0x8140, "Zako class size is wrong!");
+static_assert(sizeof(ftZakoBall) == 0x8140, "Zako class size is wrong!");

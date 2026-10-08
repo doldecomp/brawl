@@ -28,6 +28,7 @@ ftClassInfoImpl<Fighter_Zako_Ball, ftZakoBall> g_ftClassInfoZakoBall;
                                                     instHeap,                               \
                                                     nwModelInstHeap,                        \
                                                     nwMotionInstHeap) {                     \
+        m_commonData = g_ftCommonDataAccesser.getData(Fighter_Zako_##NAME);                 \
     }                                                                                       \
     bool ftZako##NAME::checkTransitionStatus(u32 status) {                                  \
         bool result = false;                                                                \
