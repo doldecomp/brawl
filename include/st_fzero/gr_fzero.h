@@ -224,7 +224,8 @@ class grFzeroWall : public grFzero {
     u8* m_stateWork;           // 0x15C
     u8* m_stateWallWork;       // 0x160
     Matrix* m_mtxGimmickWork;  // 0x164
-    u8 unk168[0x170 - 0x168];
+    u8 m_animId;               // 0x168 current animation (1 = none)
+    float m_animFrames;        // 0x16C frame count of the current animation
 
 public:
     grFzeroWall(const char* taskName);
