@@ -9,7 +9,6 @@
 #include <so/so_external_value_accesser.h>
 #include <it/item.h>
 void ftWarioStatusUniqProcessSpecialS::initStatus(soModuleAccesser* a) {
-    ftWarioBikeRiderParam* param;
     const soModuleEnumeration* modules = a->m_enumerationStart;
     soGenerateArticleManageModule* articles = static_cast<soGenerateArticleManageModule*>(modules->m_generateArticleManageModule);
     soItemManageModule* items = modules->m_itemManageModule;
@@ -17,10 +16,14 @@ void ftWarioStatusUniqProcessSpecialS::initStatus(soModuleAccesser* a) {
     soStatusModule* status = modules->m_statusModule;
     soLinkModule* link = modules->m_linkModule;
     StageObject* fighter = &a->getStageObject();
-    if (fighter->soGetSubKind() == 0x15)
-        param = dynamic_cast<ftWario&>(*fighter).getExtendParam()->bikeRider;
-    else
-        param = dynamic_cast<ftWarioMan&>(*fighter).getExtendParam()->bikeRider;
+    ftWarioBikeRiderParam* param;
+    if (fighter->soGetSubKind() == 0x15) {
+        ftWario& wario = dynamic_cast<ftWario&>(*fighter);
+        param = wario.getExtendParam()->bikeRider;
+    } else {
+        ftWarioMan& wario = dynamic_cast<ftWarioMan&>(*fighter);
+        param = wario.getExtendParam()->bikeRider;
+    }
     if (items->getPickableItemKind() == 0x5c) {
         soItemInfo item;
         items->getPickableItemInfo(&item);
