@@ -3792,6 +3792,7 @@ config.libs = [
             Object(Matching, "mo_melee/sora_melee/ft/ft_marth_status_uniq_process_special_n_start.cpp"),
             Object(Matching, "mo_melee/sora_melee/ft/ft_marth_status_uniq_process_special_n_loop.cpp"),
             Object(Matching, "mo_melee/sora_melee/ft/ft_marth_status_uniq_process_special_n_end.cpp"),
+            Object(NonMatching, "mo_melee/sora_melee/ft/ft_status_uniq_process_yoshi_egg.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/ft/ft_status_uniq_process_glide.cpp"),
             Object(Matching, "mo_melee/sora_melee/ft/ft_status_uniq_process_guard.cpp"),
             Object(Matching, "mo_melee/sora_melee/ft/ft_status_uniq_process_guard_damage.cpp"),

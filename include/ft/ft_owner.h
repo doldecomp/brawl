@@ -81,6 +81,8 @@ public:
     void setSlipInterval(bool);
     void setResultWinRotY(float);
 
+    float getYoshiEggTimeMul(); // Multiplies the Egg status clatter duration.
+
     inline ftLog& getLog() const { return m_data->m_log; };
 };
 static_assert(sizeof(ftOwner) == 16, "Class is wrong size!");
