@@ -20,9 +20,10 @@
 // .bss+0xA48, named g_soTeamModuleNullArg after its first user, the team builder) instead of g_soEventObserverRegistrationDescNull.
 #define FT_NULL_OBSERVER_DESC reinterpret_cast<soEventObserverRegistrationDesc*>(g_soTeamModuleNullArg)
 
-// MATCH-ONLY: routing the area category through an inline function makes MWCC narrow it to u8 only when the
-// out-of-line area builder constructor arguments are set up, as in the original.
-static inline s32 ftPassS32(s32 v) { return v; }
+// MATCH-ONLY: routing a build data query through an inline function keeps its result in a plain temporary until the
+// builder constructor arguments are set up: the area category is narrowed to u8 only there, and the heap queries
+// get the original saved registers.
+template <typename T> static inline T ftPassT(T v) { return v; }
 
 // Size checks of the pieces. Fails to compile if a member layout is wrong.
 #define FT_ASSERT_SIZE(T, N) typedef char ft_assert_size_##__LINE__[(sizeof(T) == (N)) ? 1 : -1]
@@ -233,7 +234,7 @@ public:
             (void*)&m_heapModuleBuilder,
             (soParamCustomizeModule*)&m_paramCustomizeModuleBuilder,
             (void*)m_glowModuleBuilder.getModule()),
-        m_heapModuleBuilder(fbd.getInstanceHeap(), fbd.getNWModelInstanceHeap(), fbd.getNWMotionInstanceHeap(), fbd.getHeapSlotNo()),
+        m_heapModuleBuilder(fbd.getInstanceHeap(), ftPassT(fbd.getNWModelInstanceHeap()), fbd.getNWMotionInstanceHeap(), ftPassT(fbd.getHeapSlotNo())),
         m_paramCustomizeModuleBuilder(&m_moduleAccsr),
         m_resourceModuleBuilder(
             fbd.getMdlResId(),
@@ -277,7 +278,7 @@ public:
         m_generateArticleBuilder(&m_moduleAccsr),
         m_effectModuleBuilder(&m_moduleAccsr, fbd.getEffectNodeData(), fbd.getEffectEmitData(), fbd.getEffectCommonData(), fbd.getEffectScreenData(), FT_NULL_OBSERVER_DESC),
         m_comboModuleBuilder(&m_moduleAccsr),
-        m_areaBuilder(&m_moduleAccsr, ftPassS32(fbd.getAreaCategory()), FT_NULL_OBSERVER_DESC),
+        m_areaBuilder(&m_moduleAccsr, ftPassT(fbd.getAreaCategory()), FT_NULL_OBSERVER_DESC),
         m_physicsModuleBuilder(&m_moduleAccsr, (fbd.getTerritoryRect(), fbd.getTerritoryParam(), fbd.getTargetSearchParam(), fbd.getIkData())), // HYPOTHESIS: the territory/target search null builders have no storage
         m_slopeModuleBuilder(&m_moduleAccsr, fbd.getSlopeAngleLimit()),
         m_shadowModuleBuilder(&m_moduleAccsr),
