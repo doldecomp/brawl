@@ -52,7 +52,7 @@ public:
 
     soAnimCmdInterpreter(s16 manageId, soArrayVector<acCmdInterpreterStackData, 8>* stack, int kind, int mode, float fixedTimeStep, const u8* resetMode) :
         acCmdInterpreter(stack, mode, nullptr, resetMode, fixedTimeStep),
-        soEventPresenter<soAnimCmdEventObserver>(manageId, 5, true),
+        soEventPresenter<soAnimCmdEventObserver>(manageId, 5, soEventPresenterLocalStore),
         m_kind(kind), unk44(0), unk48(0), unk4C(0) { }
     ~soAnimCmdInterpreter() { }
     virtual bool dispatchCmdIf(const acAnimCmd* cmd);
