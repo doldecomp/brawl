@@ -272,29 +272,32 @@ void grFzeroWarning::updateActive(float deltaFrame) {
             setVisibility(true);
         }
         switch (m_animId) {
-        case 1:
-            m_sePlayer.playFrame(0, getMotionFrame(0));
-            if (m_timer == 0.0f) {
-                m_warned = 1;
-            }
-            if (m_lastFrame <= getMotionFrame(0)) {
-                m_lastFrame = getMotionFrame(0);
-            } else if (m_warned == 1) {
-                setMotion(2, false, true, &m_animFrames);
-                g_sndSystem->playSE(static_cast<SndID>(0x1c72), 0, 0, 0, -1);
-            } else {
-                m_lastFrame = getMotionFrame(0);
-            }
-            break;
         case 0:
-            if (m_animFrames <= getMotionFrame(0)) {
+            if (getMotionFrame(0) >= m_animFrames) {
                 setMotion(1, true, true, &m_animFrames);
                 m_lastFrame = 0.0f;
                 m_sePlayer.playFrame(0, getMotionFrame(0), 0.0f);
             }
             break;
+        case 1: {
+            m_sePlayer.playFrame(0, getMotionFrame(0));
+            if (m_timer == 0.0f) {
+                m_warned = 1;
+            }
+            if (getMotionFrame(0) < m_lastFrame) {
+                if (m_warned == 1) {
+                    setMotion(2, false, true, &m_animFrames);
+                    g_sndSystem->playSE(static_cast<SndID>(0x1c72), 0, 0, 0, -1);
+                } else {
+                    m_lastFrame = getMotionFrame(0);
+                }
+            } else {
+                m_lastFrame = getMotionFrame(0);
+            }
+            break;
+        }
         case 2:
-            if (m_animFrames <= getMotionFrame(0)) {
+            if (getMotionFrame(0) >= m_animFrames) {
                 setMotion(3, false, true, NULL);
                 m_state = 0;
             }
