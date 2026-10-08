@@ -239,6 +239,7 @@ public:
 
     bool isHeartSwapped() const { return unk11_02; } // HYPOTHESIS: see unk11_02
     void createInstance();
+    void startSubFighter();
     void toStartSequence(u8 mode);
     void setWarp(Vec3f* pos, float lr, u32 flags);
     void standby(int unk);

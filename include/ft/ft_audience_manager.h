@@ -27,7 +27,7 @@ public:
     ftAudienceNull* m_audienceNull;
     ftAudience* m_audience;
 
-    void initialize();
+    static void initialize();
     void activate();
     void deactivate();
 };

@@ -253,7 +253,9 @@ public:
     void setDead(int entryId, int unk1, int unk2);
     void setDefault();
     void setMode(int mode);
+    static void create();
     void stopGame();
+    void startSubFighter(int entryId, float lr, Vec3f* pos);
     void startInputEvent();
     int getBeatPointDiffFromTop(int entryId) const;
     float getFighterScreenX(int entryId, int instanceIndex) const;

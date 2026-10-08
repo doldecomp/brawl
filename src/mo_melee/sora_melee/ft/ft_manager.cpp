@@ -7,6 +7,7 @@
 #include <gf/gf_task_scheduler.h>
 #include <it/it_manager.h>
 #include <gf/gf_camera.h>
+#include <ft/ft_system.h>
 #include <gm/gm_global.h>
 #include <mu/menu.h>
 #include <snd/snd_system.h>
@@ -1345,4 +1346,34 @@ void ftManager::startInputEvent() {
         owner->setController(controller->getControllerKind(), &buttons1, &buttons0);
     }
     unk6c_10 = true;
+}
+
+// MATCH-ONLY: stand-in declaration, the aiMgr header is not needed here
+class aiMgr {
+public:
+    static void create(int unk);
+};
+
+void ftManager::create() {
+    g_ftManager = new (Heaps::System) ftManager(g_ftSystem.unk0, g_ftSystem.unk4);
+    ftAudienceManager::initialize();
+    aiMgr::create(0);
+}
+
+// HYPOTHESIS: unnamed module embedded in ftOwner at 0xD54 (its vtable pointer sits at +0xC); slot 2 takes (0, 0.0f)
+class ftOwnerUnknownModule {
+public:
+    char _0[0xC];
+    virtual void unk_v0();
+    virtual void unk_v1();
+    virtual void unk_v2(int unk1, float unk2);
+};
+
+void ftManager::startSubFighter(int entryId, float lr, Vec3f* pos) {
+    ftEntry* entry = m_entryManager->getEntity(entryId);
+    ftOwner* owner = entry->m_owner;
+    owner->setStartPos(pos);
+    owner->setStartLr(lr);
+    reinterpret_cast<ftOwnerUnknownModule*>(reinterpret_cast<u8*>(owner) + 0xD54)->unk_v2(0, 0.0f);
+    entry->startSubFighter();
 }
