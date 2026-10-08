@@ -13,7 +13,12 @@ void wnYoshiStar::activate(int founderTaskId, int team, Vec3f* pos, float lr) {
     desc.resourceId = desc.unk8 = desc.unkC = 0xFFFF;
     desc.unk10 = desc.unk14 = -1;
     desc.unk18 = desc.unk1C = 0;
+#ifdef MATCHING
+    // MATCH-ONLY: retain the native aggregate word copy from the caller position.
+    __memcpy(&desc.pos, pos, sizeof(Vec3f));
+#else
     desc.pos = *pos;
+#endif
     desc.lr = lr;
     desc.team = team;
     desc.life = 0;
@@ -31,8 +36,12 @@ void wnYoshiStar::activate(int founderTaskId, int team, Vec3f* pos, float lr) {
         *m_moduleAccesser->getKineticModule().getEnergy(0));
     Vec2f limit;
     Vec2f::copy(limit, normal.m_speedLimit);
-    Vec2f speed(m_param->unk0 * lr, m_param->unk8);
-    Vec2f accel(m_param->unk4 * lr, -m_param->unk10);
+    Vec2f speed;
+    speed.m_x = m_param->unk0 * lr;
+    speed.m_y = m_param->unk8;
+    Vec2f accel;
+    accel.m_x = m_param->unk4 * lr;
+    accel.m_y = -m_param->unk10;
     limit.m_y = m_param->unkC;
     normal.m_speed = speed;
     normal.m_accel = accel;
@@ -43,7 +52,8 @@ void wnYoshiStar::activate(int founderTaskId, int team, Vec3f* pos, float lr) {
 bool wnYoshiStar::notifyEventCollisionAttackCheck(u32 flags) {
     if (flags & 0x13) return true;
     if (flags & 4) {
-        if (unkA4 & 0x80) return hop();
+        // MATCH-ONLY: express the high-bit test as the native extracted bit value.
+        if ((unkA4 >> 7) == 1) return hop();
         return true;
     }
     if ((flags & 8) && m_moduleAccesser->getReflectModule().isReflect() == true) {
@@ -61,7 +71,8 @@ bool wnYoshiStar::notifyEventCollisionAttackCheck(u32 flags) {
 
 bool wnYoshiStar::notifyEventAnimCmd(acAnimCmd* cmd, soModuleAccesser* a, int index) {
     if (Weapon::notifyEventAnimCmd(cmd, a, index)) return true;
-    if (!isObserv(cmd->getGroup())) return false;
+    s8 group = cmd->getGroup();
+    if (!isObserv(group)) return false;
     if (cmd->getType() > -1) cmd->getType();
     return false;
 }

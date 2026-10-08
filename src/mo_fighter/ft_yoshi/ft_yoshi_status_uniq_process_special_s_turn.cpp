@@ -43,6 +43,7 @@ void ftYoshiStatusUniqProcessSpecialSTurn::execStatus(soModuleAccesser* acc) {
     ftYoshiStatusUniqProcessSpecialSUtility::setRot(acc);
     float oldMagnitude = ftyoshi::ABS(oldSpeed);
     float magnitude = ftyoshi::ABS(velocity.m_x);
+    // MATCH-ONLY: preserve the native discarded out-of-line ABS call.
     ftyoshi::ABS(param->turnModelAngle);
     float modelAngle = ftyoshi::ABS(param->turnModelAngle);
     if (oldSpeed > 0.0f) {
@@ -159,9 +160,7 @@ void ftYoshiStatusUniqProcessSpecialSTurn::execFixPos(soModuleAccesser* acc) {
     if (target != -1) status.changeStatusRequest(target, acc);
 }
 void ftYoshiStatusUniqProcessSpecialSTurn::exitStatus(soModuleAccesser* acc, int nextStatus) {
-    if (nextStatus != 0x113) {
-        if (static_cast<unsigned>(nextStatus - 0x119) > 3) return;
-    }
-    ftYoshiStatusUniqProcessSpecialSUtility::resetYoshiSpecialS2(acc);
+    if (nextStatus == 0x113 || static_cast<unsigned>(nextStatus - 0x119) <= 3)
+        ftYoshiStatusUniqProcessSpecialSUtility::resetYoshiSpecialS2(acc);
 }
 ftYoshiStatusUniqProcessSpecialSTurn g_ftYoshiStatusUniqProcessSpecialSTurn;
