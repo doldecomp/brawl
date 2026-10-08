@@ -68,6 +68,8 @@ Things that moved registers, roughly in the order worth trying:
 
 - **Only helper-copy stack slots differ in a hierarchy visitor:** preserve the recursive owner traversal instead of flattening all leaf calls. Pass the shared helper by const reference through hierarchy levels and by value into each leaf visitor. Recovered `soInstancePool::forEachHolderModuleAccesser` made Marth's `ftKineticMediatorImpl::updateEnergy1` exact without stack padding. Seen: `include/ft/builder/ft_builder_kinetic.h`. **HIGH**
 
+- **Constructor argument pointers are cached on the wrong side of a virtual query:** an inline wrapper can hide the query from MWCC argument scheduling even though its body is inlined. Try the real virtual expression directly in the argument list before changing parameter types or adding temporaries. Replacing `ftGetManageId(acc)` with `static_cast<soEventManager&>(acc->getEventManageModule()).getManageId()` matched Marth's entire motion builder, including its saved registers and stack frame; reference-parameter changes did not. Seen: `include/ft/builder/ft_builder_motion.h`. **MED**
+
 ## 7. Data and sections
 - REL units build with `-sdata 0 -sdata2 0`, so nothing goes to small data; the DOL has them. From the third reference to `.data` or `.bss` items in one function, MWCC pools them (offsets from one section base), which looks like a struct that does not exist. `.sbss` never pools. **HIGH**
 - Strings: `-str reuse` shares identical literals in a unit; compile with `-enc SJIS` or non-ASCII literals differ.

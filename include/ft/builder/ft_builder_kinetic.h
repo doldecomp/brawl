@@ -119,7 +119,15 @@ public:
 template <typename Info, typename Holder>
 class soInstancePoolSub {
 public:
+#ifdef FT_MARTH_RUNTIME_HELPERS
+#pragma push
+#pragma dont_inline on
+#endif
+    // MATCH-ONLY: Marth retains the subpool teardown as a separate call.
     virtual ~soInstancePoolSub() { }
+#ifdef FT_MARTH_RUNTIME_HELPERS
+#pragma pop
+#endif
 private:
     soInstancePoolSubNull<typename Info::Type> m_next;
     Holder m_holder;
