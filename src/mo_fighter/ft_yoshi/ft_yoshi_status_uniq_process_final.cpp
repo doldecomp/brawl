@@ -102,11 +102,16 @@ void ftYoshiStatusUniqProcessFinalCommon::execFixPos(soModuleAccesser* acc) {
 }
 
 void ftYoshiStatusUniqProcessFinalCommon::exitStatus(soModuleAccesser* acc, int nextStatus) {
-    if (nextStatus == 0x116 || (nextStatus >= 0x120 && nextStatus <= 0x124)) return;
+    if (nextStatus == 0x116) return;
+    if (nextStatus == 0x120) return;
+    if (nextStatus == 0x121) return;
+    if (nextStatus == 0x122) return;
+    if (nextStatus == 0x123) return;
+    if (nextStatus == 0x124) return;
 
     static_cast<soGenerateArticleManageModule*>(acc->m_enumerationStart->m_generateArticleManageModule)
         ->removeExist(2, 0);
-    acc->getMotionModule().changeMotion(nullptr);
+    acc->getMotionModule().removePartialAnimChr(0);
     acc->getVisibilityModule().setWhole(1);
 }
 
