@@ -3,6 +3,7 @@
 #include <gr/collision/gr_collision.h>
 #include <memory.h>
 #include <mt/mt_prng.h>
+#include <nw4r/math/math_arithmetic.h>
 #include <nw4r/math/math_triangular.h>
 #include <snd/snd_system.h>
 #include <string.h>
@@ -16,6 +17,12 @@ grFzeroBg* grFzeroBg::create(int mdlIndex, const char* nodeName, const char* tas
     }
     return ground;
 }
+
+// MATCH-ONLY: the original reads the game mode of gmGlobalModeMelee's init data (bits 7..2 of byte 8) with a byte load.
+struct fzeroBgModeByte {
+    u8 m_mode : 6;
+    u8 : 2;
+};
 
 grFzeroBg::grFzeroBg(const char* taskName) : grFzero(taskName) {
     m_phase = 0;
@@ -48,7 +55,13 @@ grFzeroBg::grFzeroBg(const char* taskName) : grFzero(taskName) {
     m_seHandle = -1;
     m_isEvent = false;
     gmGlobalModeMelee* melee = g_GameGlobal->m_modeMelee;
-    if (melee != NULL && melee->m_meleeInitData.m_gameMode == 7 && *((u8*)melee + 0x10) == 0x1f) {
+    if (melee == NULL) {
+        return;
+    }
+    if (((fzeroBgModeByte*)((u8*)melee + 8))->m_mode != 7) {
+        return;
+    }
+    if (*((u8*)melee + 0x10) == 0x1f) {
         m_isEvent = true;
     }
 }
@@ -68,6 +81,12 @@ static inline void grFzeroJointDisable(grCollisionJoint* joint) {
     joint->m_0x54_6 = joint->m_0x54_4;
 }
 
+// HYPOTHESIS: the same fsel based clamp helper the glide statuses use.
+static inline float fzeroClamp(float value, float lo, float hi) {
+    value = nw4r::math::FSelect(value - lo, value, lo);
+    return nw4r::math::FSelect(value - hi, hi, value);
+}
+
 void grFzeroBg::update(float deltaFrame) {
     grGimmick::update(deltaFrame);
     if (m_isUpdate) {
@@ -78,31 +97,30 @@ void grFzeroBg::update(float deltaFrame) {
         updateG3dProcCalcWorld();
         m_hasUpdatedG3dCalcWorld = false;
         if (m_mtxGimmickWork != NULL) {
-            Matrix* mtx = m_mtxGimmickWork;
-            getNodeMatrix(mtx + 0, 0, m_nodeHaikei[0]);
-            getNodeMatrix(mtx + 1, 0, m_nodeHaikei[1]);
-            getNodeMatrix(mtx + 2, 0, m_nodeAsiba[0]);
-            getNodeMatrix(mtx + 3, 0, m_nodeAsiba[1]);
-            getNodeMatrix(mtx + 4, 0, m_nodeAsiba[2]);
-            getNodeMatrix(mtx + 5, 0, m_nodeAsiba[3]);
-            getNodeMatrix(mtx + 6, 0, m_nodeAsiba[4]);
-            getNodeMatrix(mtx + 7, 0, m_nodeAsiba[5]);
-            getNodeMatrix(mtx + 8, 0, m_nodeAsiba[6]);
-            getNodeMatrix(mtx + 9, 0, m_nodeDplate[0]);
-            getNodeMatrix(mtx + 10, 0, m_nodeDplate[1]);
-            getNodeMatrix(mtx + 11, 0, m_nodeDplate[2]);
-            getNodeMatrix(mtx + 12, 0, m_nodeDplate[3]);
-            getNodeMatrix(mtx + 13, 0, m_nodeDplate[4]);
-            getNodeMatrix(mtx + 14, 0, m_nodeDplate[5]);
-            getNodeMatrix(mtx + 15, 0, m_nodeDplate[6]);
-            getNodeMatrix(mtx + 16, 0, m_nodeDplate[7]);
-            getNodeMatrix(mtx + 17, 0, m_nodeDplate[8]);
-            getNodeMatrix(mtx + 18, 0, m_nodeDplate[9]);
-            getNodeMatrix(mtx + 19, 0, m_nodeDplate[10]);
-            getNodeMatrix(mtx + 20, 0, m_nodeDplateRing);
-            getNodeMatrix(mtx + 21, 0, m_nodeCourseStart);
-            getNodeMatrix(mtx + 22, 0, m_nodeCourseCol[0]);
-            getNodeMatrix(mtx + 23, 0, m_nodeCourseCol[1]);
+            getNodeMatrix(m_mtxGimmickWork, 0, m_nodeHaikei[0]);
+            getNodeMatrix(m_mtxGimmickWork + 1, 0, m_nodeHaikei[1]);
+            getNodeMatrix(m_mtxGimmickWork + 2, 0, m_nodeAsiba[0]);
+            getNodeMatrix(m_mtxGimmickWork + 3, 0, m_nodeAsiba[1]);
+            getNodeMatrix(m_mtxGimmickWork + 4, 0, m_nodeAsiba[2]);
+            getNodeMatrix(m_mtxGimmickWork + 5, 0, m_nodeAsiba[3]);
+            getNodeMatrix(m_mtxGimmickWork + 6, 0, m_nodeAsiba[4]);
+            getNodeMatrix(m_mtxGimmickWork + 7, 0, m_nodeAsiba[5]);
+            getNodeMatrix(m_mtxGimmickWork + 8, 0, m_nodeAsiba[6]);
+            getNodeMatrix(m_mtxGimmickWork + 9, 0, m_nodeDplate[0]);
+            getNodeMatrix(m_mtxGimmickWork + 10, 0, m_nodeDplate[1]);
+            getNodeMatrix(m_mtxGimmickWork + 11, 0, m_nodeDplate[2]);
+            getNodeMatrix(m_mtxGimmickWork + 12, 0, m_nodeDplate[3]);
+            getNodeMatrix(m_mtxGimmickWork + 13, 0, m_nodeDplate[4]);
+            getNodeMatrix(m_mtxGimmickWork + 14, 0, m_nodeDplate[5]);
+            getNodeMatrix(m_mtxGimmickWork + 15, 0, m_nodeDplate[6]);
+            getNodeMatrix(m_mtxGimmickWork + 16, 0, m_nodeDplate[7]);
+            getNodeMatrix(m_mtxGimmickWork + 17, 0, m_nodeDplate[8]);
+            getNodeMatrix(m_mtxGimmickWork + 18, 0, m_nodeDplate[9]);
+            getNodeMatrix(m_mtxGimmickWork + 19, 0, m_nodeDplate[10]);
+            getNodeMatrix(m_mtxGimmickWork + 20, 0, m_nodeDplateRing);
+            getNodeMatrix(m_mtxGimmickWork + 21, 0, m_nodeCourseStart);
+            getNodeMatrix(m_mtxGimmickWork + 22, 0, m_nodeCourseCol[0]);
+            getNodeMatrix(m_mtxGimmickWork + 23, 0, m_nodeCourseCol[1]);
         }
     }
 }
@@ -125,6 +143,8 @@ void grFzeroBg::updateJoint(float deltaFrame) {
 
 void grFzeroBg::updateScene(float deltaFrame) {
     switch (m_state) {
+    case 2:
+        break;
     case 0:
         setMotion(0, 0, 0, 0);
         m_unk1F8 = 0.0f;
@@ -138,7 +158,8 @@ void grFzeroBg::updateScene(float deltaFrame) {
     case 1: {
         grCollision* collision = m_collision;
         if (collision != NULL) {
-            for (u32 i = 0; i != collision->m_jointLen; i++) {
+            u32 jointLen = (u16)collision->m_jointLen;
+            for (u32 i = 0; i != jointLen; i++) {
                 grCollisionJoint* joint = collision->getJoint(i);
                 if (joint != NULL) {
                     joint->m_0x56_7 = true;
@@ -168,19 +189,6 @@ void grFzeroBg::updateSceneMotion(float deltaFrame) {
         m_timer = 0.0f;
     }
     switch (*m_stateWork) {
-    case 2:
-        if (m_timer == 0.0f && (m_animId == 2 || *m_carMotionWork == 5)) {
-            int next = *m_sceneWork + 1;
-            if (next == 7) {
-                next = 0;
-            }
-            grCollisionJoint* joint = m_joint[next];
-            if (joint != NULL) {
-                joint->m_0x55_3 = true;
-            }
-            *m_stateWork = 3;
-        }
-        break;
     case 0:
         switch (m_phase) {
         case 0:
@@ -191,13 +199,13 @@ void grFzeroBg::updateSceneMotion(float deltaFrame) {
             if (m_isEvent == true) {
                 m_phase = 7;
             } else {
-                if (data->m_chance < randf() || m_count == 3) {
+                if (randf() > data->m_chance || m_count == 3) {
                     replay = true;
                 } else if (*m_carMotionWork == 2 && m_animId == 3) {
                     replay = true;
                 }
             }
-            if (replay) {
+            if (replay == true) {
                 m_count = 0;
                 m_timer = 120.0f;
                 m_motionRate = 1.0f;
@@ -213,45 +221,35 @@ void grFzeroBg::updateSceneMotion(float deltaFrame) {
             if (m_seHandle == -1 && getMotionFrame(0) >= m_frameLimit - 60.0f) {
                 m_seHandle = g_sndSystem->playSE(static_cast<SndID>(0x1c6f), 0, 0, 0, -1);
             }
-            if (getMotionFrame(0) < m_frameLimit - 120.0f) {
-                m_timer = 120.0f;
-                m_motionRate = 1.0f;
-            } else {
-                float t = 1.0f - m_timer / 120.0f;
-                if (t < 0.0f) {
-                    t = 0.0f;
-                }
-                float u = 1.0f;
-                if (t < 1.0f) {
-                    u = t;
-                }
-                float value = 1.0f - nw4r::math::SinFIdx((float)(s16)(int)(u * 16384.0f) * 0.00390625f);
+            if (getMotionFrame(0) >= m_frameLimit - 120.0f) {
+                float hi = 1.0f;
+                float lo = 0.0f;
+                float clamped = fzeroClamp(hi - m_timer / 120.0f, lo, hi);
+                float value = 1.0f - nw4r::math::SinIdx((u16)(int)(clamped * 16384.0f));
                 m_motionRate = 1.0f;
                 setMotionFrame(m_frameLimit - value * 120.0f, 0);
                 if (value == 0.0f) {
                     m_phase = 3;
                 }
+            } else {
+                m_timer = 120.0f;
+                m_motionRate = 1.0f;
             }
             break;
         case 4:
-            if (getMotionFrame(0) > 120.0f) {
-                m_timer = 120.0f;
+            if (getMotionFrame(0) <= 120.0f) {
+                float hi = 1.0f;
+                float lo = 0.0f;
+                float clamped = fzeroClamp(hi - m_timer / 120.0f, lo, hi);
                 m_motionRate = 1.0f;
-            } else {
-                float t = 1.0f - m_timer / 120.0f;
-                if (t < 0.0f) {
-                    t = 0.0f;
-                }
-                float u = 1.0f;
-                if (t < 1.0f) {
-                    u = t;
-                }
-                m_motionRate = 1.0f;
-                float value = 1.0f - nw4r::math::CosFIdx((float)(s16)(int)(u * 16384.0f) * 0.00390625f);
+                float value = 1.0f - nw4r::math::CosFIdx(NW4R_MATH_IDX_TO_FIDX(nw4r::math::U16ToF32((u16)(int)(clamped * 16384.0f))));
                 setMotionFrame(value * 120.0f, 0);
                 if (value == 1.0f) {
                     m_phase = 1;
                 }
+            } else {
+                m_timer = 120.0f;
+                m_motionRate = 1.0f;
             }
             break;
         case 5:
@@ -275,6 +273,19 @@ void grFzeroBg::updateSceneMotion(float deltaFrame) {
         }
         break;
     }
+    case 2:
+        if (m_timer == 0.0f && (m_animId == 2 || *m_carMotionWork == 5)) {
+            int next = *m_sceneWork + 1;
+            if (next == 7) {
+                next = 0;
+            }
+            grCollisionJoint* joint = m_joint[next];
+            if (joint != NULL) {
+                joint->m_0x55_3 = true;
+            }
+            *m_stateWork = 3;
+        }
+        break;
     case 5: {
         *m_stateWork = 0;
         m_timer = 120.0f;
@@ -387,37 +398,37 @@ void grFzeroBg::updateSE(float deltaFrame) {
     case 0:
         switch (m_seIndex) {
         case 0:
-            if (getMotionFrame(0) >= 50.0f) {
+            if (!(getMotionFrame(0) < 50.0f)) {
                 playSEMarkPass();
                 m_seIndex++;
             }
             break;
         case 1:
-            if (getMotionFrame(0) >= 155.0f) {
+            if (!(getMotionFrame(0) < 155.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
             break;
         case 2:
-            if (getMotionFrame(0) >= 195.0f) {
+            if (!(getMotionFrame(0) < 195.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
             break;
         case 3:
-            if (getMotionFrame(0) >= 238.0f) {
+            if (!(getMotionFrame(0) < 238.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
             break;
         case 4:
-            if (getMotionFrame(0) >= 280.0f) {
+            if (!(getMotionFrame(0) < 280.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
             break;
         case 5:
-            if (getMotionFrame(0) >= 320.0f) {
+            if (!(getMotionFrame(0) < 320.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
@@ -425,74 +436,87 @@ void grFzeroBg::updateSE(float deltaFrame) {
         }
         break;
     case 1:
-        if (m_seIndex == 0 && getMotionFrame(0) >= 185.0f) {
-            playSECoursePass();
-            m_seIndex++;
+        switch (m_seIndex) {
+        case 0:
+            if (!(getMotionFrame(0) < 185.0f)) {
+                playSECoursePass();
+                m_seIndex++;
+            }
+            break;
         }
         break;
     case 2:
-        if (m_seIndex == 0 && getMotionFrame(0) >= 260.0f) {
-            playSEMarkPass();
-            m_seIndex++;
-        }
-        break;
-    case 3:
-        if (m_seIndex == 1) {
-            if (getMotionFrame(0) >= 504.0f) {
+        switch (m_seIndex) {
+        case 0:
+            if (!(getMotionFrame(0) < 260.0f)) {
                 playSEMarkPass();
                 m_seIndex++;
             }
-        } else if (m_seIndex == 0 && getMotionFrame(0) >= 415.0f) {
-            playSEMarkPass();
-            m_seIndex++;
+            break;
+        }
+        break;
+    case 3:
+        switch (m_seIndex) {
+        case 1:
+            if (!(getMotionFrame(0) < 504.0f)) {
+                playSEMarkPass();
+                m_seIndex++;
+            }
+            break;
+        case 0:
+            if (!(getMotionFrame(0) < 415.0f)) {
+                playSEMarkPass();
+                m_seIndex++;
+            }
+            break;
         }
         break;
     case 4:
         switch (m_seIndex) {
         case 0:
-            if (getMotionFrame(0) >= 64.0f) {
+            if (!(getMotionFrame(0) < 64.0f)) {
                 playSEMarkPass();
                 m_seIndex++;
             }
             break;
         case 1:
-            if (getMotionFrame(0) >= 82.0f) {
+            if (!(getMotionFrame(0) < 82.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
             break;
         case 2:
-            if (getMotionFrame(0) >= 270.0f) {
+            if (!(getMotionFrame(0) < 270.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
             break;
         case 3:
-            if (getMotionFrame(0) >= 285.0f) {
+            if (!(getMotionFrame(0) < 285.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
             break;
         case 4:
-            if (getMotionFrame(0) >= 300.0f) {
+            if (!(getMotionFrame(0) < 300.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
             break;
         case 5:
-            if (getMotionFrame(0) >= 315.0f) {
+            if (!(getMotionFrame(0) < 315.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
             break;
         case 6:
-            if (getMotionFrame(0) >= 330.0f) {
+            if (!(getMotionFrame(0) < 330.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
             break;
         case 7:
-            if (getMotionFrame(0) >= 350.0f) {
+            if (!(getMotionFrame(0) < 350.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
@@ -502,61 +526,61 @@ void grFzeroBg::updateSE(float deltaFrame) {
     case 5:
         switch (m_seIndex) {
         case 0:
-            if (getMotionFrame(0) >= 3.0f) {
+            if (!(getMotionFrame(0) < 3.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
             break;
         case 1:
-            if (getMotionFrame(0) >= 22.0f) {
+            if (!(getMotionFrame(0) < 22.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
             break;
         case 2:
-            if (getMotionFrame(0) >= 43.0f) {
+            if (!(getMotionFrame(0) < 43.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
             break;
         case 3:
-            if (getMotionFrame(0) >= 65.0f) {
+            if (!(getMotionFrame(0) < 65.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
             break;
         case 4:
-            if (getMotionFrame(0) >= 90.0f) {
+            if (!(getMotionFrame(0) < 90.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
             break;
         case 5:
-            if (getMotionFrame(0) >= 330.0f) {
+            if (!(getMotionFrame(0) < 330.0f)) {
                 playSEMarkPass();
                 m_seIndex++;
             }
             break;
         case 6:
-            if (getMotionFrame(0) >= 360.0f) {
+            if (!(getMotionFrame(0) < 360.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
             break;
         case 7:
-            if (getMotionFrame(0) >= 440.0f) {
+            if (!(getMotionFrame(0) < 440.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
             break;
         case 8:
-            if (getMotionFrame(0) >= 510.0f) {
+            if (!(getMotionFrame(0) < 510.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
             break;
         case 9:
-            if (getMotionFrame(0) >= 586.0f) {
+            if (!(getMotionFrame(0) < 586.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
@@ -566,25 +590,25 @@ void grFzeroBg::updateSE(float deltaFrame) {
     case 6:
         switch (m_seIndex) {
         case 0:
-            if (getMotionFrame(0) >= 70.0f) {
+            if (!(getMotionFrame(0) < 70.0f)) {
                 playSEMarkPass();
                 m_seIndex++;
             }
             break;
         case 1:
-            if (getMotionFrame(0) >= 233.0f) {
+            if (!(getMotionFrame(0) < 233.0f)) {
                 playSEMarkPass();
                 m_seIndex++;
             }
             break;
         case 2:
-            if (getMotionFrame(0) >= 288.0f) {
+            if (!(getMotionFrame(0) < 288.0f)) {
                 playSEMarkPass();
                 m_seIndex++;
             }
             break;
         case 3:
-            if (getMotionFrame(0) >= 376.0f) {
+            if (!(getMotionFrame(0) < 376.0f)) {
                 playSECoursePass();
                 m_seIndex++;
             }
