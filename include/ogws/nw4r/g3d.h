@@ -25,8 +25,10 @@
 #include <nw4r/g3d/g3d_maya.h>
 #include <nw4r/g3d/g3d_obj.h>
 #include <nw4r/g3d/g3d_rtti.h>
+#include <nw4r/g3d/g3d_scnchoice.h>
 #include <nw4r/g3d/g3d_scnmdl.h>
 #include <nw4r/g3d/g3d_scnmdl1mat1shp.h>
+#include <nw4r/g3d/g3d_scnmdlexpand.h>
 #include <nw4r/g3d/g3d_scnmdlsmpl.h>
 #include <nw4r/g3d/g3d_scnobj.h>
 #include <nw4r/g3d/g3d_scnproc.h>

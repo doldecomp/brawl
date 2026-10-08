@@ -632,6 +632,12 @@ nw4r/g3d/g3d_scnmdl.cpp:
 	.rodata     start:0x8040ABD8 end:0x8040ABF8
 	.data       start:0x804663C8 end:0x80466410
 
+nw4r/g3d/g3d_scnmdlexpand.cpp:
+	.text       start:0x801B4AF4 end:0x801B55C4
+	.rodata     start:0x8040AC08 end:0x8040AC20
+	.data       start:0x804664F8 end:0x80466580
+	.sdata      start:0x8059E950 end:0x8059E958
+
 nw4r/g3d/g3d_calcmaterial.cpp:
 	.text       start:0x801B55C4 end:0x801B59D4
 
