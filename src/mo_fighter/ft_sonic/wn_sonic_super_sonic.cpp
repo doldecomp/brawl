@@ -1,10 +1,68 @@
 // MATCH-ONLY: original article callbacks use the unscheduled compiler policy.
 #pragma scheduling off
+#define MT_VEC3F_CTOR_NOINLINE
 #include <wn/sonic/wn_sonic_super_sonic.h>
+#include <wn/wn_activate_desc.h>
 #include <so/so_module_accesser.h>
 #include <so/so_value_accesser.h>
 #include <cm/cm_camera_controller.h>
 
+
+void wnSonicSuperSonic::activate(int founderTaskId, int resourceId, int team, Vec2f* pos,
+                               float lr, SituationKind situation, wnSonicSuperSonicEffectList* effects) {
+    Vec3f position(pos->m_x, pos->m_y, 0.0f);
+    wnActivateDesc desc;
+    desc.founderTaskId = founderTaskId;
+    desc.resourceId = resourceId;
+    desc.unk8 = resourceId;
+    desc.unkC = resourceId;
+    desc.unk10 = -1;
+    desc.unk14 = -1;
+    desc.unk18 = 0;
+    desc.unk1C = 0;
+#ifdef MATCHING
+    // MATCH-ONLY: retain the original aggregate word copy.
+    __memcpy(&desc.pos, &position, sizeof(Vec3f));
+#else
+    desc.pos = position;
+#endif
+    desc.lr = lr;
+    desc.team = team;
+    desc.life = 0;
+    desc.unk38 = 2;
+    desc.unk3C = 0x80;
+    desc.unk40 = 0;
+    desc.unk44 = 0x35F;
+    desc.unk48 = 0;
+    // HYPOTHESIS: original named bitfields and the unused low six bits of 4D.
+    // Only the activation bits consumed by Weapon::activate are reconstructed.
+    desc.flags = 0xA0;
+    desc.unk4D = 0;
+    Weapon::activate(&desc);
+    m_moduleAccesser->getWorkManageModule().onFlag(0x12000000);
+    m_moduleAccesser->getCollisionHitModule().setWhole(3, 0);
+    if (situation == Situation_Ground && m_moduleAccesser->getGroundModule().attachGround(0) == true) {
+        m_moduleAccesser->getSituationModule().setKind(Situation_Ground, false);
+    }
+    m_moduleAccesser->getLinkModule().setAttribute(3, soLinkConnection::Attribute_Reference_Parent_Unknown_4, true);
+    for (u32 i = 0; i < effects->size; ++i) {
+        int node = convertSonicNode(effects->entries[i].nodeId);
+        if (node != -1) {
+            Vec3f pos = effects->entries[i].pos;
+            Vec3f rot(0.0f, 0.0f, 0.0f);
+            m_moduleAccesser->getEffectModule().reqFollow(static_cast<EfID>(0x1020002), node,
+                                                       &pos, &rot, effects->entries[i].scale,
+                                                       true, 0x10, 0, -1);
+        }
+    }
+    m_moduleAccesser->getLinkModule().setAttribute(3, soLinkConnection::Attribute_Reference_Parent_Scale, true);
+    u8 playerNo, pri, advPri;
+    m_moduleAccesser->getLinkModule().getLinkParentCameraInfo(3, &playerNo, &pri, &advPri);
+    m_moduleAccesser->getCameraModule().setPri(pri, -1);
+    m_moduleAccesser->getCameraModule().setAdvPri(advPri, -1);
+    m_moduleAccesser->getCameraModule().setPlayerNo(playerNo, 0);
+    m_moduleAccesser->getGroundModule().setCorrect(soGroundShapeImpl::Correct_None, 0);
+}
 
 void wnSonicSuperSonic::processUpdate() {
     Weapon::processUpdate();

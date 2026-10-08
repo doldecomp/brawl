@@ -12,6 +12,7 @@
 // MATCH-ONLY: retain the original named zero-rotation constructor in reset.
 #define MT_VEC3F_CTOR_NOINLINE
 #include <wn/sonic/wn_sonic_gimmick_jump.h>
+#include <wn/wn_activate_desc.h>
 #include <so/so_module_accesser.h>
 #include <so/so_value_accesser.h>
 #include <so/so_kinetic_energy_normal.h>
@@ -21,6 +22,45 @@
 soGimmickEventPresenter::soGimmickEventPresenter(int manageID, int sendID)
     : soEventPresenter<soGimmickEventObserver>(manageID, static_cast<short>(3)), m_sendID(sendID) { }
 soGimmickEventPresenter::~soGimmickEventPresenter() { }
+
+void wnSonicGimmickJump::activate(int founderTaskId, int resourceId, int team,
+                                 Vec2f* pos, float lr, bool unk) {
+    Vec3f position(pos->m_x, pos->m_y, 0.0f);
+    wnActivateDesc desc;
+    desc.founderTaskId = founderTaskId;
+    desc.resourceId = resourceId;
+    desc.unk8 = resourceId;
+    desc.unkC = resourceId;
+    desc.unk10 = -1;
+    desc.unk14 = -1;
+    desc.unk18 = 0;
+    desc.unk1C = 0;
+#ifdef MATCHING
+    // MATCH-ONLY: retain the original aggregate word copy.
+    __memcpy(&desc.pos, &position, sizeof(Vec3f));
+#else
+    desc.pos = position;
+#endif
+    desc.lr = lr;
+    desc.team = team;
+    desc.life = 0;
+    desc.unk38 = 2;
+    desc.unk3C = 0x80;
+    desc.unk40 = 0;
+    desc.unk44 = 0x35F;
+    desc.unk48 = 0;
+    // HYPOTHESIS: original bitfield names. All bits of flags are defined by
+    // native stores; only the cleared top two bits of unk4D are consumed.
+    desc.flags = 0x88;
+    desc.unk4D = 0;
+    Weapon::activate(&desc);
+    if (unk == true) m_moduleAccesser->getWorkManageModule().onFlag(0x12000003);
+    m_moduleAccesser->getStatusModule().changeStatusForce(0, m_moduleAccesser);
+    m_moduleAccesser->getKineticModule().unableEnergy(0);
+    m_moduleAccesser->getKineticModule().unableEnergy(1);
+    m_moduleAccesser->getKineticModule().enableEnergy(2);
+    m_moduleAccesser->getGroundModule().setCalcLineMove(false, 0);
+}
 
 void wnSonicGimmickJump::onDeactivate() {
     soEventManageModule& events = m_moduleAccesser->getEventManageModule();

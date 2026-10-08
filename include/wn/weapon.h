@@ -8,11 +8,20 @@
 #include <so/status/so_status_event_presenter.h>
 #include <types.h>
 
+struct wnActivateDesc; // HYPOTHESIS: original descriptor type spelling.
+
 class Weapon : public StageObject, public soStatusEventObserver, public soCollisionAttackEventObserver, public soCollisionHitEventObserver, public soArticle {
 
-    char unk9C[0x34];
+    char unk9C[8];
+protected:
+    // Native article collision and sync accessors load/store this byte at A4.
+    // Its bit meanings are intentionally unresolved.
+    u8 unkA4;
+private:
+    char unkA5[0x2B];
 
 public:
+    void activate(wnActivateDesc* desc);
     // HYPOTHESIS: relative source order of rate/index; f1/f2/r4 ABI verified.
     void setHitStop(float power, float rate, int index);
     void setGroundShapeSafePosWithAncestor();

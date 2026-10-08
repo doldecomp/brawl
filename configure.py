@@ -1256,6 +1256,9 @@ config.libs = [
             Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_start.cpp"),
             Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_drive.cpp"),
             Object(Matching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_wheelie.cpp"),
+            Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_turn_start.cpp"),
+            Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_turn_loop.cpp"),
+            Object(NonMatching, "mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_turn_end.cpp"),
         ],
     },
     {
@@ -1274,6 +1277,7 @@ config.libs = [
         "cflags": cflags_fighter,
         "host": False,
         "objects": [
+            Object(NonMatching, "mo_fighter/ft_yoshi/wn_yoshi_star.cpp"),
             Object(NonMatching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_s_utility.cpp"),
             Object(NonMatching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_s_start.cpp"),
             Object(NonMatching, "mo_fighter/ft_yoshi/ft_yoshi_status_uniq_process_special_s_loop.cpp"),

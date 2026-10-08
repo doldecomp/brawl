@@ -2,6 +2,8 @@
 #pragma once
 
 #include <StaticAssert.h>
+#include <so/team/so_team_module.h>
+#include <so/reflect/so_reflect_module.h>
 #include <so/anim/so_anim_cmd_module_impl.h>
 #include <so/collision/so_collision_attack_module_impl.h>
 #include <so/collision/so_collision_hit_module_impl.h>
@@ -303,6 +305,14 @@ public:
     soShadowModule& getShadowModule() const
     {
         return *m_enumerationStart->m_shadowModule;
+    }
+
+    soTeamModule& getTeamModule() const {
+        return *static_cast<soTeamModule*>(m_enumerationStart->m_teamModule);
+    }
+
+    soReflectModule& getReflectModule() const {
+        return *static_cast<soReflectModule*>(m_enumerationStart->m_reflectModule);
     }
 
     soSituationModule& getSituationModule() const

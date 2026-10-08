@@ -16,11 +16,29 @@ public:
 };
 static_assert(sizeof(wnWeaponBuilder<wnSonicSuperSonicModuleAccesserBuildConfig>) == 0x2CD4, "Sonic weapon builder size");
 
+// HYPOTHESIS: original effect-list type spellings; caller and loop establish
+// node, position, scale, entry stride and list layout.
+struct wnSonicSuperSonicEffectEntry {
+    int nodeId;
+    Vec3f pos;
+    float scale;
+};
+struct wnSonicSuperSonicEffectList {
+    wnSonicSuperSonicEffectEntry* entries;
+    u32 size;
+};
+static_assert(sizeof(wnSonicSuperSonicEffectEntry) == 0x14, "Super Sonic effect entry size");
+static_assert(sizeof(wnSonicSuperSonicEffectList) == 8, "Super Sonic effect list size");
+
 class wnSonicSuperSonic : public wnWeaponBuilder<wnSonicSuperSonicModuleAccesserBuildConfig> {
     u32 unk2CD4;
     u8 unk2CD8[0x58];
 public:
     virtual ~wnSonicSuperSonic();
+    // HYPOTHESIS: relative source ordering of lr; f1 and integer registers
+    // follow the original caller independently of this ordering.
+    void activate(int founderTaskId, int resourceId, int team, Vec2f* pos,
+                  float lr, SituationKind situation, wnSonicSuperSonicEffectList* effects);
     virtual void processUpdate();
     virtual void updatePosture(bool);
     virtual void notifyEventCollisionAttack(float, soCollisionLog*, soModuleAccesser*);
