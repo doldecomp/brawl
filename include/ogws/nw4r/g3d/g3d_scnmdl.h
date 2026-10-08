@@ -20,14 +20,22 @@ public:
         CopiedMatAccess(ScnMdl* pScnMdl, u32 id);
 
         ResTexObj GetResTexObj(bool markDirty);
-        ResTexSrt GetResTexSrt(bool markDirty);
+        ResTlutObj GetResTlutObj(bool markDirty);
         ResMatChan GetResMatChan(bool markDirty);
         ResGenMode GetResGenMode(bool markDirty);
-        ResMatPix GetResMatPix(bool markDirty);
+        ResMatMisc GetResMatMisc(bool markDirty);
         ResMatTevColor GetResMatTevColor(bool markDirty);
-        ResTev GetResTev(bool markDirty);
 
+        ResTexObj GetResTexObjEx();
         ResTexSrt GetResTexSrtEx();
+        ResMatChan GetResMatChanEx();
+        ResGenMode GetResGenModeEx();
+        ResMatMisc GetResMatMiscEx();
+        ResMatPix GetResMatPixEx();
+        ResMatTevColor GetResMatTevColorEx();
+        ResMatIndMtxAndScale GetResMatIndMtxAndScaleEx();
+        ResMatTexCoordGen GetResMatTexCoordGenEx();
+        ResTev GetResTevEx();
 
     private:
         ScnMdl* mpScnMdl;                     // at 0x0
@@ -50,6 +58,7 @@ public:
         CopiedVisAccess(ScnMdl* pScnMdl, u32 id);
 
         bool IsVisible() const;
+        bool SetVisibility(bool visible);
         bool SetVisibilityEx(bool visible);
 
     private:
@@ -90,14 +99,36 @@ public:
     };
 
 public:
+    // HYPOTHESIS: this revision constructs the model through a callback so that
+    // derived classes (ScnMdlExpand) can be created by the same allocator code.
+    typedef ScnMdl* (*NewFunc)(u8* pBuffer, MEMAllocator* pAllocator,
+                               ResMdl mdl, math::MTX34* pWorldMtxArray,
+                               u32* pWorldMtxAttribArray,
+                               math::MTX34* pViewPosMtxArray,
+                               math::MTX33* pViewNrmMtxArray,
+                               math::MTX34* pViewTexMtxArray, int numView,
+                               int numViewMtx,
+                               DrawResMdlReplacement* pReplacement,
+                               u32* pMatBufferDirtyFlag, int unk);
+
+    static ScnMdl* NewScnMdl(u8* pBuffer, MEMAllocator* pAllocator,
+                             ResMdl mdl, math::MTX34* pWorldMtxArray,
+                             u32* pWorldMtxAttribArray,
+                             math::MTX34* pViewPosMtxArray,
+                             math::MTX33* pViewNrmMtxArray,
+                             math::MTX34* pViewTexMtxArray, int numView,
+                             int numViewMtx,
+                             DrawResMdlReplacement* pReplacement,
+                             u32* pMatBufferDirtyFlag, int unk);
+
     static ScnMdl* Construct(MEMAllocator* pAllocator, u32* pSize, ResMdl mdl,
-                             u32 bufferOption, int numView);
+                             u32 bufferOption, int numView, NewFunc pNew);
 
     ScnMdl(MEMAllocator* pAllocator, ResMdl mdl, math::MTX34* pWorldMtxArray,
            u32* pWorldMtxAttribArray, math::MTX34* pViewPosMtxArray,
            math::MTX33* pViewNrmMtxArray, math::MTX34* pViewTexMtxArray,
            int numView, int numViewMtx, DrawResMdlReplacement* pReplacement,
-           u32* pMatBufferDirtyFlag);
+           u32* pMatBufferDirtyFlag, int unk);
 
     virtual void G3dProc(u32 task, u32 param, void* pInfo); // at 0xC
     virtual ~ScnMdl();                                      // at 0x10
@@ -163,6 +194,7 @@ private:
     u32 mFlagVisBuffer;                 // at 0x13C
     u32* mpMatBufferDirtyFlag;          // at 0x140
     DrawResMdlReplacement mReplacement; // at 0x144
+    int unk184;                         // at 0x184
 
     NW4R_G3D_RTTI_DECL_DERIVED(ScnMdl, ScnMdlSimple);
 };

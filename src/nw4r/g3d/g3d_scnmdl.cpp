@@ -22,16 +22,16 @@ ResTexObj ScnMdl::CopiedMatAccess::GetResTexObj(bool markDirty) {
     return ResTexObj(NULL);
 }
 
-ResTexSrt ScnMdl::CopiedMatAccess::GetResTexSrt(bool markDirty) {
-    if (mpScnMdl != NULL && mTexSrt.IsValid()) {
+ResTlutObj ScnMdl::CopiedMatAccess::GetResTlutObj(bool markDirty) {
+    if (mpScnMdl != NULL && mTlutObj.IsValid()) {
         if (markDirty) {
-            mpScnMdl->MatBufferDirty(mMatID, ScnMdl::BUFFER_RESTEXSRT);
+            mpScnMdl->MatBufferDirty(mMatID, ScnMdl::BUFFER_RESTLUTOBJ);
         }
 
-        return mTexSrt;
+        return mTlutObj;
     }
 
-    return ResTexSrt(NULL);
+    return ResTlutObj(NULL);
 }
 
 ResMatChan ScnMdl::CopiedMatAccess::GetResMatChan(bool markDirty) {
@@ -58,16 +58,16 @@ ResGenMode ScnMdl::CopiedMatAccess::GetResGenMode(bool markDirty) {
     return ResGenMode(NULL);
 }
 
-ResMatPix ScnMdl::CopiedMatAccess::GetResMatPix(bool markDirty) {
-    if (mpScnMdl != NULL && mPix.IsValid()) {
+ResMatMisc ScnMdl::CopiedMatAccess::GetResMatMisc(bool markDirty) {
+    if (mpScnMdl != NULL && mMatMisc.IsValid()) {
         if (markDirty) {
-            mpScnMdl->MatBufferDirty(mMatID, ScnMdl::BUFFER_RESMATPIX);
+            mpScnMdl->MatBufferDirty(mMatID, ScnMdl::BUFFER_RESMATMISC);
         }
 
-        return mPix;
+        return mMatMisc;
     }
 
-    return ResMatPix(NULL);
+    return ResMatMisc(NULL);
 }
 
 ResMatTevColor ScnMdl::CopiedMatAccess::GetResMatTevColor(bool markDirty) {
@@ -82,16 +82,16 @@ ResMatTevColor ScnMdl::CopiedMatAccess::GetResMatTevColor(bool markDirty) {
     return ResMatTevColor(NULL);
 }
 
-ResTev ScnMdl::CopiedMatAccess::GetResTev(bool markDirty) {
-    if (mpScnMdl != NULL && mTev.IsValid()) {
-        if (markDirty) {
-            mpScnMdl->MatBufferDirty(mMatID, ScnMdl::BUFFER_RESTEV);
+ResTexObj ScnMdl::CopiedMatAccess::GetResTexObjEx() {
+    if (mpScnMdl != NULL) {
+        if (mTexObj.IsValid()) {
+            return mTexObj;
         }
 
-        return mTev;
+        return mpScnMdl->GetResMdl().GetResMat(mMatID).GetResTexObj();
     }
 
-    return ResTev(NULL);
+    return ResTexObj(NULL);
 }
 
 ResTexSrt ScnMdl::CopiedMatAccess::GetResTexSrtEx() {
@@ -104,6 +104,102 @@ ResTexSrt ScnMdl::CopiedMatAccess::GetResTexSrtEx() {
     }
 
     return ResTexSrt(NULL);
+}
+
+ResMatChan ScnMdl::CopiedMatAccess::GetResMatChanEx() {
+    if (mpScnMdl != NULL) {
+        if (mChan.IsValid()) {
+            return mChan;
+        }
+
+        return mpScnMdl->GetResMdl().GetResMat(mMatID).GetResMatChan();
+    }
+
+    return ResMatChan(NULL);
+}
+
+ResGenMode ScnMdl::CopiedMatAccess::GetResGenModeEx() {
+    if (mpScnMdl != NULL) {
+        if (mGenMode.IsValid()) {
+            return mGenMode;
+        }
+
+        return mpScnMdl->GetResMdl().GetResMat(mMatID).GetResGenMode();
+    }
+
+    return ResGenMode(NULL);
+}
+
+ResMatMisc ScnMdl::CopiedMatAccess::GetResMatMiscEx() {
+    if (mpScnMdl != NULL) {
+        if (mMatMisc.IsValid()) {
+            return mMatMisc;
+        }
+
+        return mpScnMdl->GetResMdl().GetResMat(mMatID).GetResMatMisc();
+    }
+
+    return ResMatMisc(NULL);
+}
+
+ResMatPix ScnMdl::CopiedMatAccess::GetResMatPixEx() {
+    if (mpScnMdl != NULL) {
+        if (mPix.IsValid()) {
+            return mPix;
+        }
+
+        return mpScnMdl->GetResMdl().GetResMat(mMatID).GetResMatPix();
+    }
+
+    return ResMatPix(NULL);
+}
+
+ResMatTevColor ScnMdl::CopiedMatAccess::GetResMatTevColorEx() {
+    if (mpScnMdl != NULL) {
+        if (mTevColor.IsValid()) {
+            return mTevColor;
+        }
+
+        return mpScnMdl->GetResMdl().GetResMat(mMatID).GetResMatTevColor();
+    }
+
+    return ResMatTevColor(NULL);
+}
+
+ResMatIndMtxAndScale ScnMdl::CopiedMatAccess::GetResMatIndMtxAndScaleEx() {
+    if (mpScnMdl != NULL) {
+        if (mIndMtxAndScale.IsValid()) {
+            return mIndMtxAndScale;
+        }
+
+        return mpScnMdl->GetResMdl().GetResMat(mMatID).GetResMatIndMtxAndScale();
+    }
+
+    return ResMatIndMtxAndScale(NULL);
+}
+
+ResMatTexCoordGen ScnMdl::CopiedMatAccess::GetResMatTexCoordGenEx() {
+    if (mpScnMdl != NULL) {
+        if (mTexCoordGen.IsValid()) {
+            return mTexCoordGen;
+        }
+
+        return mpScnMdl->GetResMdl().GetResMat(mMatID).GetResMatTexCoordGen();
+    }
+
+    return ResMatTexCoordGen(NULL);
+}
+
+ResTev ScnMdl::CopiedMatAccess::GetResTevEx() {
+    if (mpScnMdl != NULL) {
+        if (mTev.IsValid()) {
+            return mTev;
+        }
+
+        return mpScnMdl->GetResMdl().GetResMat(mMatID).GetResTev();
+    }
+
+    return ResTev(NULL);
 }
 
 ScnMdl::CopiedMatAccess::CopiedMatAccess(ScnMdl* pScnMdl, u32 id)
@@ -228,6 +324,24 @@ bool ScnMdl::CopiedVisAccess::IsVisible() const {
     return false;
 }
 
+bool ScnMdl::CopiedVisAccess::SetVisibility(bool visible) {
+    if (mpScnMdl != NULL && mpVis != NULL) {
+        if (visible) {
+            if (*mpVis == 0) {
+                mpScnMdl->VisBufferDirty();
+                *mpVis = 1;
+            }
+        } else if (*mpVis != 0) {
+            mpScnMdl->VisBufferDirty();
+            *mpVis = 0;
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
 bool ScnMdl::CopiedVisAccess::SetVisibilityEx(bool visible) {
     if (mpScnMdl != NULL) {
         if (mpVis != NULL) {
@@ -268,8 +382,22 @@ ScnMdl::CopiedVisAccess::CopiedVisAccess(ScnMdl* pScnMdl, u32 id) {
  * ScnMdl
  *
  ******************************************************************************/
+ScnMdl* ScnMdl::NewScnMdl(u8* pBuffer, MEMAllocator* pAllocator, ResMdl mdl,
+                          math::MTX34* pWorldMtxArray,
+                          u32* pWorldMtxAttribArray,
+                          math::MTX34* pViewPosMtxArray,
+                          math::MTX33* pViewNrmMtxArray,
+                          math::MTX34* pViewTexMtxArray, int numView,
+                          int numViewMtx, DrawResMdlReplacement* pReplacement,
+                          u32* pMatBufferDirtyFlag, int unk) {
+    return new (pBuffer)
+        ScnMdl(pAllocator, mdl, pWorldMtxArray, pWorldMtxAttribArray,
+               pViewPosMtxArray, pViewNrmMtxArray, pViewTexMtxArray, numView,
+               numViewMtx, pReplacement, pMatBufferDirtyFlag, unk);
+}
+
 ScnMdl* ScnMdl::Construct(MEMAllocator* pAllocator, u32* pSize, ResMdl mdl,
-                          u32 bufferOption, int numView) {
+                          u32 bufferOption, int numView, NewFunc pNew) {
 
     if (!mdl.IsValid()) {
         return NULL;
@@ -302,10 +430,8 @@ ScnMdl* ScnMdl::Construct(MEMAllocator* pAllocator, u32* pSize, ResMdl mdl,
 
     u32 viewTexMtxArrayUnitSize = viewPosMtxArrayUnitSize;
 
-    // TODO(kiwi) Fakematch
-    u32 viewTexMtxArraySize = mdl.ref().info.need_tex_mtx_array
-                                  ? numView * align32(viewTexMtxArrayUnitSize)
-                                  : 0;
+    u32 viewTexMtxArraySize =
+        mdl.ref().info.need_tex_mtx_array ? viewPosMtxArraySize : 0;
 
     u32 matBufferDirtyFlagSize = matNum * sizeof(u32);
 
@@ -448,6 +574,8 @@ ScnMdl* ScnMdl::Construct(MEMAllocator* pAllocator, u32* pSize, ResMdl mdl,
 
         // clang-format off
         DrawResMdlReplacement replacement;
+
+        replacement.unk0 = (bufferOption & (1 << 24)) == 0;
         
         replacement.visArray              = visSize               != 0 ? reinterpret_cast<u8*>(pBuffer + visOfs)                                : NULL;
         replacement.texObjDataArray       = resTexObjSize         != 0 ? reinterpret_cast<ResTexObjData*>(pBuffer + resTexObjOfs)               : NULL;
@@ -559,7 +687,8 @@ ScnMdl* ScnMdl::Construct(MEMAllocator* pAllocator, u32* pSize, ResMdl mdl,
         }
 
         // clang-format off
-        pScnMdl = new (pBuffer) ScnMdl(
+        pScnMdl = pNew(
+            pBuffer,
             pAllocator,
             mdl,
             reinterpret_cast<math::MTX34*>(pBuffer + worldMtxArrayOfs),
@@ -570,7 +699,8 @@ ScnMdl* ScnMdl::Construct(MEMAllocator* pAllocator, u32* pSize, ResMdl mdl,
             numView,
             viewMtxNum,
             &replacement,
-            reinterpret_cast<u32*>(pBuffer + matBufferDirtyFlagOfs));
+            reinterpret_cast<u32*>(pBuffer + matBufferDirtyFlagOfs),
+            (bufferOption & (1 << 24)) != 0);
         // clang-format off
 
         pScnMdl->InitBuffer();
@@ -631,6 +761,26 @@ void ScnMdl::ScnMdl_G3DPROC_CALC_MAT(u32 param, void* pInfo) {
 
         if (IsMatBufferDirty(i, BUFFER_RESTEVCOLOR)) {
             CleanMatBuffer(i, BUFFER_RESTEVCOLOR);
+        }
+
+        if (IsMatBufferDirty(i, BUFFER_RESGENMODE)) {
+            CleanMatBuffer(i, BUFFER_RESGENMODE);
+        }
+
+        if (IsMatBufferDirty(i, BUFFER_RESMATMISC)) {
+            CleanMatBuffer(i, BUFFER_RESMATMISC);
+        }
+
+        if (IsMatBufferDirty(i, BUFFER_RESMATPIX)) {
+            CleanMatBuffer(i, BUFFER_RESMATPIX);
+        }
+
+        if (IsMatBufferDirty(i, BUFFER_RESMATTEXCOORDGEN)) {
+            CleanMatBuffer(i, BUFFER_RESMATTEXCOORDGEN);
+        }
+
+        if (IsMatBufferDirty(i, BUFFER_RESTEV)) {
+            CleanMatBuffer(i, BUFFER_RESTEV);
         }
 
         if (GetAnmObjTexPat() != NULL && GetAnmObjTexPat()->TestExistence(i)) {
@@ -1025,6 +1175,7 @@ bool ScnMdl::SetAnmObj(AnmObj* pObj, AnmObjType type) {
 
                 mpAnmObjShp = pShp;
                 pShp->G3dProc(G3DPROC_ATTACH_PARENT, 0, this);
+                mReplacement.unk0 &= ~1;
 
                 return true;
             } else {
@@ -1050,6 +1201,11 @@ bool ScnMdl::RemoveAnmObj(AnmObj* pObj) {
     if (pObj == mpAnmObjShp) {
         mpAnmObjShp->G3dProc(G3DPROC_DETACH_PARENT, 0, this);
         mpAnmObjShp = NULL;
+
+        if (!(unk184 & 1)) {
+            mReplacement.unk0 |= 1;
+            return true;
+        }
 
         if (mReplacement.vtxPosTable != NULL) {
             u32 vtxPosNum = GetResMdl().GetResVtxPosNumEntries();
@@ -1123,14 +1279,16 @@ ScnMdl::ScnMdl(MEMAllocator* pAllocator, ResMdl mdl,
                math::MTX34* pWorldMtxArray, u32* pWorldMtxAttribArray,
                math::MTX34* pViewPosMtxArray, math::MTX33* pViewNrmMtxArray,
                math::MTX34* pViewTexMtxArray, int numView, int numViewMtx,
-               DrawResMdlReplacement* pReplacement, u32* pMatBufferDirtyFlag)
+               DrawResMdlReplacement* pReplacement, u32* pMatBufferDirtyFlag,
+               int unk)
     : ScnMdlSimple(pAllocator, mdl, pWorldMtxArray, pWorldMtxAttribArray,
                    pViewPosMtxArray, pViewNrmMtxArray, pViewTexMtxArray,
                    numView, numViewMtx),
       mpAnmObjShp(NULL),
       mFlagVisBuffer(NULL),
       mpMatBufferDirtyFlag(pMatBufferDirtyFlag),
-      mReplacement(*pReplacement) {}
+      mReplacement(*pReplacement),
+      unk184(unk) {}
 
 ScnMdl::~ScnMdl() {
     if (mpAnmObjShp != NULL) {

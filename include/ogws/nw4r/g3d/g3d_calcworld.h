@@ -60,6 +60,8 @@ public:
     WorldMtxManip(math::MTX34* pM, math::VEC3* pS, u32* pWMAttr)
         : mpM(pM), mpS(pS), mpWMAttr(pWMAttr) {}
 
+    void SetScale(f32 x, f32 y, f32 z);
+
     void GetMtx(math::MTX34* pMtx) const {
         if (pMtx != NULL) {
             math::MTX34Copy(pMtx, mpM);

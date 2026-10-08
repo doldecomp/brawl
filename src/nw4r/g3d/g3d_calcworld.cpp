@@ -3,6 +3,23 @@
 namespace nw4r {
 namespace g3d {
 
+void WorldMtxManip::SetScale(f32 x, f32 y, f32 z) {
+    mpS->x = x;
+    mpS->y = y;
+    mpS->z = z;
+
+    if (x == y && x == z) {
+        if (x == 1.0f) {
+            *mpWMAttr |= 0x40000000;
+        } else {
+            *mpWMAttr |= 0x10000000;
+            *mpWMAttr &= 0x3FFFFFFF;
+        }
+    } else {
+        *mpWMAttr &= 0x0FFFFFFF;
+    }
+}
+
 void CalcWorld(math::MTX34* pModelMtxArray, u32* pModelMtxAttribArray,
                const u8* pByteCode, const math::MTX34* pBaseMtx, ResMdl mdl,
                AnmObjChr* pAnmChr, FuncObjCalcWorld* pFuncObj, u32 rootAttrib) {
