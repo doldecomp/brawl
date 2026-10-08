@@ -7,21 +7,18 @@
 #include <gf/gf_task_scheduler.h>
 #include <it/it_manager.h>
 #include <mu/menu.h>
+#include <so/so_archive_db.h>
 #include <so/so_external_value_accesser.h>
+#include <sr/sr_common.h>
 
 // HYPOTHESIS: the structure behind ftManager::m_dataProvider; only the flag read by isUseCompressedMode is known.
-struct ftManagerSystemData {
-    char _0x0[0x10A0];
-    u8 m_isUseCompressedMode;
-};
-
 // Evaluated at each use: the entry manager pointer is reloaded after every call in a loop.
 static inline soArray<ftEntry*>& getEntries(const ftManager* manager) {
     return manager->m_entryManager->m_entryArrayVector;
 }
 
-static inline ftManagerSystemData* getSystemData(const ftManager* manager) {
-    return static_cast<ftManagerSystemData*>(manager->m_dataProvider);
+static inline ftDataProvider* getSystemData(const ftManager* manager) {
+    return manager->m_dataProvider;
 }
 
 bool ftManager::isEnableDiscretionFinal() const {
@@ -1023,4 +1020,46 @@ void ftManager::setSuicide(int entryId) {
         ftOutsideEventPresenter presenter(m_eventManageModule.getManageId(), entryId);
         presenter.notifyOutsideEventSuicide(ownerEntryId);
     }
+}
+
+void soDisposeInstanceEventObserver::addObserver(short param1, s8 param2) {
+    addObserverSub(param1, this, param2);
+}
+
+void ftOutsideEventObserver::addObserver(short param1, s8 param2) {
+    addObserverSub(param1, this, param2);
+}
+
+// MATCH-ONLY: the manage id of the dispose instance manager's event module (an soEventManageModuleImpl at +0x60)
+static inline s16 getDisposeInstanceManageId() {
+    return reinterpret_cast<soEventManageModuleImpl*>(reinterpret_cast<u8*>(g_soDisposeInstanceManager) + 0x60)->getManageId();
+}
+
+ftManager::ftManager(u32 commonResourceA, u32 commonResourceB) :
+    m_mode(0), m_paramPattern(0), m_gameRule(0), unk6b(0),
+    unk6c_80(false), m_isGameStarted(false), m_isGameSet(false), unk6c_10(false),
+    m_isStamina(0),
+    m_isTeams(false), m_isTeamAttack(false), m_isDiscretionFinal(false), unk6e_10(true), m_noOnePatternOffsett(true),
+    unk6e_04(false), m_noDeadUp(false), m_isHomerun(false),
+    unk6f_80(false), unk6f_40(false), m_isWaitingDraw(false), unk6f_10(true),
+    m_finalStatus(-1), m_finalEntryId(-1), m_noDiscretionFinalCount(0), unk7c(false),
+    unk80(0), unk84(0), unk88(0),
+    m_eventManageEntity(), m_eventManageModule(&m_eventManageEntity),
+    m_eventUnit(m_eventManageModule.getManageId(), 0) {
+    soDisposeInstanceEventObserver::addObserver(getDisposeInstanceManageId(), -1);
+    ftOutsideEventObserver::addObserver(m_eventManageModule.getManageId(), -1);
+    soArchiveDb::create(0, 0x60);
+    m_dataProvider = new (Heaps::System) ftDataProvider;
+    m_slotManager = new (Heaps::System) ftSlotManager(9);
+    m_entryManager = new (Heaps::System) ftEntryManager(9);
+    m_dataProvider->reqCommon(commonResourceA, commonResourceB, 2);
+}
+
+ftManager::~ftManager() {
+    delete m_entryManager;
+    m_entryManager = nullptr;
+    delete m_slotManager;
+    m_slotManager = nullptr;
+    delete m_dataProvider;
+    m_dataProvider = nullptr;
 }

@@ -85,7 +85,7 @@ bool ftUtil::isBuryStatus(soModuleAccesser*, int status) {
 // HYPOTHESIS: ftManager byte 0x68 is the adventure-mode (Subspace Emissary) flag.
 float ftUtil::getWalkSpeedMul(soModuleAccesser* acc) {
     float mul = acc->getParamCustomizeModule().getWalkSpeedMul();
-    if ((u8)g_ftManager->_104[0] == 1) {
+    if ((u8)g_ftManager->m_mode == 1) {
         mul *= calcAdventureMulValue(acc, 0xD25, 0xD27, 0xD26);
     }
     return mul;
@@ -93,7 +93,7 @@ float ftUtil::getWalkSpeedMul(soModuleAccesser* acc) {
 
 float ftUtil::getRunSpeedMul(soModuleAccesser* acc) {
     float mul = 1.0f;
-    if ((u8)g_ftManager->_104[0] == 1) {
+    if ((u8)g_ftManager->m_mode == 1) {
         mul *= calcAdventureMulValue(acc, 0xD25, 0xD27, 0xD26);
     }
     return mul;
@@ -101,7 +101,7 @@ float ftUtil::getRunSpeedMul(soModuleAccesser* acc) {
 
 float ftUtil::getJumpSpeedMul(soModuleAccesser* acc) {
     float mul = 1.0f;
-    if ((u8)g_ftManager->_104[0] == 1) {
+    if ((u8)g_ftManager->m_mode == 1) {
         mul *= calcAdventureMulValue(acc, 0xD28, 0xD2A, 0xD29);
     }
     return mul;

@@ -14,6 +14,8 @@ public:
     u32 m_slotCount;
     char _0x8[0x538];
 
+    ftSlotManager(int slotCapacity);
+    ~ftSlotManager();
     int addSlot();
     bool removeSlot(int slotIndex);
     void set2PGamesFlexHeapLayout(int layout);

@@ -17,6 +17,7 @@ public:
     soArrayVector<ftEntry*, 9> m_entryArrayVector;
     char _0x38[20];
 
+    ftEntryManager(int entryCapacity);
     virtual ~ftEntryManager();
 
     ftEntry* getEntity(u32 entryId);
