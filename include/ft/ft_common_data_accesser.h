@@ -1,4 +1,4 @@
-// Local BrawlHeaders shadow: expose the Final Smash resource identifier.
+// Local BrawlHeaders shadow: expose the Final Smash resource identifier and extend parameters.
 #pragma once
 
 #include <StaticAssert.h>
@@ -25,6 +25,8 @@ struct ftData {
     u8 unk40[0x10];
     soAnimCmdDisguiseList* unk50;
     soAnimCmdDisguiseList* unk54;
+    u8 unk58[0x24];
+    void* extendParam[6];
 };
 
 struct ftParam {

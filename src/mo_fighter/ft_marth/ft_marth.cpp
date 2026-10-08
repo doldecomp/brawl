@@ -11,6 +11,30 @@
 #include <ft/ft_external_value_accesser.h>
 #include <mt/mt_prng.h>
 #include <math.h>
+#include <ft/marth/ft_marth_status_uniq_process.h>
+
+
+// The shared shield declarations are opaque. These adapters describe the fields
+// populated by Marth before passing the data to the collision shield module.
+struct MarthCounterShieldData {
+    Vec3f unk0;
+    Vec3f unkC;
+    float radius;
+    u32 nodeId : 9;
+    u32 unk22 : 1;
+    u32 unk0_22 : 22;
+};
+struct MarthCounterShieldGroupData {
+    MarthCounterShieldData* shields;
+    u32 count;
+    u32 unk8_28 : 4;
+    u32 unk8_0 : 28;
+    u32 unkC[3];
+};
+static_assert(sizeof(MarthCounterShieldData) == sizeof(soCollisionShieldData), "Shield layout");
+static_assert(sizeof(MarthCounterShieldGroupData) == sizeof(soCollisionShieldGroupData), "Shield group layout");
+
+
 
 #define FT_BC ftMarthBuildConfig
 #include <ft/builder/ft_builder_noinline.h>
@@ -27,8 +51,47 @@ ftMarth::ftMarth(s32 entryId,
                                          Fighter_Marth,
                                          instHeap,
                                          nwModelInstHeap,
-                                         nwMotionInstHeap) {
+                                         nwMotionInstHeap),
+    m_data(g_ftCommonDataAccesser.getData(Fighter_Marth)) {
+    // Register the fifteen character-specific status processes in action order.
+    soStatusUniqProcess* processes[15] = {0};
+    processes[0] = &g_ftMarthStatusUniqProcessSpecialNStart;
+    processes[1] = &g_ftMarthStatusUniqProcessSpecialS;
+    processes[2] = &g_ftMarthStatusUniqProcessSpecialHi;
+    processes[3] = &g_ftMarthStatusUniqProcessSpecialLw;
+    processes[4] = &g_ftMarthStatusUniqProcessFinal;
+    processes[5] = &g_ftMarthStatusUniqProcessSpecialNLoop;
+    processes[6] = &g_ftMarthStatusUniqProcessSpecialNEnd;
+    processes[8] = &g_ftMarthStatusUniqProcessSpecialS;
+    processes[9] = &g_ftMarthStatusUniqProcessSpecialS;
+    processes[10] = &g_ftMarthStatusUniqProcessSpecialS;
+    processes[11] = &g_ftMarthStatusUniqProcessSpecialLw;
+    processes[12] = &g_ftMarthStatusUniqProcessFinal;
+    processes[13] = &g_ftMarthStatusUniqProcessFinal;
+    processes[14] = &g_ftMarthStatusUniqProcessFinal;
+    m_moduleAccesser->getStatusModule().addRangeUniqProc(processes, 15);
+
+    const ftMarthExtendParamClass5* param =
+        static_cast<const ftMarthExtendParamClass5*>(m_data->extendParam[4]);
+    MarthCounterShieldData shield;
+    shield.unk0.m_x = param->unk4;
+    shield.unk0.m_y = param->unk8;
+    shield.unk0.m_z = param->unkC;
+    shield.unkC.m_x = param->unk4;
+    shield.unkC.m_y = param->unk8;
+    shield.unkC.m_z = param->unkC;
+    shield.radius = param->unk10;
+    shield.nodeId = param->unk0;
+    shield.unk22 = 1;
+    MarthCounterShieldGroupData group;
+    group.unk8_28 = 0;
+    group.shields = &shield;
+    group.count = 1;
+    m_moduleAccesser->getCollisionShieldModule().add(
+        reinterpret_cast<soCollisionShieldGroupData*>(&group), 1);
 }
+
+ftMarth::~ftMarth() { }
 
 // FIXME: Test code present only to emit the shared builder functions; delete once ftMarth is done
 void testBuilder() {

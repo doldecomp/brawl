@@ -50,3 +50,27 @@ extern ftMarthStatusUniqProcessSpecialS g_ftMarthStatusUniqProcessSpecialS;
 extern ftMarthStatusUniqProcessSpecialHi g_ftMarthStatusUniqProcessSpecialHi;
 extern ftMarthStatusUniqProcessSpecialLw g_ftMarthStatusUniqProcessSpecialLw;
 extern ftMarthStatusUniqProcessFinal g_ftMarthStatusUniqProcessFinal;
+
+class ftMarthStatusUniqProcessSpecialNStart : public soStatusUniqProcess {
+public:
+    virtual ~ftMarthStatusUniqProcessSpecialNStart() { }
+    virtual void initStatus(soModuleAccesser* moduleAccesser);
+    virtual void execStatus(soModuleAccesser* moduleAccesser);
+    virtual void exitStatus(soModuleAccesser* moduleAccesser, int);
+};
+class ftMarthStatusUniqProcessSpecialNLoop : public soStatusUniqProcess {
+public:
+    virtual ~ftMarthStatusUniqProcessSpecialNLoop() { }
+    virtual void initStatus(soModuleAccesser* moduleAccesser);
+    virtual void exitStatus(soModuleAccesser* moduleAccesser, int);
+};
+class ftMarthStatusUniqProcessSpecialNEnd : public soStatusUniqProcess {
+public:
+    virtual ~ftMarthStatusUniqProcessSpecialNEnd() { }
+    virtual void initStatus(soModuleAccesser* moduleAccesser);
+    virtual void execFixPos(soModuleAccesser* moduleAccesser);
+    virtual void exitStatus(soModuleAccesser* moduleAccesser, int);
+};
+extern ftMarthStatusUniqProcessSpecialNStart g_ftMarthStatusUniqProcessSpecialNStart;
+extern ftMarthStatusUniqProcessSpecialNLoop g_ftMarthStatusUniqProcessSpecialNLoop;
+extern ftMarthStatusUniqProcessSpecialNEnd g_ftMarthStatusUniqProcessSpecialNEnd;
