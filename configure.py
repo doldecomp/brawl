@@ -1085,6 +1085,8 @@ config.libs = [
             Object(NonMatching, "mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_hi_attack.cpp"),
             Object(NonMatching, "mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_hi_attack_end.cpp"),
             Object(NonMatching, "mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_hi_reflect.cpp"),
+            Object(NonMatching, "mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_lw.cpp"),
+            Object(NonMatching, "mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_lw_hold.cpp"),
         ],
     },
     {

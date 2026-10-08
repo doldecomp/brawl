@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ft/ft_fighter_builder.h>
+#include <ft/ft_common_data_accesser.h>
 #include <sr/sr_common.h>
 #include <types.h>
 
@@ -49,10 +50,15 @@ public:
 };
 
 class ftLucas : public ftFighterBuilder<ftLucasBuildConfig> {
-    u8 unkTail[0x48CC8 - sizeof(ftFighterBuilder<ftLucasBuildConfig>)];
+    soArrayContractibleTable<const soStatusData> m_statusTable; // +0x48CB0
+    ftData* m_commonData; // +0x48CC0
+    u8 unk48CC4[4];
 public:
     ftLucas(s32 entryId,
             Heaps::HeapType instHeap,
             Heaps::HeapType nwModelInstHeap,
             Heaps::HeapType nwMotionInstHeap);
+    void** getExtendParam();
 };
+static_assert(sizeof(ftFighterBuilder<ftLucasBuildConfig>) == 0x48CB0, "Lucas status table offset is wrong");
+static_assert(sizeof(ftLucas) == 0x48CC8, "Lucas fighter size is wrong");
