@@ -96,6 +96,7 @@ No other trailers, no session links. Imported commits from other people keep onl
 ## 6. Code conventions
 
 - Mark guesses `// HYPOTHESIS:`, code that exists only to force a byte match `// MATCH-ONLY:`, unknown fields `unkN`. Names need evidence (callers, vtables, maps, BrawlRE docs, `RSBE01.lst` in BrawlHeaders). Do not invent names.
+- Read `TIPS.md` (repo root) before fighting a diff: it lists compiler quirks and matching tricks with sources, grouped by what you see in the asm. Add to it when something cost you more than ~15 minutes.
 - Study merged examples first: `src/mo_melee/sora_melee/ft/ft_status_uniq_process_*.cpp`, `src/sora/mu/mu_menu.cpp`, `src/mo_fighter/ft_marth/ft_marth.cpp`, `include/ft/builder/*`.
 - Prefer real member calls over `extern "C" fn_xxxx` stand-ins: name the symbol in `symbols.txt` (mangled name) and call it normally.
 - Never rename a REL function to a name that already exists elsewhere in the symbols (breaks the `.rel` hash). Weak-symbol duplicates: see the `tools/weak_dups.py` recipe.
