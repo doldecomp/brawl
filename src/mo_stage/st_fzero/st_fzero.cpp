@@ -45,12 +45,13 @@ stFzero::stFzero() : stMelee("stFzero", Stages::FZero) {
     m_carMode = 8;
     m_carMotion = 5;
     for (u8 i = 0; i < 30; i++) {
-        m_carData[i].m_mtx = NULL;
-        m_carData[i].m_pos.m_x = 0.0f;
-        m_carData[i].m_pos.m_y = 0.0f;
-        m_carData[i].m_pos.m_z = 0.0f;
-        m_carData[i].m_state = 8;
-        m_carData[i].m_type = 0;
+        stFzeroCarData* car = &m_carData[i];
+        car->m_mtx = NULL;
+        car->m_pos.m_x = 0.0f;
+        car->m_pos.m_y = 0.0f;
+        car->m_pos.m_z = 0.0f;
+        car->m_state = 8;
+        car->m_type = 0;
     }
     m_stateWall = 8;
     m_eventFlag = 0;
@@ -243,20 +244,20 @@ void stFzero::createObjTrainer(int index) {
 void stFzero::createObjAttack(int index) {
     grFzeroAttack* ground;
     u8 type;
-    if (index == 12) {
+    switch (index) {
+    case 11:
+        ground = grFzeroAttack::create(0x50, "nodeIndex", "grFzeroAttackFloor00");
+        type = 4;
+        break;
+    case 12:
         ground = grFzeroAttack::create(0x50, "nodeIndex", "grFzeroAttackFloor01");
         type = 5;
-    } else if (index < 12) {
-        if (index > 10) {
-            ground = grFzeroAttack::create(0x50, "nodeIndex", "grFzeroAttackFloor00");
-            type = 4;
-        } else {
-            ground = NULL;
-        }
-    } else if (index < 14) {
+        break;
+    case 13:
         ground = grFzeroAttack::create(0x50, "nodeIndex", "grFzeroAttackWall");
         type = 6;
-    } else {
+        break;
+    default:
         ground = NULL;
     }
     if (ground != NULL) {
@@ -440,11 +441,7 @@ void stFzero::update(float deltaFrame) {
     }
 
     CameraController* camera = CameraController::getInstance();
-    Rect2D range;
-    range.m_left = *(float*)((u8*)camera + 0x148);
-    range.m_right = *(float*)((u8*)camera + 0x14C);
-    range.m_up = *(float*)((u8*)camera + 0x150);
-    range.m_down = *(float*)((u8*)camera + 0x154);
+    Rect2D range = *reinterpret_cast<Rect2D*>((u8*)camera + 0x148);
     if (range.m_down < floorPos.m_y) {
         range.m_down = floorPos.m_y;
         cmStageParam* param = &CameraController::getInstance()->m_stageCameraParam;
@@ -461,12 +458,12 @@ void stFzero::update(float deltaFrame) {
 // Mirrors the camera's limits into the stage so the hazards can stay inside them.
 void stFzero::updateLimit() {
     CameraController* camera = CameraController::getInstance();
-    m_limitMin.m_x = camera->unk158;
-    m_limitMin.m_y = camera->unk160;
-    m_limitMin.m_z = 0.0f;
-    m_limitMax.m_x = camera->unk15C;
-    m_limitMax.m_y = camera->unk164;
-    m_limitMax.m_z = 0.0f;
+    float minY = camera->unk160;
+    float minX = camera->unk158;
+    m_limitMin = Vec3f(minX, minY, 0.0f);
+    float maxY = camera->unk164;
+    float maxX = camera->unk15C;
+    m_limitMax = Vec3f(maxX, maxY, 0.0f);
 }
 
 bool stFzero::isEventEnd(int param1, int* eventState, int* eventDecision) {
@@ -483,15 +480,17 @@ bool stFzero::isEventEnd(int param1, int* eventState, int* eventDecision) {
 }
 
 bool stFzero::isStageDown() {
-    if (m_state < 3 && m_state != 0) {
+    switch (m_state) {
+    case 1:
+    case 2:
         return true;
     }
     return false;
 }
 
 GXColor stFzero::getFinalTechniqColor() {
-    GXColor color = { 0x14, 0x00, 0x04, 0x96 };
-    return color;
+    u32 packed = 0x14000496;
+    return *reinterpret_cast<GXColor*>(&packed);
 }
 
 // Reloads the stage positions when the stage goes down (section 2) and again when it is back up.
@@ -501,13 +500,17 @@ void stFzero::updateScene(float deltaFrame) {
         m_sceneState = 1;
         // fall through
     case 1:
-        if (m_scene == 2 && isStageDown() == true) {
-            nw4r::g3d::ResFile posData(m_fileData->getData(Data_Type_Model, 0x65, 0xFFFE));
-            if (posData.ptr()) {
-                m_stagePositions->loadPositionData(&posData);
+        switch (m_scene) {
+        case 2:
+            if (isStageDown() == true) {
+                nw4r::g3d::ResFile posData(m_fileData->getData(Data_Type_Model, 0x65, 0xFFFE));
+                if (posData.ptr()) {
+                    m_stagePositions->loadPositionData(&posData);
+                }
+                updateStagePositions();
+                m_sceneState = 3;
             }
-            updateStagePositions();
-            m_sceneState = 3;
+            break;
         }
         break;
     case 2:
