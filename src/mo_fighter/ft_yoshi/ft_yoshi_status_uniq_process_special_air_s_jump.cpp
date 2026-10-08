@@ -19,9 +19,7 @@ void ftYoshiStatusUniqProcessSpecialAirSJump::initStatus(soModuleAccesser* acc) 
         speed.m_x = work.getFloat(0x21000006) * lr;
         speed.m_y = 0.0f;
     } else {
-        Vec2f incoming = kinetic.getSumSpeed(soKineticEnergy::AttributeFlag(-1));
-        speed.m_x = incoming.m_x;
-        speed.m_y = incoming.m_y;
+        speed = kinetic.getSumSpeed(soKineticEnergy::AttributeFlag(-1));
     }
     kinetic.changeKinetic(0x65, acc);
     ftKineticEnergyController& control = dynamic_cast<ftKineticEnergyController&>(*kinetic.getEnergy(2));
@@ -36,7 +34,9 @@ void ftYoshiStatusUniqProcessSpecialAirSJump::execStatus(soModuleAccesser* acc) 
     ftYoshiSpecialSParam* param = static_cast<ftYoshiSpecialSParam*>(g_ftCommonDataAccesser.getData(Fighter_Yoshi)->extendParam[0]);
     work.setFloat(0.0f, 0x21000008);
     work.setInt(0, 0x20000006);
-    work.setFloat(work.getFloat(0x21000005) + 0.10471976f * param->unk18, 0x21000005);
+    float rotation = work.getFloat(0x21000005);
+    rotation += 0.10471976f * param->unk18;
+    work.setFloat(rotation, 0x21000005);
     ftYoshiStatusUniqProcessSpecialSUtility::setRot(acc);
     if (ftYoshiStatusUniqProcessSpecialSUtility::checkLife(acc) || ftYoshiStatusUniqProcessSpecialSUtility::checkCancel(acc)) work.setInt(0x11A, 0x20000008);
     ftYoshiStatusUniqProcessSpecialSUtility::setBodyChange(acc);
