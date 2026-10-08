@@ -18,6 +18,19 @@ mo_fighter/ft_purin/ft_purin.cpp:
 	.data       start:0x00000000 end:0x00005B10
 	.bss        start:0x00000008 end:0x00000218
 
+mo_fighter/ft_purin/ft_purin_status_uniq_process_special_s.cpp:
+	.text       start:0x0000B464 end:0x0000BA30
+	.ctors      start:0x00000004 end:0x00000008
+	.rodata     start:0x00000010 end:0x00000018
+	.data       start:0x00005B10 end:0x00005BE8
+	.bss        start:0x00000220 end:0x00000230
+
+mo_fighter/ft_purin/ft_purin_status_uniq_process_special_hi.cpp:
+	.text       start:0x0000BA30 end:0x0000BC50
+	.ctors      start:0x00000008 end:0x0000000C
+	.data       start:0x00005BE8 end:0x00005C60
+	.bss        start:0x00000230 end:0x00000240
+
 mo_fighter/mo_fighter.cpp:
 	.text       start:0x0000C4A0 end:0x0000C53C
 	.data       start:0x00005D50 end:0x00005D5F
