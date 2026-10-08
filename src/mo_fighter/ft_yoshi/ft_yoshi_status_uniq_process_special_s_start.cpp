@@ -32,7 +32,10 @@ void ftYoshiStatusUniqProcessSpecialSStart::initStatus(soModuleAccesser* acc) {
     work.setInt(0, 0x20000005);
     work.setInt(0, 0x20000006);
     Vec3f rotation;
-    rotation.m_x = rotation.m_y = rotation.m_z = 0.0f;
+    // MATCH-ONLY: keep native x/y/z store order in the Vec3f temporary.
+    rotation.m_x = 0.0f;
+    rotation.m_y = 0.0f;
+    rotation.m_z = 0.0f;
     kinetic.changeKinetic(0x32, acc);
     ftKineticEnergyGravity& gravity = dynamic_cast<ftKineticEnergyGravity&>(*kinetic.getEnergy(1));
     Vec2f velocity;
@@ -71,9 +74,7 @@ void ftYoshiStatusUniqProcessSpecialSStart::execFixPosCounter(soModuleAccesser* 
     }
 }
 void ftYoshiStatusUniqProcessSpecialSStart::exitStatus(soModuleAccesser* acc, int nextStatus) {
-    if (nextStatus != 0x113) {
-        if (static_cast<unsigned>(nextStatus - 0x119) > 3) return;
-    }
-    ftYoshiStatusUniqProcessSpecialSUtility::resetYoshiSpecialS2(acc);
+    if (nextStatus == 0x113 || static_cast<unsigned>(nextStatus - 0x119) <= 3)
+        ftYoshiStatusUniqProcessSpecialSUtility::resetYoshiSpecialS2(acc);
 }
 ftYoshiStatusUniqProcessSpecialSStart g_ftYoshiStatusUniqProcessSpecialSStart;

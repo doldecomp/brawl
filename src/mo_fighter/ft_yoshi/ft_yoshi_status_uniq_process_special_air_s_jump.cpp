@@ -110,9 +110,7 @@ void ftYoshiStatusUniqProcessSpecialAirSJump::execFixPos(soModuleAccesser* acc) 
     if (target != -1) status.changeStatusRequest(target, acc);
 }
 void ftYoshiStatusUniqProcessSpecialAirSJump::exitStatus(soModuleAccesser* acc, int nextStatus) {
-    if (nextStatus != 0x113) {
-        if (static_cast<unsigned>(nextStatus - 0x119) > 3) return;
-    }
-    ftYoshiStatusUniqProcessSpecialSUtility::resetYoshiSpecialS2(acc);
+    if (nextStatus == 0x113 || static_cast<unsigned>(nextStatus - 0x119) <= 3)
+        ftYoshiStatusUniqProcessSpecialSUtility::resetYoshiSpecialS2(acc);
 }
 ftYoshiStatusUniqProcessSpecialAirSJump g_ftYoshiStatusUniqProcessSpecialAirSJump;
