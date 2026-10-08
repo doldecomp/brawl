@@ -94,6 +94,12 @@ void Camera::SetPosition(const math::VEC3& rPos) {
     r.flags &= ~CameraData::FLAG_CAM_MTX_READY;
 }
 
+void Camera::GetPosition(math::VEC3* pPos) const {
+    if (pPos != NULL && IsValid()) {
+        *pPos = ref().cameraPos;
+    }
+}
+
 void Camera::SetPosture(const PostureInfo& rInfo) {
     if (!IsValid()) {
         return;
@@ -175,6 +181,25 @@ void Camera::SetCameraMtxDirectly(const math::MTX34& rMtx) {
 
     math::MTX34Copy(&r.cameraMtx, &rMtx);
     r.flags |= CameraData::FLAG_CAM_MTX_READY;
+}
+
+void Camera::GetPosture(PostureInfo* pInfo) const {
+    if (pInfo != NULL && IsValid()) {
+        const CameraData& r = ref();
+
+        if (r.flags & CameraData::FLAG_CAM_LOOKAT) {
+            pInfo->tp = POSTURE_LOOKAT;
+            pInfo->cameraUp = r.cameraUp;
+            pInfo->cameraTarget = r.cameraTarget;
+        } else if (r.flags & CameraData::FLAG_CAM_ROTATE) {
+            pInfo->tp = POSTURE_ROTATE;
+            pInfo->cameraRotate = r.cameraRotate;
+        } else {
+            pInfo->tp = POSTURE_AIM;
+            pInfo->cameraTarget = r.cameraTarget;
+            pInfo->cameraTwist = r.cameraTwist;
+        }
+    }
 }
 
 void Camera::SetPerspective(f32 fovy, f32 aspect, f32 near, f32 far) {
@@ -307,6 +332,54 @@ void Camera::GetViewport(f32* pX, f32* pY, f32* pWidth, f32* pHeight,
     }
     if (pFar != NULL) {
         *pFar = r.viewportFar;
+    }
+}
+
+void Camera::Project(math::VEC3* pOut, const math::VEC3& rPos) const {
+    if (pOut != NULL) {
+        math::MTX34 camMtx;
+        math::MTX44 projMtx;
+        f32 vp[6];
+        f32 proj[7];
+
+        if (IsValid()) {
+            const CameraData& r = ref();
+
+            if (!(r.flags & CameraData::FLAG_CAM_MTX_READY)) {
+                UpdateCameraMtx();
+            }
+
+            math::MTX34Copy(&camMtx, &r.cameraMtx);
+        }
+
+        if (IsValid()) {
+            const CameraData& r = ref();
+
+            if (!(r.flags & CameraData::FLAG_PROJ_MTX_READY)) {
+                UpdateProjectionMtx();
+            }
+
+            math::MTX44Copy(&projMtx, &r.projMtx);
+        }
+
+        proj[0] = ref().projType;
+        proj[1] = projMtx._00;
+        proj[3] = projMtx._11;
+        proj[5] = projMtx._22;
+        proj[6] = projMtx._23;
+
+        if (proj[0] == 1.0f) {
+            proj[2] = projMtx._03;
+            proj[4] = projMtx._13;
+        } else {
+            proj[2] = projMtx._02;
+            proj[4] = projMtx._12;
+        }
+
+        GetViewport(&vp[0], &vp[1], &vp[2], &vp[3], &vp[4], &vp[5]);
+
+        GXProject(rPos.x, rPos.y, rPos.z, camMtx, proj, vp, &pOut->x,
+                  &pOut->y, &pOut->z);
     }
 }
 

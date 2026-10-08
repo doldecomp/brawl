@@ -131,6 +131,8 @@ public:
 
     void EnableScnObjCallbackTiming(Timing timing);
     void EnableScnObjCallbackExecOp(ExecOp op);
+    void DisableScnObjCallbackTiming(Timing timing);
+    void DisableScnObjCallbackExecOp(ExecOp op);
 
     bool SetBoundingVolume(ScnObjBoundingVolumeType type,
                            const math::AABB* pAABB);
@@ -385,6 +387,9 @@ private:
  ******************************************************************************/
 class ScnGroup : public ScnObj {
 public:
+    static ScnGroup* Construct(MEMAllocator* pAllocator, u32* pSize,
+                               u32 capacity);
+
     ScnGroup(MEMAllocator* pAllocator, ScnObj** ppObj, u32 capacity);
 
     virtual void G3dProc(u32 task, u32 param, void* pInfo); // at 0xC

@@ -177,6 +177,7 @@ public:
     virtual void Release(const ResMdl mdl, u32 target,
                          BindOption option); // at 0x54
 
+    void DisableID(u32 idx);
     void UpdateCache();
 
     ResAnmChr GetResAnm() {

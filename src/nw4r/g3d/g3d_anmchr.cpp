@@ -722,6 +722,10 @@ void AnmObjChrRes::Release(const ResMdl mdl, u32 target, BindOption option) {
     }
 }
 
+void AnmObjChrRes::DisableID(u32 idx) {
+    mpBinding[idx] |= BINDING_INVALID;
+}
+
 const ChrAnmResult* AnmObjChrRes::GetResult(ChrAnmResult* pResult, u32 idx) {
     u32 id = mpBinding[idx];
 

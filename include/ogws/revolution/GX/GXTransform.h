@@ -36,6 +36,8 @@ typedef enum {
 } GXInterlaceField;
 
 void GXSetProjection(const Mtx44 proj, GXProjectionType type);
+void GXProject(f32 x, f32 y, f32 z, const Mtx mtx, const f32* pm, const f32* vp,
+               f32* sx, f32* sy, f32* sz);
 void GXSetProjectionv(const f32 proj[GX_PROJECTION_SZ]);
 void GXGetProjectionv(f32 proj[GX_PROJECTION_SZ]);
 void GXLoadPosMtxImm(const Mtx mtx, u32 id);

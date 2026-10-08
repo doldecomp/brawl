@@ -272,8 +272,26 @@ void ScnObj::EnableScnObjCallbackTiming(Timing timing) {
     }
 }
 
+void ScnObj::DisableScnObjCallbackTiming(Timing timing) {
+    if (timing & CALLBACK_TIMING_A) {
+        mCallbackTiming &= ~CALLBACK_TIMING_A;
+    }
+
+    if (timing & CALLBACK_TIMING_B) {
+        mCallbackTiming &= ~CALLBACK_TIMING_B;
+    }
+
+    if (timing & CALLBACK_TIMING_C) {
+        mCallbackTiming &= ~CALLBACK_TIMING_C;
+    }
+}
+
 void ScnObj::EnableScnObjCallbackExecOp(ExecOp op) {
     mCallbackExecOpMask |= static_cast<u16>(op);
+}
+
+void ScnObj::DisableScnObjCallbackExecOp(ExecOp op) {
+    mCallbackExecOpMask &= ~static_cast<u16>(op);
 }
 
 bool ScnObj::SetBoundingVolume(ScnObjBoundingVolumeType type,
@@ -431,6 +449,29 @@ void ScnLeaf::DefG3dProcScnLeaf(u32 task, u32 param, void* pInfo) {
  * ScnGroup
  *
  ******************************************************************************/
+ScnGroup* ScnGroup::Construct(MEMAllocator* pAllocator, u32* pSize,
+                              u32 capacity) {
+    ScnGroup* pGroup = NULL;
+    u32 size = align4(sizeof(ScnGroup) + capacity * sizeof(ScnObj*));
+
+    if (pSize != NULL) {
+        *pSize = size;
+    }
+
+    if (pAllocator != NULL) {
+        u8* pBuffer = reinterpret_cast<u8*>(Alloc(pAllocator, size));
+
+        if (pBuffer != NULL) {
+            ScnObj** ppObj =
+                reinterpret_cast<ScnObj**>(pBuffer + sizeof(ScnGroup));
+
+            pGroup = new (pBuffer) ScnGroup(pAllocator, ppObj, capacity);
+        }
+    }
+
+    return pGroup;
+}
+
 ScnObj::ForEachResult ScnGroup::ForEach(ForEachFunc pFunc, void* pInfo,
                                         bool postOrder) {
     ForEachResult result;
@@ -607,20 +648,15 @@ bool ScnGroup::Insert(u32 idx, ScnObj* pObj) {
     if (idx <= mNumScnObj && mNumScnObj < mSizeScnObj && pObj != NULL &&
         pObj->GetParent() == NULL) {
 
-        ScnObj** ppObj =
-            std::find(mpScnObjArray, mpScnObjArray + mNumScnObj, pObj);
-
-        if (ppObj == mpScnObjArray + mNumScnObj) {
-            for (u32 i = mNumScnObj; i > idx; i--) {
-                mpScnObjArray[i] = mpScnObjArray[i - 1];
-            }
-
-            mpScnObjArray[idx] = pObj;
-            pObj->G3dProc(G3DPROC_ATTACH_PARENT, 0, this);
-
-            mNumScnObj++;
-            return true;
+        for (u32 i = mNumScnObj; i > idx; i--) {
+            mpScnObjArray[i] = mpScnObjArray[i - 1];
         }
+
+        mpScnObjArray[idx] = pObj;
+        pObj->G3dProc(G3DPROC_ATTACH_PARENT, 0, this);
+
+        mNumScnObj++;
+        return true;
     }
 
     return false;
