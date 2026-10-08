@@ -9,6 +9,8 @@ class soSuspendable {
 public:
     soSuspendable() { m_isSuspend = false; }
     bool isSuspend() const { return m_isSuspend; }
+    void suspend() { m_isSuspend = true; }
+    void resume() { m_isSuspend = false; }
 
 };
 static_assert(sizeof(soSuspendable) == 1, "Class is wrong size!");

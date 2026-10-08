@@ -44,6 +44,7 @@ public:
     virtual void init();
 
     void setBrake(Vec2f* brake);
+    void setSpeed(Vec2f* speed);
 
     Vec2f m_speed;        // +0x08
     Vec2f m_accel;        // +0x10

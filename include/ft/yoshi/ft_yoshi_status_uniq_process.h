@@ -78,3 +78,64 @@ public:
     virtual void initStatus(soModuleAccesser*);
     virtual void exitStatus(soModuleAccesser*, int);
 };
+
+// Egg Roll's shared behavior is also called by its hit callbacks.
+class ftYoshiStatusUniqProcessSpecialSUtility {
+public:
+    static bool checkLife(soModuleAccesser*);
+    static bool checkCancel(soModuleAccesser*);
+    static void setBodyChange(soModuleAccesser*);
+    static void setBodyScale(soModuleAccesser*);
+    static void resetYoshiSpecialS(soModuleAccesser*);
+    static void resetYoshiSpecialS2(soModuleAccesser*);
+    static void audioDash(soModuleAccesser*);
+    static void procHit(soModuleAccesser*);
+    static void procHitWall(soModuleAccesser*, int);
+    static bool getFlick(soModuleAccesser*);
+    static void setRot(soModuleAccesser*);
+    static void setAttack(soModuleAccesser*);
+    static void setPower(soModuleAccesser*);
+};
+class ftYoshiStatusUniqProcessSpecialSStart : public soStatusUniqProcess {
+public:
+    virtual ~ftYoshiStatusUniqProcessSpecialSStart() {}
+    virtual void initStatus(soModuleAccesser*);
+    virtual void execStatus(soModuleAccesser*);
+    virtual void execFixPosCounter(soModuleAccesser*);
+    virtual void exitStatus(soModuleAccesser*, int);
+};
+class ftYoshiStatusUniqProcessSpecialSLoop : public soStatusUniqProcess {
+public:
+    virtual ~ftYoshiStatusUniqProcessSpecialSLoop() {}
+    virtual void initStatus(soModuleAccesser*);
+    virtual void execStatus(soModuleAccesser*);
+    virtual void execFixPosCounter(soModuleAccesser*);
+    virtual void execFixPos(soModuleAccesser*);
+    virtual void exitStatus(soModuleAccesser*, int);
+};
+class ftYoshiStatusUniqProcessSpecialSEnd : public soStatusUniqProcess {
+public:
+    virtual ~ftYoshiStatusUniqProcessSpecialSEnd() {}
+    virtual void initStatus(soModuleAccesser*);
+    virtual void execStatus(soModuleAccesser*);
+    virtual void execFixPosCounter(soModuleAccesser*);
+    virtual void exitStatus(soModuleAccesser*, int);
+};
+class ftYoshiStatusUniqProcessSpecialAirSJump : public soStatusUniqProcess {
+public:
+    virtual ~ftYoshiStatusUniqProcessSpecialAirSJump() {}
+    virtual void initStatus(soModuleAccesser*);
+    virtual void execStatus(soModuleAccesser*);
+    virtual void execFixPosCounter(soModuleAccesser*);
+    virtual void execFixPos(soModuleAccesser*);
+    virtual void exitStatus(soModuleAccesser*, int);
+};
+class ftYoshiStatusUniqProcessSpecialSTurn : public soStatusUniqProcess {
+public:
+    virtual ~ftYoshiStatusUniqProcessSpecialSTurn() {}
+    virtual void initStatus(soModuleAccesser*);
+    virtual void execStatus(soModuleAccesser*);
+    virtual void execFixPosCounter(soModuleAccesser*);
+    virtual void execFixPos(soModuleAccesser*);
+    virtual void exitStatus(soModuleAccesser*, int);
+};
