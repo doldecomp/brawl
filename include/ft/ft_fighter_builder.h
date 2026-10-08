@@ -50,8 +50,8 @@ class ftFighterBuilder : public Fighter {
     ftCancelModuleImpl m_cancelModule;
     ftVirtualNodeMatrixPoolImpl m_virtualNodeMtxPool;
     ftStatusGimmickUniqProcessPoolImpl m_gimmickProcPool;
-    u32 unk9A38[2]; // cameraRangeSet TODO type
-    u32 unk9A40[2]; // cameraClipSphereSet TODO type
+    soSet<soCameraRange> m_cameraRangeSet;
+    soSet<soCameraClipSphere> m_cameraClipSphereSet;
 public:
     ftFighterBuilder(s32 entryId,
                      ftKind kind,
@@ -67,12 +67,17 @@ public:
                                0,
                                m_moduleAccesser,
                                -1,
-                               &unk9A38,
-                               &unk9A40),
+                               &m_cameraRangeSet,
+                               &m_cameraClipSphereSet),
                            this),
         m_cancelModule(m_moduleAccesser),
         m_virtualNodeMtxPool(),
-        m_gimmickProcPool(m_moduleAccesser) {
+        m_gimmickProcPool(m_moduleAccesser),
+        m_cameraRangeSet(static_cast<soCameraRange*>(soValueAccesser::getConstantIndefinite(m_moduleAccesser, 0xA7F9, 0)), 1),
+        m_cameraClipSphereSet(static_cast<soCameraClipSphere*>(soValueAccesser::getConstantIndefinite(m_moduleAccesser, 0xA7FC, 0)), 1) {
+        // Modules now own their backing storage, camera sets and gimmick processes.
+        Fighter::postInitialize();
+        static_cast<ftCancelModule&>(m_cancelModule).postInitialize(m_moduleAccesser);
     }
     virtual void* getCancelModule() { return &m_cancelModule; }
     virtual bool isEnableCancel() {

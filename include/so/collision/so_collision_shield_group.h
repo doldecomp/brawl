@@ -30,8 +30,11 @@ static_assert(sizeof(soCollisionReflectorData) == 0x14, "Class is wrong size!");
 
 struct soCollisionShieldGroupData {
     soSet<soCollisionShieldData> m_shieldDataSet;
-    u32 _8[4];
+    // Four high flag bits are copied by soCollisionShieldGroup::add.
+    u32 _8;
 };
+
+static_assert(sizeof(soCollisionShieldGroupData) == 0xC, "Shield group descriptor layout");
 
 struct soCollisionReflectorGroupData {
     soSet<soCollisionShieldData> m_shieldDataSet;

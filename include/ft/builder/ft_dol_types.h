@@ -165,7 +165,4 @@ FT_DOL_POLY_BEGIN(soTeamModuleImpl, 0x44);
     soTeamModuleImpl(ftTeam* a, ftTeam* b, ftTeamIndirect* c, soModuleAccesser* acc, void* nullTeam);
 FT_DOL_POLY_END;
 
-FT_DOL_POLY_BEGIN(ftAreaModuleImpl, 0x68);
-    ftAreaModuleImpl(soModuleAccesser* acc, u8 category, void* instances, void* contactLogs, void* checker, void* winds,
-                     soEventObserverRegistrationDesc* regDesc, int unk8);
-FT_DOL_POLY_END;
+#include <ft/ft_area_module_impl.h>

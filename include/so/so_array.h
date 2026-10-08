@@ -14,6 +14,9 @@ class soSet {
     size_t m_size;
 
 public:
+    soSet() { }
+    soSet(T* elements, u32 size) : m_elements(elements), m_size(size) { }
+
     T* elements() {
         return m_elements;
     }

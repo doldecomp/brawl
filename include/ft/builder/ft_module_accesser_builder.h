@@ -244,12 +244,12 @@ public:
         m_groundModuleBuilder(&m_moduleAccsr, fbd.getGroundConditionChecker()),
         m_situationModuleBuilder(ftGetManageId(&m_moduleAccsr), &m_moduleAccsr, &g_soEventObserverRegistrationDescNull),
         m_teamBuilder(fbd.getTeam(), &m_moduleAccsr),
-        m_attackModuleBuilder(&m_moduleAccsr, owner->m_taskId, owner->m_taskCategory, &g_soEventObserverRegistrationDescNull),
-        m_hitModuleBuilder(&m_moduleAccsr, owner->m_taskId, owner->m_taskCategory, &g_soEventObserverRegistrationDescNull),
-        m_shieldModuleBuilder(&m_moduleAccsr, owner->m_taskId, owner->m_taskCategory),
-        m_reflectorModuleBuilder(&m_moduleAccsr, owner->m_taskId, owner->m_taskCategory),
-        m_collisionCatchModuleBuilder(&m_moduleAccsr, owner->m_taskId, owner->m_taskCategory, &g_soEventObserverRegistrationDescNull),
-        m_searchBuilder(&m_moduleAccsr, owner->m_taskId, owner->m_taskCategory),
+        m_attackModuleBuilder(&m_moduleAccsr, owner->m_taskId, static_cast<gfTask::Category>(static_cast<u8>(owner->m_taskCategory)), &g_soEventObserverRegistrationDescNull),
+        m_hitModuleBuilder(&m_moduleAccsr, owner->m_taskId, static_cast<gfTask::Category>(static_cast<u8>(owner->m_taskCategory)), &g_soEventObserverRegistrationDescNull),
+        m_shieldModuleBuilder(&m_moduleAccsr, owner->m_taskId, static_cast<gfTask::Category>(static_cast<u8>(owner->m_taskCategory))),
+        m_reflectorModuleBuilder(&m_moduleAccsr, owner->m_taskId, static_cast<gfTask::Category>(static_cast<u8>(owner->m_taskCategory))),
+        m_collisionCatchModuleBuilder(&m_moduleAccsr, owner->m_taskId, static_cast<gfTask::Category>(static_cast<u8>(owner->m_taskCategory)), &g_soEventObserverRegistrationDescNull),
+        m_searchBuilder(&m_moduleAccsr, owner->m_taskId, static_cast<gfTask::Category>(static_cast<u8>(owner->m_taskCategory))),
         m_damageModuleBuilder(&m_moduleAccsr, &g_soEventObserverRegistrationDescNull),
         m_catchModuleBuilder(&m_moduleAccsr),
         m_captureModuleBuilder(&m_moduleAccsr),
@@ -257,7 +257,7 @@ public:
         m_turnModuleBuilder(&m_moduleAccsr),
         m_shakeModuleBuilder(&m_moduleAccsr, fbd.getShakeData()),
         m_soundModuleBuilder(&m_moduleAccsr, fbd.getSoundIdExchanger(), &g_soEventObserverRegistrationDescNull),
-        m_linkModuleBuilder(ftGetManageId(&m_moduleAccsr)),
+        m_linkModuleBuilder(&m_moduleAccsr),
         m_visibilityModuleBuilder(&m_moduleAccsr, fbd.getVisibilityData()),
         m_controllerModuleBuilder(&m_moduleAccsr, ftGetManageId(&m_moduleAccsr)),
         m_cameraModuleBuilder(&m_moduleAccsr, (soSet<soCameraRange>*)fbd.getCameraRangeSet(), (soSet<soCameraClipSphere>*)fbd.getCameraClipSphereSet(), &g_soEventObserverRegistrationDescNull),
@@ -279,6 +279,9 @@ public:
         m_abnormalModuleBuilder(&m_moduleAccsr),
         m_slowModuleBuilder(&m_moduleAccsr),
         m_glowModuleBuilder(&m_moduleAccsr) {
+        // Register the common work bank only when the build config owns one.
+        if (m_generalWorkBuilder.getModule()->isNull() == false)
+            m_moduleAccsr.getWorkManageModule().setWork(1, m_generalWorkBuilder.getModule());
     }
 
     ~soModuleAccesserBuilder() { }
@@ -295,12 +298,20 @@ public:
         soModuleAccesserBuilder<BC>(fbd, owner),
         unkTable(*(const soStatusData**)(((u8**)&fbd)[3] + 0x18), 0xF), // HYPOTHESIS: fbd + 0xC is the ftData pointer
         unkAnimCmdModuleSubBuilder(&this->m_moduleAccsr, fbd) {
-        soArrayUtility::pushRange<const acAnimCmdConv*>(unkAnimCmdModuleSubBuilder.getDisguiseUnit()->getEntryList(0), (const acAnimCmdConv* const*)fbd.getAnimCmdData(0, 0), 0x112);
-        soArrayUtility::pushRange<const acAnimCmdConv*>(unkAnimCmdModuleSubBuilder.getDisguiseUnit()->getEntryList(1), (const acAnimCmdConv* const*)fbd.getAnimCmdData(0, 1), 0x112);
-        soArrayUtility::pushRange<const acAnimCmdConv*>(unkAnimCmdModuleSubBuilder.getDisguiseUnit()->getEntryList(0), *(const acAnimCmdConv* const**)(((u8**)&fbd)[3] + 0x24), 0xF);
-        soArrayUtility::pushRange<const acAnimCmdConv*>(unkAnimCmdModuleSubBuilder.getDisguiseUnit()->getEntryList(1), *(const acAnimCmdConv* const**)(((u8**)&fbd)[3] + 0x28), 0xF);
-        unkAnimCmdModuleSubBuilder.getDisguiseUnit()->setupDisguiseList(0, (soAnimCmdDisguiseListEntry*)fbd.getAnimCmdDisguiseList(false, 0));
-        unkAnimCmdModuleSubBuilder.getDisguiseUnit()->setupDisguiseList(1, (soAnimCmdDisguiseListEntry*)fbd.getAnimCmdDisguiseList(false, 1));
+        soAnimCmdControlUnitBuilderDisguise<typename BC::AnimCmdModuleSubBuildConfig::Unit0Config>* disguiseUnit =
+            unkAnimCmdModuleSubBuilder.getDisguiseUnit();
+        soArrayUtility::pushRange<const acAnimCmdConv*>(disguiseUnit->getEntryList(0), (const acAnimCmdConv* const*)fbd.getAnimCmdData(0, 0), 0x112);
+        soArrayUtility::pushRange<const acAnimCmdConv*>(disguiseUnit->getEntryList(1), (const acAnimCmdConv* const*)fbd.getAnimCmdData(0, 1), 0x112);
+        soArrayUtility::pushRange<const acAnimCmdConv*>(disguiseUnit->getEntryList(0), *(const acAnimCmdConv* const**)(((u8**)&fbd)[3] + 0x24), 0xF);
+        soArrayUtility::pushRange<const acAnimCmdConv*>(disguiseUnit->getEntryList(1), *(const acAnimCmdConv* const**)(((u8**)&fbd)[3] + 0x28), 0xF);
+        disguiseUnit->setupDisguiseList(0, (soAnimCmdDisguiseListEntry*)fbd.getAnimCmdDisguiseList(false, 0));
+        disguiseUnit->setupDisguiseList(1, (soAnimCmdDisguiseListEntry*)fbd.getAnimCmdDisguiseList(false, 1));
         this->m_moduleAccsr.getStatusModule().connectStatusDataList(&unkTable);
+        // Apply fighter-specific area dimensions before registering the areas.
+        soSet<soAreaData>* areas = static_cast<soSet<soAreaData>*>(
+            soValueAccesser::getConstantIndefinite(&this->m_moduleAccsr, 0xA805, 0));
+        ftAreaModuleImpl* fighterArea = dynamic_cast<ftAreaModuleImpl*>(&this->m_moduleAccsr.getAreaModule());
+        if (fighterArea) fighterArea->setAreaData(areas);
+        this->m_moduleAccsr.getAreaModule().addArea(areas);
     }
 };

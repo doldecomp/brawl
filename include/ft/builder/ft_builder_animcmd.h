@@ -226,7 +226,9 @@ public:
         m_interpreter(ftGetManageId(acc), (soArrayVector<acCmdInterpreterStackData, 8>*)&m_stack.m_array, BC::UnitId, 1, 1.0f, ftAddressOf((u8)1)),
         m_stack() {
         soAttributeFlag attr(4);
-        soAnimCmdControlUnit unit = { &m_interpreter, (soAnimCmdAddressPackArraySeparate*)g_soAnimCmdAddressPackArrayNull };
+        soAnimCmdControlUnit unit;
+        unit.m_animCmdInterpreter = &m_interpreter;
+        unit.m_animCmdAddressPackArraySeparate = (soAnimCmdAddressPackArraySeparate*)g_soAnimCmdAddressPackArrayNull;
         acc->getAnimCmdModule().registInterpreter(unit, attr);
     }
 };
