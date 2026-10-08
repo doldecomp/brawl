@@ -8,6 +8,11 @@ class soLockable {
     s32 m_unk0;
     s32 m_lockCount;
 public:
+    // Clears both counters (the work manage module does this when it is activated).
+    void reset() {
+        m_unk0 = 0;
+        m_lockCount = 0;
+    }
     void lock() { m_lockCount++; }
     void unlock() {
         if (m_lockCount > 0) {

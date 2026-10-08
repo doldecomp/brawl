@@ -4758,6 +4758,7 @@ config.libs = [
             Object(Matching, "mo_melee/sora_melee/ft/ft_log.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/ft/ft_log_attack_info_module.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/ft/ft_util.cpp"),
+            Object(NonMatching, "mo_melee/sora_melee/so/so_work_manage_module_impl.cpp"),
         ],
     },
     {
