@@ -1388,7 +1388,11 @@ public:
     virtual ~Fighter();
 
     virtual Input* getInput();
+#ifdef FT_MODULE_BUILDER
+    virtual soKind soGetKind() { return StageObject_Fighter; }
+#else
     virtual soKind soGetKind();
+#endif
 #ifdef FT_MODULE_BUILDER
     virtual int soGetSubKind() { return getFtKind(); }
 #else
@@ -1403,6 +1407,12 @@ public:
 #endif
 #ifdef FT_MODULE_BUILDER
     virtual bool notifyEventAnimCmd(acAnimCmd* acmd, soModuleAccesser* moduleAccesser, s32 unk3); // overrides the soAnimCmdEventObserver one (the BrawlHeaders signature uses int)
+#ifdef FT_FIGHTER_ANIMCMD_LONG
+    // HYPOTHESIS: with FT_FIGHTER_ANIMCMD_LONG (StageObject's slot is long too) the long override above serves both bases and an
+    // additional new fighter virtual (an empty 4 byte function in sora_melee) sits at the vtable position the old slot had;
+    // its meaning is unknown. fn_27_12646C is named after this placeholder.
+    virtual void unk_fighter_slot();
+#endif
 #else
     virtual bool notifyEventAnimCmd(acAnimCmd* acmd, soModuleAccesser* moduleAccesser, int unk3);
 #endif
@@ -1457,10 +1467,18 @@ public:
     virtual void setNameCursor(bool);
     virtual void setLoupe(bool);
     virtual void setLoupeDamage(bool);
+#ifdef FT_MODULE_BUILDER
+    virtual u32 getChangeSucceedOption() { return 0; }
+#else
     virtual u32 getChangeSucceedOption();
+#endif
     virtual void changeSucceedCore(void*, int);
     virtual void setupChangeSucceedWork(void*);
+#ifdef FT_MODULE_BUILDER
+    virtual bool setupChangeSucceedEffect() { return false; }
+#else
     virtual bool setupChangeSucceedEffect();
+#endif
 #ifdef FT_MODULE_BUILDER
     virtual void change(void*, int) { }
 #else
@@ -1515,7 +1533,11 @@ public:
     virtual void notifyEventOnDamage(soDamage* damage, bool, soModuleAccesser* moduleAccesser);
     virtual void notifyEventAddDamage(soDamage* damage, soModuleAccesser* moduleAccesser);
     virtual void setTeam(int, int);
+#ifdef FT_MODULE_BUILDER
+    virtual void setVisibility(int) { }
+#else
     virtual void setVisibility(int);
+#endif
     virtual void notifyEventTurn(float, float, soModuleAccesser* moduleAccesser);
     virtual bool notifyHaveItemPreCheck(BaseItem* item, bool*);
     virtual void notifyHaveItem(itParam::SizeKind, BaseItem* item, u32 nodeIndex, u32 index, bool);
@@ -1530,13 +1552,25 @@ public:
     virtual void notifyEventSetDamage(float);
     virtual void notifyEventChangeAdvUnit();
     virtual void notifyEventBeat();
+#ifdef FT_MODULE_BUILDER
+    virtual void playEatSE() { }
+#else
     virtual void playEatSE();
+#endif
     virtual void onInhaled();
     virtual bool isInhaled();
     virtual void offInhaled();
     virtual void notifyEventPikminFinalAttack(float, int);
+#ifdef FT_MODULE_BUILDER
+    virtual void trainerStart(float, Vec3f*, Vec3f*, int, bool) { }
+#else
     virtual void trainerStart(float, Vec3f*, Vec3f*, int, bool);
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual void trainerRestart(float*, bool, bool) { }
+#else
     virtual void trainerRestart(float*, bool, bool);
+#endif
 #ifdef FT_MODULE_BUILDER
     virtual void disappear(bool) { }
 #else

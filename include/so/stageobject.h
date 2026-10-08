@@ -90,7 +90,12 @@ public:
     virtual void notifyLostGround(soModuleAccesser*);
 
     virtual bool isObserv(char unk1);
+#ifdef FT_FIGHTER_ANIMCMD_LONG
+    // HYPOTHESIS: the fighter override serves this slot and soAnimCmdEventObserver's (long) with one function (thunk at -0x48).
+    virtual bool notifyEventAnimCmd(acAnimCmd* acmd, soModuleAccesser* moduleAccesser, s32 unk3);
+#else
     virtual bool notifyEventAnimCmd(acAnimCmd* acmd, soModuleAccesser* moduleAccesser, int unk3);
+#endif
     virtual void notifyEventLink(soLinkEventArgs *eventInfo, soModuleAccesser* moduleAccesser, StageObject*, int unk4);
 
     virtual void notifyArticleEventRemove(int unk1, int* unk2);

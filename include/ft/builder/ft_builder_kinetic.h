@@ -80,7 +80,14 @@ public:
 // Interface of the mediator (vtable at the start of soKineticMediatorImpl); there is no virtual destructor.
 class soKineticMediator {
 public:
+// MATCH-ONLY/HYPOTHESIS: the REL's mediator forwards (mode, &pools, acc) to the sora_melee dispatcher: the
+// first parameter is the mode (r4 -> r3), the accesser stays in r5. FT_KINETIC_MEDIATOR_MODE_ARG opts a character in
+// (symbol: changeKinetic__21ftKineticMediatorImplFiP16soModuleAccesser); the other characters still use the one-argument form.
+#ifdef FT_KINETIC_MEDIATOR_MODE_ARG
+    virtual void changeKinetic(int mode, soModuleAccesser* acc) = 0;
+#else
     virtual void changeKinetic(soModuleAccesser* acc) = 0;
+#endif
     virtual void updateEnergy(soModuleAccesser* acc) = 0;
     virtual void updateEnergy1(soModuleAccesser* acc, soKineticAttributeMask flag) = 0;
     virtual void updateEnergy2(soArray<soKineticEnergy**>* energies, soModuleAccesser* acc) = 0;
@@ -233,8 +240,13 @@ public:
     ~ftKineticMediatorImpl() { }
 
 #define FT_KINETIC_CLEAR(L)                                                                                               for (int i = 0; i < 1; i++) {                                                                                             soKineticTransactHelper::checkClearSpeed(FT_KINETIC_SUB(L).getInstanceAt(i));                                      }
+#ifdef FT_KINETIC_MEDIATOR_MODE_ARG
+    virtual void changeKinetic(int mode, soModuleAccesser* acc) {
+        ftKineticTransactor::changeKinetic(mode, &m_pools, acc);
+#else
     virtual void changeKinetic(soModuleAccesser* acc) {
         ftKineticTransactor::changeKinetic(acc, &m_pools);
+#endif
         FT_KINETIC_EACH_POOL(FT_KINETIC_CLEAR)
     }
 

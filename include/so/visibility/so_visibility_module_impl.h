@@ -11,6 +11,9 @@ class soVisibilityModuleImpl : public soVisibilityModuleSimple, public soStatusE
 #ifdef FT_MODULE_BUILDER
 public:
     soVisibilityModuleImpl(soModuleAccesser* acc, soVisibilityData* data, int n);
+#ifdef FT_REL_LINK_EXTERN
+    virtual ~soVisibilityModuleImpl(); // MATCH-ONLY: the destructor is a sora_melee function (not an inline weak copy)
+#endif
 private:
 #endif
     char _0x18[2];
