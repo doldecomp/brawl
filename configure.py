@@ -1137,9 +1137,11 @@ config.libs = [
     {
         "lib": "ft_wario",
         "mw_version": config.linker_version,
-        "cflags": cflags_rel,
+        "cflags": cflags_fighter,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_fighter/ft_wario/ft_wario_status_uniq_process_special_s_drive.cpp"),
+        ],
     },
     {
         "lib": "ft_wolf",
