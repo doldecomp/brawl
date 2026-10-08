@@ -10351,6 +10351,20 @@ mo_melee/sora_melee/so/so_array_vector_thunks_16soModelNodeSetUp_4.cpp:
 mo_melee/sora_melee/so/so_array_vector_thunks_16soCollisionGroup_7.cpp:
 	.text       start:0x00395914 end:0x0039593C
 
+mo_melee/sora_melee/ft/ft_robot_status_uniq_process_special_beam.cpp:
+	.text       start:0x003A34B8 end:0x003A3850
+	.ctors      start:0x000004E8 end:0x000004EC
+	.rodata     start:0x00007EA0 end:0x00007EA8
+	.data       start:0x0009CAD8 end:0x0009CB60
+	.bss        start:0x00008A48 end:0x00008A58
+
+mo_melee/sora_melee/wn/wn_robot_beam_status_uniq_process.cpp:
+	.text       start:0x003A5794 end:0x003A59F0
+	.ctors      start:0x000004F0 end:0x000004F4
+	.rodata     start:0x00007ED8 end:0x00007EE0
+	.data       start:0x0009D0E0 end:0x0009D158
+	.bss        start:0x00008A80 end:0x00008A90
+
 mo_melee/mo_melee.cpp:
 	.text       start:0x003CBCBC end:0x003CBE40
 	.ctors      start:0x00000514 end:0x00000518
