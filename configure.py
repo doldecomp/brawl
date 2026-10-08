@@ -4626,7 +4626,6 @@ config.libs = [
             Object(NonMatching, "mo_melee/sora_melee/so/so_array_base_soArrayFixed_17soPhysicsIKHandle_86BD4.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_array_base_soArrayFixed_18soCollisionHitPart_CC4E0.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_array_base_soArrayFixed_18soModelVirtualNode_86B04.cpp"),
-            Object(NonMatching, "mo_melee/sora_melee/so/so_array_base_soArrayFixed_18soSlopeStatusParam_ACF24.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_array_base_soArrayFixed_19soCollisionHitGroup_CCA8C.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_array_base_soArrayFixed_19soControllerClatter_86998.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_array_base_soArrayFixed_19soMotionChangeParam_1C400.cpp"),
@@ -4770,6 +4769,7 @@ config.libs = [
             Object(NonMatching, "mo_melee/sora_melee/ft/ft_log_attack_info_module.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/ft/ft_util.cpp"),
             Object(NonMatching, "mo_melee/sora_melee/so/so_work_manage_module_impl.cpp"),
+            Object(NonMatching, "mo_melee/sora_melee/so/so_slope_module_impl.cpp"),
         ],
     },
     {

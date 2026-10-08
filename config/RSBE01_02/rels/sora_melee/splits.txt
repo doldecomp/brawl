@@ -1239,8 +1239,8 @@ mo_melee/sora_melee/so/so_array_base_soArrayFixed_P46soInstanceUnitFullProperty_
 mo_melee/sora_melee/so/so_array_vector_thunks_P46soInstanceUnitFullProperty_16soTransitionTerm_25.cpp:
 	.text       start:0x000ACA84 end:0x000ACAAC
 
-mo_melee/sora_melee/so/so_array_base_soArrayFixed_18soSlopeStatusParam_ACF24.cpp:
-	.text       start:0x000ACF24 end:0x000ACF58
+mo_melee/sora_melee/so/so_slope_module_impl.cpp:
+	.text       start:0x000ACAC4 end:0x000AE448
 
 mo_melee/sora_melee/so/so_array_vector_abstract_layout_soSlopeStatusParam_part1.cpp:
 	.text       start:0x000AE4B4 end:0x000AE610
