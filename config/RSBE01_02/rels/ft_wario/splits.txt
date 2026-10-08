@@ -81,9 +81,16 @@ mo_fighter/ft_wario/ft_wario_status_uniq_process_special_lw.cpp:
 mo_fighter/ft_wario/wn_wario_bike.cpp:
 	.text       start:0x0000F17C end:0x00015344
 	.ctors      start:0x0000002C end:0x00000030
-	.rodata     start:0x00000080 end:0x000000C0
-	.data       start:0x00006988 end:0x00008230
-	.bss        start:0x00000228 end:0x00000318
+	.rodata     start:0x00000080 end:0x000000B0
+	.data       start:0x00006988 end:0x000080F0
+	.bss        start:0x00000228 end:0x00000308
+
+mo_fighter/ft_wario/wn_wario_bike_damage_transactor.cpp:
+	.text       start:0x00015344 end:0x000155E8
+	.ctors      start:0x00000030 end:0x00000034
+	.rodata     start:0x000000B0 end:0x000000C0
+	.data       start:0x000080F0 end:0x00008230
+	.bss        start:0x00000308 end:0x00000318
 
 mo_fighter/ft_wario/wn_wario_bike_status_uniq_process_utility.cpp:
 	.text       start:0x000155E8 end:0x00016990
