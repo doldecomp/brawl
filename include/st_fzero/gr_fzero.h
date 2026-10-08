@@ -241,17 +241,26 @@ public:
 };
 static_assert(sizeof(grFzeroWall) == 0x170, "grFzeroWall layout");
 
+// 8 bytes of work memory the attack allocates for its hit setup (HYPOTHESIS: filled in by the module builder).
+struct grFzeroAttackWork {
+    u32 unk0;
+    u32 unk4;
+};
+
 // The hazards that hit fighters (the cars' attack floor and wall).
 class grFzeroAttack : public grFzero {
     u8* m_stateWork;           // 0x158
     u8* m_stateWallWork;       // 0x15C
     u8* m_sceneWork;           // 0x160
     float* m_frameSceneWork;   // 0x164
-    Matrix* m_mtxGimmickWork;  // 0x168
-    float* m_posLimitWork;     // 0x16C
-    u8 unk170[0x188 - 0x170];
-    u8 m_type;                 // 0x188
-    u8 unk189[0x190 - 0x189];
+    Matrix* m_mtxGimmickWork;  // 0x168 the stage matrix table (entries 22/23 are the floor, 39 the wall)
+    float* m_posLimitWork;     // 0x16C the stage's lower limit (the y of the upper limit is read from it)
+    Vec3f m_pos;               // 0x170 position of the hit area, published to the calc-world callback
+    Vec3f m_rot;               // 0x17C rotation of the hit area
+    u8 m_type;                 // 0x188 4/5 = the two floors, 6 = the wall
+    u8 m_hasYakumono;          // 0x189
+    u8 m_attackEnabled;        // 0x18A
+    grFzeroAttackWork* m_work; // 0x18C
 
 public:
     grFzeroAttack(const char* taskName);
