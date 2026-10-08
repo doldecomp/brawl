@@ -1123,6 +1123,7 @@ config.libs = [
         "host": False,
         "objects": [
             Object(Matching, "mo_fighter/ft_sonic/ft_sonic_status_uniq_process_special_lw_hold.cpp", extra_cflags=["-O2,s"]),
+            Object(Matching, "mo_fighter/ft_sonic/ft_sonic_status_uniq_process_special_s_wall_end.cpp", extra_cflags=["-O2,s"]),
         ],
     },
     {
