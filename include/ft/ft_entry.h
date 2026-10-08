@@ -262,7 +262,9 @@ public:
     void entryEnd();
     void resultEnd();
     void notifyReplacePokeTrainer(int unk);
+    bool setFinal(bool isDiscretion);
     void exitFinal(int unk);
+    void notifyPikminFinalAttack(float unk1, int unk2);
     int getRank();
     int getRankPoint();
 };

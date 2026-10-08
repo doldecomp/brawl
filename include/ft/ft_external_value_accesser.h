@@ -10,4 +10,5 @@ namespace ftExternalValueAccesser {
     float getWeight(Fighter* fighter);
     Vec3f getHipPos(Fighter* fighter);
     Vec3f getCursorPos(Fighter* fighter);
+    int getNoDiscretionFinalCount();
 }

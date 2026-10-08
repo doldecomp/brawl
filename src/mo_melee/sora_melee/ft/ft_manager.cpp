@@ -3,6 +3,9 @@
 #include <ft/ft_manager.h>
 #include <ft/ft_common_data_accesser.h>
 #include <ft/ft_external_value_accesser.h>
+#include <gf/gf_task.h>
+#include <gf/gf_task_scheduler.h>
+#include <it/it_manager.h>
 #include <mu/menu.h>
 #include <so/so_external_value_accesser.h>
 
@@ -694,4 +697,71 @@ void ftManager::cancelFinalStatus() {
 
 void ftManager::notifyDrawDone() {
     m_isWaitingDraw = false;
+}
+
+// HYPOTHESIS: set while items are enabled in the match.
+extern int g_ftItemEnabled;
+
+// A Final Smash can only be started if Smash Balls are possible: no exclusive special item is active and the Smash Ball is
+// switched on, and a discretionary Final Smash is not blocked by the remaining count.
+bool ftManager::isAvailableFinal(bool unk) const {
+    if (unk7c == false) {
+        return false;
+    }
+    if (g_ftItemEnabled != 0) {
+        if (itManager::getInstance()->isExclusiveSpecialItem(-1, true) == true) {
+            return false;
+        }
+        if (itManager::getInstance()->isItemSwitch(0x37) == 0) {
+            return false;
+        }
+    }
+    if (unk == true) {
+        if (m_noDiscretionFinalCount > 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void ftManager::setFinal(int entryId, bool isDiscretion) {
+    if (entryId != m_finalEntryId) {
+        if (m_entryManager->getEntity(entryId)->setFinal(isDiscretion) == true) {
+            m_finalEntryId = entryId;
+            m_finalStatus = -1;
+            if (isDiscretion == true) {
+                m_noDiscretionFinalCount = ftExternalValueAccesser::getNoDiscretionFinalCount();
+            }
+        }
+    }
+}
+
+// Starts the Final Smash of the entry that owns the given task (a fighter or something a fighter created).
+void ftManager::setFinalTask(u32 category, u32 taskId) {
+    if (category != gfTask::Category_Fighter) {
+        gfTask* task = gfTaskScheduler::getInstance()->getTaskById((gfTask::Category)category, taskId);
+        if (task != NULL) {
+            taskId = soExternalValueAccesser::getTeamOwnerId(&dynamic_cast<StageObject&>(*task));
+        }
+    }
+    int count = getEntries(this).size();
+    for (int i = 0; i < count; i++) {
+        if ((u8)getEntries(this).at(i)->isExistFighter(taskId) != 0xFF) {
+            int entryId = getEntries(this).at(i)->m_entryId;
+            if (entryId != m_finalEntryId) {
+                if (m_entryManager->getEntity(entryId)->setFinal(false) == true) {
+                    m_finalEntryId = entryId;
+                    m_finalStatus = -1;
+                }
+            }
+            return;
+        }
+    }
+}
+
+void ftManager::notifyEventPikminFinalAttack(float unk1, int unk2) {
+    int count = getEntries(this).size();
+    for (int i = 0; i < count; i++) {
+        getEntries(this).at(i)->notifyPikminFinalAttack(unk1, unk2);
+    }
 }

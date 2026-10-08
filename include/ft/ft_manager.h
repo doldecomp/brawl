@@ -125,7 +125,8 @@ public:
     int m_finalStatus;
     int m_finalEntryId;
     int m_noDiscretionFinalCount;
-    char _122[21];
+    bool unk7c; // set by setMode/setDefault, read by isAvailableFinal
+    char _125[20];
     s8 m_parasitePlayerNo;    // custom
     char _146[34];
     soEventManageModuleImpl m_eventManageModule;
@@ -220,6 +221,9 @@ public:
     int getPokeTrainerInstanceHeap(int entryId) const;
     void setZoom(int entryId, float unk1, int unk2, int unk3);
     void exitFinal(int entryId, int unk);
+    bool isAvailableFinal(bool unk) const;
+    void setFinalTask(u32 category, u32 taskId);
+    void notifyEventPikminFinalAttack(float unk1, int unk2);
     void setFinalStatus(int status);
     void cancelFinalStatus();
     int getRank(int entryId) const;
