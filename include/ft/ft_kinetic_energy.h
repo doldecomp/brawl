@@ -63,7 +63,8 @@ public:
     float m_speedY;
     float m_gravity;
     float m_fallSpeedMax;
-    u8 m_unk18[4];
+    // Yoshi kinetic mode 0x68 writes this offset as a scalar float.
+    float unk18;
     // HYPOTHESIS: updateEnergy uses this float for its speed-limit clamp.
     float unk1C;
     u8 m_unk20[8];

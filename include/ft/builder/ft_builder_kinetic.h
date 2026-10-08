@@ -31,8 +31,12 @@ public:
 class ftKineticTransactor {
 public:
     static void changeKinetic(soModuleAccesser* acc, void* pools);
+    // Native generic dispatcher: mode in r3, pool in r4, accesser in r5.
+    static void changeKinetic(int mode, void* pools, soModuleAccesser* acc);
     static void addSpeed(void* speed, void* pools, soModuleAccesser* acc);
     static void addSpeedOutside(int type, void* speed, void* pools, soModuleAccesser* acc);
+    // The accesser enumeration at +0xD8 drives outside-energy flags.
+    static void enableOutsideEnergy(soModuleAccesser* acc);
     static void notifyEventChangeStatus(void* a, void* b, void* c, void* d);
     template <typename E>
     static void updateEnergy(E* energy, soModuleAccesser* acc) {
@@ -44,6 +48,12 @@ public:
         }
         return energy->updateEnergy(acc);
     }
+};
+
+// The helper returns the two speed components before the kinetic mode changes.
+class ftKineticTransactHelper {
+public:
+    static Vec2f preHelpProcess(soModuleAccesser* acc, int clearKind, int clearSpeed);
 };
 
 class soKineticTransactHelper {
