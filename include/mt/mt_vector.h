@@ -215,10 +215,27 @@ public:
         Vec3f disp = *this - *v;
         return disp.length();
     }
+    // HYPOTHESIS: source argument order is unresolved; axis/angle/output roles are verified.
+    // Original DOL fn_8003DF50 stays unrenamed until its source signature is established.
+    void rot(Vec3f* axis, float angle, Vec3f* out);
     void normalize();
     void normalize(Vec3f* input);
 };
 static_assert(sizeof(Vec3f) == 12, "Class is wrong size!");
+
+// Native Wario Utility callers identify these member operators and hidden returns.
+// HYPOTHESIS: source const qualifiers retain the established declarations.
+inline Vec3f Vec3f::operator+(const Vec3f& v) {
+    Vec3f result;
+    Vec3fAdd(&result, this, &v);
+    return result;
+}
+inline Vec3f Vec3f::operator-(const Vec3f& v) {
+    Vec3f result;
+    Vec3fSub(&result, this, &v);
+    return result;
+}
+
 
 class Rect2D {
 public:

@@ -9,10 +9,12 @@
 #include <so/so_external_value_accesser.h>
 #include <it/item.h>
 void ftWarioStatusUniqProcessSpecialS::initStatus(soModuleAccesser* a) {
+    // MATCH-ONLY: keep the native declaration order for module registers.
+    soWorkManageModule* work;
     const soModuleEnumeration* modules = a->m_enumerationStart;
     soGenerateArticleManageModule* articles = static_cast<soGenerateArticleManageModule*>(modules->m_generateArticleManageModule);
     soItemManageModule* items = modules->m_itemManageModule;
-    soWorkManageModule* work = modules->m_workManageModule;
+    work = modules->m_workManageModule;
     soStatusModule* status = modules->m_statusModule;
     soLinkModule* link = modules->m_linkModule;
     StageObject* fighter = &a->getStageObject();
@@ -25,10 +27,12 @@ void ftWarioStatusUniqProcessSpecialS::initStatus(soModuleAccesser* a) {
         param = wario.getExtendParam()->bikeRider;
     }
     if (items->getPickableItemKind() == 0x5c) {
+        // MATCH-ONLY: declare the link before the temporary item payload.
+        soLinkModule* itemLink;
         soItemInfo item;
         items->getPickableItemInfo(&item);
         BaseItem* bikeItem = item.m_item;
-        soLinkModule* itemLink = soExternalValueAccesser::getLinkModule(static_cast<StageObject*>(bikeItem));
+        itemLink = soExternalValueAccesser::getLinkModule(static_cast<StageObject*>(bikeItem));
         if (itemLink->isLinked(7)) {
             work->setInt(itemLink->getNodeTaskId(7), 0x10000044);
             ftWarioBikeTaskEvent event(0x45c, fighter->m_taskId);

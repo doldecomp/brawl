@@ -57,10 +57,12 @@ void ftWarioStatusUniqProcessSpecialLw::execStatus(soModuleAccesser* a) {
     ftWarioSpecialLwParam* param;
     if (fighter.soGetSubKind() == 0x15) {
         ftWario& wario = dynamic_cast<ftWario&>(fighter);
-        param = wario.getExtendParam()->specialLw;
+        ftWarioExtendParam* extendParam = wario.getExtendParam();
+        param = extendParam->specialLw;
     } else {
         ftWarioMan& wario = dynamic_cast<ftWarioMan&>(fighter);
-        param = wario.getExtendParam()->specialLw;
+        ftWarioExtendParam* extendParam = wario.getExtendParam();
+        param = extendParam->specialLw;
     }
     int frames = work.getInt(0x10000041);
     int level = work.getInt(0x10000042);
@@ -68,9 +70,11 @@ void ftWarioStatusUniqProcessSpecialLw::execStatus(soModuleAccesser* a) {
         if (level >= 2) {
             float speedY;
             if (level == 2) {
+                // MATCH-ONLY: retain the native threshold declaration order.
+                int minimum;
                 int maximum = param->unk0;
                 if (frames > maximum * 60) frames = maximum * 60;
-                int minimum = param->unk8;
+                minimum = param->unk8;
                 frames -= minimum * 60;
                 if (frames < 0) frames = 0;
                 float range = (float)(maximum - minimum);
