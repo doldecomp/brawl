@@ -18,6 +18,7 @@
 #include <st/st_melee.h>
 #include <types.h>
 #include <gf/gf_copyefb.h>
+#include <gf/gf_slow_manager.h>
 
 #include <st_tengan/st_tengan.h>
 #include <st_tengan/st_tengan_data.h>
@@ -687,6 +688,225 @@ bool stTengan::eventRebuildStageUpdate() {
             break;
     }
     return 0;
+}
+
+bool stTengan::eventSlowUpdate(float deltaFrame) {
+    switch (eventSlow.getPhase()) {
+    case 0: {
+        stTenganParams* params = static_cast<stTenganParams*>(m_stageData);
+        if (params == NULL) {
+            return true;
+        }
+
+        // The copy-EFB amount rises and falls over the duration of the slow event.
+        unk200 = 0.0f;
+        gfCopyEFBMgr* copyEFB = gfCopyEFBMgr::getInstance();
+        copyEFB->m_104 = true;
+        copyEFB->m_108 = static_cast<int>(unk200);
+
+        float rate12 = params->event_d_rate_slow_1_2 * 100.0f;
+        float rate13 = params->event_d_rate_slow_1_3 * 100.0f;
+        float rate14 = params->event_d_rate_slow_1_4 * 100.0f;
+        int choice = randi(static_cast<int>((rate12 + rate13) + rate14) + 1);
+        int event = 0;
+        int cumulative = 0;
+        while (true) {
+            if (event == 0) {
+                cumulative += static_cast<int>(rate12);
+            } else if (event == 1) {
+                cumulative += static_cast<int>(rate13);
+            } else if (event == 2) {
+                cumulative += static_cast<int>(rate14);
+            } else {
+                cumulative = choice;
+            }
+            if (cumulative >= choice) {
+                break;
+            }
+            ++event;
+        }
+
+        if (event == 0 || event == 1) {
+            m_slow = static_cast<char>(gfSlowManager::requestSlow(2) >> 24);
+        } else if (event == 2) {
+            m_slow = static_cast<char>(gfSlowManager::requestSlow(4) >> 24);
+        }
+
+        eventSlow.setPhase(1);
+        playSeBasic(snd_se_stage_Tengan_07, 0.0f);
+        GXColor color = {255, 255, 255, 128};
+        g_efScreen->requestFlash(20.0f, 0, 128, 2, &color);
+        break;
+    }
+    case 1:
+        if (eventSlow.isReadyEnd()) {
+            if (unk200 == 0.0f) {
+                playSeBasic(snd_se_stage_Tengan_08, 0.0f);
+                GXColor color = {255, 255, 255, 128};
+                g_efScreen->requestFlash(20.0f, 0, 128, 2, &color);
+            }
+            unk200 -= 10.0f;
+            if (unk200 < 0.0f) {
+                unk200 = 0.0f;
+            }
+            if (unk200 == 0.0f) {
+                if (m_slow != -1) {
+                    u8 request = static_cast<u8>(m_slow);
+                    gfSlowManager::removeRequest(request);
+                }
+                gfCopyEFBMgr* copyEFB = gfCopyEFBMgr::getInstance();
+                copyEFB->m_104 = false;
+                copyEFB->m_108 = static_cast<int>(unk200);
+                return true;
+            }
+        } else {
+            unk200 += 10.0f;
+            if (unk200 >= 200.0f) {
+                unk200 = 200.0f;
+            }
+        }
+        gfCopyEFBMgr::getInstance()->m_108 = static_cast<int>(unk200);
+        break;
+    }
+    return false;
+}
+
+bool stTengan::eventPokemonUpdate(float deltaFrame) {
+    int groundIndex = 0;
+    switch (m_substage) {
+    case 0:
+        groundIndex = 3;
+        break;
+    case 1:
+        groundIndex = 18;
+        break;
+    case 2:
+        groundIndex = 19;
+        break;
+    }
+
+    switch (event1.getPhase()) {
+    case 0:
+        if (event1.isReadyEnd()) {
+            g_ecMgr->setDrawPrio(1);
+            u32 effect = g_ecMgr->setEffect(ef_ptc_stg_tengan_syutugen);
+            g_ecMgr->setDrawPrio(-1);
+            g_ecMgr->setPos(effect, &posDialga);
+            playSeBasic(snd_se_stage_Tengan_Entry_01, 0.0f);
+            event1.setPhase(1);
+            event1.m_manualFramesLeft = 0.0f;
+        }
+        break;
+    case 1:
+        event1.m_manualFramesLeft += deltaFrame;
+        if (event1.m_manualFramesLeft >= 70.0f) {
+            playSeBasic(snd_se_stage_Tengan_Entry_02, 0.0f);
+            event1.setPhase(2);
+        }
+        break;
+    case 2:
+        event1.m_manualFramesLeft += deltaFrame;
+        if (event1.m_manualFramesLeft >= 140.0f) {
+            static_cast<grMadein*>(getGround(groundIndex))->setMotion(3);
+            static_cast<grMadein*>(getGround(groundIndex))->startEntity();
+            static_cast<grMadein*>(getGround(groundIndex))->setPos(&posDialga);
+            if (m_substage == 1) {
+                g_ecMgr->setDrawPrio(1);
+                u32 leftEye = g_ecMgr->setEffect(ef_ptc_stg_tengan_eyeglow);
+                g_ecMgr->setParent(leftEye, getGround(groundIndex)->m_sceneModels[0],
+                                   "StgTenganPalkia_LFlashEyeN", false);
+                u32 rightEye = g_ecMgr->setEffect(ef_ptc_stg_tengan_eyeglow);
+                g_ecMgr->setParent(rightEye, getGround(groundIndex)->m_sceneModels[0],
+                                   "StgTenganPalkia_RFlashEyeN", false);
+                g_ecMgr->setDrawPrio(-1);
+            } else if (m_substage == 0) {
+                g_ecMgr->setDrawPrio(1);
+                u32 leftEye = g_ecMgr->setEffect(ef_ptc_stg_tengan_eyeglow);
+                g_ecMgr->setParent(leftEye, getGround(groundIndex)->m_sceneModels[0],
+                                   "StgTenganDialga_LFlashEyeN", false);
+                u32 rightEye = g_ecMgr->setEffect(ef_ptc_stg_tengan_eyeglow);
+                g_ecMgr->setParent(rightEye, getGround(groundIndex)->m_sceneModels[0],
+                                   "StgTenganDialga_RFlashEyeN", false);
+                g_ecMgr->setDrawPrio(-1);
+            }
+            event1.setPhase(3);
+            unkeac = 0;
+        }
+        break;
+    case 3:
+        if (groundIndex != 19) {
+            SndID stepSound = snd_se_stage_Tengan_step_01;
+            bool trigger = false;
+            switch (unkeac) {
+            case 0:
+                trigger = static_cast<grMadein*>(getGround(groundIndex))->isFrameEndOffset(180.0f);
+                break;
+            case 1:
+                stepSound = snd_se_stage_Tengan_step_02;
+                trigger = static_cast<grMadein*>(getGround(groundIndex))->isFrameEndOffset(120.0f);
+                break;
+            case 2:
+                trigger = static_cast<grMadein*>(getGround(groundIndex))->isFrameEndOffset(60.0f);
+                break;
+            }
+            if (trigger) {
+                Vec3f offset;
+                offset.m_x = 0.0f;
+                offset.m_y = 0.0f;
+                offset.m_z = 0.0f;
+                cmReqQuake(cmQuake::Amplitude_S, &offset);
+                ++unkeac;
+                playSeBasic(stepSound, 0.0f);
+            }
+        }
+        if (static_cast<grMadein*>(getGround(groundIndex))->isEndEntity()) {
+            static_cast<grMadein*>(getGround(groundIndex))->setMotion(0);
+            static_cast<grMadein*>(getGround(groundIndex))->startEntityAutoLoop();
+            event1.setPhase(10);
+            eventLegendDisappear.end();
+            eventLegendDisappear.start();
+            event2.end();
+            event2.start();
+        }
+        break;
+    case 10:
+        if (eventLegendDisappear.isReadyEnd() &&
+            static_cast<grMadein*>(getGround(groundIndex))->isEndEntity() &&
+            !eventAura.isEvent() && !eventRandomCall.isEvent() && !eventSonicWaveCall.isEvent()) {
+            static_cast<grMadein*>(getGround(groundIndex))->setMotion(4);
+            static_cast<grMadein*>(getGround(groundIndex))->startEntity();
+            event1.setPhase(11);
+            event2.end();
+            m_legendEventActive = 0;
+        }
+        break;
+    case 11:
+        if (static_cast<grMadein*>(getGround(groundIndex))->isEndEntity()) {
+            playSeBasic(snd_se_stage_Tengan_Leave_01, 0.0f);
+            g_ecMgr->setDrawPrio(1);
+            u32 effect = g_ecMgr->setEffect(ef_ptc_stg_tengan_syoushitu);
+            g_ecMgr->setDrawPrio(-1);
+            g_ecMgr->setPos(effect, &posDialga);
+            event1.setPhase(12);
+            event1.m_manualFramesLeft = 0.0f;
+        }
+        break;
+    case 12:
+        event1.m_manualFramesLeft += deltaFrame;
+        if (event1.m_manualFramesLeft >= 90.0f) {
+            playSeBasic(snd_se_stage_Tengan_Leave_02, 0.0f);
+            static_cast<grMadein*>(getGround(groundIndex))->endEntity();
+            event1.setPhase(13);
+        }
+        break;
+    case 13:
+        event2.end();
+        eventLegendDisappear.end();
+        event1.end();
+        event1.start();
+        break;
+    }
+    return false;
 }
 
 bool stTengan::eventDropStageUpdate() {
