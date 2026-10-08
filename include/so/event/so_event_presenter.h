@@ -197,32 +197,31 @@ class soEventPresenter {
         return getObserverListHelper2();
     }
 
-    // HYPOTHESIS: variant of the lookup that stores the list through a local (seen in the soAnimCmdInterpreter constructor)
-    bool getObserverListHelper2Local() {
-        soEventManager* mgr;
+    // HYPOTHESIS: lookup through a captured list. A failed cast preserves the
+    // captured cache; zero capacity clears it before the caller stores it.
+    bool getObserverListHelper2Local(soInstanceManagerFullProperty<T*>*& result) {
         s16 uid = m_unitID;
-        mgr = soEventSystem::getInstance()->getManager(m_manageID);
-        soInstanceManagerFullProperty<T*>* list = nullptr;
-        if (mgr->getObserverCapacity(uid) == 0) {
-            list = nullptr;
-        } else {
-            soEventUnitWrapper<T>* evtUnitWrapper =
-                dynamic_cast<soEventUnitWrapper<T>* >(mgr->getEventUnit(uid));
-            if (evtUnitWrapper)
-                list = evtUnitWrapper->getObserverListSub();
-        }
-        m_obsrvrList = list;
-        return list != nullptr;
+        soEventManager* mgr = soEventSystem::getInstance()->getManager(m_manageID);
+        if (mgr->getObserverCapacity(uid) == 0) { result = nullptr; return false; }
+        soEventUnitWrapper<T>* wrapper = dynamic_cast<soEventUnitWrapper<T>*>(mgr->getEventUnit(uid));
+        // MATCH-ONLY: explicit boolean arms retain the original cast-failure
+        // branch when the constructor ignores the helper's return value.
+        if (!wrapper) return result == nullptr ? false : true;
+        result = wrapper->getObserverListSub();
+        return result != nullptr;
     }
 
-    bool getObserverListHelperLocal() {
+    bool getObserverListHelperLocal(soInstanceManagerFullProperty<T*>* list = nullptr) {
         if (m_manageID <= -1 || !checkManageId())
             return false;
         if (soEventSystem::getInstance()->getManager(m_manageID)->getObserverCapacity(m_unitID) == 0) {
             m_obsrvrList = nullptr;
             return false;
         }
-        return getObserverListHelper2Local();
+        soInstanceManagerFullProperty<T*>* result = list;
+        bool success = getObserverListHelper2Local(result);
+        m_obsrvrList = result;
+        return success;
     }
 
 public:
@@ -248,31 +247,7 @@ public:
     // local that every path stores, and the manage ID is tested through the member.
     // MATCH-ONLY: the tag type selects this variant; the original has one constructor per presenter user.
     soEventPresenter(s16 manageId, s16 unitId, soEventPresenterLocalStoreTag) : m_manageID(manageId), m_unitID(unitId), m_obsrvrList(nullptr) {
-        soInstanceManagerFullProperty<T*>* list = m_obsrvrList;
-        soInstanceManagerFullProperty<T*>* result = list;
-        if (m_manageID > 0) {
-            if (m_manageID > -1 && checkManageId()) {
-                if (soEventSystem::getInstance()->getManager(m_manageID)->getObserverCapacity(m_unitID) == 0) {
-                    m_obsrvrList = nullptr;
-                } else {
-                    s16 uid = m_unitID;
-                    soEventManager* mgr = soEventSystem::getInstance()->getManager(m_manageID);
-                    if (mgr->getObserverCapacity(uid) == 0) {
-                        result = nullptr;
-                        m_obsrvrList = result;
-                    } else {
-                        soEventUnitWrapper<T>* evtUnitWrapper =
-                            dynamic_cast<soEventUnitWrapper<T>* >(mgr->getEventUnit(uid));
-                        if (!evtUnitWrapper) {
-                            m_obsrvrList = result;
-                        } else {
-                            result = evtUnitWrapper->getObserverListSub();
-                            m_obsrvrList = result;
-                        }
-                    }
-                }
-            }
-        }
+        if (m_manageID > 0) getObserverListHelperLocal(m_obsrvrList);
     }
     virtual ~soEventPresenter() { }
 

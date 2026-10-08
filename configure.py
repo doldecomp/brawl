@@ -1081,6 +1081,10 @@ config.libs = [
         "host": False,
         "objects": [
             Object(NonMatching, "mo_fighter/ft_lucas/ft_lucas.cpp"),
+            Object(NonMatching, "mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_hi.cpp"),
+            Object(NonMatching, "mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_hi_attack.cpp"),
+            Object(NonMatching, "mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_hi_attack_end.cpp"),
+            Object(NonMatching, "mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_hi_reflect.cpp"),
         ],
     },
     {
@@ -1110,6 +1114,9 @@ config.libs = [
         "cflags": cflags_fighter,
         "host": False,
         "objects": [
+            # HYPOTHESIS: Object(Matching, ..., extra_cflags=["-DFT_REL_LINK_EXTERN"]) now links (dtk rel make resolves every
+            # symbol), but ft_marth.rel still differs from the original: .text 0x44 short, .data 0x660 long; the order of the weak
+            # functions/vtables/RTTI and a few dtor/stub identities differ. Keep NonMatching until the layout matches.
             Object(NonMatching, "mo_fighter/ft_marth/ft_marth.cpp"),
             Object(Matching, "mo_fighter/ft_marth/ft_marth_status_uniq_process_special_s.cpp"),
             Object(Matching, "mo_fighter/ft_marth/ft_marth_status_uniq_process_special_hi.cpp"),

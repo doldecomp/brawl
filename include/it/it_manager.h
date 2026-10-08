@@ -83,7 +83,7 @@ public:
                          int texResIndex = 0, int texResId = 0xffff);
     BaseItem* createItem(itKind kind, u32 variation = 0, int createOwnerTaskId = -1, soResourceModule* resourceModule = NULL,
                          u8 groupNo = 0, int brresId = 0xffff, int texResIndex = 0, int texResId = 0xffff);
-    BaseItem* createBaseItem(Vec3f* safePos, Vec3f pos, float lr, itKind kind, u32 variation, int createOwnerTaskId, int ownerTaskId, soResourceModule*, u8 groupNo, int brresId, int texResIndex, int texResId, int teamNo);
+    BaseItem* createBaseItem(Vec3f* safePos, Vec3f* pos, float lr, itKind kind, u32 variation, int createOwnerTaskId, int ownerTaskId, soResourceModule*, u8 groupNo, int brresId, int texResIndex, int texResId, int teamNo);
     BaseItem* createItemInstance(itCreate* create);
     int createMoney(char* unk1, Vec3f *pos, Vec2f *unk2, u32 amount, u32 unk4, u32 unk5);
     u32 getItemNum(itKind kind);

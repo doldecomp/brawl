@@ -125,11 +125,31 @@ public:
 #else
     virtual void notifyEventPokemonStart(int);
 #endif
+#ifdef FT_MODULE_BUILDER
+    virtual bool notifyEventPokemonRequestChange(Vec3f*, float*) { return false; } // HYPOTHESIS: bool (the REL stub is li r3,0)
+#else
     virtual void notifyEventPokemonRequestChange(Vec3f*, float*);
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventPokemonTrainerUpdate() { }
+#else
     virtual void notifyEventPokemonTrainerUpdate();
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventPokemonCollect() { }
+#else
     virtual void notifyEventPokemonCollect();
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventPokemonChangeCancel() { }
+#else
     virtual void notifyEventPokemonChangeCancel();
+#endif
+#ifdef FT_MODULE_BUILDER
+    virtual void notifyEventPokemonSpecial(int, int) { }
+#else
     virtual void notifyEventPokemonSpecial(int, int);
+#endif
 #ifdef FT_MODULE_BUILDER
     virtual void notifyEventPokemonAppeal() { }
 #else
