@@ -275,17 +275,21 @@ public:
 };
 static_assert(sizeof(grFzeroAttack) == 0x190, "grFzeroAttack layout");
 
-// The machine (race track) node that carries the camera/machine animation.
+// The machine (race track) node: the models of the 15 machines parked beside the course ("FZmachine01".."FZmachine15")
+// which change animation with the course section (HYPOTHESIS name for most fields).
 class grFzeroNode : public grFzero {
     u8* m_sceneWork;           // 0x158
     float* m_frameSceneWork;   // 0x15C
-    u8 unk160[0x164 - 0x160];
+    float m_motionTimer;       // 0x160 frames since the current animation was started
     u8* m_stateWork;           // 0x164
-    u8* m_motionWork;          // 0x168
-    u8 unk16C[0x170 - 0x16C];
+    u8* m_motionWork;          // 0x168 published copy of the current animation
+    u8 m_motionId;             // 0x16C
     Matrix* m_mtxWork;         // 0x170
     Matrix* m_mtxGimmickWork;  // 0x174
-    u8 unk178[0x1C4 - 0x178];
+    u32 m_node[15];            // 0x178 "FZmachine01".."FZmachine15"
+    u8 m_animId;               // 0x1B4 current animation (5 = none)
+    float m_animFrames;        // 0x1B8 frame count of the current animation
+    u8 unk1BC[5];
 
 public:
     grFzeroNode(const char* taskName);
