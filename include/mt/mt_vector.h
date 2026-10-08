@@ -75,7 +75,7 @@ public:
         Vec2f disp = *this - *v;
         return disp.length();
     }
-    
+
     void normalize();
     void normalize(Vec2f* input);
 
@@ -129,6 +129,25 @@ public:
     Vec3f operator-(const Vec3f& v);
 
 #ifdef MATCHING
+    // MATCH-ONLY: paired-single form preserves the verified inline vector add.
+    friend void Vec3fAdd(register Vec3f* pOut, register const Vec3f* lhs,
+                     register const Vec3f* rhs) {
+        register f32 fr3, fr2, fr1, fr0;
+
+        // clang-format off
+        asm {
+            psq_l  fr0, Vec3f.m_x(lhs),   0, 0
+            psq_l  fr2, Vec3f.m_x(rhs),   0, 0
+            psq_l  fr1, Vec3f.m_z(lhs),   1, 0
+            psq_l  fr3, Vec3f.m_z(rhs),   1, 0
+            ps_add fr0, fr0, fr2
+            ps_add fr1, fr1, fr3
+            psq_st fr0, Vec3f.m_x(pOut), 0, 0
+            psq_st fr1, Vec3f.m_z(pOut), 1, 0
+        }
+        // clang-format on
+    }
+
     friend void Vec3fSub(register Vec3f* pOut, register const Vec3f* lhs,
                      register const Vec3f* rhs) {
         register f32 fr3, fr2, fr1, fr0;
@@ -147,6 +166,11 @@ public:
         // clang-format on
     }
 #else
+    friend void Vec3fAdd(Vec3f* out, const Vec3f* lhs, const Vec3f* rhs) {
+        out->m_x = lhs->m_x + rhs->m_x;
+        out->m_y = lhs->m_y + rhs->m_y;
+        out->m_z = lhs->m_z + rhs->m_z;
+    }
     friend void Vec3fSub(Vec3f* pOut, const Vec3f* lhs, const Vec3f* rhs) {
         pOut->m_x = lhs->m_x - rhs->m_x;
         pOut->m_y = lhs->m_y - rhs->m_y;

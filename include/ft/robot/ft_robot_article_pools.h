@@ -274,16 +274,7 @@ public:
 };
 static_assert(sizeof(ftRobotSelectedArticleMediator) == 0x9ec0, "Article mediator layout is wrong!");
 
-// Shared sora_melee module. Its implementation remains in the original object.
-class soGenerateArticleManageModuleImpl {
-    u8 m_unreconstructed[0x38];
-public:
-    soGenerateArticleManageModuleImpl(soModuleAccesser* acc,
-        soArray<soArticle*>* articles, ftRobotSelectedArticleMediator* mediator,
-        soArray<soArticleEventObserver>* observers);
-    virtual ~soGenerateArticleManageModuleImpl();
-};
-static_assert(sizeof(soGenerateArticleManageModuleImpl) == 0x3c, "Article module layout is wrong!");
+#include <so/article/so_generate_article_manage_module.h>
 
 class ftRobotArticleManageModuleBuilder {
     soArrayVector<soArticle*, 4> m_articles;

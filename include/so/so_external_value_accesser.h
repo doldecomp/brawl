@@ -25,6 +25,7 @@ public:
     static float getConstantFloat(StageObject* stageObject, u32 paramId);
     static soKineticModule* getKineticModule(StageObject* stageObject);
     static soCollisionAttackModule* getCollisionAttackModule(StageObject* stageObject);
+    static soLinkModule* getLinkModule(StageObject* stageObject);
     static void* getGlowModule(StageObject* stageObject);
     static soStopModule* getStopModule(StageObject* stageObject);
 };
