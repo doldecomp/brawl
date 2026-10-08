@@ -31,9 +31,6 @@ public:
     typedef ftMarthModelModuleBuildConfig ModelModuleBuildConfig;
 };
 
-// This specialization is provided out of line by sora_melee.
-template<> soArrayContractibleTable<const soStatusData>::soArrayContractibleTable();
-
 class ftMarth : public ftFighterBuilder<ftMarthBuildConfig>, public soPhotoCallBack {
     soArrayContractibleTable<const soStatusData> m_statusDataTable;
     ftData* m_data;

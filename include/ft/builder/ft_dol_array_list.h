@@ -127,7 +127,11 @@ class soArrayContractibleTable<const soStatusData> : public soArrayContractible<
     const soStatusData* m_elements;
     s32 m_size;
 public:
+#ifdef FT_MARTH_RUNTIME_HELPERS
+    soArrayContractibleTable(); // Marth calls the shared default constructor.
+#else
     soArrayContractibleTable() : m_elements(nullptr), m_size(0) { }
+#endif
     soArrayContractibleTable(const soStatusData* elements, s32 size);
     virtual ~soArrayContractibleTable();
     virtual const soStatusData& at(s32 index);

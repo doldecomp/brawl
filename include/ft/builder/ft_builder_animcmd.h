@@ -226,7 +226,9 @@ public:
         m_interpreter(ftGetManageId(acc), (soArrayVector<acCmdInterpreterStackData, 8>*)&m_stack.m_array, BC::UnitId, 1, 1.0f, ftAddressOf((u8)1)),
         m_stack() {
         soAttributeFlag attr(4);
-        soAnimCmdControlUnit unit = { &m_interpreter, (soAnimCmdAddressPackArraySeparate*)g_soAnimCmdAddressPackArrayNull };
+        soAnimCmdControlUnit unit;
+        unit.m_animCmdInterpreter = &m_interpreter;
+        unit.m_animCmdAddressPackArraySeparate = (soAnimCmdAddressPackArraySeparate*)g_soAnimCmdAddressPackArrayNull;
         acc->getAnimCmdModule().registInterpreter(unit, attr);
     }
 };
@@ -318,7 +320,9 @@ public:
 
 template <typename BC>
 class ftAnimCmdModuleSubBuilder {
+public:
     soAnimCmdControlUnitBuilderDisguise<typename BC::Unit0Config> m_unit0; // +0
+private:
     soAnimCmdControlUnitBuilder<typename BC::Unit1Config> m_unit1;
     soAnimCmdControlUnitBuilder<typename BC::Unit2Config> m_unit2;
     soAnimCmdControlUnitBuilder<typename BC::Unit3Config> m_unit3;

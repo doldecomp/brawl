@@ -421,7 +421,7 @@ class soLinkModuleBuilder {
     soArrayVector<soLinkConnection, BC::ConnectionCap> m_connections;
     typename BC::ModuleType m_linkModule;
 public:
-    soLinkModuleBuilder(s32 unitId) : m_connections(BC::ConnectionCap, 0), m_linkModule(unitId, &m_connections) { }
+    soLinkModuleBuilder(soModuleAccesser* acc) : m_connections(BC::ConnectionCap, 0), m_linkModule(acc, &m_connections) { }
     typename BC::ModuleType* getModule() { return &m_linkModule; }
 };
 

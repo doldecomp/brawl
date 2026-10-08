@@ -1378,6 +1378,7 @@ public:
     char _332[72];
 
     Fighter(s32 entryId, ftKind kind, Heaps::HeapType instHeap, soModuleAccesser* acc);
+    void postInitialize();
 
     virtual void processUpdate();
     virtual void processFixPosition();

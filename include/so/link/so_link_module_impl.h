@@ -168,7 +168,7 @@ public:
 class soLinkModuleImpl : public soLinkModule, public soAnimCmdEventObserver {
 #ifdef FT_MODULE_BUILDER
 public:
-    soLinkModuleImpl(int unitID, soArray<soLinkConnection>* connections);
+    soLinkModuleImpl(soModuleAccesser* moduleAccesser, soArray<soLinkConnection>* connections);
 private:
 #endif
 public:

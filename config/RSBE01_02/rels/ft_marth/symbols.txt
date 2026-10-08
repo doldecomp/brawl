@@ -47,7 +47,7 @@ __dt__82soArraySelectHolder<1,29soArrayVector<10soItemInfo,4>,25soArrayNull<10so
 __dt__72soShadowModuleBuilder<47soShadowModuleBuildConfig<18soShadowModuleImpl>>Fv = .text:0x00002DDC; // type:function size:0x5C
 __dt__73soSlopeModuleBuilder<49soSlopeModuleBuildConfig<0,1,17soSlopeModuleImpl>>Fv = .text:0x00002E38; // type:function size:0x5C
 __dt__75soPhysicsModuleBuilder<49soPhysicsModuleBuildConfig<19soPhysicsModuleImpl>>Fv = .text:0x00002E94; // type:function size:0x74
-__dt__68soAreaModuleBuilder<45soAreaModuleBuildConfig<16ftAreaModuleImpl,9>>Fv = .text:0x00002F08; // type:function size:0x98
+__dt__66soAreaModuleBuilder<43soAreaModuleBuildConfig<16ftAreaModuleImpl>>Fv = .text:0x00002F08; // type:function size:0x98
 __dt__69soComboModuleBuilder<45soComboModuleBuildConfig<17ftComboModuleImpl>>Fv = .text:0x00002FA0; // type:function size:0x5C
 __dt__72soEffectModuleBuilder<47soEffectModuleBuildConfig<18soEffectModuleImpl>>Fv = .text:0x00002FFC; // type:function size:0x98
 __dt__90soArraySelectHolder<1,33soArrayVector<14efScreenHandle,1>,29soArrayNull<14efScreenHandle>>Fv = .text:0x00003094; // type:function size:0x5C
@@ -150,7 +150,7 @@ __ct__96soCollisionCatchModuleBuilder<63soCollisionCatchModuleBuildConfig<26soCo
 __ct__73soDamageModuleBuilder<48soDamageModuleBuildConfig<19soDamageModuleActor>>FP16soModuleAccesserP31soEventObserverRegistrationDesc = .text:0x00005F58; // type:function size:0x6C
 __ct__71soShakeModuleBuilder<47soShakeModuleBuildConfig<4,17soShakeModuleImpl>>FP16soModuleAccesserPv = .text:0x00005FC4; // type:function size:0x5C
 __ct__69soSoundModuleBuilder<45soSoundModuleBuildConfig<17soSoundModuleImpl>>FP16soModuleAccesserP18soSoundIdExchangerP31soEventObserverRegistrationDesc = .text:0x00006020; // type:function size:0x90
-__ct__66soLinkModuleBuilder<43soLinkModuleBuildConfig<16soLinkModuleImpl>>Fl = .text:0x000060B0; // type:function size:0x54
+__ct__66soLinkModuleBuilder<43soLinkModuleBuildConfig<16soLinkModuleImpl>>FP16soModuleAccesser = .text:0x000060B0; // type:function size:0x54
 __ct__84soControllerModuleBuilder<55soControllerModuleBuildConfig<22ftControllerModuleImpl>>FP16soModuleAccessers = .text:0x00006104; // type:function size:0x70
 __ct__72soCameraModuleBuilder<47soCameraModuleBuildConfig<18soCameraModuleImpl>>FP16soModuleAccesserP22soSet<13soCameraRange>P27soSet<18soCameraClipSphere>P31soEventObserverRegistrationDesc = .text:0x00006174; // type:function size:0x6C
 __ct__78soAnimCmdModuleBuilder<52soAnimCmdModuleBuildConfig<11,19soAnimCmdModuleImpl>>Fs = .text:0x000061E0; // type:function size:0x44
@@ -160,7 +160,7 @@ clearWorkAll__19soGeneralWorkSimpleFv = .text:0x0000662C; // type:function size:
 __ct__82soKineticModuleBuilder<56soKineticModuleBuildConfig<26soKineticModuleGenericImpl>>FP16soModuleAccesser = .text:0x000066DC; // type:function size:0x3D0
 __ct__57soGeneralWorkBuilder<33soGeneralWorkBuildConfig<77,32,3>>Fv = .text:0x00006AAC; // type:function size:0x60
 __ct__72soEffectModuleBuilder<47soEffectModuleBuildConfig<18soEffectModuleImpl>>FP16soModuleAccesserPvPvPvPvP31soEventObserverRegistrationDesc = .text:0x00006B0C; // type:function size:0xCC
-__ct__68soAreaModuleBuilder<45soAreaModuleBuildConfig<16ftAreaModuleImpl,9>>FP16soModuleAccesserUcP31soEventObserverRegistrationDesc = .text:0x00006BD8; // type:function size:0x98
+__ct__66soAreaModuleBuilder<43soAreaModuleBuildConfig<16ftAreaModuleImpl>>FP16soModuleAccesserUcP31soEventObserverRegistrationDesc = .text:0x00006BD8; // type:function size:0x98
 __ct__75soPhysicsModuleBuilder<49soPhysicsModuleBuildConfig<19soPhysicsModuleImpl>>FP16soModuleAccesserPv = .text:0x00006C70; // type:function size:0x60
 __ct__84soItemManageModuleBuilder<55soItemManageModuleBuildConfig<22soItemManageModuleImpl>>FP16soModuleAccesserPv = .text:0x00006CD0; // type:function size:0x7C
 __ct__33soAnimCmdAddressPackArraySeparateFP31soArrayFixed<PC13acAnimCmdConv>P31soArrayFixed<PC13acAnimCmdConv>P31soArrayFixed<PC13acAnimCmdConv> = .text:0x00006D4C; // type:function size:0x1C

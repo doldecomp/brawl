@@ -147,7 +147,7 @@ __ct__96soCollisionCatchModuleBuilder<63soCollisionCatchModuleBuildConfig<26soCo
 __ct__73soDamageModuleBuilder<48soDamageModuleBuildConfig<19soDamageModuleActor>>FP16soModuleAccesserP31soEventObserverRegistrationDesc = .text:0x00005C84; // type:function size:0x6C scope:weak
 __ct__71soShakeModuleBuilder<47soShakeModuleBuildConfig<4,17soShakeModuleImpl>>FP16soModuleAccesserPv = .text:0x00005CF0; // type:function size:0x5C scope:weak
 __ct__69soSoundModuleBuilder<45soSoundModuleBuildConfig<17soSoundModuleImpl>>FP16soModuleAccesserP18soSoundIdExchangerP31soEventObserverRegistrationDesc = .text:0x00005D4C; // type:function size:0x90 scope:weak
-__ct__71soLinkModuleBuilder<48soLinkModuleBuildConfigCap<6,16soLinkModuleImpl>>Fl = .text:0x00005DDC; // type:function size:0x54 scope:weak
+__ct__71soLinkModuleBuilder<48soLinkModuleBuildConfigCap<6,16soLinkModuleImpl>>FP16soModuleAccesser = .text:0x00005DDC; // type:function size:0x54 scope:weak
 __ct__84soControllerModuleBuilder<55soControllerModuleBuildConfig<22ftControllerModuleImpl>>FP16soModuleAccessers = .text:0x00005E30; // type:function size:0x70 scope:weak
 __ct__72soCameraModuleBuilder<47soCameraModuleBuildConfig<18soCameraModuleImpl>>FP16soModuleAccesserP22soSet<13soCameraRange>P27soSet<18soCameraClipSphere>P31soEventObserverRegistrationDesc = .text:0x00005EA0; // type:function size:0x6C scope:weak
 __ct__78soAnimCmdModuleBuilder<52soAnimCmdModuleBuildConfig<11,19soAnimCmdModuleImpl>>Fs = .text:0x00005F0C; // type:function size:0x44 scope:weak

@@ -61,7 +61,7 @@ template soCollisionReflectorModuleBuilder<FT_BC::CollisionReflectorModuleBuildC
 template soCollisionCatchModuleBuilder<FT_BC::CollisionCatchModuleBuildConfig>::soCollisionCatchModuleBuilder(soModuleAccesser*, int, gfTask::Category, soEventObserverRegistrationDesc*);
 template soShakeModuleBuilder<FT_BC::ShakeModuleBuildConfig>::soShakeModuleBuilder(soModuleAccesser*, void*);
 template soSoundModuleBuilder<FT_BC::SoundModuleBuildConfig>::soSoundModuleBuilder(soModuleAccesser*, soSoundIdExchanger*, soEventObserverRegistrationDesc*);
-template soLinkModuleBuilder<FT_BC::LinkModuleBuildConfig>::soLinkModuleBuilder(s32);
+template soLinkModuleBuilder<FT_BC::LinkModuleBuildConfig>::soLinkModuleBuilder(soModuleAccesser*);
 template soControllerModuleBuilder<FT_BC::ControllerModuleBuildConfig>::soControllerModuleBuilder(soModuleAccesser*, s16);
 template soEffectModuleBuilder<FT_BC::EffectModuleBuildConfig>::soEffectModuleBuilder(soModuleAccesser*, void*, void*, void*, void*, soEventObserverRegistrationDesc*);
 template soPhysicsModuleBuilder<FT_BC::PhysicsModuleBuildConfig>::soPhysicsModuleBuilder(soModuleAccesser*, void*);

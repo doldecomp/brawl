@@ -78,7 +78,7 @@ __dt__71soShakeModuleBuilder<47soShakeModuleBuildConfig<4,17soShakeModuleImpl>>F
 __ct__69soSoundModuleBuilder<45soSoundModuleBuildConfig<17soSoundModuleImpl>>FP16soModuleAccesserP18soSoundIdExchangerP31soEventObserverRegistrationDesc = .text:0x000042B0; // type:function size:0x90
 __dt__41soArrayContractible<18soModelVirtualNode>Fv = .text:0x00004340; // type:function size:0x40
 __dt__69soSoundModuleBuilder<45soSoundModuleBuildConfig<17soSoundModuleImpl>>Fv = .text:0x00004380; // type:function size:0x6C
-__ct__71soLinkModuleBuilder<48soLinkModuleBuildConfigCap<8,16soLinkModuleImpl>>Fl = .text:0x000043EC; // type:function size:0x54
+__ct__71soLinkModuleBuilder<48soLinkModuleBuildConfigCap<8,16soLinkModuleImpl>>FP16soModuleAccesser = .text:0x000043EC; // type:function size:0x54
 __dt__71soLinkModuleBuilder<48soLinkModuleBuildConfigCap<8,16soLinkModuleImpl>>Fv = .text:0x00004440; // type:function size:0x6C
 __dt__86soVisibilityModuleBuilder<57soVisibilityModuleBuildConfig<22soVisibilityModuleImpl,2>>Fv = .text:0x000044AC; // type:function size:0x5C
 __ct__84soControllerModuleBuilder<55soControllerModuleBuildConfig<22ftControllerModuleImpl>>FP16soModuleAccessers = .text:0x00004508; // type:function size:0x70

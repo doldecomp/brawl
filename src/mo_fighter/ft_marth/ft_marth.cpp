@@ -30,7 +30,6 @@ struct MarthCounterShieldGroupData {
     u32 count;
     u32 unk8_28 : 4;
     u32 unk8_0 : 28;
-    u32 unkC[3];
 };
 static_assert(sizeof(MarthCounterShieldData) == sizeof(soCollisionShieldData), "Shield layout");
 static_assert(sizeof(MarthCounterShieldGroupData) == sizeof(soCollisionShieldGroupData), "Shield group layout");
