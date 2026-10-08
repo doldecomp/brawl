@@ -13,6 +13,11 @@ protected:
     float m_timer; // 0x154
 
 public:
+#ifdef GR_FZERO_BASE_EXTERNAL
+    // MATCH-ONLY: units whose constructors call the base out of line (the weak copies live in the first unit).
+    grFzero(const char* taskName);
+    virtual ~grFzero();
+#else
     // Defined inline: the derived constructors expand it, like every other gimmick base of the stage.
     grFzero(const char* taskName) : grYakumono(taskName) {
         m_state = 0;
@@ -20,6 +25,7 @@ public:
         setupMelee();
     }
     virtual ~grFzero() { }
+#endif
 };
 static_assert(sizeof(grFzero) == 0x158, "grFzero layout");
 
