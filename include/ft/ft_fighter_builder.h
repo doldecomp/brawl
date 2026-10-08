@@ -74,6 +74,12 @@ public:
         m_virtualNodeMtxPool(),
         m_gimmickProcPool(m_moduleAccesser) {
     }
+    virtual void* getCancelModule() { return &m_cancelModule; }
+    virtual bool isEnableCancel() {
+        return static_cast<ftCancelModule*>(&m_cancelModule)->isEnableCancel();
+    }
+    virtual void* getVirtualNodeMatrixPool() { return &m_virtualNodeMtxPool; }
+    virtual void* getStatusGimmickUniqProcessPool() { return &m_gimmickProcPool; }
 };
 
 

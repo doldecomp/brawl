@@ -6,7 +6,11 @@
 
 class cmPhotoCallBack : public utListNode {
 public:
-    virtual ~cmPhotoCallBack() { }
+    virtual ~cmPhotoCallBack()
+#ifdef FT_MARTH_PHOTO_CALLBACK_NOINLINE
+        __attribute__((never_inline)) // MATCH-ONLY: Marth tears down the photo base out of line.
+#endif
+    { }
     virtual void photoMoved();
     virtual void photoExit();
 };

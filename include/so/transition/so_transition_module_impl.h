@@ -62,7 +62,15 @@ public:
     int m_unitId;
     u32 _unk08;
 #ifdef FT_MODULE_BUILDER
-    soTransitionInfo() : m_groupId(-1), m_unitId(-1), _unk08(0) { }
+    soTransitionInfo() {
+#ifdef FT_MARTH_RUNTIME_HELPERS
+        // MATCH-ONLY: retain Marth's native zeroed temporary before the field stores.
+        volatile u32 initialReturnWord = 0;
+#endif
+        m_groupId = -1;
+        m_unitId = -1;
+        _unk08 = 0;
+    }
     ~soTransitionInfo(); // MATCH-ONLY: out of line in the fighter RELs (ft_builder_noinline.h)
 #endif
 };

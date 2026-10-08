@@ -43,6 +43,8 @@ The same assembly can come from very different C++ (`add r3,r3,r4` could be `x +
 - **Weak copies (templates, inline functions):** the linker keeps one copy, so the original file boundary for template code is unknowable. Splits are by contiguous address range, which is why file names like `_part2` exist. They are scaffolding. Use `tools/weak_dups.py` to name original weak RTTI/vtable copies, and keep a unit `NonMatching` if the hash check fails. **HIGH**
 - **Mangled names depend on exact types** (`int` vs `s32`, enum vs int). Spell the original type. **HIGH**
 
+- **A float move appears in the wrong place among constructor arguments:** verify the float's position in the prototype, not just its register type. Moving a float among pointer arguments preserves the PowerPC argument register assignments but changes MWCC's save/move order and mangling. Restore the builder and callee prototypes together, update forwarded calls and symbols, and check already-exact callers. Model scale is second in `soModelModuleBuilder` and follows node setup in `soModelModuleImpl`; this matched Marth and Kirby's builders while retaining the variable-model constructor. Seen: `include/ft/builder/ft_module_builders.h`, `include/so/model/so_model_module_impl.h`. **HIGH**
+
 ## 5. Integers and bools
 - The source type decides extension: `u8` gives `clrlwi r,r,24`, `s8` gives `extsb`, `s16` gives `extsh`, `bool` gives `clrlwi 24`. Many "mysterious" extra instructions are a wrong type (often `s8` that should be `int`, or `u8` that should be `s32`). **HIGH**
 - **Bitfield reads as `lwz` plus `rlwinm`:** read through a raw `*(u32*)((u8*)p + off)` and shift/mask, not through a declared signed bitfield (`so_damage_module_impl.cpp`). **MED**
@@ -64,6 +66,10 @@ Things that moved registers, roughly in the order worth trying:
 - **Tail calls:** `return f(x)` at -O4 is `b f`; a virtual tail call ends in `bctr` with no `blr`.
 - **`decomp-permuter`** (see `tools/permuter/README.md` on the build server) is worth running once only register differences remain. It matched `execNormalDamageCommon`, `hkArrayUtil::_reduce`, `hkGameCubeDvdReader::isOk` and others. Review its output: results can be unnatural, and a clean temp beats an odd rewrite of the logic.
 
+- **Only helper-copy stack slots differ in a hierarchy visitor:** preserve the recursive owner traversal instead of flattening all leaf calls. Pass the shared helper by const reference through hierarchy levels and by value into each leaf visitor. Recovered `soInstancePool::forEachHolderModuleAccesser` made Marth's `ftKineticMediatorImpl::updateEnergy1` exact without stack padding. Seen: `include/ft/builder/ft_builder_kinetic.h`. **HIGH**
+
+- **Constructor argument pointers are cached on the wrong side of a virtual query:** an inline wrapper can hide the query from MWCC argument scheduling even though its body is inlined. Try the real virtual expression directly in the argument list before changing parameter types or adding temporaries. Replacing `ftGetManageId(acc)` with `static_cast<soEventManager&>(acc->getEventManageModule()).getManageId()` matched Marth's entire motion builder, including its saved registers and stack frame; reference-parameter changes did not. Seen: `include/ft/builder/ft_builder_motion.h`. **MED**
+
 ## 7. Data and sections
 - REL units build with `-sdata 0 -sdata2 0`, so nothing goes to small data; the DOL has them. From the third reference to `.data` or `.bss` items in one function, MWCC pools them (offsets from one section base), which looks like a struct that does not exist. `.sbss` never pools. **HIGH**
 - Strings: `-str reuse` shares identical literals in a unit; compile with `-enc SJIS` or non-ASCII literals differ.
@@ -75,3 +81,5 @@ Things that moved registers, roughly in the order worth trying:
 - Never rename a REL function to a name that exists elsewhere in the symbols (it breaks the `.rel` hash).
 - Before and after a change, check the per-function numbers in `build/RSBE01_02/report.json`, not just the unit total, and run the 127-file hash check.
 - Add a tip here when something cost you more than ~15 minutes, with a file path.
+
+- **An unnamed four-byte function follows a near-matching function with one extra terminal return:** verify map boundaries and all references before adding an empty stand-in. It may be the previous function's unreachable epilogue. Marth's `getEntryList` ends at the following `setupDisguiseList`; extending its symbol by four bytes removed the false `fn_106_701C` boundary and matched the entire getter. Function totals change when repairing such boundaries; report that separately from gains. Seen: `config/RSBE01_02/rels/ft_marth/symbols.txt`; full hash check passed. **HIGH**

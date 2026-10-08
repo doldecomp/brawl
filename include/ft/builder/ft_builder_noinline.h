@@ -11,7 +11,7 @@
 
 // MATCH-ONLY: the REL calls the module constructor out of line (it must be compiled outside of the dont_inline region)
 soTransitionModuleImpl::soTransitionModuleImpl(soArray<soTransitionTermGroup>* groups) :
-    m_transitionTermGroupArray(groups), m_groupID(0), m_transitionInfo() { } // 99%: the original keeps a dead store to a stack slot (frame 0x10)
+    m_transitionTermGroupArray(groups), m_groupID(0), m_transitionInfo() { }
 
 // MATCH-ONLY: the original REL emits the vtables of these observers (their addObserver is a REL function); the code that
 // needs them is not reconstructed yet, so keep them alive with a dummy user.
@@ -22,7 +22,13 @@ void ftKeepObserverVtables(s16 id) {
 
 #pragma dont_inline on
 ftStatusGimmickUniqProcessPool::~ftStatusGimmickUniqProcessPool() { }
+#ifdef FT_MARTH_RUNTIME_HELPERS
+#pragma dont_inline off
+#endif
 soKineticModuleImpl::~soKineticModuleImpl() { }
+#ifdef FT_MARTH_RUNTIME_HELPERS
+#pragma dont_inline on
+#endif
 ftTeam::~ftTeam() { }
 ftTeamIndirect::~ftTeamIndirect() { }
 ftSound3dGeneratorAccesserImpl::~ftSound3dGeneratorAccesserImpl() { } // MATCH-ONLY: out of line in the REL
@@ -39,10 +45,11 @@ soGeneralWorkSimple::soGeneralWorkSimple(s32* ints, u32 numInts, float* floats, 
 
 
 #pragma dont_inline on
+template soInsideEventManageModuleBuilder<FT_BC::InsideEventManageModuleBuildConfig, ftInsideEventManageModuleTypes>::soInsideEventManageModuleBuilder();
 template soDamageModuleBuilder<FT_BC::DamageModuleBuildConfig>::soDamageModuleBuilder(soModuleAccesser*, soEventObserverRegistrationDesc*);
 template soCameraModuleBuilder<FT_BC::CameraModuleBuildConfig>::soCameraModuleBuilder(soModuleAccesser*, soSet<soCameraRange>*, soSet<soCameraClipSphere>*, soEventObserverRegistrationDesc*);
 template soResourceModuleBuilder<FT_BC::ResourceModuleBuildConfig>::soResourceModuleBuilder(u32, u32, u8, soModuleAccesser*);
-template soModelModuleBuilder<FT_BC::ModelModuleBuildConfig>::soModelModuleBuilder(soModuleAccesser*, void*, soEventObserverRegistrationDesc*, float);
+template soModelModuleBuilder<FT_BC::ModelModuleBuildConfig>::soModelModuleBuilder(soModuleAccesser*, float, void*, soEventObserverRegistrationDesc*);
 template soPostureModuleBuilder<FT_BC::PostureModuleBuildConfig>::soPostureModuleBuilder(soModuleAccesser*, soEventObserverRegistrationDesc*);
 template soGroundModuleBuilder<FT_BC::GroundModuleBuildConfig>::soGroundModuleBuilder(soModuleAccesser*, soGroundConditionChecker*);
 template soCollisionAttackModuleBuilder<FT_BC::CollisionAttackModuleBuildConfig>::soCollisionAttackModuleBuilder(soModuleAccesser*, int, u8, soEventObserverRegistrationDesc*);
