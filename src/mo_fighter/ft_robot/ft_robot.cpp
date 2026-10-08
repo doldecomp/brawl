@@ -3,6 +3,7 @@
 #include <ft/ft_class_info_impl.h>
 #include <ft/robot/ft_robot.h>
 #include <ft/robot/ft_robot_extend_param_accesser.h>
+#include <ft/robot/ft_robot_link_event.h>
 #include <ft/robot/ft_robot_status_uniq_process_special_arm_spin.h>
 #include <ft/robot/ft_robot_transactor.h>
 #include <ac/ac_anim_cmd_impl.h>
@@ -388,11 +389,6 @@ void ftRobot::notifyEventChangeStatus(int statusKind, int prevStatusKind, soStat
     }
     Fighter::notifyEventChangeStatus(statusKind, prevStatusKind, statusData, acc);
 }
-
-// Link event payload for the gyro article: a kind and a flag byte (HYPOTHESIS).
-struct ftRobotGyroLinkEvent : soLinkEventArgs {
-    ftRobotGyroLinkEvent(int kind) : soLinkEventArgs(kind) { }
-};
 
 // While the gyro is out the arms keep the "holding" animation; landing starts the partial animation of the second hand.
 void ftRobot::notifyEventChangeSituation(SituationKind kind, SituationKind prevKind, soModuleAccesser* acc) {
