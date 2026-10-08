@@ -80,25 +80,53 @@ void grFzeroTrainer::updatePos(float deltaFrame) {
     u8 section;
     switch (*m_sceneWork) {
     case 0:
-        section = inSection ? 0 : 1;
+        if (!inSection) {
+            section = 1;
+        } else {
+            section = 0;
+        }
         break;
     case 1:
-        section = inSection ? 1 : 2;
+        if (!inSection) {
+            section = 2;
+        } else {
+            section = 1;
+        }
         break;
     case 2:
-        section = inSection ? 2 : 3;
+        if (!inSection) {
+            section = 3;
+        } else {
+            section = 2;
+        }
         break;
     case 3:
-        section = inSection ? 3 : 4;
+        if (!inSection) {
+            section = 4;
+        } else {
+            section = 3;
+        }
         break;
     case 4:
-        section = inSection ? 4 : 5;
+        if (!inSection) {
+            section = 5;
+        } else {
+            section = 4;
+        }
         break;
     case 5:
-        section = inSection ? 5 : 6;
+        if (!inSection) {
+            section = 6;
+        } else {
+            section = 5;
+        }
         break;
     case 6:
-        section = inSection ? 6 : 0;
+        if (!inSection) {
+            section = 0;
+        } else {
+            section = 6;
+        }
         break;
     default:
         return;
