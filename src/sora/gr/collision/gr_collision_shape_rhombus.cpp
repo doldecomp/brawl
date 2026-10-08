@@ -25,7 +25,18 @@ void grCollShapeRhombus::init() {
 }
 
 void grCollShapeRhombus::set(grCollShape& orig) {
-    m_rhombus = static_cast<const grCollShapeRhombus&>(orig).m_rhombus;
+    const clRhombus2D& source = static_cast<const grCollShapeRhombus&>(orig).m_rhombus;
+    // MATCH-ONLY: preserve the original aggregate word copies.
+    Vec2f::copy(m_rhombus.m_centerPos, source.m_centerPos);
+    Vec2f::copy(m_rhombus.m_upPos, source.m_upPos);
+    Vec2f::copy(m_rhombus.m_downPos, source.m_downPos);
+    Vec2f::copy(m_rhombus.m_leftPos, source.m_leftPos);
+    Vec2f::copy(m_rhombus.m_rightPos, source.m_rightPos);
+#ifdef MATCHING
+    __memcpy(&m_rhombus.m_aabBox, &source.m_aabBox, sizeof(clAABBox2D));
+#else
+    m_rhombus.m_aabBox = source.m_aabBox;
+#endif
 }
 
 void grCollShapeRhombus::move(const Vec2f& displacement) {

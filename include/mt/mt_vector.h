@@ -14,6 +14,17 @@ public:
     Vec2f() { }
     Vec2f(float x, float y) : m_x(x), m_y(y) { }
 
+    Vec2f& operator=(const Vec2f& source)
+#ifdef MT_VEC2F_ASSIGN_NOINLINE
+        __attribute__((never_inline)) // MATCH-ONLY: preserve evidenced out-of-line assignments.
+#endif
+    {
+        // MATCH-ONLY: retain the original assignment's scalar float copies.
+        m_x = source.m_x;
+        m_y = source.m_y;
+        return *this;
+    }
+
     friend Vec2f operator+(const Vec2f& lhs, const Vec2f& rhs) {
         Vec2f res;
         res.m_x = lhs.m_x + rhs.m_x;

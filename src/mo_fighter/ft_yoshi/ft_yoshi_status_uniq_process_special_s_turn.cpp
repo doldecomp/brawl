@@ -8,20 +8,21 @@
 namespace ftyoshi { template <class T> T ABS(T); }
 
 void ftYoshiStatusUniqProcessSpecialSTurn::initStatus(soModuleAccesser* acc) {
+    soWorkManageModule& work = acc->getWorkManageModule();
     soSituationModule& situation = acc->getSituationModule();
-    soGroundModule& ground = acc->getGroundModule();
     soKineticModule& kinetic = acc->getKineticModule();
+    soGroundModule& ground = acc->getGroundModule();
     if (situation.getKind() != Situation_Air) {
         ground.setCorrect(static_cast<soGroundShapeImpl::CorrectKind>(1), 0);
         kinetic.changeKinetic(0x64, acc);
-        float acceleration = acc->getWorkManageModule().getFloat(0x21000007);
+        float acceleration = work.getFloat(0x21000007);
         ftKineticEnergyStop& stop = dynamic_cast<ftKineticEnergyStop&>(*kinetic.getEnergy(3));
         Vec2f value;
         value.m_x = acceleration; value.m_y = 0.0f;
         stop.m_accel = value;
     } else ground.setCorrect(static_cast<soGroundShapeImpl::CorrectKind>(5), 0);
     acc->getVisibilityModule().set(1, 1);
-    acc->getWorkManageModule().setInt(-1, 0x20000008);
+    work.setInt(-1, 0x20000008);
 }
 void ftYoshiStatusUniqProcessSpecialSTurn::execStatus(soModuleAccesser* acc) {
     soWorkManageModule& work = acc->getWorkManageModule();
@@ -29,7 +30,9 @@ void ftYoshiStatusUniqProcessSpecialSTurn::execStatus(soModuleAccesser* acc) {
     soPostureModule& posture = acc->getPostureModule();
     soModelModule& model = acc->getModelModule();
     ftYoshiSpecialSParam* param = static_cast<ftYoshiSpecialSParam*>(g_ftCommonDataAccesser.getData(Fighter_Yoshi)->extendParam[0]);
-    Vec2f velocity = kinetic.getSumSpeed(soKineticEnergy::AttributeFlag(-1));
+    // MATCH-ONLY: retain the original aggregate word copy.
+    Vec2f velocity;
+    Vec2f::copy(velocity, kinetic.getSumSpeed(soKineticEnergy::AttributeFlag(-1)));
     float angle = work.getFloat(0x21000005);
     float oldSpeed = work.getFloat(0x21000004);
     ftYoshiStatusUniqProcessSpecialSUtility::setBodyChange(acc);
@@ -78,10 +81,17 @@ void ftYoshiStatusUniqProcessSpecialSTurn::execFixPosCounter(soModuleAccesser* a
     soModelModule& model = acc->getModelModule();
     ftYoshiSpecialSParam* param = static_cast<ftYoshiSpecialSParam*>(g_ftCommonDataAccesser.getData(Fighter_Yoshi)->extendParam[0]);
     bool grounded = situation.getKind() == Situation_Ground;
-    Vec2f speed = kinetic.getSumSpeed(soKineticEnergy::AttributeFlag(-1));
-    int touch = speed.m_x > 0.0f ? 4 : 2;
-    bool hitWall = ground.isTouch(static_cast<grCollStatus::TouchMask>(touch), 0);
-    if (hitWall) ftYoshiStatusUniqProcessSpecialSUtility::procHitWall(acc, touch);
+    // MATCH-ONLY: retain the original aggregate word copy.
+    Vec2f speed;
+    Vec2f::copy(speed, kinetic.getSumSpeed(soKineticEnergy::AttributeFlag(-1)));
+    bool hitWall;
+    if (speed.m_x > 0.0f) {
+        hitWall = ground.isTouch(static_cast<grCollStatus::TouchMask>(4), 0);
+        if (hitWall) ftYoshiStatusUniqProcessSpecialSUtility::procHitWall(acc, 4);
+    } else {
+        hitWall = ground.isTouch(static_cast<grCollStatus::TouchMask>(2), 0);
+        if (hitWall) ftYoshiStatusUniqProcessSpecialSUtility::procHitWall(acc, 2);
+    }
     if (hitWall) {
         speed.m_x *= -param->wallReboundHorizontal;
         speed.m_y = param->wallReboundVertical;
@@ -128,6 +138,9 @@ void ftYoshiStatusUniqProcessSpecialSTurn::execFixPos(soModuleAccesser* acc) {
     if (target != -1) status.changeStatusRequest(target, acc);
 }
 void ftYoshiStatusUniqProcessSpecialSTurn::exitStatus(soModuleAccesser* acc, int nextStatus) {
-    if (nextStatus == 0x113 || static_cast<unsigned>(nextStatus - 0x119) <= 3) ftYoshiStatusUniqProcessSpecialSUtility::resetYoshiSpecialS2(acc);
+    if (nextStatus != 0x113) {
+        if (static_cast<unsigned>(nextStatus - 0x119) > 3) return;
+    }
+    ftYoshiStatusUniqProcessSpecialSUtility::resetYoshiSpecialS2(acc);
 }
 ftYoshiStatusUniqProcessSpecialSTurn g_ftYoshiStatusUniqProcessSpecialSTurn;
