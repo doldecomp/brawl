@@ -15,14 +15,6 @@ extern const char g_fzeroEmptyString[];
 
 // HYPOTHESIS: tears down a stCollisionWork (an unnamed function of sora_melee).
 extern "C" void fn_27_239F6C(stCollisionWork* work);
-// HYPOTHESIS: an inline helper of the original (a tolerance test used by both the stage and its cars).
-static inline bool fzeroIsNearZero(float value) {
-    bool result = false;
-    if ((float)fabs(value) < 1e-5f) {
-        result = true;
-    }
-    return result;
-}
 
 // MATCH-ONLY: a view of the joint's flag word (HYPOTHESIS: byte 2 selects the joint's collision mode).
 struct fzeroJointBits {

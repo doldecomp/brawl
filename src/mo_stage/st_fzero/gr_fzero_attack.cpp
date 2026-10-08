@@ -4,7 +4,7 @@
 #include <nw4r/math/math_arithmetic.h>
 #include <nw4r/math/math_triangular.h>
 
-inline grFzeroAttack::grFzeroAttack(const char* taskName) : grFzero(taskName) {
+grFzeroAttack::grFzeroAttack(const char* taskName) : grFzero(taskName) {
     m_stateWork = NULL;
     m_stateWallWork = NULL;
     m_sceneWork = NULL;
@@ -59,12 +59,12 @@ void grFzeroAttack::update(float deltaFrame) {
 void grFzeroAttack::updateYakumono(float deltaFrame) {
     if (m_hasYakumono == 1) {
         switch (m_type) {
-        case 6:
-            updateYakumonoWall(deltaFrame);
-            break;
         case 4:
         case 5:
             updateYakumonoFloor(deltaFrame);
+            break;
+        case 6:
+            updateYakumonoWall(deltaFrame);
             break;
         }
     } else {
@@ -89,21 +89,13 @@ void grFzeroAttack::updateYakumonoFloor(float deltaFrame) {
         return;
     }
 
-    Vec3f a;
-    Vec3f b;
-    a.m_x = mtx[22].m[0][3];
-    a.m_y = mtx[22].m[1][3];
-    b.m_x = mtx[23].m[0][3];
-    b.m_y = mtx[23].m[1][3];
-    a.m_z = 0.0f;
-    b.m_z = 0.0f;
+    Vec3f a(mtx[22].m[0][3], mtx[22].m[1][3], 0.0f);
+    Vec3f b(mtx[23].m[0][3], mtx[23].m[1][3], 0.0f);
     Vec3f d;
-    d.m_z = 0.0f;
-    d.m_x = b.m_x - a.m_x;
-    d.m_y = b.m_y - a.m_y;
+    Vec3fSub(&d, &b, &a);
 
     bool tooShort = false;
-    if (fabs(d.m_x) < 1e-5f && fabs(d.m_y) < 1e-5f) {
+    if (fzeroIsNearZero(d.m_x) && fzeroIsNearZero(d.m_y)) {
         tooShort = true;
     }
     if (!tooShort) {
@@ -137,10 +129,10 @@ void grFzeroAttack::updateYakumonoFloor(float deltaFrame) {
         Vec3f offset;
         offset.m_x = 0.0f;
         if (m_type == 4) {
-            offset.m_x = fabs(a.m_x);
+            offset.m_x = (float)fabs(a.m_x);
         }
         if (m_type == 5) {
-            offset.m_x = fabs(b.m_x);
+            offset.m_x = (float)fabs(b.m_x);
         }
         offset.m_z = 0.0f;
         offset.m_y = 0.0f;
@@ -201,10 +193,8 @@ void grFzeroAttack::updateYakumonoFloor(float deltaFrame) {
     }
 
     tooShort = false;
-    d.m_x = target.m_x - origin.m_x;
-    d.m_y = target.m_y - origin.m_y;
-    d.m_z = target.m_z - origin.m_z;
-    if (fabs(d.m_x) < 1e-5f && fabs(d.m_y) < 1e-5f && fabs(d.m_z) < 1e-5f) {
+    Vec3fSub(&d, &target, &origin);
+    if (fzeroIsNearZero(d.m_x) && fzeroIsNearZero(d.m_y) && fzeroIsNearZero(d.m_z)) {
         tooShort = true;
     }
     if (!tooShort) {
@@ -275,17 +265,12 @@ void grFzeroAttack::updateYakumonoWall(float deltaFrame) {
     case 1:
         if (*m_stateWallWork == 7) {
             setAttack();
-            mtx = m_mtxGimmickWork;
-            m_pos.m_x = mtx[39].m[0][3];
-            m_pos.m_y = mtx[39].m[1][3];
-            m_pos.m_z = mtx[39].m[2][3];
+            m_pos = m_mtxGimmickWork[39].getPosition();
             m_state = 3;
         }
         break;
     case 3:
-        m_pos.m_x = mtx[39].m[0][3];
-        m_pos.m_y = mtx[39].m[1][3];
-        m_pos.m_z = mtx[39].m[2][3];
+        m_pos = mtx[39].getPosition();
         if (*m_stateWallWork != 7) {
             if (m_attackEnabled == 1) {
                 disableAttack(0);
@@ -310,24 +295,20 @@ void grFzeroAttack::updateCallBack(float deltaFrame) {
                 scnMdl->EnableScnMdlCallbackTiming(1);
                 scnMdl->m_nodeIndex = calcWorldCallBack->m_nodeCallbackDatas[0].m_nodeIndex;
             }
-            calcWorldCallBack->m_nodeCallbackDatas[0].m_pos.m_x = m_pos.m_x;
-            calcWorldCallBack->m_nodeCallbackDatas[0].m_pos.m_y = m_pos.m_y;
-            calcWorldCallBack->m_nodeCallbackDatas[0].m_pos.m_z = m_pos.m_z;
-            calcWorldCallBack->m_nodeCallbackDatas[0].m_rot.m_x = m_rot.m_x;
-            calcWorldCallBack->m_nodeCallbackDatas[0].m_rot.m_y = m_rot.m_y;
-            calcWorldCallBack->m_nodeCallbackDatas[0].m_rot.m_z = m_rot.m_z;
+            calcWorldCallBack->m_nodeCallbackDatas[0].m_pos = m_pos;
+            calcWorldCallBack->m_nodeCallbackDatas[0].m_rot = m_rot;
         }
     }
 }
 
 void grFzeroAttack::setAttack() {
     switch (m_type) {
-    case 6:
-        setAttackWall();
-        break;
     case 4:
     case 5:
         setAttackFloor();
+        break;
+    case 6:
+        setAttackWall();
         break;
     }
 }

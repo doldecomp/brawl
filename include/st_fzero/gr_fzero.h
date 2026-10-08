@@ -4,6 +4,7 @@
 #include <mt/mt_matrix.h>
 #include <st/se_util.h>
 #include <gr/collision/gr_collision_joint.h>
+#include <math.h>
 
 // Mute City (F-Zero) stage gimmicks. Every gimmick derives from grFzero, a thin grYakumono that carries a state byte
 // and a timer, and receives pointers into the stage object (stFzero) through virtual setters right after it is created:
@@ -343,3 +344,12 @@ public:
     virtual void setCarData(stFzeroCarData* carData) { m_carData = carData; }
 };
 static_assert(sizeof(grFzeroCar) == 0x184, "grFzeroCar layout");
+
+// HYPOTHESIS: an inline helper of the original (a tolerance test used by both the stage and its cars).
+static inline bool fzeroIsNearZero(float value) {
+    bool result = false;
+    if ((float)fabs(value) < 1e-5f) {
+        result = true;
+    }
+    return result;
+}
