@@ -1,7 +1,9 @@
+#define FT_ROBOT_SHARED_STATUS_TABLE_CTOR // MATCH-ONLY: call the shared table constructor used by this REL.
 #include <ft/builder/ft_dol_array_list.h>
 #include <ft/ft_class_info_impl.h>
 #include <ft/lucas/ft_lucas.h>
 #include <ft/lucas/ft_lucas_extend_param_accesser.h>
+#include <ft/lucas/ft_lucas_status_uniq_process.h>
 
 #define FT_NO_REFLECTOR_INSTANTIATION
 #define FT_BC ftLucasBuildConfig
@@ -24,8 +26,39 @@ ftLucas::ftLucas(s32 entryId,
                                          Fighter_Lucas,
                                          instHeap,
                                          nwModelInstHeap,
-                                         nwMotionInstHeap) {
-    // TODO
+                                         nwMotionInstHeap),
+    m_commonData(g_ftCommonDataAccesser.getData(Fighter_Lucas)) {
+    unk48CC4[0] = 0;
+    unk48CC4[1] = 0;
+
+    // Lucas owns 16 character action slots. A null entry differs from the
+    // shared no-op process used by the other four otherwise unused slots.
+    soStatusUniqProcess* processes[16] = {0};
+    processes[0] = &g_soStatusUniqProcessNull;
+    processes[1] = &g_ftLucasStatusUniqProcessSpecialS;
+    processes[3] = &g_ftLucasStatusUniqProcessSpecialLw;
+    processes[5] = &g_soStatusUniqProcessNull;
+    processes[6] = &g_soStatusUniqProcessNull;
+    processes[7] = &g_soStatusUniqProcessNull;
+    processes[8] = &g_ftLucasStatusUniqProcessSpecialHi;
+    processes[9] = &g_ftLucasStatusUniqProcessSpecialHiAttackEnd;
+    processes[10] = &g_ftLucasStatusUniqProcessSpecialHiAttack;
+    processes[11] = &g_ftLucasStatusUniqProcessSpecialHiReflect;
+    processes[12] = &g_ftLucasStatusUniqProcessSpecialHiAttackEnd;
+    processes[13] = &g_ftLucasStatusUniqProcessSpecialLwHold;
+    processes[14] = &g_ftLucasStatusUniqProcessSpecialLwHold;
+    m_moduleAccesser->getStatusModule().addRangeUniqProc(processes, 16);
+
+    // Generic aerial transitions and Lucas's forward smash/rope-snake
+    // actions override entries outside the consecutive character range.
+    m_moduleAccesser->getStatusModule().setUniqProc(0x33, &g_ftStatusUniqProcessAttackAirInheritJumpAerialMotion);
+    m_moduleAccesser->getStatusModule().setUniqProc(0x21, &g_ftStatusUniqProcessEscapeAirInheritJumpAerialMotion);
+    m_moduleAccesser->getStatusModule().setUniqProc(0x2C, &g_ftLucasStatusUniqProcessAttackS4);
+    m_moduleAccesser->getStatusModule().setUniqProc(0x7F, &g_ftLucasStatusUniqProcessAirLasso);
+}
+
+void** ftLucas::getExtendParam() {
+    return m_commonData->extendParam;
 }
 
 // FIXME: Test code present only to emit the shared builder functions; delete once ftLucas is done
