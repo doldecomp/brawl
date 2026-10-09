@@ -21,11 +21,13 @@ public:
     static int getStatusKind(StageObject* stageObject);
     static bool getWorkFlag(StageObject* stageObject, u32);
     static int getWorkInt(StageObject* stageObject, u32);
+    static float getWorkFloat(StageObject* stageObject, u32);
     static soModuleAccesser* getModuleAccesser(StageObject* stageObject);
     static soCollisionHitModule* getCollisionHitModule(StageObject* stageObject);
     static soControllerModule* getControllerModule(StageObject* stageObject);
     static u32 getTeamOwnerId(StageObject* stageObject);
     static float getConstantFloat(StageObject* stageObject, u32 paramId);
+    static float getSlowRate(StageObject* stageObject);
     static soKineticModule* getKineticModule(StageObject* stageObject);
     static soCollisionAttackModule* getCollisionAttackModule(StageObject* stageObject);
     static soLinkModule* getLinkModule(StageObject* stageObject);

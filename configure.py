@@ -1085,6 +1085,8 @@ config.libs = [
             Object(NonMatching, "mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_hi_attack.cpp"),
             Object(NonMatching, "mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_hi_attack_end.cpp"),
             Object(NonMatching, "mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_hi_reflect.cpp"),
+            Object(NonMatching, "mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_lw.cpp"),
+            Object(NonMatching, "mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_lw_hold.cpp"),
         ],
     },
     {
@@ -1150,6 +1152,8 @@ config.libs = [
         "host": False,
         "objects": [
             Object(NonMatching, "mo_fighter/ft_peach/ft_peach.cpp"),
+            Object(NonMatching, "mo_fighter/ft_peach/ft_peach_status_uniq_process_final.cpp"),
+            Object(NonMatching, "mo_fighter/ft_peach/if_peach_final_task.cpp"),
         ],
     },
     {
@@ -1229,6 +1233,10 @@ config.libs = [
         "cflags": cflags_rel,
         "host": False,
         "objects": [
+            Object(NonMatching, "mo_fighter/ft_snake/ft_snake_status_uniq_process_final_common.cpp"),
+            Object(NonMatching, "mo_fighter/ft_snake/ft_snake_status_uniq_process_final_entry.cpp"),
+            Object(NonMatching, "mo_fighter/ft_snake/ft_snake_status_uniq_process_final_set.cpp"),
+            Object(NonMatching, "mo_fighter/ft_snake/ft_snake_status_uniq_process_final_end.cpp"),
             Object(NonMatching, "mo_fighter/ft_snake/wn_snake_nikita.cpp"),
             Object(NonMatching, "mo_fighter/ft_snake/wn_snake_nikita_missile_status_uniq_process_fly.cpp"),
         ],

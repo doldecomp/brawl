@@ -18,6 +18,13 @@ mo_fighter/ft_peach/ft_peach.cpp:
 	.data       start:0x00000000 end:0x00007158
 	.bss        start:0x00000008 end:0x000002A0
 
+mo_fighter/ft_peach/ft_peach_status_uniq_process_final.cpp:
+	.text       start:0x0000FE40 end:0x0001088C
+	.ctors      start:0x00000008 end:0x00000010
+
+mo_fighter/ft_peach/if_peach_final_task.cpp:
+	.text       start:0x0001088C end:0x00010FA0
+
 mo_fighter/mo_fighter.cpp:
 	.text       start:0x000136F0 end:0x0001378C
 	.data       start:0x00007158 end:0x00007167

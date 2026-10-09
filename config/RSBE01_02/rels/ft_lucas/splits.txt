@@ -34,6 +34,14 @@ mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_hi_reflect.cpp:
 	.text       start:0x000126F4 end:0x00012800
 	.ctors      start:0x0000001C end:0x00000020
 
+mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_lw.cpp:
+	.text       start:0x00012800 end:0x00012A0C
+	.ctors      start:0x00000020 end:0x00000024
+
+mo_fighter/ft_lucas/ft_lucas_status_uniq_process_special_lw_hold.cpp:
+	.text       start:0x00012A0C end:0x00012D54
+	.ctors      start:0x00000024 end:0x00000028
+
 mo_fighter/mo_fighter.cpp:
 	.text       start:0x00020EA4 end:0x00020F40
 	.data       start:0x0000B538 end:0x0000B547

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ft/ft_fighter_builder.h>
+#include <so/so_photo_call_back.h>
 #include <sr/sr_common.h>
 #include <types.h>
 
@@ -51,11 +52,15 @@ public:
     typedef ftPeachGenerateArticleManageModuleBuilder GenerateArticleManageModuleBuilder;
 };
 
-class ftPeach : public ftFighterBuilder<ftPeachBuildConfig> {
-    u8 unkTail[0x18710 - sizeof(ftFighterBuilder<ftPeachBuildConfig>)];
+class ftPeach : public ftFighterBuilder<ftPeachBuildConfig>, public soPhotoCallBack {
+    // The photo callback starts at +0x186F0 in the native fighter.
+    u8 unkTail[0x18710 - sizeof(ftFighterBuilder<ftPeachBuildConfig>) - sizeof(soPhotoCallBack)];
 public:
     ftPeach(s32 entryId,
             Heaps::HeapType instHeap,
             Heaps::HeapType nwModelInstHeap,
             Heaps::HeapType nwMotionInstHeap);
+    void endFinalRequest();
 };
+static_assert(sizeof(ftFighterBuilder<ftPeachBuildConfig>) == 0x186F0, "ftPeach photo callback offset mismatch");
+static_assert(sizeof(ftPeach) == 0x18710, "ftPeach size mismatch");

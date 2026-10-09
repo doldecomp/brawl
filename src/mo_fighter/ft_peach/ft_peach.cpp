@@ -22,6 +22,11 @@ ftPeach::ftPeach(s32 entryId,
     // TODO
 }
 
+void ftPeach::endFinalRequest() {
+    Fighter::endFinal(true, true, false);
+    soPhotoCallBack::removeCallBack();
+}
+
 // FIXME: Test code present only to emit the shared builder functions; delete once ftPeach is done
 void testBuilder() {
     soInsideEventManageModuleBuilder<ftPeachInsideEventManageModuleBuildConfig, ftInsideEventManageModuleTypes> insideBuilder;
