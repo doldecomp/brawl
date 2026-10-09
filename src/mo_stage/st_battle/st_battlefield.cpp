@@ -66,9 +66,8 @@ void stBattleField::createObj() {
     addGround(grBattleField::create(12, "zStgBattleFieldAshiba02", "grBattleFieldAshiba02"));
     addGround(grBattleField::create(13, "zStgBattleFieldAshiba03", "grBattleFieldAshiba03"));
     addGround(grBattleField::create(8, "", "grBattleFieldFlare"));
-    u32 groundNum = getGroundNum();
     Ground* ground;
-    for (u32 i = 0; i != groundNum; i++) {
+    for (u32 i = 0, groundNum = getGroundNum(); i != groundNum; i++) {
         ground = getGround(i);
         if (ground != NULL) {
             ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
@@ -101,9 +100,10 @@ void stBattleField::createObj() {
         kumiteNode->endEntity();
         delete kumiteNode;
     }
-    nw4r::g3d::ResFile posData(m_fileData->getData(Data_Type_Model, 100, 0xFFFE));
-    if (posData.ptr()) {
-        createStagePositions(&posData);
+    void* posData = m_fileData->getData(Data_Type_Model, 100, 0xFFFE);
+    if (posData) {
+        nw4r::g3d::ResFile posFile(posData);
+        createStagePositions(&posFile);
     } else {
         createStagePositions();
     }
@@ -114,7 +114,7 @@ void stBattleField::createObj() {
     createObjPokeTrainer(m_fileData, 101, "PokeTrainer00", m_pokeTrainerPos, NULL);
 }
 
-static inline float stBattleClamp(float value, float lo, float hi) {
+static inline float stBattleClamp(float lo, float hi, float value) {
     value = nw4r::math::FSelect(value - lo, value, lo);
     return nw4r::math::FSelect(value - hi, hi, value);
 }
@@ -128,9 +128,9 @@ void stBattleField::update(float deltaFrame) {
             frame = g_gfSceneRoot->m_anmScnRes->GetFrame();
         }
         if (frame >= 0.0f && frame <= 6000.0f) {
-            float t = stBattleClamp(frame / 6000.0f, 0.0f, 1.0f);
+            float t = stBattleClamp(0.0f, 1.0f, frame / 6000.0f);
             nw4r::math::SinFIdx(NW4R_MATH_IDX_TO_FIDX(nw4r::math::U16ToF32((u16)(int)(t * 32768.0f))));
-            float c = stBattleClamp(frame / 6000.0f, 0.0f, 1.0f);
+            float c = stBattleClamp(0.0f, 1.0f, frame / 6000.0f);
             param->m_shadowPitch = 40.0f;
             param->m_shadowYaw = 240.0f + -120.0f * c;
             *(float*)((u8*)param + 0x20) = 0.0f; // HYPOTHESIS: third float of the shadow direction
