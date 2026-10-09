@@ -26,6 +26,7 @@ public:
     static soControllerModule* getControllerModule(StageObject* stageObject);
     static u32 getTeamOwnerId(StageObject* stageObject);
     static float getConstantFloat(StageObject* stageObject, u32 paramId);
+    static float getSlowRate(StageObject* stageObject);
     static soKineticModule* getKineticModule(StageObject* stageObject);
     static soCollisionAttackModule* getCollisionAttackModule(StageObject* stageObject);
     static soLinkModule* getLinkModule(StageObject* stageObject);

@@ -20,6 +20,7 @@ protected:
     char _428[1808];
 
 public:
+    void appear(Vec3f* position, int mode, float speed);
     struct Status {
         enum Kind {
             Standby = 0x0,

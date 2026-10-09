@@ -1152,6 +1152,8 @@ config.libs = [
         "host": False,
         "objects": [
             Object(NonMatching, "mo_fighter/ft_peach/ft_peach.cpp"),
+            Object(NonMatching, "mo_fighter/ft_peach/ft_peach_status_uniq_process_final.cpp"),
+            Object(NonMatching, "mo_fighter/ft_peach/if_peach_final_task.cpp"),
         ],
     },
     {
