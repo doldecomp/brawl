@@ -1,6 +1,7 @@
 #pragma once
 
 #include "gf/gf_archive.h"
+#include "mu/mu_menuroot.h"
 #include "mu/mu_object.h"
 #include "nw4r/g3d/g3d_resfile.h"
 #include <gf/gf_task.h>
@@ -9,17 +10,19 @@
 
 class muChallengerApproachTask : public gfTask {
 public:
-	// The first 40 bytes are the gfTask base
+	// The first 0x40 bytes are the gfTask base
 	
 	nw4r::g3d::ResFile m_unk40;	
 	nw4r::g3d::ResFile m_unk44;	
-	gfTask* m_unk48;
-	MuObject* m_unk4C;
-	MuObject* m_unk50;
+
+	MenuRoot* m_unk48;
+
+	MuObject* m_backgroundAnim;
+	MuObject* m_challengerAnim;
 
 	// Both of these are set in initialize, maybe used elsewhere
-	int m_unk54;
-	int m_unk58;
+	int m_challengerIndex;
+	int m_soundHandle;
 
 	char m_names[14][0x40];
 
