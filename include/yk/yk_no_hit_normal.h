@@ -14,9 +14,18 @@ extern u8 lbl_27_bss_598[];
 extern u8 lbl_27_bss_444[];
 extern soEventObserverRegistrationDesc* lbl_27_data_54C60;
 
+// HYPOTHESIS: the runtime type tag of nw4r's ScnMdl in main (sora_melee casts a G3dObj with it).
+extern int lbl_8040ABD8[];
+
+// Stand-in for nw4r::g3d::G3dObj::DynamicCast<ScnMdl>(): the type tag is passed through a stack slot.
+static inline nw4r::g3d::ScnMdl* ykDynamicCastScnMdl(nw4r::g3d::ScnMdl* obj) {
+    int* typeObj = lbl_8040ABD8;
+    return (obj != NULL && obj->IsDerivedFrom((int*)&typeObj)) ? obj : NULL;
+}
+
 template <class TAttackConfig>
 class ykNoHitNormal : public Yakumono {
-    soCollisionAttackModuleBuilder<TAttackConfig> m_attackBuilder;
+    TAttackConfig m_buildConfig;
     float* m_attackPosXWork;
     float* m_hitPosXWork;
     int m_attackPosXCount;
@@ -24,8 +33,9 @@ class ykNoHitNormal : public Yakumono {
 
 public:
     ykNoHitNormal(ykInitInfo* info)
-        : Yakumono(info, "ykNoHitNormal", m_attackBuilder.getModule(), lbl_27_bss_398, lbl_27_bss_3DC, lbl_27_bss_598, lbl_27_bss_444),
-          m_attackBuilder(&moduleAccesser, m_taskId, m_taskCategory, lbl_27_data_54C60) {
+        : Yakumono(info, "ykNoHitNormal", &m_buildConfig.m_attackModule, lbl_27_bss_398, lbl_27_bss_3DC, lbl_27_bss_598,
+                   lbl_27_bss_444),
+          m_buildConfig(&moduleAccesser, m_taskId, (gfTask::Category)(u8)m_taskCategory, lbl_27_data_54C60) {
         postInitialize();
         activate(info->m_pos, -1.0f, 0.0f);
         m_attackPosXWork = NULL;

@@ -1,3 +1,5 @@
+#define YK_STAGE_INLINE // inline members of the shared SO headers that the stage RELs emit themselves
+#define SO_COLLISION_GROUP_ALIGNED // the hit object embeds soArrayVector<soCollisionGroup, 1> with 4-byte aligned elements
 #include <st_fzero/gr_fzero.h>
 #include <st_fzero/gr_fzero_anim.h>
 #include <gr/gr_calc_world_callback.h>
@@ -275,7 +277,7 @@ void grFzeroCar::setHit() {
 
     ykInitInfo info = {NULL, NULL, 0x10, NULL, NULL};
     info.m_ground = this;
-    nw4r::g3d::ScnMdl* model = nw4r::g3d::G3dObj::DynamicCast<nw4r::g3d::ScnMdl>(m_sceneModels[0]);
+    nw4r::g3d::ScnMdl* model = ykDynamicCastScnMdl(m_sceneModels[0]);
     info.m_node = model;
     Vec3f pos = getPos();
     info.m_pos = &pos;

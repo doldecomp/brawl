@@ -10,8 +10,13 @@ struct clTarget {
     int m_0;
     int m_4;
 
+#ifdef YK_STAGE_INLINE // the stage RELs emit these two inline (YK_STAGE_INLINE is defined by the stage units that need it)
+    clTarget() : m_0(-1), m_4(-1) { }
+    ~clTarget() { }
+#else
     clTarget();
     ~clTarget();
+#endif
 };
 static_assert(sizeof(clTarget) == 0x8, "Class is wrong size!");
 

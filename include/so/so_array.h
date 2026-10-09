@@ -879,7 +879,11 @@ public:
         m_size = 0;
         m_isFull = false;
         size = soArrayVectorCalculator::resize(*this, size, this->isEmpty(), this->isFull(), this->capacity(), this->getTopIndex(), this->getLastIndex());
+#ifdef YK_STAGE_INLINE
+        for (s32 i = 0; i < size; i++) {
+#else
         for (u32 i = 0; i < size; i++) {
+#endif
             this->push(element);
         }
     }

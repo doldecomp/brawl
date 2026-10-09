@@ -1,5 +1,8 @@
+#define YK_STAGE_INLINE // inline members of the shared SO headers that the stage RELs emit themselves
+#define SO_COLLISION_GROUP_ALIGNED // the hit object embeds soArrayVector<soCollisionGroup, 1> with 4-byte aligned elements
 #include <st_fzero/gr_fzero.h>
 #include <gr/gr_calc_world_callback.h>
+#include <yk/yk_no_hit_normal.h>
 #include <math.h>
 #include <nw4r/math/math_arithmetic.h>
 #include <nw4r/math/math_triangular.h>
@@ -331,6 +334,25 @@ void grFzeroAttack::setAttack() {
         setAttackWall();
         break;
     }
+}
+
+// Builds the attack's hit object: two attack parts (floor and wall hit boxes), one collision group and no hit module.
+void grFzeroAttack::setHit() {
+    m_work = new (Heaps::StageInstance) grFzeroAttackWork;
+    m_work->unk0 = 0;
+    m_work->unk4 = 0;
+
+    ykInitInfo info = {NULL, NULL, 0x10, NULL, NULL};
+    info.m_ground = this;
+    nw4r::g3d::ScnMdl* model = ykDynamicCastScnMdl(m_sceneModels[0]);
+    info.m_node = model;
+    Vec3f pos = getPos();
+    info.m_pos = &pos;
+    info.m_work = m_work;
+
+    typedef soCollisionAttackModuleBuildConfig<soCollision::Category_Gimmick, 2, 0, soCollisionAttackModuleImpl, 1, false, true> Config;
+    ykNoHitNormal<Config>* yakumono = new (Heaps::StageInstance) ykNoHitNormal<Config>(&info);
+    setYakumono(yakumono);
 }
 
 // A hit box of 30 units above the floor line (size 30, power 15, knocked up at 90 degrees), enabled once.

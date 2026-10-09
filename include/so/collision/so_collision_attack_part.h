@@ -332,8 +332,13 @@ struct soCollisionAttackAbsolute {
     bool m_isAttack;
     char _0x65[3];
 
+#ifdef YK_STAGE_INLINE // emitted inline in the stage RELs (default element of soArrayNull<soCollisionAttackAbsolute>)
+    soCollisionAttackAbsolute() : m_attackData() { }
+    ~soCollisionAttackAbsolute() { }
+#else
     soCollisionAttackAbsolute();
     ~soCollisionAttackAbsolute();
+#endif
 };
 
 class soCollisionAttackPart {
@@ -350,7 +355,11 @@ class soCollisionAttackPart {
     char _0x8c[4];
 
 public:
+#ifdef YK_STAGE_INLINE // emitted inline in the stage RELs (status and group index stay uninitialized)
+    soCollisionAttackPart() : m_attackData() { }
+#else
     soCollisionAttackPart();
+#endif
     soCollisionAttackPart(soCollision::Category, bool);
     ~soCollisionAttackPart();
 };

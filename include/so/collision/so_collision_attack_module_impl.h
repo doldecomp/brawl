@@ -204,6 +204,7 @@ static_assert(sizeof(soCollisionAttackModuleImpl) == 160, "Class is wrong size!"
 
 template <soCollision::Category TCategory, u32 TNumParts, u32 TNumAbsolutes, class TCollisionAttackModule, u32 TNumGroups, bool TBool1, bool TBool2>
 class soCollisionAttackModuleBuildConfig {
+public: // the stage-side builder (ykNoHitNormal) reaches the members through soCollisionAttackModuleBuilder::getModule()
     soArrayVector<soCollisionAttackPart, TNumParts> m_attackPartArrayVector;
     soArrayVector<soCollisionGroup, TNumGroups> m_collisionGroupArrayVector;
     soArrayVector<soCollisionAttackAbsolute, TNumAbsolutes> m_attackAbsoluteArrayVector;
