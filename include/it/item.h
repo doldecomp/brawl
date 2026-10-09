@@ -1,5 +1,7 @@
-// Local shadow of BrawlHeaders: restore shield-collision argument order.
 #pragma once
+
+// Supersedes include/lib/BrawlHeaders/Brawl/Include/it/item.h (shadows it via -I include).
+// Adds BaseItem::setRenderPriority, which the BrawlHeaders submodule lacks. Keep in sync.
 
 #include <StaticAssert.h>
 #include <ft/fighter.h>
@@ -20,7 +22,6 @@ protected:
     char _428[1808];
 
 public:
-    void appear(Vec3f* position, int mode, float speed);
     struct Status {
         enum Kind {
             Standby = 0x0,
@@ -303,11 +304,6 @@ public:
     char _15708[4];
 
     BaseItem(itCreate* create);
-    // Wario Bike Item calls these four nonvirtual item controls (main map/REL relocations).
-    void resetRotation(Vec3f* rotation);
-    void resetDamage();
-    void addSpeed(Vec3f* speed, bool);
-    void setOwnerScale(float scale);
     virtual void processUpdate();
     virtual void processMapCorrection();
     virtual void processFixPosition();
@@ -361,7 +357,7 @@ public:
     virtual void notifyEventChangeSituation(SituationKind kind, SituationKind prevKind, soModuleAccesser* moduleAccesser);
     virtual void notifyEventCollisionAttack(float power, soCollisionLog* collisionLog, soModuleAccesser* moduleAccesser);
     virtual bool notifyEventCollisionAttackCheck(u32 flags);
-    virtual void notifyEventCollisionShield(soCollisionAttackModule* attackModule, float power, soCollisionLog* collisionLog, int groupIndex, float posX, float posY, soModuleAccesser* moduleAccesser);
+    virtual void notifyEventCollisionShield(soCollisionAttackModule* attackModule, soCollisionLog* collisionLog, u32 groupIndex, soModuleAccesser* moduleAccesser, float power, float posX, float);
     virtual void notifyEventCollisionShieldSearch(soCollisionSearchModule* searchModule, soCollisionLog* collisionLog, u32 groupIndex, soModuleAccesser* moduleAccesser);
     virtual bool notifyEventCollisionShieldCheck();
     virtual void notifyEventCollisionReflector(soCollisionAttackModule* attackModule, soCollisionLog* collisionLog, u32 groupIndex, soModuleAccesser* moduleAccesser, float power, float posX, float);
@@ -387,6 +383,7 @@ public:
     void setSafePos(Vec2f* pos);
     void warp(Vec3f* pos);
     void setVanishMode(bool);
+    void setRenderPriority(u8 priority); // Added locally: sora_melee 0x28E7B4
     bool sendTouchMessage(int taskId, Vec3f* pos, float);
 };
 static_assert(sizeof(BaseItem) == 0x3d60, "Class is wrong size!");
