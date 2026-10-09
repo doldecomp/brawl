@@ -1,6 +1,7 @@
 #include <st_fzero/gr_fzero.h>
 #include <st_fzero/gr_fzero_anim.h>
 #include <gr/gr_calc_world_callback.h>
+#include <yk/yk_no_hit_normal.h>
 
 grFzeroCar::grFzeroCar(const char* taskName) : grFzero(taskName) {
     m_sceneWork = NULL;
@@ -263,6 +264,26 @@ void grFzeroCar::setAttack() {
         false, false, false, false, false, soCollisionAttackData::Region_None, false);
     m_yakumono->setAttack(0, 0, &attack);
     m_attackEnabled = 1;
+}
+
+// Builds the car's hit object: one attack part, one collision group and no hit module (a ykNoHitNormal), at the position
+// the car's model reports.
+void grFzeroCar::setHit() {
+    m_work = new (Heaps::StageInstance) grFzeroAttackWork;
+    m_work->unk0 = 0;
+    m_work->unk4 = 0;
+
+    ykInitInfo info = {NULL, NULL, 0x10, NULL, NULL};
+    info.m_ground = this;
+    nw4r::g3d::ScnMdl* model = nw4r::g3d::G3dObj::DynamicCast<nw4r::g3d::ScnMdl>(m_sceneModels[0]);
+    info.m_node = model;
+    Vec3f pos = getPos();
+    info.m_pos = &pos;
+    info.m_work = m_work;
+
+    typedef soCollisionAttackModuleBuildConfig<soCollision::Category_Gimmick, 1, 0, soCollisionAttackModuleImpl, 1, false, true> Config;
+    ykNoHitNormal<Config>* yakumono = new (Heaps::StageInstance) ykNoHitNormal<Config>(&info);
+    setYakumono(yakumono);
 }
 
 // Binds the two animations of the car (0 and 1); animation 2 means "none".

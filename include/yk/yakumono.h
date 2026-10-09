@@ -32,8 +32,23 @@ struct ykAreaData : ykData {
     soSet<soAreaData>* m_areaDataSet;
 };
 
+// HYPOTHESIS: what a stage gimmick hands to its Yakumono when it creates it (the gimmick, its model, a flag word, the
+// position the hit areas follow and the gimmick's work area). Only the layout is verified.
+struct ykInitInfo {
+    grYakumono* m_ground;
+    void* m_node;
+    int m_unk8;
+    Vec3f* m_pos;
+    void* m_work;
+};
+
 class Yakumono : public StageObject, public soCollisionAttackEventObserver {
 public:
+    // HYPOTHESIS: the four trailing arguments are module placeholders (sora_melee's unnamed null module singletons).
+    Yakumono(ykInitInfo* info, const char* name, soCollisionAttackModule* attackModule, void* nullA, void* nullB,
+             void* nullC, void* nullD);
+    void postInitialize();
+    void activate(Vec3f* pos, float lr, float unk);
     void setAttack(int index, int groupIndex, soCollisionAttackData* attackData);
     void setLr(float lr);
     void setSituationKind(SituationKind situationKind);

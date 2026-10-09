@@ -247,6 +247,7 @@ static_assert(sizeof(grFzeroWall) == 0x170, "grFzeroWall layout");
 struct grFzeroAttackWork {
     u32 unk0;
     u32 unk4;
+    grFzeroAttackWork() : unk0(0), unk4(0) { }
 };
 
 // The hazards that hit fighters (the cars' attack floor and wall).
