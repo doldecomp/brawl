@@ -11,6 +11,28 @@ global_destructor_chain.c:
 	.dtors      start:0x00000000 end:0x00000008
 	.bss        start:0x00000000 end:0x00000004
 
+mo_fighter/ft_snake/ft_snake_status_uniq_process_final_common.cpp:
+	.text       start:0x00014650 end:0x0001489C
+	.rodata     start:0x00000058 end:0x00000068
+
+mo_fighter/ft_snake/ft_snake_status_uniq_process_final_entry.cpp:
+	.text       start:0x0001489C end:0x00014B88
+	.ctors      start:0x0000000C end:0x00000010
+	.rodata     start:0x00000068 end:0x00000078
+	.data       start:0x0000D860 end:0x0000D8D8
+
+mo_fighter/ft_snake/ft_snake_status_uniq_process_final_set.cpp:
+	.text       start:0x00014B88 end:0x00014FD4
+	.ctors      start:0x00000010 end:0x00000014
+	.rodata     start:0x00000078 end:0x00000090
+	.data       start:0x0000D8D8 end:0x0000D950
+
+mo_fighter/ft_snake/ft_snake_status_uniq_process_final_end.cpp:
+	.text       start:0x00014FD4 end:0x00015348
+	.ctors      start:0x00000014 end:0x00000018
+	.rodata     start:0x00000090 end:0x000000A0
+	.data       start:0x0000D950 end:0x0000D9C8
+
 mo_fighter/ft_snake/wn_snake_nikita.cpp:
 	.text       start:0x000206A4 end:0x000272CC
 	.rodata     start:0x00000120 end:0x00000180

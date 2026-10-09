@@ -21,6 +21,7 @@ public:
     static int getStatusKind(StageObject* stageObject);
     static bool getWorkFlag(StageObject* stageObject, u32);
     static int getWorkInt(StageObject* stageObject, u32);
+    static float getWorkFloat(StageObject* stageObject, u32);
     static soModuleAccesser* getModuleAccesser(StageObject* stageObject);
     static soCollisionHitModule* getCollisionHitModule(StageObject* stageObject);
     static soControllerModule* getControllerModule(StageObject* stageObject);
