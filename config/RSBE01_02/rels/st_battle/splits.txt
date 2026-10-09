@@ -12,16 +12,16 @@ global_destructor_chain.c:
 	.bss        start:0x00000000 end:0x00000004
 
 mo_stage/st_battle/st_battlefield.cpp:
-	.text       start:0x00000070 end:0x00000AE0
+	.text       start:0x00000070 end:0x00000B5C
 	.ctors      start:0x00000000 end:0x00000004
 	.rodata     start:0x00000000 end:0x00000028
-	.data       start:0x00000000 end:0x00000548
+	.data       start:0x00000000 end:0x00000568
 	.bss        start:0x00000008 end:0x00000018
 
 mo_stage/st_battle/gr_battlefield.cpp:
-	.text       start:0x00000AE0 end:0x00000F84
+	.text       start:0x00000B5C end:0x00000F84
 	.rodata     start:0x00000028 end:0x00000048
-	.data       start:0x00000548 end:0x000007D8
+	.data       start:0x00000568 end:0x000007D8
 
 mo_stage/mo_stage.cpp:
 	.text       start:0x00000F84 end:0x00001020

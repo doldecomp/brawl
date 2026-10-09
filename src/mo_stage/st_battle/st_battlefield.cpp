@@ -6,7 +6,8 @@
 #include <gr/gr_madein.h>
 #include <memory.h>
 #include <nw4r/g3d/g3d_resfile.h>
-#include <nw4r/math/math_trigonometric.h>
+#include <nw4r/math/math_arithmetic.h>
+#include <nw4r/math/math_triangular.h>
 #include <st/st_class_info.h>
 #include <st/st_melee.h>
 #include <st_battle/gr_battlefield.h>
@@ -16,10 +17,26 @@
 
 stClassInfoImpl<Stages::BattleField, stBattleField> stBattleField::bss_loc_14;
 
-stBattleField::stBattleField() : stMelee("stBattleField", Stages::Battle) { }
-
 stBattleField* stBattleField::create() {
     return new (Heaps::StageInstance) stBattleField;
+}
+
+stBattleField::stBattleField() : stMelee("stBattleField", Stages::Battle) {
+    for (int i = 0; i < 5; i++) {
+        m_enemyStartPos[i].m_x = 0.0f;
+        m_enemyStartPos[i].m_y = 0.0f;
+        m_enemyStartPos[i].m_z = 0.0f;
+    }
+    for (int i = 0; i < 4; i++) {
+        m_bossStartPos[i].m_x = 0.0f;
+        m_bossStartPos[i].m_y = 0.0f;
+        m_bossStartPos[i].m_z = 0.0f;
+    }
+    for (int i = 0; i < 2; i++) {
+        m_fighterStartPos[i].m_x = 0.0f;
+        m_fighterStartPos[i].m_y = 0.0f;
+        m_fighterStartPos[i].m_z = 0.0f;
+    }
 }
 
 stBattleField::~stBattleField() {
@@ -50,8 +67,9 @@ void stBattleField::createObj() {
     addGround(grBattleField::create(13, "zStgBattleFieldAshiba03", "grBattleFieldAshiba03"));
     addGround(grBattleField::create(8, "", "grBattleFieldFlare"));
     u32 groundNum = getGroundNum();
+    Ground* ground;
     for (u32 i = 0; i != groundNum; i++) {
-        Ground* ground = getGround(i);
+        ground = getGround(i);
         if (ground != NULL) {
             ground->startup(m_fileData, 0, gfSceneRoot::Layer_Ground);
             ground->setStageData(m_stageData);
@@ -65,16 +83,18 @@ void stBattleField::createObj() {
         kumiteNode->initializeEntity();
         kumiteNode->startEntity();
         kumiteNode->updateG3dProcCalcWorld();
-        char nodeName[0x40];
         for (int i = 0; i < 5; i++) {
+            char nodeName[0x40];
             sprintf(nodeName, "hyakunin_enemy_start%d", i);
             kumiteNode->getNodePosition(&m_enemyStartPos[i], 0, nodeName);
         }
         for (int i = 0; i < 4; i++) {
+            char nodeName[0x40];
             sprintf(nodeName, "hyakunin_boss_start%d", i);
             kumiteNode->getNodePosition(&m_bossStartPos[i], 0, nodeName);
         }
         for (int i = 0; i < 2; i++) {
+            char nodeName[0x40];
             sprintf(nodeName, "hyakunin_fighter_start%d", i);
             kumiteNode->getNodePosition(&m_fighterStartPos[i], 0, nodeName);
         }
@@ -94,6 +114,11 @@ void stBattleField::createObj() {
     createObjPokeTrainer(m_fileData, 101, "PokeTrainer00", m_pokeTrainerPos, NULL);
 }
 
+static inline float stBattleClamp(float value, float lo, float hi) {
+    value = nw4r::math::FSelect(value - lo, value, lo);
+    return nw4r::math::FSelect(value - hi, hi, value);
+}
+
 // The scene animation is a 6000-frame day/night cycle; the stage's shadow (light) direction follows it.
 void stBattleField::update(float deltaFrame) {
     stParam* param = m_stageParam;
@@ -103,42 +128,39 @@ void stBattleField::update(float deltaFrame) {
             frame = g_gfSceneRoot->m_anmScnRes->GetFrame();
         }
         if (frame >= 0.0f && frame <= 6000.0f) {
-            float t = frame / 6000.0f;
-            float lo = 0.0f;
-            float hi = 1.0f;
-            t = nw4r::math::FSelect(t - lo, t, lo);
-            t = nw4r::math::FSelect(t - hi, hi, t);
+            float t = stBattleClamp(frame / 6000.0f, 0.0f, 1.0f);
             nw4r::math::SinFIdx(NW4R_MATH_IDX_TO_FIDX(nw4r::math::U16ToF32((u16)(int)(t * 32768.0f))));
-            float c = frame / 6000.0f;
-            c = nw4r::math::FSelect(c - lo, c, lo);
-            c = nw4r::math::FSelect(c - hi, hi, c);
+            float c = stBattleClamp(frame / 6000.0f, 0.0f, 1.0f);
             param->m_shadowPitch = 40.0f;
             param->m_shadowYaw = 240.0f + -120.0f * c;
-            param->_26[0] = 0; // HYPOTHESIS: third float of the shadow direction
+            *(float*)((u8*)param + 0x20) = 0.0f; // HYPOTHESIS: third float of the shadow direction
             // HYPOTHESIS: tells the scene to pick the changed shadow parameters up
             *(u8*)((u8*)this + 0xE8) = 1;
         } else {
             param->m_shadowPitch = 90.0f;
             param->m_shadowYaw = 0.0f;
+            *(float*)((u8*)param + 0x20) = 0.0f;
         }
     }
 }
 
+// MATCH-ONLY: the original reads the game mode of gmMeleeInitData with a byte load.
+struct stBattleModeByte {
+    u8 m_mode : 6;
+    u8 : 2;
+};
+
 // In 100-Man Brawl the fighters and enemies start from the nodes of the "KumiteNode" model.
 void stBattleField::getFighterStartPos(Vec3f* startPos, int fighterIndex) {
-    u32 mode = g_GameGlobal->m_modeMelee->m_meleeInitData.m_gameMode;
+    u32 mode = ((stBattleModeByte*)((u8*)g_GameGlobal->m_modeMelee + 8))->m_mode;
     if (mode == Game_Mode_Kumite || mode == Game_Mode_Net_Kumite) {
-        Vec3f* src;
         if ((u32)fighterIndex >= 20) {
-            src = &m_enemyStartPos[(u32)(fighterIndex - 20) % 5];
+            *startPos = m_enemyStartPos[(u32)(fighterIndex - 20) % 5];
         } else if ((u32)fighterIndex >= 10) {
-            src = &m_bossStartPos[(u32)(fighterIndex - 10) % 5]; // HYPOTHESIS: the original wraps by 5 here although there are 4 boss nodes
+            *startPos = m_bossStartPos[(u32)(fighterIndex - 10) % 5]; // HYPOTHESIS: the original wraps by 5 here although there are 4 boss nodes
         } else {
-            src = &m_fighterStartPos[fighterIndex & 1];
+            *startPos = m_fighterStartPos[fighterIndex & 1];
         }
-        startPos->m_x = src->m_x;
-        startPos->m_y = src->m_y;
-        startPos->m_z = src->m_z;
     } else {
         stMelee::getFighterStartPos(startPos, fighterIndex);
     }

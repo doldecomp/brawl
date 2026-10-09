@@ -1,9 +1,21 @@
 #include <memory.h>
 #include <nw4r/g3d/g3d_scnmdl.h>
+#include <nw4r/math/math_triangular.h>
 #include <nw4r/math/math_arithmetic.h>
 #include <gf/gf_3d_scene.h>
 
 #include <st_battle/gr_battlefield.h>
+
+static inline float stBattleClamp(float lo, float hi, float value) {
+    value = nw4r::math::FSelect(value - lo, value, lo);
+    return nw4r::math::FSelect(value - hi, hi, value);
+}
+
+// The real CopiedMatAccess is 0x34 bytes; the BrawlHeaders copy is 4 bytes short (same workaround as sora/mu/mu_object.cpp).
+struct grBattleFieldMatAccess : public nw4r::g3d::ScnMdl::CopiedMatAccess {
+    u32 m_pad;
+    grBattleFieldMatAccess(nw4r::g3d::ScnMdl* mdl, u32 id) : CopiedMatAccess(mdl, id) {}
+};
 
 grBattleField* grBattleField::create(int mdlIndex, const char* tgtNodeName, const char* taskName) {
     grBattleField* ground = new (Heaps::StageInstance) grBattleField(taskName);
@@ -50,15 +62,11 @@ void grBattleField::update(float deltaFrame) {
             }
             float alpha;
             if (frame >= 5600.0f && frame <= 6000.0f) {
-                alpha = (6000.0f - frame) / 400.0f;
-                alpha = nw4r::math::FSelect(alpha - 0.0f, alpha, 0.0f);
-                alpha = nw4r::math::FSelect(alpha - 1.0f, 1.0f, alpha);
+                alpha = stBattleClamp(0.0f, 1.0f, (6000.0f - frame) / 400.0f);
             } else if (frame >= 400.0f && frame <= 5600.0f) {
                 alpha = 1.0f;
             } else if (frame >= 0.0f && frame <= 400.0f) {
-                alpha = frame / 400.0f;
-                alpha = nw4r::math::FSelect(alpha - 0.0f, alpha, 0.0f);
-                alpha = nw4r::math::FSelect(alpha - 1.0f, 1.0f, alpha);
+                alpha = stBattleClamp(0.0f, 1.0f, frame / 400.0f);
             } else {
                 alpha = 0.0f;
             }
@@ -66,18 +74,21 @@ void grBattleField::update(float deltaFrame) {
             nw4r::g3d::ResMat resMat;
             nw4r::g3d::ResMatTevColor copyTev;
             nw4r::g3d::ResMatTevColor baseTev;
-            GXColor baseColor = {0xFF, 0xFF, 0xFF, 0xFF};
-            GXColor copyColor = {0xFF, 0xFF, 0xFF, 0xFF};
+            GXColor copyColor;
+            GXColor baseColor;
+            *(u32*)&copyColor = 0xFFFFFFFF;
+            *(u32*)&baseColor = 0xFFFFFFFF;
             nw4r::g3d::ScnMdl* scnMdl = m_sceneModels[0];
             if (scnMdl != NULL) {
                 resMdl = scnMdl->m_resMdl;
                 if (resMdl.IsValid()) {
                     resMat = resMdl.GetResMat(m_shadowMatIndex);
                     if (resMat.IsValid()) {
-                        nw4r::g3d::ScnMdl::CopiedMatAccess access(scnMdl, resMat->m_id);
+                        grBattleFieldMatAccess access(scnMdl, resMat->m_id);
                         copyTev = access.GetResMatTevColor(false);
                         if (copyTev.IsValid()) {
-                            baseTev = resMat.GetResMatTevColor();
+                            u8* matDL = resMat->m_offToDisplayLists != 0 ? (u8*)resMat.ptr() + resMat->m_offToDisplayLists : NULL;
+                            baseTev = nw4r::g3d::ResMatTevColor(matDL + 0x20);
                             if (baseTev.IsValid()) {
                                 baseTev.GXGetTevColor(GX_TEVREG0, &baseColor);
                                 copyTev.GXGetTevColor(GX_TEVREG0, &copyColor);

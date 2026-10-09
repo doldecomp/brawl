@@ -92,7 +92,7 @@ class ResFile;
 
             s32 m_offToFurData;
             s32 m_offToUserDataoffToUserData;
-            s32 m_offToDisplayLists;
+            s32 m_offToDisplayLists; // the display-list block (ogws' toResMatDLData): holds the TEV colours at +0x20
 
             ResTexObjData m_resTexObjData;
 
@@ -122,7 +122,10 @@ class ResFile;
         class ResMatTevColor : public ResCommon<ResTevColorDL> {
         private:
         public:
-            void GXSetTevColor(u32 id, GXColor color);
+            inline ResMatTevColor() : ResCommon() {}
+            inline ResMatTevColor(void* data) : ResCommon(data) {}
+            void GXSetTevColor(GXTevRegID id, GXColor color);
+            bool GXGetTevColor(GXTevRegID id, GXColor* color) const; // Added locally: the stage code reads the base colour of the material.
             void DCStore(bool sync); // Added locally: the stage code flushes the colour display list after editing it.
         };
 
@@ -135,6 +138,14 @@ class ResFile;
             void Release();
             void ForceBindTex(ResTex,const char*);
             void DCStore(bool sync);
+            // Added locally (ogws' ResMat::GetResMatTevColor): the TEV colours sit 0x20 bytes into the material's display-list block.
+            ResMatTevColor GetResMatTevColor() {
+                u8* dl = NULL;
+                if (ref().m_offToDisplayLists != 0) {
+                    dl = (u8*)ptr() + ref().m_offToDisplayLists;
+                }
+                return ResMatTevColor(dl + 0x20);
+            }
         };
     } // namespace g3d
 } // namespace nw4r
