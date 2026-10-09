@@ -104,22 +104,20 @@ static inline int grFzeroCarNearSound(u8 type) {
 // Distance of the car from the origin of its matrix (HYPOTHESIS: the camera/ring centre), zero when it is there.
 static inline float grFzeroCarDistance(grCalcWorldCallBack* callback) {
     Matrix* mtx = &callback->m_nodeCallbackDatas[0].m_matrix;
-    float x = mtx->m[0][3];
-    float z = mtx->m[2][3];
-    float y = mtx->m[1][3];
+    Vec3f pos(mtx->m[0][3], mtx->m[1][3], mtx->m[2][3]);
     float distance;
     bool atOrigin = false;
-    if (fzeroIsNearZero(x) && fzeroIsNearZero(y) && fzeroIsNearZero(z)) {
+    if (fzeroIsNearZero(pos.m_x) && fzeroIsNearZero(pos.m_y) && fzeroIsNearZero(pos.m_z)) {
         atOrigin = true;
     }
     if (atOrigin == true) {
         distance = 0.0f;
     } else {
-        distance = z * z + x * x + y * y;
-        if ((float)fabs(distance) > 1.17549435e-38f) {
-            distance = distance * rsqrtf(distance);
-        } else {
+        distance = pos.m_z * pos.m_z + (pos.m_x * pos.m_x + pos.m_y * pos.m_y);
+        if ((float)fabs(distance) <= 1.17549435e-38f) {
             distance = 0.0f;
+        } else {
+            distance = distance * rsqrtf(distance);
         }
     }
     return distance;
@@ -156,21 +154,27 @@ void grFzeroCar::updateActive(float deltaFrame) {
         grCalcWorldCallBack* callback = &m_calcWorldCallBack;
         if (callback != NULL) {
             float distance = grFzeroCarDistance(callback);
-            if (distance <= 2048.0f) {
-                setAttack();
-            } else {
+            if (distance > 2048.0f) {
                 if (m_attackEnabled == 1) {
                     disableAttack(0);
                 }
                 m_attackEnabled = 0;
+            } else {
+                setAttack();
             }
             if (m_seHandleNear == -1) {
                 u8 scene = *m_sceneWork;
-                bool close = scene != 2 && scene != 1;
+                bool close = true;
+                if (scene == 1) {
+                    close = false;
+                }
+                if (scene == 2) {
+                    close = false;
+                }
                 if (scene == 3 && *m_stateWork == 0) {
                     close = false;
                 }
-                if (close) {
+                if (close == true) {
                     callback = &m_calcWorldCallBack;
                     if (callback == NULL) {
                         return;
@@ -224,7 +228,7 @@ void grFzeroCar::updateCallBack(float deltaFrame) {
                     same = true;
                 }
                 if (same == true && deltaFrame != 0.0f) {
-                    if (m_isVisible) {
+                    if (m_isVisible == true) {
                         setVisibility(0);
                     }
                 } else if (!m_isVisible) {
