@@ -46,13 +46,23 @@ static bool peachIsWide() {
 }
 
 void ftPeachStatusUniqProcessFinal::initStatus(soModuleAccesser* accesser) {
-    soWorkManageModule& work = accesser->getWorkManageModule();
-    const float minAngle = soValueAccesser::getConstantFloat(accesser, 0xFBE, 0);
-    const float maxAngle = soValueAccesser::getConstantFloat(accesser, 0xFBF, 0);
-    work.setFloat((maxAngle - minAngle) * randf() + minAngle, 0x21000004);
-    work.setFloat((maxAngle - minAngle) * randf() + minAngle, 0x21000006);
-    work.setFloat(soValueAccesser::getConstantFloat(accesser, 0xFBD, 0), 0x21000005);
-    work.setInt(soValueAccesser::getConstantInt(accesser, 0x5DC3, 0), 0x20000002);
+    const float firstMinAngle = soValueAccesser::getConstantFloat(accesser, 0xFBE, 0);
+    const float firstMaxAngle = soValueAccesser::getConstantFloat(accesser, 0xFBF, 0);
+    const float firstRandom = randf();
+    const float firstAngle = (firstMaxAngle - firstMinAngle) * firstRandom + firstMinAngle;
+    accesser->getWorkManageModule().setFloat(firstAngle, 0x21000004);
+
+    const float centerAngle = soValueAccesser::getConstantFloat(accesser, 0xFBD, 0);
+    accesser->getWorkManageModule().setFloat(centerAngle, 0x21000005);
+
+    const float secondMinAngle = soValueAccesser::getConstantFloat(accesser, 0xFBE, 0);
+    const float secondMaxAngle = soValueAccesser::getConstantFloat(accesser, 0xFBF, 0);
+    const float secondRandom = randf();
+    const float secondAngle = (secondMaxAngle - secondMinAngle) * secondRandom + secondMinAngle;
+    accesser->getWorkManageModule().setFloat(secondAngle, 0x21000006);
+
+    const int itemCount = soValueAccesser::getConstantInt(accesser, 0x5DC3, 0);
+    accesser->getWorkManageModule().setInt(itemCount, 0x20000002);
 
     createInfo(accesser);
     peachComboSetMode(accesser, 0);
@@ -62,7 +72,7 @@ void ftPeachStatusUniqProcessFinal::initStatus(soModuleAccesser* accesser) {
     rotation.m_x = rotation.m_y = rotation.m_z = 0.0f;
     const int effectHandle = accesser->getEffectModule().req(static_cast<EfID>(0xED000A), &offset, &rotation, 1.0f, 0, -1);
     peachComboSetMode(accesser, 1);
-    work.setInt(effectHandle, 0x10000042);
+    accesser->getWorkManageModule().setInt(effectHandle, 0x10000042);
     accesser->getVisibilityModule().setStatusDefault(0, 0xFF, true);
     ftPeach* peach = dynamic_cast<ftPeach*>(&accesser->getStageObject());
     if (peach != NULL) peach->addCallback();
@@ -87,7 +97,8 @@ void ftPeachStatusUniqProcessFinal::execStatus(soModuleAccesser* accesser) {
                 accesser->getPostureModule().getRotYLr(), Item_Food, 0x1C,
                 accesser->getStageObject().m_taskId, NULL, 0, 0xFFFF, 0, 0xFFFF);
             if (item != NULL && Stage::getInstance() != NULL) {
-                item->appear(&position, 0, 0.0f);
+                Vec3f appearPosition = position;
+                item->appear(&appearPosition, 0, 0.0f);
                 work.decInt(0x20000002);
                 work.setInt(soValueAccesser::getConstantInt(accesser, 0x5DC4, 0), 0x20000003);
             }
@@ -119,7 +130,9 @@ void ftPeachStatusUniqProcessFinal::setOutAction(soModuleAccesser* accesser) {
 bool ftPeachStatusUniqProcessFinal::createInfo(soModuleAccesser* accesser) {
     soWorkManageModule& work = accesser->getWorkManageModule();
     if (work.getInt(0x10000041) != 0) destroyInfo(accesser);
-    const int resourceId = static_cast<ftResourceIdAccesserImpl*>(accesser->getResourceModule().getResourceIdAccesser())->getFinalResId();
+    ftResourceIdAccesserImpl& resourceIdAccesser =
+        dynamic_cast<ftResourceIdAccesserImpl&>(*accesser->getResourceModule().getResourceIdAccesser());
+    const int resourceId = resourceIdAccesser.getFinalResId();
     void* data = accesser->getResourceModule().getFile(resourceId, ARCNodeType(0), -1);
     if (data == NULL) return false;
     IfPeachFinalTask* task = IfPeachFinalTask::create(data, Heaps::HeapType(0x1F),
@@ -135,9 +148,11 @@ void ftPeachStatusUniqProcessFinal::destroyInfo(soModuleAccesser* accesser) {
     const int taskId = work.getInt(0x10000041);
     if (taskId != 0) {
         gfTask* task = gfTaskScheduler::getInstance()->getTaskById(gfTask::Category_Info, taskId);
-        if (task != NULL) task->exit();
+        if (task != NULL) {
+            task->exit();
+            peachComboClear(accesser);
+        }
+        work.setInt(0, 0x10000041);
     }
-    peachComboClear(accesser);
-    work.setInt(0, 0x10000041);
     work.setInt(0, 0x10000042);
 }

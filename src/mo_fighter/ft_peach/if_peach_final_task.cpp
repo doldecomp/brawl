@@ -25,6 +25,18 @@
 
 extern nw4r::g3d::ScnGroup* fn_801AB6CC(MEMAllocator*, u32*, u32);
 
+struct PeachFinalModelData {
+    const char* name;
+    u8 firstIndex;
+    u8 endIndex;
+    u8 nodeIndex;
+    u8 padding;
+};
+
+static const PeachFinalModelData s_peachFinalModelData[] = {
+    { "InfWeapon0013_TopN", 0, 0, 0x80, 0 }
+};
+
 IfPeachFinalTask::IfPeachFinalTask(void* resourceData, u32 fighterTaskId)
     : gfTask("IfPeachFinal", Category_Info, 14, 6, true), m_resource(resourceData), unk44(-1),
       m_group(NULL), m_model(NULL), m_soundHandle(-1), m_fighterTaskId(fighterTaskId),
@@ -43,18 +55,31 @@ void IfPeachFinalTask::initProc(nw4r::g3d::ResFile* resource, void* group, s32 h
     initWork();
     createModel(resource, heap, priorityOffset);
     m_group = group;
-    nw4r::g3d::ScnObj* model = reinterpret_cast<nw4r::g3d::ScnObj*>(m_model->getSceneModel());
-    reinterpret_cast<nw4r::g3d::ScnGroup*>(m_group)->Insert(reinterpret_cast<nw4r::g3d::ScnGroup*>(m_group)->sceneItemsCount, model);
     g_IfMngr->addGame2DObj(reinterpret_cast<nw4r::g3d::ScnObj*>(m_group));
     m_registered = true;
+    nw4r::g3d::ScnObj* model = reinterpret_cast<nw4r::g3d::ScnObj*>(m_model->getSceneModel());
+    reinterpret_cast<nw4r::g3d::ScnGroup*>(m_group)->Insert(reinterpret_cast<nw4r::g3d::ScnGroup*>(m_group)->sceneItemsCount, model);
     m_soundHandle = g_sndSystem->playSE(SndID(0x1B4A), -1, 0, 0, -1);
 }
 
-void IfPeachFinalTask::initWork() { m_group = NULL; m_model = NULL; }
+void IfPeachFinalTask::initWork() {
+    m_group = NULL;
+    for (int i = 0; i < 1; ++i) (&m_model)[i] = NULL;
+}
 
 void IfPeachFinalTask::createModel(nw4r::g3d::ResFile* resource, s32 heap, bool priorityOffset) {
-    m_model = MuObject::create(resource, "InfWeapon0013_TopN", 0x80 + (priorityOffset ? 1 : 0), NULL, Heaps::HeapType(heap));
-    m_model->m_modelAnim->setUpdateRate(0.0f);
+    for (int dataIndex = 0; dataIndex < 1; ++dataIndex) {
+        const PeachFinalModelData& data = s_peachFinalModelData[dataIndex];
+        int modelCount = 1;
+        if (data.firstIndex < data.endIndex) modelCount = data.endIndex - data.firstIndex;
+        for (int modelIndex = 0; modelIndex < modelCount; ++modelIndex) {
+            const int slot = data.firstIndex + modelIndex;
+            MuObject* model = MuObject::create(resource, data.name,
+                data.nodeIndex + (priorityOffset ? 1 : 0), NULL, Heaps::HeapType(heap));
+            (&m_model)[slot] = model;
+            model->m_modelAnim->setUpdateRate(0.0f);
+        }
+    }
 }
 
 void IfPeachFinalTask::destroyModel() {
@@ -72,7 +97,10 @@ void IfPeachFinalTask::setAction(int action) {
 }
 
 void IfPeachFinalTask::setRate(float rate) {
-    m_model->m_modelAnim->setUpdateRate(rate);
+    for (int i = 0; i < 1; ++i) {
+        MuObject* model = (&m_model)[i];
+        if (model != NULL) model->m_modelAnim->setUpdateRate(rate);
+    }
 }
 
 void IfPeachFinalTask::setVisibilityWhole(bool visible) {
@@ -80,22 +108,27 @@ void IfPeachFinalTask::setVisibilityWhole(bool visible) {
         g_IfMngr->addGame2DObj(reinterpret_cast<nw4r::g3d::ScnObj*>(m_group));
         m_registered = true;
     } else if (!visible && m_registered) {
-        g_IfMngr->removeGame2DObj(reinterpret_cast<nw4r::g3d::ScnObj*>(m_group));
+        if (g_IfMngr->m_game2DGroup != NULL) {
+            g_IfMngr->removeGame2DObj(reinterpret_cast<nw4r::g3d::ScnObj*>(m_group));
+        }
         m_registered = false;
     }
 }
 
 void IfPeachFinalTask::processFixPosition() {
-    soSlow* slow = soSlow::getInstance();
     // HYPOTHESIS: native reads the global slow-rate multiplier from soSlow +0x44.
-    float rate = *reinterpret_cast<float*>(reinterpret_cast<u8*>(slow) + 0x44);
+    float rate = *reinterpret_cast<float*>(reinterpret_cast<u8*>(soSlow::getInstance()) + 0x44);
     rate *= gfSlowManager::getQuickRate();
+    float fighterSlowRate = 1.0f;
     gfTask* fighterTask = gfTaskScheduler::getInstance()->getTaskById(gfTask::Category_Fighter, m_fighterTaskId);
     ftPeach* peach = dynamic_cast<ftPeach*>(fighterTask);
-    if (peach != NULL) rate *= soExternalValueAccesser::getSlowRate(peach);
+    if (peach != NULL) fighterSlowRate = soExternalValueAccesser::getSlowRate(peach);
+    rate *= fighterSlowRate;
     setRate(rate);
-    if (slow->isAdjust() && m_actionActive && m_model->isNodeAnimFinished()) {
-        if (peach != NULL) peach->endFinalRequest();
+    if (soSlow::getInstance()->isAdjust() == true && m_actionActive == true && m_model->isNodeAnimFinished() == true) {
+        gfTask* fighter = gfTaskScheduler::getInstance()->getTaskById(gfTask::Category_Fighter, m_fighterTaskId);
+        ftPeach* finalFighter = dynamic_cast<ftPeach*>(fighter);
+        if (finalFighter != NULL) finalFighter->endFinalRequest();
         exit();
     }
 }
