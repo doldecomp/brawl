@@ -1,7 +1,6 @@
 #pragma once
 
-// Supersedes include/lib/BrawlHeaders/Brawl/Include/it/it_manager.h (shadows it via -I include).
-// Adds itManager::isCreatableItem, which the BrawlHeaders submodule lacks. Keep in sync.
+// Local shadow of BrawlHeaders' it/it_manager.h: the original plus the two queries the fighter manager uses for Final Smash availability.
 
 #include <StaticAssert.h>
 #include <it/it_archive.h>
@@ -84,16 +83,20 @@ public:
                          int texResIndex = 0, int texResId = 0xffff);
     BaseItem* createItem(itKind kind, u32 variation = 0, int createOwnerTaskId = -1, soResourceModule* resourceModule = NULL,
                          u8 groupNo = 0, int brresId = 0xffff, int texResIndex = 0, int texResId = 0xffff);
-    BaseItem* createBaseItem(Vec3f* safePos, Vec3f pos, float lr, itKind kind, u32 variation, int createOwnerTaskId, int ownerTaskId, soResourceModule*, u8 groupNo, int brresId, int texResIndex, int texResId, int teamNo);
+    BaseItem* createBaseItem(Vec3f* safePos, Vec3f* pos, float lr, itKind kind, u32 variation, int createOwnerTaskId, int ownerTaskId, soResourceModule*, u8 groupNo, int brresId, int texResIndex, int texResId, int teamNo);
     BaseItem* createItemInstance(itCreate* create);
     int createMoney(char* unk1, Vec3f *pos, Vec2f *unk2, u32 amount, u32 unk4, u32 unk5);
     u32 getItemNum(itKind kind);
     u32 getItemNum(itKind kind, int variation, int taskId, int);
     BaseItem* getItemFromInstanceId(int instanceId);
-    bool isCreatableItem(itKind kind, int variation); // Added locally: sora_melee 0x2A5B84
+    bool isCreatableItem(itKind kind, int variation); // Added locally: sora_melee 0x2A5B84 (st_heal)
     void removeItem(BaseItem*);
+    void removeItem1(int taskId); // HYPOTHESIS: removes the item with this task id (R.O.B.'s gyro on deactivation)
     bool preloadAssist(itKind, int variation = 0); // custom parameter
 
+
+    bool isExclusiveSpecialItem(int unk1, bool unk2);
+    bool isItemSwitch(int itemKind); // is the item enabled in the item switch
 
     static itManager* getInstance();
 };
