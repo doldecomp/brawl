@@ -218,10 +218,8 @@ void grFzeroCar::updateCallBack(float deltaFrame) {
                 calcWorldCallBack->m_nodeCallbackDatas[0].m_matrix = *mtx;
                 Matrix* node = &calcWorldCallBack->m_nodeCallbackDatas[0].m_matrix;
                 Vec3f pos(node->m[0][3], node->m[1][3], node->m[2][3]);
-                Vec3f subResult;
-                Vec3fSub(&subResult, &pos, &m_carData->m_pos);
                 Vec3f diff;
-                diff = subResult;
+                diff = pos - m_carData->m_pos;
                 if (fzeroIsNearZero(diff.m_x) && fzeroIsNearZero(diff.m_y) && fzeroIsNearZero(diff.m_z)) {
                     same = true;
                 }

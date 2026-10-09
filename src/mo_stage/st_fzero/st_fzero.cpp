@@ -541,9 +541,8 @@ void stFzero::updateFloor(float deltaFrame) {
 
     Vec3f a(mtx(22)->m[0][3], mtx(22)->m[1][3], 0.0f);
     Vec3f b(mtx(23)->m[0][3], mtx(23)->m[1][3], 0.0f);
-    Vec3f subResult;
-    Vec3fSub(&subResult, &b, &a);
-    Vec3f diff = subResult;
+    Vec3f diff;
+    diff = b - a;
     bool same = false;
     if (fzeroIsNearZero(diff.m_x) && fzeroIsNearZero(diff.m_y) && fzeroIsNearZero(diff.m_z)) {
         same = true;
