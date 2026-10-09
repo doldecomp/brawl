@@ -63,7 +63,7 @@ __declspec(section ".data") s32 stHeal::data_loc_0 = 0;
 stClassInfoImpl<Stages::Heal, stHeal> stHeal::bss_loc_24;
 
 stHeal* stHeal::create() {
-    return new (Heaps::StageInstance) stHeal;
+    return new (Heaps::StageInstance) stHeal("stHeal");
 }
 
 stHeal::~stHeal() {

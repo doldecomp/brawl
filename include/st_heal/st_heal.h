@@ -43,7 +43,7 @@ class stHeal : public stMelee {
     int m_state;                  // 0x2B0
 
 public:
-    stHeal() : stMelee("stHeal", Stages::Heal) {
+    stHeal(const char* name) : stMelee(name, Stages::Heal) {
         m_isWarped = false;
         m_timer = data_loc_0;
         m_state = 0;
