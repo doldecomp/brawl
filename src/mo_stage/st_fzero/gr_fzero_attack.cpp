@@ -260,6 +260,16 @@ void grFzeroAttack::updateYakumonoFloor(float deltaFrame) {
     }
 }
 
+// Copies the translation of the wall matrix.
+static inline void fzeroWallPosition(Matrix* mtx, Vec3f* out) {
+    float x = mtx[39].m[0][3];
+    float y = mtx[39].m[1][3];
+    float z = mtx[39].m[2][3];
+    out->m_x = x;
+    out->m_y = y;
+    out->m_z = z;
+}
+
 // The hit area of the wall follows the stage's "wall_col_move" matrix while the wall is there.
 void grFzeroAttack::updateYakumonoWall(float deltaFrame) {
     Matrix* mtx = m_mtxGimmickWork;
@@ -275,12 +285,12 @@ void grFzeroAttack::updateYakumonoWall(float deltaFrame) {
     case 1:
         if (*m_stateWallWork == 7) {
             setAttack();
-            m_pos = m_mtxGimmickWork[39].getPosition();
+            fzeroWallPosition(m_mtxGimmickWork, &m_pos);
             m_state = 3;
         }
         break;
     case 3:
-        m_pos = mtx[39].getPosition();
+        fzeroWallPosition(mtx, &m_pos);
         if (*m_stateWallWork != 7) {
             if (m_attackEnabled == 1) {
                 disableAttack(0);
@@ -359,9 +369,8 @@ void grFzeroAttack::setAttackWall() {
     offset.m_x = 0.0f;
     offset.m_y = -100.0f;
     offset.m_z = 0.0f;
-    float one = 1.0f;
 
-    setAttackGimmickDetails(&attack, 5.0f, one, one, one,
+    setAttackGimmickDetails(&attack, 5.0f, 1.0f, 1.0f, 1.0f,
         10, &offset, 0, 100, 0, 80, 0,
         0x3FF, 7, false, 15,
         soCollisionAttackData::Attribute_Normal, soCollisionAttackData::Sound_Level_Large,
@@ -369,7 +378,7 @@ void grFzeroAttack::setAttackWall() {
         false, false, false, false, false, false, 0, 60,
         false, false, false, soCollisionAttackData::Lr_Check_Forward,
         false, false, false, false, false, soCollisionAttackData::Region_None, true);
-    m_yakumono->setLr(one);
+    m_yakumono->setLr(1.0f);
     m_yakumono->setAttack(0, 0, &attack);
     m_attackEnabled = 1;
 }
