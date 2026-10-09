@@ -19,8 +19,14 @@ extern int lbl_8040ABD8[];
 
 // Stand-in for nw4r::g3d::G3dObj::DynamicCast<ScnMdl>(): the type tag is passed through a stack slot.
 static inline nw4r::g3d::ScnMdl* ykDynamicCastScnMdl(nw4r::g3d::ScnMdl* obj) {
-    int* typeObj = lbl_8040ABD8;
-    return (obj != NULL && obj->IsDerivedFrom((int*)&typeObj)) ? obj : NULL;
+    bool isMdl = false;
+    if (obj != NULL) {
+        int* typeObj = lbl_8040ABD8;
+        if (obj->IsDerivedFrom((int*)&typeObj)) {
+            isMdl = true;
+        }
+    }
+    return isMdl ? obj : NULL;
 }
 
 template <class TAttackConfig>

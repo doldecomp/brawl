@@ -202,12 +202,27 @@ public:
 };
 static_assert(sizeof(soCollisionAttackModuleImpl) == 160, "Class is wrong size!");
 
+#ifdef YK_STAGE_INLINE
+template <u32 N>
+struct soCollisionAbsoluteArray {
+    typedef soArrayVector<soCollisionAttackAbsolute, N> Type;
+};
+template <>
+struct soCollisionAbsoluteArray<0> {
+    typedef soArrayNull<soCollisionAttackAbsolute> Type;
+};
+#endif
+
 template <soCollision::Category TCategory, u32 TNumParts, u32 TNumAbsolutes, class TCollisionAttackModule, u32 TNumGroups, bool TBool1, bool TBool2>
 class soCollisionAttackModuleBuildConfig {
 public: // the stage-side builder (ykNoHitNormal) reaches the members through soCollisionAttackModuleBuilder::getModule()
     soArrayVector<soCollisionAttackPart, TNumParts> m_attackPartArrayVector;
     soArrayVector<soCollisionGroup, TNumGroups> m_collisionGroupArrayVector;
+#ifdef YK_STAGE_INLINE // HYPOTHESIS: the stage RELs' zero-absolute configs hold an soArrayNull (its default element is a temporary of the call)
+    typename soCollisionAbsoluteArray<TNumAbsolutes>::Type m_attackAbsoluteArrayVector;
+#else
     soArrayVector<soCollisionAttackAbsolute, TNumAbsolutes> m_attackAbsoluteArrayVector;
+#endif
     TCollisionAttackModule m_attackModule;
 public:
     soCollisionAttackModuleBuildConfig(soModuleAccesser* moduleAccesser,
@@ -216,7 +231,11 @@ public:
                                        soEventObserverRegistrationDesc* registrationDesc) :
                                        m_attackPartArrayVector(TNumParts, soCollisionAttackPart(TCategory, TBool1), 0),
                                        m_collisionGroupArrayVector(TNumGroups, 0),
+#ifdef YK_STAGE_INLINE
+                                       m_attackAbsoluteArrayVector(TNumAbsolutes, soCollisionAttackAbsolute(), 0),
+#else
                                        m_attackAbsoluteArrayVector(TNumAbsolutes, 0),
+#endif
                                        m_attackModule(moduleAccesser, taskId, taskCategory, &m_attackPartArrayVector, &m_collisionGroupArrayVector, &m_attackAbsoluteArrayVector, registrationDesc, TBool2) {};
 
 };

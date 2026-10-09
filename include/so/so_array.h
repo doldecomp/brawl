@@ -873,11 +873,15 @@ public:
     soArrayVector(s32 size, s32 = 0) : m_topIndex(0), m_lastIndex(0), m_size(size), m_isFull(false) {
         soArrayVectorCalculator::postInitialize(*this, size, C);
     }
+#ifdef YK_STAGE_INLINE
+    soArrayVector(s32 size, const T& element, s32) : m_topIndex(0), m_lastIndex(0), m_size(0), m_isFull(false) {
+#else
     soArrayVector(s32 size, const T& element, s32) {
         m_topIndex = 0;
         m_lastIndex = 0;
         m_size = 0;
         m_isFull = false;
+#endif
         size = soArrayVectorCalculator::resize(*this, size, this->isEmpty(), this->isFull(), this->capacity(), this->getTopIndex(), this->getLastIndex());
 #ifdef YK_STAGE_INLINE
         for (s32 i = 0; i < size; i++) {
