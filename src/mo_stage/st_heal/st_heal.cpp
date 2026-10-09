@@ -35,6 +35,12 @@ namespace {
     const bss_loc_8_t bss_loc_10(1);
 }
 
+// MATCH-ONLY: gmPlayerCorpsInitData with the fighter kind as a plain byte (the original reads it with a byte load).
+struct stHealCorpsPlayer {
+    u8 m_characterKind;
+    u8 _01[0x13];
+};
+
 // Overlay on the parts of gmGlobalCorps the All-Star rest area reads (names are HYPOTHESIS).
 struct stHealCorps {
     u8 _00[0x1C];
@@ -44,7 +50,7 @@ struct stHealCorps {
     u8 m_stageNo;           // 0x1F: round number, selects the "Info_stgNN" sign
     u16 m_extraFigureId;    // 0x20
     u8 _22[2];
-    gmPlayerCorpsInitData m_players[0x24]; // 0x24
+    stHealCorpsPlayer m_players[0x24]; // 0x24
 };
 
 // TODO: If possible, use a pragma-free alternative that will allocate a
@@ -92,7 +98,7 @@ void stHeal::createObj() {
     for (int i = 0; i < 19; i++) {
         char nodeName[0x40];
         sprintf(nodeName, "Info_stg%02d", i + 1);
-        m_mainGround->setNodeVisibility(corps->m_stageNo == i, 0, nodeName, false, false);
+        m_mainGround->setNodeVisibility(i == corps->m_stageNo, 0, nodeName, false, false);
     }
     m_decoGround = grMadein::create(3, "", "", Heaps::StageInstance);
     addGround(m_decoGround);
@@ -167,22 +173,24 @@ void stHeal::update(float deltaFrame) {
         case 0xEA:
             m_timer = data_loc_CC;
             m_state = 0xEC;
-            return;
+            break;
         case 0xEC:
             m_timer = data_loc_D0;
             m_state = 0xED;
-            return;
+            break;
+        retryHearts:
+            m_timer = data_loc_D4;
+            m_state = 0xF1;
+            break;
         case 0xED:
         case 0xF1: {
             if (!itManager::getInstance()->isCreatableItem(Item_Heart, 1)) {
-                m_timer = data_loc_D4;
-                m_state = 0xF1;
-                return;
+                goto retryHearts;
             }
             for (int i = 0; i < 5; i++) {
                 u32 mask = 1 << i;
                 if (corps->m_heartMask & mask) {
-                    Matrix mtx;
+                    Matrix mtx(true);
                     if (m_mainGround->getNodeMatrix(&mtx, 0, m_heartNode[i])) {
                         BaseItem* item = itManager::getInstance()->createItem(Item_Heart, 1);
                         if (item != NULL) {
@@ -200,7 +208,7 @@ void stHeal::update(float deltaFrame) {
             PosSort sorted[36];
             for (int i = 0; i < 36; i++) {
                 sorted[i].m_index = i;
-                Matrix mtx;
+                Matrix mtx(true);
                 if (m_mainGround->getNodeMatrix(&mtx, 0, m_figureNode[i])) {
                     Vec3f pos = mtx.getPosition();
                     sorted[i].m_value = (int)(100.0f * pos.m_z);
@@ -213,15 +221,15 @@ void stHeal::update(float deltaFrame) {
                 sorted[sorted[i].m_index].m_value = i;
             }
             for (int i = 0; i < corps->m_figureCount; i++) {
-                Matrix mtx;
+                Matrix mtx(true);
                 if (m_mainGround->getNodeMatrix(&mtx, 0, m_figureNode[i])) {
-                    u16 figureId = stOperatorRule::exchangeGmCharacterKind2FigureId(corps->m_players[i].m_characterKind);
+                    u16 figureId = stOperatorRule::exchangeGmCharacterKind2FigureId((gmCharacterKind)corps->m_players[i].m_characterKind);
                     BaseItem* item = itManager::getInstance()->createItem(Item_Figure, figureId);
                     if (item != NULL) {
                         item->action(1, 1.0f);
                         Vec3f pos = mtx.getPosition();
                         OSReport("PutCorpsFigure%02d:%02d -> %02d  Pos(%f,%f,%f)\n", i, corps->m_players[i].m_characterKind,
-                                 (u16)stOperatorRule::exchangeGmCharacterKind2FigureId(corps->m_players[i].m_characterKind),
+                                 (u16)stOperatorRule::exchangeGmCharacterKind2FigureId((gmCharacterKind)corps->m_players[i].m_characterKind),
                                  pos.m_x, pos.m_y, pos.m_z);
                         pos.m_y += 1.0f;
                         item->warp(&pos);
@@ -231,7 +239,7 @@ void stHeal::update(float deltaFrame) {
                 }
             }
             if (corps->m_extraFigureId != 0) {
-                Matrix mtx;
+                Matrix mtx(true);
                 if (m_mainGround->getNodeMatrix(&mtx, 0, m_itemFigureNode)) {
                     BaseItem* item = itManager::getInstance()->createItem(Item_Figure, corps->m_extraFigureId);
                     if (item != NULL) {
@@ -242,12 +250,16 @@ void stHeal::update(float deltaFrame) {
                     }
                 }
             }
-            Matrix warpMtx;
+            Matrix warpMtx(true);
             m_mainGround->getNodeMatrix(&warpMtx, 0, m_warpNode);
             Vec3f warpPos = warpMtx.getPosition();
             m_warpZone->setPos(&warpPos);
-            goto warpCheck;
+            goto checkWarp;
         }
+        notWarped:
+            m_timer = data_loc_D8;
+            m_state = 0x19A;
+            break;
         case 0x19A:
             for (int i = 0; i < 5; i++) {
                 u32 mask = 1 << i;
@@ -259,17 +271,20 @@ void stHeal::update(float deltaFrame) {
             }
             m_isWarped |= m_warpZone->m_playerChecks[0];
             m_isWarped |= m_warpZone->m_playerChecks[1];
-        warpCheck:
-            if (m_isWarped) {
-                g_sndSystem->playSE(snd_se_AllStar_Heal_Warp, 0, 0x10000, 0, -1);
-                GXColor black = {0, 0, 0, 0xFF};
-                efScreen::getInstance()->requestFill(1.0f /* HYPOTHESIS */, 7, 0, &black);
-                m_timer = data_loc_DC;
-                m_state = 0x1C5;
-            } else {
-                m_timer = data_loc_D8;
-                m_state = 0x19A;
+        checkWarp:
+            if (!m_isWarped) {
+                goto notWarped;
             }
+            g_sndSystem->playSE(snd_se_AllStar_Heal_Warp, 0, 0x10000, 0, -1);
+            GXColor black;
+            black.b = 0;
+            black.g = 0;
+            black.r = 0;
+            black.a = 0xFF;
+            GXColor fillColor = black;
+            efScreen::getInstance()->requestFill(6.0f, 7, 0, &fillColor);
+            m_timer = data_loc_DC;
+            m_state = 0x1C5;
             break;
         default:
             break;
