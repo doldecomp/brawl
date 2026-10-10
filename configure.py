@@ -1213,7 +1213,13 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_stage/st_gw/gr_gw_scene.cpp"),
+            Object(Matching, "mo_stage/st_gw/gr_gw_scene_chef.cpp"),
+            Object(Matching, "mo_stage/st_gw/gr_gw_scene_lion.cpp"),
+            Object(Matching, "mo_stage/st_gw/gr_gw_scene_oil.cpp"),
+            Object(Matching, "mo_stage/st_gw/gr_gw_fire_etc.cpp"),
+        ],
     },
     {
         "lib": "st_halberd",
