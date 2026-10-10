@@ -1269,7 +1269,12 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_stage/st_mansion/gr_mansion.cpp"),
+            Object(Matching, "mo_stage/st_mansion/gr_mansion_area_up.cpp"),
+            Object(Matching, "mo_stage/st_mansion/gr_mansion_area_down.cpp"),
+            Object(Matching, "mo_stage/st_mansion/gr_mansion_area_break.cpp"),
+        ],
     },
     {
         "lib": "st_mariopast",
