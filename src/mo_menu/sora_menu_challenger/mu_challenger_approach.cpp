@@ -29,7 +29,7 @@ muChallengerApproachTask::muChallengerApproachTask() : gfTask("ChallengerApproac
     sprintf(m_names[12], "MenChallenger0013_TopN");
     sprintf(m_names[13], "MenChallenger0014_TopN");
 
-    m_unk48 = NULL;
+    m_menuRoot = NULL;
     m_backgroundAnim = NULL;
     m_challengerAnim = NULL;
 
@@ -174,11 +174,11 @@ void muChallengerApproachTask::initialize(int param) {
 }
 
 void muChallengerApproachTask::release() {
-    m_unk48->exit();
-    m_unk48 = NULL;
+    m_menuRoot->exit();
+    m_menuRoot = NULL;
 
-    m_unk40.Release();
-    m_unk44.Release();
+    m_backgroundRes.Release();
+    m_challengerRes.Release();
 
     delete m_backgroundAnim;
     m_backgroundAnim = NULL;
@@ -188,17 +188,17 @@ void muChallengerApproachTask::release() {
 }
 
 void muChallengerApproachTask::createData(gfArchive* archive) {
-    m_unk40 = archive->getData(Data_Type_Model, 0, 0xFFFE);
-    m_unk44 = archive->getData(Data_Type_Model, 1, 0xFFFE);
+    m_backgroundRes = archive->getData(Data_Type_Model, 0, 0xFFFE);
+    m_challengerRes = archive->getData(Data_Type_Model, 1, 0xFFFE);
 
-    nw4r::g3d::ResFile::Init(&m_unk40);
-    nw4r::g3d::ResFile::Init(&m_unk44);
+    nw4r::g3d::ResFile::Init(&m_backgroundRes);
+    nw4r::g3d::ResFile::Init(&m_challengerRes);
 
-    m_unk48 = MenuRoot::create("ChallengerTask", 0x10, "/menu/defaultcamera/CharacterSelect.brres");
+    m_menuRoot = MenuRoot::create("ChallengerTask", 0x10, "/menu/defaultcamera/CharacterSelect.brres");
 
-    m_backgroundAnim = MuObject::create(&m_unk40, "MenChallenger0000_TopN", 1, 0, Heaps::MenuInstance);
-    m_challengerAnim = MuObject::create(&m_unk44, m_names[m_challengerIndex], 1, 0, Heaps::MenuInstance);
+    m_backgroundAnim = MuObject::create(&m_backgroundRes, "MenChallenger0000_TopN", 1, 0, Heaps::MenuInstance);
+    m_challengerAnim = MuObject::create(&m_challengerRes, m_names[m_challengerIndex], 1, 0, Heaps::MenuInstance);
 
-    m_unk48->scene->Insert(m_unk48->scene->sceneItemsCount, m_backgroundAnim->m_scnMdl);
-    m_unk48->scene->Insert(m_unk48->scene->sceneItemsCount, m_challengerAnim->m_scnMdl);
+    m_menuRoot->scene->Insert(m_menuRoot->scene->sceneItemsCount, m_backgroundAnim->m_scnMdl);
+    m_menuRoot->scene->Insert(m_menuRoot->scene->sceneItemsCount, m_challengerAnim->m_scnMdl);
 }

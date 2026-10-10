@@ -10,22 +10,14 @@
 
 class muChallengerApproachTask : public gfTask {
 public:
-	// The first 0x40 bytes are the gfTask base
-	
-	nw4r::g3d::ResFile m_unk40;	
-	nw4r::g3d::ResFile m_unk44;	
-
-	MenuRoot* m_unk48;
-
+	nw4r::g3d::ResFile m_backgroundRes;
+	nw4r::g3d::ResFile m_challengerRes;
+	MenuRoot* m_menuRoot;
 	MuObject* m_backgroundAnim;
 	MuObject* m_challengerAnim;
-
-	// Both of these are set in initialize, maybe used elsewhere
 	int m_challengerIndex;
 	int m_soundHandle;
-
 	char m_names[14][0x40];
-
 	int m_animState;
 	int m_frameCount;
 
