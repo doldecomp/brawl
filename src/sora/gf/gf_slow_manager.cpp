@@ -32,22 +32,22 @@ void gfSlowManager::update() {
     g_GameGlobal->updateGameFrame();
 }
 
-// NONMATCHING regswap
-u32 gfSlowManager::requestSlow(u8 rate) {
-    u8 res = 0xFF;
+gfSlowRequestId gfSlowManager::requestSlow(u8 rate) {
+    gfSlowRequestId res;
+    res.m_id = 0xFF;
     SlowRequest* reqs = s_gfSlowManager.m_reqs;
     SlowRequest* curr;
     for (u8 i = 0; i < NRequests; i++) {
         curr = &reqs[i];
         if (curr->m_state == StateInactive) {
-            res = i;
+            res.m_id = i;
             s_needsUpdate = true;
             curr->m_state = StateActive;
             curr->m_slowRate = rate;
             break;
         }
     }
-    return static_cast<u32>(res) << 24;
+    return res;
 }
 
 bool gfSlowManager::removeRequest(const u8& idx) {

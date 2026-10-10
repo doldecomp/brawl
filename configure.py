@@ -314,7 +314,7 @@ config.libs = [
             Object(NonMatching, "sora/gf/gf_task_scheduler.cpp"),
             Object(Matching, "sora/gf/gf_thread.cpp"),
             Object(Matching, "sora/gf/gf_shutdown_manager.cpp"),
-            Object(NonMatching, "sora/gf/gf_slow_manager.cpp"),
+            Object(Matching, "sora/gf/gf_slow_manager.cpp"),
             Object(Matching, "sora/gf/gf_system_callback.cpp"),
             Object(Matching, "sora/gf/gf_capture_util.cpp"),
             Object(Matching, "sora/gf/gf_monitor.cpp"),
