@@ -371,7 +371,7 @@ modules:
   hash: 1b1bd2e86ff46d41bad1263cde6bb056fe0bd448
   splits: config/RSBE01_02/rels/st_greenhill/splits.txt
   symbols: config/RSBE01_02/rels/st_greenhill/symbols.txt
-  force_active: [HomeBtnIcon]
+  force_active: [HomeBtnIcon, create__11stGreenhillFv]
 - object: files/module/st_pictchat.rel
   hash: 90899f1122cdf5c10f2aed3ad7718c094c59ebe3
   splits: config/RSBE01_02/rels/st_pictchat/splits.txt
