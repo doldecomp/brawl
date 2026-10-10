@@ -846,7 +846,9 @@ config.libs = [
         "mw_version": config.linker_version,
         "cflags": cflags_rel,
         "host": False,
-        "objects": [],
+        "objects": [
+            Object(Matching, "mo_menu/sora_menu_challenger/mu_challenger_approach.cpp"),
+        ],
     },
     {
         "lib": "sora_menu_collect_viewer",
