@@ -846,7 +846,7 @@ config.libs = [
         "cflags": cflags_rel,
         "host": False,
         "objects": [
-            Object(NonMatching, "mo_menu/sora_menu_challenger/mu_challenger_approach.cpp"),
+            Object(Matching, "mo_menu/sora_menu_challenger/mu_challenger_approach.cpp"),
         ],
     },
     {
