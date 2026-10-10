@@ -34,19 +34,24 @@ void cmMenuFixedController::storeDefault() {
     unk8 = true;
 }
 
-// NONMATCHING
 void cmMenuFixedController::init() {
-    m_cameraManager->m_cameras[0].unkCC = unkC;
-    m_cameraManager->m_cameras[0].unkFA.m_flag7 = true;
-    m_cameraManager->m_cameras[0].m_targetPos.m_x = unk10.m_x;
-    m_cameraManager->m_cameras[0].m_targetPos.m_y = unk10.m_y;
-    m_cameraManager->m_cameras[0].m_targetPos.m_z = unk10.m_z;
-    m_cameraManager->m_cameras[0].unkFA.m_flag1 = true;
-    m_cameraManager->m_cameras[0].unkD0 = unk1C;
-    m_cameraManager->m_cameras[0].m_rot.m_x = 0.0f;
-    m_cameraManager->m_cameras[0].m_rot.m_y = 0.0f;
-    m_cameraManager->m_cameras[0].m_rot.m_z = 0.0f;
-    m_cameraManager->m_cameras[0].unkFA.m_flag2 = true;
+    gfCamera* camera = &m_cameraManager->m_cameras[0];
+    camera->unkCC = unkC;
+    camera->unkFA.m_mask |= 0x80;
+    camera->m_targetPos = unk10;
+    camera->unkFA.m_mask |= 0x2;
+    camera->unkD0 = unk1C;
+    *camera->m_rot.xy() = Vec2f(0.0f, 0.0f);
+    camera->m_rot.m_z = 0.0f;
+    camera->unkFA.m_mask |= 0x40;
 }
 
-// TODO: cmMenuFixedController::update
+void cmMenuFixedController::update(float) {
+    gfCamera* camera = &m_cameraManager->m_cameras[0];
+    if (!unk8) {
+        storeDefault();
+    }
+    init();
+    camera->m_transformFlag.m_mask = 0xe1;
+    camera->calc();
+}

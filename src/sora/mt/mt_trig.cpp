@@ -39,26 +39,37 @@ float mtCosf(float angle) {
     return mtSinf(angle + HALF_PI);
 }
 
-// NONMATCHING regswaps - should simply interleave calls to mtCosf and mtSinf
+// Same as taylor(), but with x^2 precomputed by the caller
+static inline float taylorSq(float x, float xSq) {
+    const float C1 = 1.0f;            //  1
+    const float C2 = -0.16666657f;    // -1/3!
+    const float C3 = 0.0083330255f;   //  1/5!
+    const float C4 = -0.00019807414f; // -1/7!
+    const float C5 = 0.000002601887f; //  1/9!
+    return x * (C1 + (xSq * (C2 + (xSq * (C3 + (xSq * (C4 + (C5 * xSq))))))));
+}
+
 void mtSinCosf(float rad, float* sinOut, float* cosOut) {
-    s32 s0 = RAD_TO_FIXED_PT * rad;
-    s32 c0 = RAD_TO_FIXED_PT * (rad + HALF_PI);
+    float cosX, sinXSq, cosXSq, sinX; // Weird ordering but only thing that led to byte-match
 
-    s32 s1 = reduceRange(s0);
-    s32 c1 = reduceRange(c0);
+    s32 sinFixed = RAD_TO_FIXED_PT * rad;
+    s32 cosFixed = RAD_TO_FIXED_PT * (rad + HALF_PI);
 
-    s32 c2 = fitToRange(s1);
-    s32 s2 = fitToRange(c1);
+    s32 sinTheta = sinFixed + 0x400000;
+    sinTheta &= 0x00FFFFFF;
+    s32 cosTheta = cosFixed + 0x400000;
+    cosTheta &= 0x00FFFFFF;
 
-    float s3 = s2;
-    float c3 = c2;
+    if (sinTheta > 0x800000)
+        sinTheta = 0x1000000 - sinTheta;
+    if (cosTheta > 0x800000)
+        cosTheta = 0x1000000 - cosTheta;
 
-    float c4 = FIXED_PT_TO_RAD * c3;
-    float s4 = FIXED_PT_TO_RAD * s3;
+    sinX = FIXED_PT_TO_RAD * (sinTheta - 0x400000);
+    cosX = FIXED_PT_TO_RAD * (cosTheta - 0x400000);
+    sinXSq = sinX * sinX;
+    cosXSq = cosX * cosX;
 
-    float s5 = taylor(s4);
-    float c5 = taylor(c4);
-
-    *sinOut = s5;
-    *cosOut = c5;
+    *sinOut = taylorSq(sinX, sinXSq);
+    *cosOut = taylorSq(cosX, cosXSq);
 }
