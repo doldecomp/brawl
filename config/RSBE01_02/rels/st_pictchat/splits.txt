@@ -11,6 +11,24 @@ global_destructor_chain.c:
 	.dtors      start:0x00000000 end:0x00000008
 	.bss        start:0x00000000 end:0x00000004
 
+mo_stage/st_pictchat/st_pictchat.cpp:
+	.text       start:0x00000070 end:0x00002C5C
+	.ctors      start:0x00000000 end:0x00000004
+	.rodata     start:0x00000000 end:0x00000048
+	.data       start:0x00000000 end:0x00000C08
+	.bss        start:0x00000008 end:0x00000018
+
+mo_stage/st_pictchat/gr_pictchat.cpp:
+	.text       start:0x00002C5C end:0x000033FC
+	.rodata     start:0x00000048 end:0x00000080
+	.data       start:0x00000C08 end:0x000010B8
+
+mo_stage/st_pictchat/gr_pictchat_pict.cpp:
+	.text       start:0x000033FC end:0x0000D15C
+	.rodata     start:0x00000080 end:0x00000110
+	.data       start:0x000010B8 end:0x00003DB8
+	.bss        start:0x00000018 end:0x00000128
+
 mo_stage/mo_stage.cpp:
 	.text       start:0x0000F378 end:0x0000F414
 	.data       start:0x00005E48 end:0x00005E55
