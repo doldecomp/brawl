@@ -1,0 +1,34 @@
+{
+    ".text": [
+        [
+            "DLInsert",
+            "f9db1b31c20224e94cc5cec691f35e0851769743941a9ed098fd577a9e8b4816"
+        ],
+        [
+            "OSAllocFromHeap",
+            "e20644a3cbac917b6c574fb1f22e646057b84e667fe17763a4c1e28c5e65f66f"
+        ],
+        [
+            "OSFreeToHeap",
+            "a4985979b85d0de5813514968cb5f2929547e72a65048bef3b4dac1a31eb8836"
+        ],
+        [
+            "OSSetCurrentHeap",
+            "8bdd8cd80745733f555a3cf9132e54bd6b07b672f69733560cb57f337c8ba8a8"
+        ],
+        [
+            "OSInitAlloc",
+            "c3dc35506d03de997d65a0e6ba05be9c715c60547c9136906cac644182eb3058"
+        ],
+        [
+            "OSCreateHeap",
+            "8a6aec06c366a8f335d0fad411ec13b47bf36fb6780d39e3b293fb133f64c2ab"
+        ]
+    ],
+    ".sdata": [
+        [
+            "__OSCurrHeap",
+            "ad95131bc0b799c0b1af477fb14fcf26a6a9f76079e48bf090acb7e8367bfd0e"
+        ]
+    ]
+}

@@ -1,0 +1,38 @@
+{
+    ".text": [
+        [
+            "OSRegisterShutdownFunction",
+            "43565cec4395577ffc09a016be6a6d7f9bb8852c3391adce6384ce30a2596561"
+        ],
+        [
+            "__OSCallShutdownFunctions",
+            "fabe1d7c27bfe718392aa50711a97d3b5a8176b335728a37012c407b552fb712"
+        ],
+        [
+            "__OSShutdownDevices",
+            "61ac4ad16db19a6440d86aa9cc4e6fda12845cac7035584897da39400666f38c"
+        ],
+        [
+            "OSShutdownSystem",
+            "a439e588ec09dc8800f4732757f290ca8e3262e3732aa74eaff77517a3bfbec9"
+        ],
+        [
+            "OSReturnToMenu",
+            "762c3ddadace3406c7f129937b30e049136b9a0915327e7886a2c4d7cc22245b"
+        ],
+        [
+            "OSGetResetCode",
+            "701a71be50ec6e90bf165804309e351c5751d2608083322be28802f9bda6b46b"
+        ],
+        [
+            "OSResetSystem",
+            "8538e80d4bad2a34b36ace0b53e73ee54e7a81796a3906f3866f9496f129897b"
+        ]
+    ],
+    ".sbss": [
+        [
+            "ShutdownFunctionQueue",
+            "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+        ]
+    ]
+}

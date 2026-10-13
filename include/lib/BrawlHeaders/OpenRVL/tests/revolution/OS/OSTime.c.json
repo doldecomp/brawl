@@ -1,0 +1,42 @@
+{
+    ".text": [
+        [
+            "OSGetTime",
+            "33454680e35a0533c69ccfef1fbf684a36c489694a9053a0b012f7943dc214de"
+        ],
+        [
+            "OSGetTick",
+            "7836ce7cf2facfcda9d887183c84a835cd71b6de5b52dede3efb27d086a23294"
+        ],
+        [
+            "__OSGetSystemTime",
+            "19510767497ad4cb683a355795cb101c6463f6e8bc656867791880cbf90feeeb"
+        ],
+        [
+            "__OSTimeToSystemTime",
+            "3b324387a4789da5342c9f3f0bfa4e1a8e8d6ed3fdbf73d5a4b1b591d04d87ba"
+        ],
+        [
+            "GetDates",
+            "d15398398af77e3512a8b4edfb180a1979cbc880f41cfa281bf15adf07f550c9"
+        ],
+        [
+            "OSTicksToCalendarTime",
+            "939439ebcc282ccd28fab7a524c449ea768eb3ba5c5e0c072497c529415b524e"
+        ],
+        [
+            "OSCalendarTimeToTicks",
+            "dd3f166cf1128b510c0c1d46514bd3d065dea5d174a537ba8b91ccfd6028245a"
+        ]
+    ],
+    ".data": [
+        [
+            "YearDays",
+            "cfccb814107befbfadf8d3c33a6635ee499d68a7187b6c4ad231c4ad935e2dda"
+        ],
+        [
+            "LeapYearDays",
+            "e7ca51f9af3f824f8f5c56a12e71a161cc7d0fdbf4107a6ccf7d8fce92fe94e5"
+        ]
+    ]
+}

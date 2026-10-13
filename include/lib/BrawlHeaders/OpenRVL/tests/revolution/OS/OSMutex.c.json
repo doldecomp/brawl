@@ -1,0 +1,24 @@
+{
+    ".text": [
+        [
+            "OSInitMutex",
+            "eef51ed2c272e29aafd20c5caab408727dc14c2826065ea34633c45a46af39af"
+        ],
+        [
+            "OSLockMutex",
+            "68ee313f50795b760a91b7942cdb8e9f5d5feb41a1fb805c60eaa4b6da836d3d"
+        ],
+        [
+            "OSUnlockMutex",
+            "10df813e95b445e11322538ba05bd7c04a211242e5c6cdf217fcff0f50810c18"
+        ],
+        [
+            "__OSUnlockAllMutex",
+            "547137f61c9d1ce8c3908ad6db02d7202820794bcd93e7c03bafbdce74467b9b"
+        ],
+        [
+            "OSTryLockMutex",
+            "9b5d20d4a68cb21f90c038410175150cbeb974d3ca24419f4d8a97def2ce8841"
+        ]
+    ]
+}

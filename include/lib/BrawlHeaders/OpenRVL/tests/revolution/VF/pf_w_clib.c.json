@@ -1,0 +1,16 @@
+{
+    ".text": [
+        [
+            "VFipf_w_strlen",
+            "a1d6c1cbee39102596c50c04577f44ca838850bbd0b154ffd0a41987558d0693"
+        ],
+        [
+            "VFipf_w_strcpy",
+            "57d8237714fb8308ecdb7610a894fc6954969b70e0f44f6f4293abc9a34a761b"
+        ],
+        [
+            "VFipf_w_strncmp",
+            "a5b1111634e27cd1ecbb040206878abc334e8e0f3ee7ba851ce549d33dc121c8"
+        ]
+    ]
+}

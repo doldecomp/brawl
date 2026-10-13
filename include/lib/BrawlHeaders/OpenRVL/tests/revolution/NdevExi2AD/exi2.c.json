@@ -1,0 +1,28 @@
+{
+    ".text": [
+        [
+            "__EXI2Imm",
+            "ef0bec65688f20bcd48bf24620fbe8da3adccc1d29c465c42f378e81eeff1a25"
+        ],
+        [
+            "__DBEXIInit",
+            "2252d97a6964d1fddd0cc0661b93521dcc80c2c3bd9eccfb50759c621afcaeb7"
+        ],
+        [
+            "__DBEXIReadReg",
+            "74fe7cf6e5f0b43e49bfdfba442266d20ac21a5589689877dbe9641ab29696e6"
+        ],
+        [
+            "__DBEXIWriteReg",
+            "29454bb97dcb99e56ffc570f7116916622093eab56f99a40bd91ae35c261aa69"
+        ],
+        [
+            "__DBEXIReadRam",
+            "a89608ee7ded7db1a2893a574214dd82b1aa19e5ff74d81dcc90218083b7a276"
+        ],
+        [
+            "__DBEXIWriteRam",
+            "9203365ec3b06d96a2c660f94dca377f26e6ddeb686ad49dd55e486cdb84f0ad"
+        ]
+    ]
+}

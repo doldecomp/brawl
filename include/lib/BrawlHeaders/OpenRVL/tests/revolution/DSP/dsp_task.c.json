@@ -1,0 +1,50 @@
+{
+    ".text": [
+        [
+            "__DSPHandler",
+            "b6ab67014cbe7f5e7f4b04ae516260b85d5b322feafb9f88787a7877e83a5ed3"
+        ],
+        [
+            "__DSP_exec_task",
+            "4c8dcd02c33061074af4a62e57789ac3a9a9e36d37b91ab4fe963cad18786d85"
+        ],
+        [
+            "__DSP_boot_task",
+            "b2fa8cca89bd07e966cf1d46ebae5df73f75ef2538b23cfe105d824ace8bc934"
+        ],
+        [
+            "__DSP_insert_task",
+            "5960b3325df1a91b4abf0994d3e24f4728d9e6c1055ea5899a8c1891a8367af7"
+        ],
+        [
+            "__DSP_remove_task",
+            "9e1ea4762827db17167b0ff261f00712900d6c853fcaab4a2a9b0e9b4eb72bed"
+        ]
+    ],
+    ".sbss": [
+        [
+            "__DSP_rude_task_pending",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ],
+        [
+            "__DSP_rude_task",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ],
+        [
+            "__DSP_tmp_task",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ],
+        [
+            "__DSP_last_task",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ],
+        [
+            "__DSP_first_task",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ],
+        [
+            "__DSP_curr_task",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ]
+    ]
+}

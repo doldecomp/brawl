@@ -1,0 +1,18 @@
+{
+    ".text": [
+        [
+            "VFiPFCODE_Combine_Width",
+            "e075debf6ffae12a441c6660d1d4103c9db2fa8e6a5e2c7cdb93d79f72627a78"
+        ],
+        [
+            "VFiPFCODE_Divide_Width",
+            "97e8281487ad58582f9dc1fc74c015bb9a91a58e413943b761c394cb2554f4cc"
+        ]
+    ],
+    ".rodata": [
+        [
+            "VFipf_valid_fn_char",
+            "303b90d556e35b708c832d44ae630bfbc4da874b074b15917aec0385dd2d9d8c"
+        ]
+    ]
+}

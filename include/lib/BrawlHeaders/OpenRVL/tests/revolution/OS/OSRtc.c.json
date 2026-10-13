@@ -1,0 +1,47 @@
+{
+    ".text": [
+        [
+            "WriteSramCallback",
+            "17aba57018baaa6db5b2b2a125086177fc6018ac6fb06028713c014d5636c2d7"
+        ],
+        [
+            "__OSInitSram",
+            "d4f64d0ee69e1fbbdeb149b20168d75ef3273a86eb43a5e84b968c78c2e3a221"
+        ],
+        [
+            "UnlockSram",
+            "e1cb8e3b5c3e809d2f40248815063fb4bf8a11f7b3641da08077babacd239713"
+        ],
+        [
+            "__OSSyncSram",
+            "fd6bbd5911d7ff13de300366d6aa586b4705c2fbf4f295c26fdd6adc16c6cf62"
+        ],
+        [
+            "__OSReadROM",
+            "b505794f1c0e3ad043168e37c5b65731ff39ba2c6e74e0c7f842b3dd42abfd6f"
+        ],
+        [
+            "OSGetWirelessID",
+            "31cb49e21da138986b23c7b2fb3f955e36f56413a350296bcd319df6f67f06e1"
+        ],
+        [
+            "OSSetWirelessID",
+            "b986427563549f53c06cb45a5a7b5cdcbeb30df2bf9d0ab816c5d004055e4dd1"
+        ],
+        [
+            "__OSGetRTCFlags",
+            "2dd5b80ec10b39b94eb3561252092a56e1e9bb48fd52f25959f246982787e583"
+        ],
+        [
+            "__OSClearRTCFlags",
+            "cbd97c80fe5ad7d792ad5dec42d908c9609b465fdc0a68f695cdba2a49528236"
+        ]
+    ],
+    ".data": [],
+    ".bss": [
+        [
+            "Scb",
+            "4fea5e6a3ec5f5474a26d858bc77b6d7bd3ab864ea02d988683fdc648602b248"
+        ]
+    ]
+}

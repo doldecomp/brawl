@@ -1,0 +1,74 @@
+{
+    ".text": [
+        [
+            "PlayRecordAlarmCallback",
+            "9e68fe3f5332588f20ffa2bd2af8e1a19225ac532cb5bcfc3d70470b49b9253d"
+        ],
+        [
+            "PlayRecordCallback",
+            "302cd0b948e44bebdcd7c43ea7555a56a5a4de053f8946de0c84defca3d660dd"
+        ],
+        [
+            "__OSStartPlayRecord",
+            "b27d40a620ed2c4352813e7683738b1466af8e877c183a9b5aa0c83b690cb562"
+        ],
+        [
+            "__OSStopPlayRecord",
+            "5b694f6736d3f49c5e1005e39c4a65ca04f94a3bee911c788745cab1a669d797"
+        ]
+    ],
+    ".bss": [
+        [
+            "PlayRecord",
+            "38723a2e5e8a17aa7950dc008209944e898f69a7bd10a23c839d341e935fd5ca"
+        ],
+        [
+            "PlayRecordAlarm",
+            "17b0761f87b081d5cf10757ccc89f12be355c70e2e29df288b65b30710dcbcd1"
+        ],
+        [
+            "FileInfo",
+            "24045c10c12a89f4c11e3b88ea34558fcdf926a8c1008cd08cc33bc71407c774"
+        ],
+        [
+            "Block",
+            "d81bfb50e59a9abbe66f6ae0c6b45c7b9c0bc6eead2cf982118ac4d62b6ffeda"
+        ]
+    ],
+    ".sdata": [
+        [
+            "PlayRecordState",
+            "3b28a6c3766c6295adad976d349705ef49393fbfdebe4facb5862d2cdfa285d3"
+        ]
+    ],
+    ".sbss": [
+        [
+            "PlayRecordGet",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ],
+        [
+            "PlayRecordError",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ],
+        [
+            "PlayRecordTerminate",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ],
+        [
+            "PlayRecordTerminated",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ],
+        [
+            "PlayRecordRetry",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ],
+        [
+            "PlayRecordLastError",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ],
+        [
+            "PlayRecordLastCloseTime",
+            "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+        ]
+    ]
+}

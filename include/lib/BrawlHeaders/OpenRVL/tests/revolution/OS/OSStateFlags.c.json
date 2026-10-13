@@ -1,0 +1,12 @@
+{
+    ".text": [
+        [
+            "__OSWriteStateFlags",
+            "67c0edba30bea741a5d43155b446d3da421bbf1a0b6c823960fb4a4f3a68b16b"
+        ],
+        [
+            "__OSReadStateFlags",
+            "0ea2a5ef66c3c3a341177c320e07cc3ee50fa2e526b4859e8a4513222e2d1ee4"
+        ]
+    ]
+}

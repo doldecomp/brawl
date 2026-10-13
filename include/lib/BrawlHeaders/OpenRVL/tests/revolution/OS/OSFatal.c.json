@@ -1,0 +1,30 @@
+{
+    ".text": [
+        [
+            "ScreenReport",
+            "cfe20ab7c953bafba9d766b5d50998a3b82966b736803b6501e38874eca96401"
+        ],
+        [
+            "ConfigureVideo",
+            "0e17bdd440366554652e24fa2d72ee99d74a37f52421535a6eead29b11f3a3c1"
+        ],
+        [
+            "OSFatal",
+            "15988a7c83f21a2fa6a487fcf82e8f459bb4bf993ff6f96b96f43c26f828d1e3"
+        ],
+        [
+            "Halt",
+            "5ed1bb91f1fc7b8e762305b0c4cf2190883045a9dd7f34b421c2a8b71d61a632"
+        ]
+    ],
+    ".bss": [
+        [
+            "FatalContext",
+            "283de789c3f9ae6115e627ecb921b7b39bdaa1b82289eca5e60da0b76d07a502"
+        ],
+        [
+            "FatalParam",
+            "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b"
+        ]
+    ]
+}

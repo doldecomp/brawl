@@ -1,0 +1,34 @@
+{
+    ".sbss": [
+        [
+            "Debug_BBA",
+            "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+        ]
+    ],
+    ".init": [
+        [
+            "__check_pad3",
+            "c5dccf96d2085d9e7cf3949dfca8a1d2765c32f77f06223e67e1f81f1d504b5b"
+        ],
+        [
+            "__set_debug_bba",
+            "12ed71d1014a172283f7c9c5f36749b639063ea7d85fefdd5b837d633b1b73b3"
+        ],
+        [
+            "__get_debug_bba",
+            "4b667844052e7b2f6db1f7e5140b181a124c742b45c069b0cdc0f77fb3ee84e2"
+        ],
+        [
+            "__start",
+            "4787c675d1bb5b8fc1c8f86fe7b51f0d8c8d3f00b20184a3c1deb4a5f8d0eb79"
+        ],
+        [
+            "__init_registers",
+            "a738f32281a6f0725a9bcae739cc15f758fcdf8fd335156b80e23631b3d6027b"
+        ],
+        [
+            "__init_data",
+            "462712fc1db07f58c12305c8f1c82cf18989b7bd4d755970cb0367ed3cc7fd2d"
+        ]
+    ]
+}

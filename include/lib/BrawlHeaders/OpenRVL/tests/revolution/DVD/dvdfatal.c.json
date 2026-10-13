@@ -1,0 +1,26 @@
+{
+    ".text": [
+        [
+            "__DVDShowFatalMessage",
+            "60f1c1e713b4026355f5db172546498ace5c4680ea587b2a744c74f4a715d85a"
+        ],
+        [
+            "DVDSetAutoFatalMessaging",
+            "588df802dbe51b548e84724f0dc3765b14c278caac05bf4a19137f45f3cb5dec"
+        ],
+        [
+            "__DVDGetAutoFatalMessaging",
+            "a2da2ec78910954cd1de343211349769a56f5acd383489762fa01a83a80f211e"
+        ],
+        [
+            "__DVDPrintFatalMessage",
+            "54240e801bba26d2da5445f86a2aa28e40fc7c1d98ac81dc29e4ae498596b232"
+        ]
+    ],
+    ".rodata": [
+        [
+            "__DVDErrorMessage",
+            "3addfb141cd7c9c4c6543a82191a3707ac29c7a041217782e61d4d91c691aee8"
+        ]
+    ]
+}

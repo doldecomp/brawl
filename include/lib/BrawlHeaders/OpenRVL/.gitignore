@@ -1,0 +1,12 @@
+*.pyc
+__pycache__/
+
+tools/*.exe
+tools/*.dll
+tools/old/*.exe
+tools/old/*.dll
+tools/*.o
+tools/tester/include/baserom.dol
+tools/GC_WII_COMPILERS
+
+.vscode/

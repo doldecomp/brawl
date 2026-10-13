@@ -1,0 +1,22 @@
+{
+    ".text": [
+        [
+            "GXDrawCylinder",
+            "399966dfd2805f52212416f8921c89b88ed2bad96819000370933f219b44db84"
+        ],
+        [
+            "GXDrawSphere",
+            "03a25c98044bd734abd24e4936f5f6378ad054c63b7b2d43d528c36241298869"
+        ]
+    ],
+    ".bss": [
+        [
+            "vcd",
+            "a5645e7a3fa0866cde8842c4dab96567507c3d1a3c028b816bc63f6966367b70"
+        ],
+        [
+            "vat",
+            "1fe2373734955e60c172999142934b52e69ba7ab9039b3c18ea54082ba32afcd"
+        ]
+    ]
+}

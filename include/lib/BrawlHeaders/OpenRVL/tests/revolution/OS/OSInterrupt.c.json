@@ -1,0 +1,54 @@
+{
+    ".text": [
+        [
+            "OSDisableInterrupts",
+            "91253610f8caa4988f3df8595ccfc6e5eafaf0b6df1b302668555ab7d528b1bc"
+        ],
+        [
+            "OSEnableInterrupts",
+            "fc3bb9e8a3a33462577b4b59ca6d5e07c3a146205838d416cf9b11972894aed6"
+        ],
+        [
+            "OSRestoreInterrupts",
+            "54db610a580003e2db23e460425f4662f4f4e7a4da3ae6f89a632df9e52b427a"
+        ],
+        [
+            "__OSSetInterruptHandler",
+            "9217d7e02b52d30db56b8bd1bb8b7566081aff8efc43f6f9e2fa4944429d1c85"
+        ],
+        [
+            "__OSGetInterruptHandler",
+            "25765be01b05f1055ff95fc1797d182bc84d18aae6664b5042359e4320538966"
+        ],
+        [
+            "__OSInterruptInit",
+            "66366127db7add06289830e7eabd190a4268b86ecf65688a1924068bf53b5342"
+        ],
+        [
+            "SetInterruptMask",
+            "e5326a35c5e3acaa4b42a803a14f94f3390c13252da9396a713f09f71c5e8e51"
+        ],
+        [
+            "__OSMaskInterrupts",
+            "d266fa15531cbd0b898a48fd557a8067355aa7eafdff9c8d30d8b16a11e49ccc"
+        ],
+        [
+            "__OSUnmaskInterrupts",
+            "bfaa970a1851418c0aec28b9ec613cade68d972668a9ba150c8dd7d958dcd9b5"
+        ],
+        [
+            "__OSDispatchInterrupt",
+            "569ed657f59f346128c2b7b9aaeb75c7a94f9bbe891a4ee85ff215d52ff34601"
+        ],
+        [
+            "ExternalInterruptHandler",
+            "56a0645deae561ac89ef32c2d422a4714e029d8f0be12300b05a203b482a80c2"
+        ]
+    ],
+    ".data": [
+        [
+            "InterruptPrioTable",
+            "d9ff6f5630c570c2ce03b84c41e1549ae5b4c124125ec9ab00bf09e3270c859d"
+        ]
+    ]
+}
