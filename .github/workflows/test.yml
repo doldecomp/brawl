@@ -1,0 +1,17 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout open_rvl
+        uses: actions/checkout@v3
+      - name: Download compilers
+        run: |
+          curl -L -k https://cdn.discordapp.com/attachments/727918646525165659/917185027656286218/GC_WII_COMPILERS.zip --output GC_WII_COMPILERS.zip && mkdir "tools/GC_WII_COMPILERS" && tar -xvf GC_WII_COMPILERS.zip -C tools/GC_WII_COMPILERS
+      - name: Run tester
+        run: python3 tools/tester/tester.py --run=all

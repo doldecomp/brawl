@@ -1,0 +1,20 @@
+{
+    ".text": [
+        [
+            "OSInitMessageQueue",
+            "5b8753a744675ea002685b8b5d8f1c3d3b450861be5345fb7014601c48623c77"
+        ],
+        [
+            "OSSendMessage",
+            "68a3a7d128910ecce54acca5ddb57e60ff5205075b52e5032655d47fd104ab0a"
+        ],
+        [
+            "OSReceiveMessage",
+            "2e2344841ae489b333336bf2b7f6acb05c6acd02d3bb7f5196fe0e4961a7f30c"
+        ],
+        [
+            "OSJamMessage",
+            "4edb5bdae58967df153dc61f6bd19d6dfd9d804fcd3fd6bc492495dce216155f"
+        ]
+    ]
+}

@@ -1,0 +1,22 @@
+{
+    ".text": [
+        [
+            "__AIClockInit",
+            "5c1c385d30359e050d9abc8c8c451e3b1ea8bb3e44325fb7c1edcca552cfd27a"
+        ],
+        [
+            "__OSInitAudioSystem",
+            "7e33a01d48f6e0e9f289ae08b77270b0d2415ffcc2f28ebea2aef2c55a9e5ac1"
+        ],
+        [
+            "__OSStopAudioSystem",
+            "3828676aa0134de6a87407a45e89bac8b5214d5abd11137027bcb023b10dc1a8"
+        ]
+    ],
+    ".data": [
+        [
+            "DSPInitCode",
+            "5b873ee91f33b0884574b814d7f46d81e283394de91b8b2ea9073ac218dee350"
+        ]
+    ]
+}

@@ -1,0 +1,32 @@
+{
+    ".text": [
+        [
+            "__OSGetExecParams",
+            "cd38ae3fefd82cbe95061e92ec0cbecda9c626f08f0e32f5fbc15263a2350133"
+        ],
+        [
+            "__OSLaunchMenu",
+            "a64f69c997c13d115c4c3e582f25b3c38cc6650197755551dbc9113d2510a55a"
+        ],
+        [
+            "_ES_GetTicketViews",
+            "6e206db2bbe3e2c4b27e5a04f8cfaa4d402f128139117687ea27c82a718da8de"
+        ],
+        [
+            "_ES_LaunchTitle",
+            "d79c4ba5476997df2c6e795f06c7932b8e49419add2cb5f84b863a56d48e137f"
+        ]
+    ],
+    ".bss": [
+        [
+            "views",
+            "c91a0743fb643fb644a520b49e9f9f8ffaa1f371b33b6526ae4587c7d29e03ad"
+        ]
+    ],
+    ".sbss": [
+        [
+            "__OSInReboot",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ]
+    ]
+}

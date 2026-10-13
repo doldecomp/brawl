@@ -1,0 +1,32 @@
+{
+    ".text": [
+        [
+            "VFipf_toupper",
+            "15d687ce644721046f195825c6550d104ac83e4f0b4ec617cddf6e0324260b08"
+        ],
+        [
+            "VFipf_memcpy",
+            "0caffad17c290d73888715b2df305f8d04d555b564481d0a6efe190b2b759236"
+        ],
+        [
+            "VFipf_memset",
+            "aa4340ebe9b7a48ac181f96b32e1a100677550d0ccf56153f3c5e07e79e88133"
+        ],
+        [
+            "VFipf_strlen",
+            "1442e98d9466d24fea9533539c95ad914925131f59db188e4fdd928ef42688ad"
+        ],
+        [
+            "VFipf_strcpy",
+            "8380707ae68d1ead7c2912db6255c8fbc4cc5f9d51264bd3f1b24ee355b44ae1"
+        ],
+        [
+            "VFipf_strcmp",
+            "2743c41ee687944c26322a467e06d0eeefb338b7c1c17e2f1f3be68c0d6008db"
+        ],
+        [
+            "VFipf_strncmp",
+            "02c69cdba678090aec4cf4dac653beada74eb681097081743787bc2572b9fefd"
+        ]
+    ]
+}

@@ -1,0 +1,48 @@
+{
+    ".text": [
+        [
+            "DSPCheckMailToDSP",
+            "ae4fc63c6f48b4aa4780f7d72d0d4be5669f495137d0f85cb80aae48a2beee0c"
+        ],
+        [
+            "DSPCheckMailFromDSP",
+            "cf9ea172dbe050d433b32136a0bea65f7c4b6eb1f8aa8ac1f4b1b5ba0f444535"
+        ],
+        [
+            "DSPReadMailFromDSP",
+            "8fac338b1042c48fbcbee22d9cf85688aa8d490d1f6db49215e53912854a8e6f"
+        ],
+        [
+            "DSPSendMailToDSP",
+            "a2dec6876012061b2e98d37c9fec3da99f7ea1ca34ca9197be7486488e8c3f42"
+        ],
+        [
+            "DSPInit",
+            "79c8a233d7ee809c72edf7d153b058007cd8bd8116fd54bf675ecda0bf9538a2"
+        ],
+        [
+            "DSPCheckInit",
+            "f78779fa6642dbd2b4d4ae9f3fedc3eadacc658e46762d9b5183001b44bbfc30"
+        ],
+        [
+            "DSPAddTask",
+            "0ffa10d650b138644e15b69d5e99cb4ba8c8793efe9506dadc2333f35ab85e4e"
+        ],
+        [
+            "DSPAssertTask",
+            "25cc5af710109d2f2e9cab34efc7cfecbb6c2c796cd0b7f396bb64ccb6d58a6d"
+        ]
+    ],
+    ".sbss": [
+        [
+            "__DSP_init_flag",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ]
+    ],
+    ".sdata": [
+        [
+            "__DSPVersion",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ]
+    ]
+}

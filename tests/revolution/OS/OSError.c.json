@@ -1,0 +1,22 @@
+{
+    ".text": [
+        [
+            "OSPanic",
+            "b27e387accb99b7161d5d2953d5ecbf397e1b252bdb712cd91e90ecb161faff7"
+        ],
+        [
+            "OSSetErrorHandler",
+            "1afa9d6bcf135bebaa199b2ac830dedd753708fdfad3a3f7782c95d9b713829d"
+        ],
+        [
+            "__OSUnhandledException",
+            "2ee3427955bab10762e14bb716a9e308b00c430518b6f82703a60c5fdf8975e7"
+        ]
+    ],
+    ".sdata": [
+        [
+            "__OSFpscrEnableBits",
+            "e2afaadfcf68ad12fd6c76d38c64f0e582b18ab13204f7d3e4021058d15a6bd2"
+        ]
+    ]
+}

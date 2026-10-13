@@ -1,0 +1,26 @@
+{
+    ".text": [
+        [
+            "__init_user",
+            "2b562031be8f26332eeea771852520e6bc8f40c318b888344801ea51a798cab1"
+        ],
+        [
+            "__init_cpp",
+            "65bd7421fa5b71d13be14b26e87bcd7d82e95f83208c96bfb234e96722a46925"
+        ],
+        [
+            "exit",
+            "b39701c7342caeae0bd29a7308466ae7850726c0869bd3ae7c94cb4a163d9d12"
+        ]
+    ],
+    ".init": [
+        [
+            "__init_hardware",
+            "2dfe4b540ff31a60f87369650022a23cac835d4e51efdf516b64c126ba0692f1"
+        ],
+        [
+            "__flush_cache",
+            "f1508c81931b90be8b69ee1efe567f67dc6996ef5c0ce499cc364dab149e3e16"
+        ]
+    ]
+}

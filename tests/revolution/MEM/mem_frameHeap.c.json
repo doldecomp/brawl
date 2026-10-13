@@ -1,0 +1,40 @@
+{
+    ".text": [
+        [
+            "MEMCreateFrmHeapEx",
+            "68043b98dc42550dd79b877772c7184684308ceeb9afafc7f8e5a0585462945f"
+        ],
+        [
+            "MEMDestroyFrmHeap",
+            "e40633dbfa30c980bdf959c29f467fb5ba3e5d68456059ff0193830719d1d362"
+        ],
+        [
+            "MEMAllocFromFrmHeapEx",
+            "ebf5e72966734a037a1d91b6bd9e281e51229281051dfd3dda494442c9a5fef9"
+        ],
+        [
+            "MEMFreeToFrmHeap",
+            "d37b8c3c909dbd15fbff1fc67358de8a8013bef94daaf610df6eba8ece332fc9"
+        ],
+        [
+            "MEMGetAllocatableSizeForFrmHeapEx",
+            "efa9cf8d584071e9ba4761366b9c31c3079a7ab9d62aa613edff6abf32da51b9"
+        ],
+        [
+            "MEMRecordStateForFrmHeap",
+            "2451a64b24640e3667984876602efd56c822729093ee683f0dccbc50b10776db"
+        ],
+        [
+            "MEMFreeByStateToFrmHeap",
+            "661ec60806390f3920d7f9510c9c153d840a7a8f282d1a98b8f6f3ae134ffcc5"
+        ],
+        [
+            "MEMAdjustFrmHeap",
+            "c95c652b7431c8eeaef1eaea29fbfca9caf3db38f61ad72630e37978a6c2f42c"
+        ],
+        [
+            "MEMResizeForMBlockFrmHeap",
+            "0455a1fabd46dcaf9076f7a9b1ad5e131b85e2b04a0fddf6284cb0240326b77d"
+        ]
+    ]
+}

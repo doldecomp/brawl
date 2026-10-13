@@ -1,0 +1,74 @@
+#ifndef MSL_CPP_BITSET_H
+#define MSL_CPP_BITSET_H
+
+#include <types.h>
+#include <MEM.h>
+
+template <size_t N>
+struct bit_width {
+    u8 bits[1 + sizeof(bit_width<N / 2>)];
+};
+
+template <>
+struct bit_width<1> {
+    u8 bits[1];
+};
+
+
+namespace std {
+    template <size_t N>
+    class bitset {
+        u32 m_bits[N / (sizeof(u32)*8) + 1];
+
+    public:
+        bitset() {};
+        bitset(unsigned long val) {
+            __memfill(this, -val, sizeof(*this));
+        };
+
+        bitset<N>& operator&=(const bitset<N>& rhs);
+        bitset<N>& operator|=(const bitset<N>& rhs);
+        bitset<N>& operator^=(const bitset<N>& rhs);
+        bitset<N>& operator<<=(size_t pos);
+        bitset<N>& operator>>=(size_t pos);
+        bitset<N>& set() {
+            __memfill(this, 0xFF, sizeof(this));
+        };
+        bitset<N>& set(size_t pos, int val = 1);
+        bitset<N>& reset() {
+            __memfill(this, 0, sizeof(this));
+        };
+        bitset<N>& reset(size_t pos);
+        bitset<N> operator~() const;
+        bitset<N>& flip();
+        bitset<N>& flip(size_t pos);
+        unsigned long to_ulong() const;
+        //to_string()
+        size_t count() const;
+        size_t size() const;
+        bool operator==(const bitset<N>& rhs) const;
+        bool operator!=(const bitset<N>& rhs) const;
+        bool test(size_t pos) const;
+        bool any() const;
+        bool none() const;
+        bitset<N> operator<<(size_t pos) const;
+        bitset<N> operator>>(size_t pos) const;
+
+    };
+
+    template <size_t N>
+    bitset<N> operator&(const bitset<N>& lhs, const bitset<N>& rhs);
+
+    template <size_t N>
+    bitset<N> operator|(const bitset<N>& lhs, const bitset<N>& rhs);
+
+    template <size_t N>
+    bitset<N> operator^(const bitset<N>& lhs, const bitset<N>& rhs);
+// >>
+// <<
+}
+
+
+
+
+#endif //MSL_CPP_BITSET_H

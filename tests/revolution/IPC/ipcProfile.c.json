@@ -1,0 +1,40 @@
+{
+    ".text": [
+        [
+            "IPCiProfInit",
+            "d7fee2fcb20ba65375ee523a0279a01aa27003bb776e09211c518481ad03fcf4"
+        ],
+        [
+            "IPCiProfQueueReq",
+            "91228b6d16ddc0a0088987c6b8038f93f0c07c87776108830a4ba5e3b1915adf"
+        ],
+        [
+            "IPCiProfAck",
+            "da7f8cc3f159afdc6b721b222bb055a5b7529042d121dec89606e60d686535bd"
+        ],
+        [
+            "IPCiProfReply",
+            "5dd647db3373a890d76c60cf1a34430e00e4f05604ee5c230620de66e43fde48"
+        ]
+    ],
+    ".bss": [
+        [
+            "IpcFdArray",
+            "38723a2e5e8a17aa7950dc008209944e898f69a7bd10a23c839d341e935fd5ca"
+        ],
+        [
+            "IpcReqPtrArray",
+            "38723a2e5e8a17aa7950dc008209944e898f69a7bd10a23c839d341e935fd5ca"
+        ]
+    ],
+    ".sbss": [
+        [
+            "IpcNumPendingReqs",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ],
+        [
+            "IpcNumUnIssuedReqs",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ]
+    ]
+}

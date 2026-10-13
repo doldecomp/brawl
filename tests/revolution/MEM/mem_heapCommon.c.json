@@ -1,0 +1,36 @@
+{
+    ".text": [
+        [
+            "FindContainHeap_",
+            "7a53924c51db03ab4be03b7e1d6ac564932fb349ab839ec22c63b6e2c657378d"
+        ],
+        [
+            "MEMiInitHeapHead",
+            "6e71ca0a65ebd420fe0cf3ded851a6655463aad50aea36d8ff2f80541c8d9d92"
+        ],
+        [
+            "MEMiFinalizeHeap",
+            "fa8476f8ce0a0626cfed635a6d9d05dedf8b0b38ba61937a5a584df2aa1ac29e"
+        ],
+        [
+            "MEMFindContainHeap",
+            "5a0c4e4e14542ad9ea7b83062f418f8283a1d1d9a79dafc12118fa137a932178"
+        ]
+    ],
+    ".bss": [
+        [
+            "sRootList",
+            "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b"
+        ],
+        [
+            "sRootMutex",
+            "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+        ]
+    ],
+    ".sbss": [
+        [
+            "sRootListInitialized",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ]
+    ]
+}

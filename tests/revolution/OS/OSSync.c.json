@@ -1,0 +1,12 @@
+{
+    ".text": [
+        [
+            "SystemCallVector",
+            "645737e26b087a24f1993b8eb5da38794a01734303bbde0cfc1930e8c6261e5e"
+        ],
+        [
+            "__OSInitSystemCall",
+            "44c225898e29ebcf04c02428f6926fcfb7100177f2bcc0893588c02add5246cd"
+        ]
+    ]
+}

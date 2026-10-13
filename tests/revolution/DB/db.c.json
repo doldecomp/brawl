@@ -1,0 +1,34 @@
+{
+    ".text": [
+        [
+            "DBInit",
+            "b318375e5b8408ba797f0370190db5126000d173bed561cd73655d23a1c88d9c"
+        ],
+        [
+            "__DBExceptionDestinationAux",
+            "9eff0b344ce8140f911fe3d54f280aae629cd61f0b4406b5c625c6e0149f79d1"
+        ],
+        [
+            "__DBExceptionDestination",
+            "a4378129d140f048f62ba047db86366798ca000dbc4315bad1c7591bb0fd5bc4"
+        ],
+        [
+            "__DBIsExceptionMarked",
+            "acec917b0d1debeb6ade842c58c4b358774e459727597106b19dcd8a2218c774"
+        ],
+        [
+            "DBPrintf",
+            "d0cae8c3f5437f967d82becb892c3c5344c4113435cef83642dc602d29052bbe"
+        ]
+    ],
+    ".sbss": [
+        [
+            "__DBInterface",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ],
+        [
+            "DBVerbose",
+            "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+        ]
+    ]
+}

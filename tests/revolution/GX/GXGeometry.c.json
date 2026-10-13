@@ -1,0 +1,40 @@
+{
+    ".text": [
+        [
+            "__GXSetDirtyState",
+            "0377377f7d3b7c4ba0e9799516006ac017ebad3bbc195d8870da194450497323"
+        ],
+        [
+            "GXBegin",
+            "1c79e88b4fbac2782c0f5b434cb52db5e24d87577d61aa5754e9022592caed1b"
+        ],
+        [
+            "__GXSendFlushPrim",
+            "dbe9673afa6e9f063bf932455164aecba873a27da7c16bc98e54c31db1900072"
+        ],
+        [
+            "GXSetLineWidth",
+            "0d186e23cccb3d899791236b464be0a73a50263ca26aea9971fe6c4caaf6aae4"
+        ],
+        [
+            "GXSetPointSize",
+            "0c0ce252c1552fac24e9152fb99d5072bd5a5972e788084874c12699820b6d48"
+        ],
+        [
+            "GXEnableTexOffsets",
+            "ee96e6a353ffe930515a01afb56f3b9d466ea2f136b24bb80b7e11c0020c46ba"
+        ],
+        [
+            "GXSetCullMode",
+            "0e91c1580de01cad37394c41ae5c2513f40fab238326aeb1430d4a51831fdde1"
+        ],
+        [
+            "GXGetCullMode",
+            "38995ce89e4eb5aa2045caacc1e51e401b258c99bb715c1d9af465c323d5413d"
+        ],
+        [
+            "GXSetCoPlanar",
+            "f113286a6052c5d421f3757d95858c481571faa5c479c5644e0265df9c5e6934"
+        ]
+    ]
+}
