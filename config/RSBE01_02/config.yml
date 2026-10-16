@@ -6,6 +6,12 @@ symbols: config/RSBE01_02/symbols.txt
 mw_comment_version: 14 # GC 3.0a5.2 linker
 quick_analysis: true # Faster reruns after full analysis
 
+# The .ctors$10/.dtors$15 entries that reference these are data-only, so the
+# linker drops them unless the symbols are kept alive explicitly.
+force_active:
+- __init_cpp_exceptions_reference
+- __fini_cpp_exceptions_reference
+
 extract:
 - symbol: HomeBtnIcon
   binary: HomeBtnIcon.bin
