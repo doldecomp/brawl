@@ -1,3 +1,17 @@
+> [!WARNING]
+> This repository is no longer taking direct contributions. Instead, open a PR to [The decomp repo](https://github.com/doldecomp/brawl)
+
+# PROJECT UPDATE
+To facilitate easier collaboration with [the decomp project](https://github.com/doldecomp/brawl), this repository's contents will be merged directly into that repository. 
+
+#### *This repository will not be closing.*
+
+Instead, it will become a mirror of the headers from that project so that modders and syriinge developers can pull in the headers as as submodule without pulling in the entire decomp. New PR's for headers should be submit to that repository instead of this one moving forward as this one will no longer be taking direct contributions.
+
+The original README is kept below for historical purposes.
+
+---
+
 # BrawlHeaders
 This is a repository of MWCC compatible header files for use in both decompilation and modding of Super Smash Bros. Brawl for the Nintendo Wii. (SSBB). 
 
