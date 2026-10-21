@@ -49,7 +49,7 @@ class stEmblem : public stMelee {
     grCollision* unk738;
     u8 m_isKemuriHigh;
     float m_lampEffTimer;
-    u32 unk744;
+    s32 m_lampEffectIndex;
     s32 quakeSnd;
     u8 m_eventType;
     StSeUtil::SeSeqInstance<2, 2> m_se_player;
