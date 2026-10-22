@@ -1,7 +1,7 @@
 #pragma once
 
 #include <gm/gm_lib.h>
-#include <gr/gr_tengan_event.h>
+#include <st_tengan/gr_tengan_event.h>
 #include <gm/gm_global.h>
 #include <memory.h>
 #include <nw4r/ut/ut_Color.h>
