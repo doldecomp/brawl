@@ -1,4 +1,4 @@
-#include <sora_adv_stage/gr_adventure_final.h>
+#include <gr/gr_adventure_final.h>
 #include <ec/ec_mgr.h>
 #include <memory.h>
 

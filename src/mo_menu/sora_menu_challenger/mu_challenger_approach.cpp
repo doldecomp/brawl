@@ -5,7 +5,7 @@
 #include "snd/snd_system.h"
 #include <cstdio>
 #include <cstring>
-#include <sora_menu_challenger/mu_challenger_approach.h>
+#include <mu/mu_challenger_approach.h>
 
 muChallengerApproachTask* muChallengerApproachTask::create() {
     return new (Heaps::MenuInstance) muChallengerApproachTask();
