@@ -1,0 +1,39 @@
+name: Mirror BrawlHeaders
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - include/**
+  workflow_dispatch:
+
+concurrency:
+  group: brawlheaders-mirror
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    if: github.repository == 'doldecomp/brawl'
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    # Push include/ on top of Sammi-Husky/BrawlHeaders main
+    - name: Push to Sammi-Husky/BrawlHeaders
+      uses: cpina/github-action-push-to-another-repository@55306faa4ed53b815ae49e564af8cfb359d32ae2 # v1.7.3
+      env:
+        SSH_DEPLOY_KEY: ${{ secrets.BRAWLHEADERS_DEPLOY_KEY }}
+      with:
+        source-directory: include
+        destination-github-username: Sammi-Husky
+        destination-repository-name: BrawlHeaders
+        target-branch: main
+        user-name: ${{ github.actor }}
+        user-email: ${{ github.actor }}@users.noreply.github.com
+        commit-message: |
+          ${{ github.event.head_commit.message }}
+
+          Mirrored from ORIGIN_COMMIT
