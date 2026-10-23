@@ -103,6 +103,14 @@ Building
   ninja
   ```
 
+- Enable the git hooks:
+
+  ```sh
+  git config core.hooksPath .githooks
+  ```
+
+  The pre-commit hook regenerates `include/RSBE01.lst` whenever a `symbols.txt` is committed. Without it, run `python tools/generate_lst.py` yourself after editing symbols; CI fails if the file is out of date.
+
 Diffing
 =======
 
