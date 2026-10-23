@@ -18,6 +18,7 @@ from pathlib import Path
 
 from tools.project import (
     Object,
+    ProgressCategory,
     ProjectConfig,
     calculate_progress,
     generate_build,
@@ -240,6 +241,15 @@ cflags_runtime = [
     "-inline auto",
 ]
 
+# RVL SDK flags
+cflags_rvl = [
+    *cflags_base,
+    "-ipa file",
+    "-Iinclude/OpenRVL/include",
+    "-Iinclude/OpenRVL/include/revolution",
+    "-Iinclude/OpenRVL/include/stl",
+]
+
 # REL flags
 config.rel_strip_partial = True
 cflags_rel = [
@@ -267,6 +277,20 @@ def MatchingFor(*versions):
     return config.version in versions
 
 
+# RVL SDK module of an object path (revolution/<module>/..., or RVLFaceLib/... for RFL)
+def rvl_module(name):
+    root, module = name.split("/")[:2]
+    return "RFL" if root == "RVLFaceLib" else module
+
+
+# RVL SDK object, tracked under "rvl" and its module
+def RVLObject(completed, name, **options):
+    module = rvl_module(name)
+    return Object(
+        completed, name, progress_category=["rvl", f"rvl_{module}"], **options
+    )
+
+
 config.warn_missing_config = True
 config.warn_missing_source = False
 config.libs = [
@@ -278,6 +302,345 @@ config.libs = [
         "objects": [
             Object(NonMatching, "Runtime.PPCEABI.H/global_destructor_chain.c"),
             Object(NonMatching, "Runtime.PPCEABI.H/__init_cpp_exceptions.cpp"),
+        ],
+    },
+    {
+        "lib": "RVL_SDK",
+        "mw_version": config.linker_version,
+        "cflags": cflags_rvl,
+        "host": False,
+        "objects": [
+            RVLObject(NonMatching, "revolution/BASE/PPCArch.c"),
+
+            RVLObject(NonMatching, "revolution/OS/OS.c"),
+            RVLObject(NonMatching, "revolution/OS/OSAlarm.c"),
+            RVLObject(NonMatching, "revolution/OS/OSAlloc.c"),
+            RVLObject(NonMatching, "revolution/OS/OSArena.c"),
+            RVLObject(NonMatching, "revolution/OS/OSAudioSystem.c"),
+            RVLObject(NonMatching, "revolution/OS/OSCache.c"),
+            RVLObject(NonMatching, "revolution/OS/OSContext.c"),
+            RVLObject(NonMatching, "revolution/OS/OSError.c"),
+            RVLObject(NonMatching, "revolution/OS/OSExec.c"),
+            RVLObject(NonMatching, "revolution/OS/OSFatal.c"),
+            RVLObject(NonMatching, "revolution/OS/OSFont.c"),
+            RVLObject(NonMatching, "revolution/OS/OSInterrupt.c"),
+            RVLObject(NonMatching, "revolution/OS/OSLink.c"),
+            RVLObject(NonMatching, "revolution/OS/OSMessage.c"),
+            RVLObject(NonMatching, "revolution/OS/OSMemory.c"),
+            RVLObject(NonMatching, "revolution/OS/OSMutex.c"),
+            RVLObject(NonMatching, "revolution/OS/OSReboot.c"),
+            RVLObject(NonMatching, "revolution/OS/OSReset.c"),
+            RVLObject(NonMatching, "revolution/OS/OSRtc.c"),
+            RVLObject(NonMatching, "revolution/OS/OSSemaphore.c"),
+            RVLObject(NonMatching, "revolution/OS/OSSync.c"),
+            RVLObject(NonMatching, "revolution/OS/OSThread.c"),
+            RVLObject(NonMatching, "revolution/OS/OSTime.c"),
+            RVLObject(NonMatching, "revolution/OS/OSUtf.c"),
+            RVLObject(NonMatching, "revolution/OS/OSIpc.c"),
+            RVLObject(NonMatching, "revolution/OS/OSStateTM.c"),
+            RVLObject(NonMatching, "revolution/OS/OSPlayRecord.c"),
+            RVLObject(NonMatching, "revolution/OS/OSStateFlags.c"),
+            RVLObject(NonMatching, "revolution/OS/OSNet.c"),
+            RVLObject(NonMatching, "revolution/OS/OSNandbootInfo.c"),
+            RVLObject(NonMatching, "revolution/OS/OSPlayTime.c"),
+            RVLObject(NonMatching, "revolution/OS/__ppc_eabi_init.c"),
+
+            RVLObject(NonMatching, "revolution/EXI/EXIBios.c"),
+            RVLObject(NonMatching, "revolution/EXI/EXIUart.c"),
+            RVLObject(NonMatching, "revolution/EXI/EXICommon.c"),
+
+            RVLObject(NonMatching, "revolution/SI/SIBios.c"),
+            RVLObject(NonMatching, "revolution/SI/SISamplingRate.c"),
+
+            RVLObject(NonMatching, "revolution/DB/db.c"),
+
+            RVLObject(NonMatching, "revolution/VI/vi.c"),
+            RVLObject(NonMatching, "revolution/VI/i2c.c"),
+            RVLObject(NonMatching, "revolution/VI/vi3in1.c"),
+
+            RVLObject(NonMatching, "revolution/MTX/mtx.c"),
+            RVLObject(NonMatching, "revolution/MTX/mtxvec.c"),
+            RVLObject(NonMatching, "revolution/MTX/mtx44.c"),
+            RVLObject(NonMatching, "revolution/MTX/vec.c"),
+            RVLObject(NonMatching, "revolution/MTX/quat.c"),
+
+            RVLObject(NonMatching, "revolution/GX/GXInit.c"),
+            RVLObject(NonMatching, "revolution/GX/GXFifo.c"),
+            RVLObject(NonMatching, "revolution/GX/GXAttr.c"),
+            RVLObject(NonMatching, "revolution/GX/GXMisc.c"),
+            RVLObject(NonMatching, "revolution/GX/GXGeometry.c"),
+            RVLObject(NonMatching, "revolution/GX/GXFrameBuf.c"),
+            RVLObject(NonMatching, "revolution/GX/GXLight.c"),
+            RVLObject(NonMatching, "revolution/GX/GXTexture.c"),
+            RVLObject(NonMatching, "revolution/GX/GXBump.c"),
+            RVLObject(NonMatching, "revolution/GX/GXTev.c"),
+            RVLObject(NonMatching, "revolution/GX/GXPixel.c"),
+            RVLObject(NonMatching, "revolution/GX/GXDraw.c"),
+            RVLObject(NonMatching, "revolution/GX/GXDisplayList.c"),
+            RVLObject(NonMatching, "revolution/GX/GXTransform.c"),
+            RVLObject(NonMatching, "revolution/GX/GXPerf.c"),
+
+            RVLObject(NonMatching, "revolution/DVD/dvdfs.c"),
+            RVLObject(NonMatching, "revolution/DVD/dvd.c"),
+            RVLObject(NonMatching, "revolution/DVD/dvdqueue.c"),
+            RVLObject(NonMatching, "revolution/DVD/dvderror.c"),
+            RVLObject(NonMatching, "revolution/DVD/dvdidutils.c"),
+            RVLObject(NonMatching, "revolution/DVD/dvdFatal.c"),
+            RVLObject(NonMatching, "revolution/DVD/dvdDeviceError.c"),
+            RVLObject(NonMatching, "revolution/DVD/dvd_broadway.c"),
+
+            RVLObject(NonMatching, "revolution/AI/ai.c"),
+
+            RVLObject(NonMatching, "revolution/AX/AX.c"),
+            RVLObject(NonMatching, "revolution/AX/AXAlloc.c"),
+            RVLObject(NonMatching, "revolution/AX/AXAux.c"),
+            RVLObject(NonMatching, "revolution/AX/AXCL.c"),
+            RVLObject(NonMatching, "revolution/AX/AXOut.c"),
+            RVLObject(NonMatching, "revolution/AX/AXSPB.c"),
+            RVLObject(NonMatching, "revolution/AX/AXVPB.c"),
+            RVLObject(NonMatching, "revolution/AX/AXProf.c"),
+
+            RVLObject(NonMatching, "revolution/AXFX/AXFXReverbHi.c"),
+            RVLObject(NonMatching, "revolution/AXFX/AXFXReverbHiExp.c"),
+            RVLObject(NonMatching, "revolution/AXFX/AXFXDelay.c"),
+            RVLObject(NonMatching, "revolution/AXFX/AXFXHooks.c"),
+
+            RVLObject(NonMatching, "revolution/MEM/mem_heapCommon.c"),
+            RVLObject(NonMatching, "revolution/MEM/mem_expHeap.c"),
+            RVLObject(NonMatching, "revolution/MEM/mem_frameHeap.c"),
+            RVLObject(NonMatching, "revolution/MEM/mem_allocator.c"),
+            RVLObject(NonMatching, "revolution/MEM/mem_list.c"),
+
+            RVLObject(NonMatching, "revolution/CX/CX_unsplit.o"),
+
+            RVLObject(NonMatching, "revolution/MIX/MIX_unsplit.o"),
+
+            RVLObject(NonMatching, "revolution/DSP/dsp.c"),
+            RVLObject(NonMatching, "revolution/DSP/dsp_debug.c"),
+            RVLObject(NonMatching, "revolution/DSP/dsp_task.c"),
+
+            RVLObject(NonMatching, "revolution/CARD/CARD_unsplit.o"),
+
+            RVLObject(NonMatching, "revolution/NAND/nand.c"),
+            RVLObject(NonMatching, "revolution/NAND/NANDOpenClose.c"),
+            RVLObject(NonMatching, "revolution/NAND/NANDCore.c"),
+            RVLObject(NonMatching, "revolution/NAND/NANDCheck.c"),
+            RVLObject(NonMatching, "revolution/NAND/NANDLogging.c"),
+
+            RVLObject(NonMatching, "revolution/SC/scsystem.c"),
+            RVLObject(NonMatching, "revolution/SC/scapi.c"),
+            RVLObject(NonMatching, "revolution/SC/scapi_prdinfo.c"),
+
+            RVLObject(Matching, "revolution/WENC/wenc.c"),
+
+            RVLObject(NonMatching, "revolution/ARC/arc.c"),
+
+            RVLObject(NonMatching, "revolution/ESP/esp.c"),
+
+            RVLObject(NonMatching, "revolution/IPC/ipcMain.c"),
+            RVLObject(NonMatching, "revolution/IPC/ipcclt.c"),
+            RVLObject(NonMatching, "revolution/IPC/memory.c"),
+            RVLObject(NonMatching, "revolution/IPC/ipcProfile.c"),
+
+            RVLObject(NonMatching, "revolution/FS/fs.c"),
+
+            RVLObject(NonMatching, "revolution/PAD/Pad.c"),
+
+            RVLObject(NonMatching, "revolution/WPAD/WPAD.c"),
+            RVLObject(NonMatching, "revolution/WPAD/WPADHIDParser.c"),
+            RVLObject(NonMatching, "revolution/WPAD/WPADEncrypt.c"),
+            RVLObject(NonMatching, "revolution/WPAD/WPADMem.c"),
+            RVLObject(NonMatching, "revolution/WPAD/debug_msg.c"),
+
+            RVLObject(NonMatching, "revolution/KPAD/KPAD.c"),
+
+            RVLObject(NonMatching, "revolution/EUART/euart.c"),
+
+            RVLObject(NonMatching, "revolution/USB/usb.c"),
+
+            RVLObject(NonMatching, "revolution/WUD/WUD.c"),
+            RVLObject(NonMatching, "revolution/WUD/WUDHidHost.c"),
+            RVLObject(NonMatching, "revolution/WUD/debug_msg.c"),
+
+            RVLObject(NonMatching, "revolution/BTE/gki_buffer.c"),
+            RVLObject(NonMatching, "revolution/BTE/gki_time.c"),
+            RVLObject(NonMatching, "revolution/BTE/gki_ppc.c"),
+            RVLObject(NonMatching, "revolution/BTE/hcisu_h2.c"),
+            RVLObject(NonMatching, "revolution/BTE/uusb_ppc.c"),
+            RVLObject(NonMatching, "revolution/BTE/bte_hcisu.c"),
+            RVLObject(NonMatching, "revolution/BTE/bte_init.c"),
+            RVLObject(NonMatching, "revolution/BTE/bte_logmsg.c"),
+            RVLObject(NonMatching, "revolution/BTE/bte_main.c"),
+            RVLObject(NonMatching, "revolution/BTE/btu_task1.c"),
+            RVLObject(NonMatching, "revolution/BTE/bd.c"),
+            RVLObject(NonMatching, "revolution/BTE/bta_sys_conn.c"),
+            RVLObject(NonMatching, "revolution/BTE/bta_sys_main.c"),
+            RVLObject(NonMatching, "revolution/BTE/ptim.c"),
+            RVLObject(NonMatching, "revolution/BTE/utl.c"),
+            RVLObject(NonMatching, "revolution/BTE/bta_dm_act.c"),
+            RVLObject(NonMatching, "revolution/BTE/bta_dm_api.c"),
+            RVLObject(NonMatching, "revolution/BTE/bta_dm_main.c"),
+            RVLObject(NonMatching, "revolution/BTE/bta_dm_pm.c"),
+            RVLObject(NonMatching, "revolution/BTE/bta_hh_act.c"),
+            RVLObject(NonMatching, "revolution/BTE/bta_hh_api.c"),
+            RVLObject(NonMatching, "revolution/BTE/bta_hh_main.c"),
+            RVLObject(NonMatching, "revolution/BTE/bta_hh_utils.c"),
+            RVLObject(NonMatching, "revolution/BTE/btm_acl.c"),
+            RVLObject(NonMatching, "revolution/BTE/btm_dev.c"),
+            RVLObject(NonMatching, "revolution/BTE/btm_devctl.c"),
+            RVLObject(NonMatching, "revolution/BTE/btm_discovery.c"),
+            RVLObject(NonMatching, "revolution/BTE/btm_inq.c"),
+            RVLObject(NonMatching, "revolution/BTE/btm_main.c"),
+            RVLObject(NonMatching, "revolution/BTE/btm_pm.c"),
+            RVLObject(NonMatching, "revolution/BTE/btm_sco.c"),
+            RVLObject(NonMatching, "revolution/BTE/btm_sec.c"),
+            RVLObject(NonMatching, "revolution/BTE/btu_hcif.c"),
+            RVLObject(NonMatching, "revolution/BTE/btu_init.c"),
+            RVLObject(NonMatching, "revolution/BTE/wbt_ext.c"),
+            RVLObject(NonMatching, "revolution/BTE/gap_api.c"),
+            RVLObject(NonMatching, "revolution/BTE/gap_conn.c"),
+            RVLObject(NonMatching, "revolution/BTE/gap_utils.c"),
+            RVLObject(NonMatching, "revolution/BTE/hcicmds.c"),
+            RVLObject(NonMatching, "revolution/BTE/hidd_api.c"),
+            RVLObject(NonMatching, "revolution/BTE/hidd_conn.c"),
+            RVLObject(NonMatching, "revolution/BTE/hidd_mgmt.c"),
+            RVLObject(NonMatching, "revolution/BTE/hidd_pm.c"),
+            RVLObject(NonMatching, "revolution/BTE/hidh_api.c"),
+            RVLObject(NonMatching, "revolution/BTE/hidh_conn.c"),
+            RVLObject(NonMatching, "revolution/BTE/l2c_api.c"),
+            RVLObject(NonMatching, "revolution/BTE/l2c_csm.c"),
+            RVLObject(NonMatching, "revolution/BTE/l2c_link.c"),
+            RVLObject(NonMatching, "revolution/BTE/l2c_main.c"),
+            RVLObject(NonMatching, "revolution/BTE/l2c_utils.c"),
+            RVLObject(NonMatching, "revolution/BTE/port_api.c"),
+            RVLObject(NonMatching, "revolution/BTE/port_rfc.c"),
+            RVLObject(NonMatching, "revolution/BTE/port_utils.c"),
+            RVLObject(NonMatching, "revolution/BTE/rfc_l2cap_if.c"),
+            RVLObject(NonMatching, "revolution/BTE/rfc_mx_fsm.c"),
+            RVLObject(NonMatching, "revolution/BTE/rfc_port_fsm.c"),
+            RVLObject(NonMatching, "revolution/BTE/rfc_port_if.c"),
+            RVLObject(NonMatching, "revolution/BTE/rfc_ts_frames.c"),
+            RVLObject(NonMatching, "revolution/BTE/rfc_utils.c"),
+            RVLObject(NonMatching, "revolution/BTE/sdp_api.c"),
+            RVLObject(NonMatching, "revolution/BTE/sdp_db.c"),
+            RVLObject(NonMatching, "revolution/BTE/sdp_discovery.c"),
+            RVLObject(NonMatching, "revolution/BTE/sdp_main.c"),
+            RVLObject(NonMatching, "revolution/BTE/sdp_server.c"),
+            RVLObject(NonMatching, "revolution/BTE/sdp_utils.c"),
+
+            RVLObject(NonMatching, "revolution/TPL/TPL.c"),
+
+            RVLObject(NonMatching, "revolution/THP/THPDec.c"),
+            RVLObject(NonMatching, "revolution/THP/THPAudio.c"),
+
+            RVLObject(NonMatching, "revolution/NdevExi2AD/DebuggerDriver.c"),
+            RVLObject(NonMatching, "revolution/NdevExi2AD/exi2.c"),
+
+            RVLObject(NonMatching, "revolution/TMCC_JPEG/TMCC_JPEG_unsplit.o"),
+
+            RVLObject(NonMatching, "revolution/HBM/HBM_unsplit.o"),
+
+            RVLObject(NonMatching, "revolution/DWC/DWC_unsplit.o"),
+
+            RVLObject(NonMatching, "revolution/NCD/NCD_unsplit.o"),
+
+            RVLObject(NonMatching, "revolution/NET/NET_unsplit.o"),
+
+            RVLObject(NonMatching, "revolution/NHTTP/NHTTP_unsplit.o"),
+
+            RVLObject(NonMatching, "revolution/NWC24/NWC24StdAPI.c"),
+            RVLObject(NonMatching, "revolution/NWC24/NWC24FileAPI.c"),
+            RVLObject(NonMatching, "revolution/NWC24/NWC24Config.c"),
+            RVLObject(NonMatching, "revolution/NWC24/NWC24Utils.c"),
+            RVLObject(NonMatching, "revolution/NWC24/NWC24Manage.c"),
+            RVLObject(NonMatching, "revolution/NWC24/NWC24MsgObj.c"),
+            RVLObject(NonMatching, "revolution/NWC24/NWC24MBoxCtrl.c"),
+            RVLObject(NonMatching, "revolution/NWC24/NWC24Mime.c"),
+            RVLObject(NonMatching, "revolution/NWC24/NWC24Parser.c"),
+            RVLObject(NonMatching, "revolution/NWC24/NWC24MsgCommit.c"),
+            RVLObject(NonMatching, "revolution/NWC24/NWC24Schedule.c"),
+            RVLObject(NonMatching, "revolution/NWC24/NWC24DateParser.c"),
+            RVLObject(NonMatching, "revolution/NWC24/NWC24FriendList.c"),
+            RVLObject(NonMatching, "revolution/NWC24/NWC24SecretFList.c"),
+            RVLObject(NonMatching, "revolution/NWC24/NWC24UserId.c"),
+            RVLObject(NonMatching, "revolution/NWC24/NWC24Time.c"),
+            RVLObject(NonMatching, "revolution/NWC24/NWC24Ipc.c"),
+            RVLObject(NonMatching, "revolution/NWC24/NWC24Download.c"),
+            RVLObject(NonMatching, "revolution/NWC24/NWC24System.c"),
+
+            RVLObject(NonMatching, "revolution/SO/SO_unsplit.o"),
+
+            RVLObject(NonMatching, "revolution/SSL/SSL_unsplit.o"),
+
+            RVLObject(NonMatching, "revolution/VF/pf_clib.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_code.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_service.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_str.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_w_clib.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_driver.c"),
+            RVLObject(NonMatching, "revolution/VF/pdm_bpb.c"),
+            RVLObject(NonMatching, "revolution/VF/pdm_disk.c"),
+            RVLObject(NonMatching, "revolution/VF/pdm_partition.c"),
+            RVLObject(NonMatching, "revolution/VF/pdm_mbr.c"),
+            RVLObject(NonMatching, "revolution/VF/pdm_dskmng.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_cache.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_cluster.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_dir.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_entry.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_entry_iterator.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_fat.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_fat12.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_fat16.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_fat32.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_fatfs.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_file.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_path.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_sector.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_volume.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_cp932.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_api_util.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_attach.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_chdir.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_create.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_detach.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_errnum.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_fclose.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_finfo.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_fopen.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_format.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_fread.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_fseek.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_fsfirst.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_fsnext.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_fstat.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_fwrite.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_getdev.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_init_prfile2.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_mkdir.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_remove.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_unmount.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_filelock.c"),
+            RVLObject(NonMatching, "revolution/VF/pf_system.c"),
+            RVLObject(NonMatching, "revolution/VF/d_vf.c"),
+            RVLObject(NonMatching, "revolution/VF/d_vf_sys.c"),
+            RVLObject(NonMatching, "revolution/VF/d_hash.c"),
+            RVLObject(NonMatching, "revolution/VF/d_time.c"),
+            RVLObject(NonMatching, "revolution/VF/d_common.c"),
+            RVLObject(NonMatching, "revolution/VF/nand_drv.c"),
+            RVLObject(NonMatching, "revolution/VF/sd_drv.c"),
+
+            RVLObject(NonMatching, "RVLFaceLib/RFL_System.c"),
+            RVLObject(NonMatching, "RVLFaceLib/RFL_NANDLoader.c"),
+            RVLObject(NonMatching, "RVLFaceLib/RFL_NANDAccess.c"),
+            RVLObject(NonMatching, "RVLFaceLib/RFL_Model.c"),
+            RVLObject(NonMatching, "RVLFaceLib/RFL_MakeTex.c"),
+            RVLObject(NonMatching, "RVLFaceLib/RFL_HiddenDatabase.c"),
+            RVLObject(NonMatching, "RVLFaceLib/RFL_Database.c"),
+            RVLObject(NonMatching, "RVLFaceLib/RFL_Controller.c"),
+            RVLObject(NonMatching, "RVLFaceLib/RFL_MiddleDatabase.c"),
+            RVLObject(NonMatching, "RVLFaceLib/RFL_DefaultDatabase.c"),
+            RVLObject(NonMatching, "RVLFaceLib/RFL_DataUtility.c"),
+            RVLObject(NonMatching, "RVLFaceLib/RFL_Format.c"),
         ],
     },
     # The DOL
@@ -1406,8 +1769,25 @@ config.libs = [
 config.progress_categories = [
     # ProgressCategory("game", "Game Code"),
     # ProgressCategory("sdk", "SDK Code"),
+    ProgressCategory("rvl", "DOL › RVL SDK"),
+]
+
+# One category per RVL SDK module, listed after "rvl" so they print as its breakdown
+rvl_modules = sorted(
+    {
+        rvl_module(obj.name)
+        for lib in config.libs
+        if lib["lib"] == "RVL_SDK"
+        for obj in lib["objects"]
+    }
+)
+config.progress_categories += [
+    ProgressCategory(f"rvl_{module}", f"DOL › RVL SDK › {module}")
+    for module in rvl_modules
 ]
 config.progress_each_module = args.verbose
+# Per-module RVL lines stay in report.json, but only print with --verbose
+config.print_progress_categories = True if args.verbose else ["dol", "modules", "rvl"]
 
 if args.mode == "configure":
     # Write build.ninja and objdiff.json
