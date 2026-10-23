@@ -1,0 +1,41 @@
+// global variables
+805a00d0:g_ipSwitch
+805a0148: g_ecMgr
+8059FFAC: g_gfApplication
+805A01D0: g_sndSystem
+805a0140: g_efScreen
+805A02D0: g_IfMngr
+27,6,58D8: g_stTriggerMng
+805a00e0:g_GameGlobal
+27,6,2E68: g_ftManager
+27,6,2E88: g_ftEntryManager
+27,6,2E90: g_ftSlotManager
+27,6,2EB4: g_ftInstanceManager
+27,6,2E70: g_ftAudienceManager
+27,6,5518: g_aiMgr
+805A0040: g_gfPadSystem
+27,6,E8: g_soWorld
+27,5,547E0: g_stGameFrame
+80494958:g_HeapInfos
+8059FF80:g_gfSceneRoot
+8049ebe0:g_Network
+805a02a4:g_muWifiInterfaceTask
+8059fff4:g_gfFileIOManager
+805a00b8:g_mtRand
+27,6,5910: g_stLoaderManager
+8059ff68:__float_nan
+8059ff6c:__float_huge
+8059ff70:__double_huge
+27,5,A6068:g_soGeneralTermCache
+27,5,A8B0C:g_soGeneralTermManager
+27,6,5B98:g_stEnemyIdManager
+27,6,5668:g_Stage
+
+// Hardware
+CC008000:WGPIPE
+// CD006C00:AI_HW_REGS
+// CC005000:DSP_HW_REGS
+// CD000000:IPC_HW_REGS
+
+// Aliases
+8000443C:__memfill
