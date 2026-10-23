@@ -5,10 +5,12 @@ Generates include/RSBE01.lst (the symbol list modders link
 against) from the symbols.txt of the DOL and every REL.
 
 Usage:
-  python3 tools/generate_lst.py [-o PATH] [--check]
+  python3 tools/generate_lst.py [-o PATH] [--check] [--root DIR]
 
 --check writes nothing and exits 1 if the output would change
     cheap enough to run from a pre-commit hook
+--root reads the inputs from DIR instead of the repo, e.g. a checkout of
+    the git index so the pre-commit hook only sees staged changes
 
 Hand-written entries that symbols.txt can't express (hardware registers)
 live in tools/lst_extras.txt. REL module ids are taken from the order of the
@@ -23,9 +25,11 @@ from typing import Dict, List, Tuple
 
 # Path Definitions
 ROOT = Path(__file__).resolve().parent.parent
-CONFIG = ROOT / "config" / "RSBE01_02"
 LST = ROOT / "include" / "RSBE01.lst"
-EXTRAS = Path(__file__).resolve().parent / "lst_extras.txt"
+
+# Inputs, relative to ROOT (or --root)
+CONFIG = Path("config") / "RSBE01_02"
+EXTRAS = Path("tools") / "lst_extras.txt"
 CONFIG_YML = CONFIG / "config.yml"
 
 # REL section index as used by RSBE01.lst
@@ -42,8 +46,8 @@ HEADER = [
 ]
 
 
-def load_modules() -> Dict[str, int]:
-    names = REL_ID.findall(CONFIG_YML.read_text())
+def load_modules(root: Path) -> Dict[str, int]:
+    names = REL_ID.findall((root / CONFIG_YML).read_text())
     return {name: i for i, name in enumerate(names, 1)}
 
 
@@ -60,16 +64,18 @@ def read_symbols(path: Path) -> List[Tuple[str, int, str]]:
     return out
 
 
-def generate() -> str:
+def generate(root: Path) -> str:
+    config = root / CONFIG
+    extras = root / EXTRAS
     lines = list(HEADER)
-    if EXTRAS.exists():
-        lines += ["", *EXTRAS.read_text().splitlines()]
+    if extras.exists():
+        lines += ["", *extras.read_text().splitlines()]
 
-    syms = sorted({(a, n) for _, a, n in read_symbols(CONFIG / "symbols.txt")})
+    syms = sorted({(a, n) for _, a, n in read_symbols(config / "symbols.txt")})
     lines += ["", "// main"] + [f"{a:08X}:{n}" for a, n in syms]
 
-    modules = load_modules()
-    for path in sorted((CONFIG / "rels").glob("*/symbols.txt"), key=lambda p: modules.get(p.parent.name, 0)):
+    modules = load_modules(root)
+    for path in sorted((config / "rels").glob("*/symbols.txt"), key=lambda p: modules.get(p.parent.name, 0)):
         module = path.parent.name
         if module not in modules:
             sys.exit(f"error: {module} is not listed under modules in {CONFIG_YML.name}")
@@ -88,9 +94,10 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("-o", "--output", type=Path, default=LST)
     parser.add_argument("--check", action="store_true", help="exit 1 if the output file is out of date")
+    parser.add_argument("--root", type=Path, default=ROOT, help="directory to read the inputs from")
     args = parser.parse_args()
 
-    text = generate()
+    text = generate(args.root)
     current = args.output.read_text() if args.output.exists() else None
     if args.check:
         if current != text:
