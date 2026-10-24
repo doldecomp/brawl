@@ -8,7 +8,11 @@ extern "C" {
 /**
  * SI hardware registers
  */
-volatile u32 SI_HW_REGS[] : 0xCD006400;
+volatile u32 SI_HW_REGS[]
+#ifdef __MWERKS__
+: 0xCD006400
+#endif
+;
 
 /**
  * Hardware register indexes

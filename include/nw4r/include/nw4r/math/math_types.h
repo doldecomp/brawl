@@ -317,6 +317,7 @@ inline VEC3* VEC3Add(register VEC3* pOut, register const VEC3* pA,
     register f32 work0, work1, work2;
 
     // clang-format off
+#ifdef __MWERKS__
     asm {
         // Add XY
         psq_l  work0, VEC3.x(pA),   0, 0
@@ -330,6 +331,7 @@ inline VEC3* VEC3Add(register VEC3* pOut, register const VEC3* pA,
         ps_add work2, work0, work1
         psq_st work2, VEC3.z(pOut), 1, 0
     }
+#endif
     // clang-format on
 
     return pOut;
@@ -340,6 +342,7 @@ inline f32 VEC3Dot(register const VEC3* pA, register const VEC3* pB) {
     register f32 work0, work1, work2, work3;
 
     // clang-format off
+#ifdef __MWERKS__
     asm {
         // YZ product
         psq_l  work0, VEC3.y(pA), 0, 0
@@ -354,6 +357,7 @@ inline f32 VEC3Dot(register const VEC3* pA, register const VEC3* pB) {
         // Dot product
         ps_sum0 dot, work1, work0, work0
     }
+#endif
     // clang-format on
 
     return dot;
@@ -363,6 +367,7 @@ inline f32 VEC3LenSq(register const VEC3* pVec) {
     register f32 work0, work1, work2;
 
     // clang-format off
+#ifdef __MWERKS__
     asm {
         // Square XY
         psq_l  work0, VEC3.x(pVec), 0, 0
@@ -375,6 +380,7 @@ inline f32 VEC3LenSq(register const VEC3* pVec) {
         // Sum products
         ps_sum0 work2, work2, work0, work0
     }
+#endif
     // clang-format on
 
     return work2;
@@ -385,6 +391,7 @@ inline VEC3* VEC3Lerp(register VEC3* pOut, register const VEC3* pVec1,
     register f32 work0, work1, work2;
 
     // clang-format off
+#ifdef __MWERKS__
     asm {
         // X/Y delta
         psq_l  work0, VEC3.x(pVec1), 0, 0
@@ -402,6 +409,7 @@ inline VEC3* VEC3Lerp(register VEC3* pOut, register const VEC3* pVec1,
         ps_madds0 work2, work2, t, work0
         psq_st    work2, VEC3.z(pOut), 1, 0
     }
+#endif
     // clang-format on
 
     return pOut;
@@ -412,6 +420,7 @@ inline VEC3* VEC3Scale(register VEC3* pOut, register const VEC3* pIn,
     register f32 work0, work1;
 
     // clang-format off
+#ifdef __MWERKS__
     asm {
         // Scale XY
         psq_l    work0, VEC3.x(pIn),  0, 0
@@ -423,6 +432,7 @@ inline VEC3* VEC3Scale(register VEC3* pOut, register const VEC3* pIn,
         ps_muls0 work1, work0, scale
         psq_st   work1, VEC3.z(pOut), 1, 0
     }
+#endif
     // clang-format on
 
     return pOut;
@@ -433,6 +443,7 @@ inline VEC3* VEC3Sub(register VEC3* pOut, register const VEC3* pA,
     register f32 work0, work1, work2;
 
     // clang-format off
+#ifdef __MWERKS__
     asm {
         // Sub XY
         psq_l  work0, VEC3.x(pA),   0, 0
@@ -446,6 +457,7 @@ inline VEC3* VEC3Sub(register VEC3* pOut, register const VEC3* pA,
         ps_sub work2, work0, work1
         psq_st work2, VEC3.z(pOut), 1, 0
     }
+#endif
     // clang-format on
 
     return pOut;

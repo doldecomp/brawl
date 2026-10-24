@@ -143,6 +143,7 @@ void __AIDHandler(s16 intr, OSContext* ctx) {
     OSSetCurrentContext(ctx);
 }
 
+#ifdef __MWERKS__
 static asm void __AICallbackStackSwitch(register AIDMACallback callback) {
     // clang-format off
 
@@ -169,6 +170,9 @@ static asm void __AICallbackStackSwitch(register AIDMACallback callback) {
 
     // clang-format on
 }
+#else
+static void __AICallbackStackSwitch(AIDMACallback callback) {}
+#endif
 
 static void __AI_SRC_INIT(void) {
     s64 start = 0;

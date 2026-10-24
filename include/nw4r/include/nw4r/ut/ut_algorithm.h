@@ -31,9 +31,11 @@ template <typename T> inline T Abs(T x) {
 template <> f32 inline Abs(register f32 x) {
     register f32 ax;
 
+#ifdef __MWERKS__
     asm {
         fabs ax, x
     }
+#endif
 
     return ax;
 }

@@ -37,7 +37,7 @@ struct OSModuleHeader {
 
 void __OSModuleInit(void);
 
-bool OSUnlink(OSModuleHeader* module);
+BOOL OSUnlink(struct OSModuleHeader* module);
 
 #ifdef __cplusplus
 }
