@@ -60,6 +60,8 @@ long __labs(long);
 double __fabs(double);
 double __fnabs(double);
 unsigned int __cntlzw(unsigned int);
+int __rlwimi(int, int, int, int, int);
+void __sync(void);
 #ifdef __cplusplus
 }
 #endif

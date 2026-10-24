@@ -313,10 +313,10 @@ config.libs = [
             RVLObject(Matching, "revolution/BASE/PPCArch.c"),
 
             RVLObject(NonMatching, "revolution/OS/OS.c"),
-            RVLObject(NonMatching, "revolution/OS/OSAlarm.c"),
+            RVLObject(Matching, "revolution/OS/OSAlarm.c"),
             RVLObject(NonMatching, "revolution/OS/OSAlloc.c"),
             RVLObject(NonMatching, "revolution/OS/OSArena.c"),
-            RVLObject(NonMatching, "revolution/OS/OSAudioSystem.c"),
+            RVLObject(Matching, "revolution/OS/OSAudioSystem.c"),
             RVLObject(NonMatching, "revolution/OS/OSCache.c"),
             RVLObject(NonMatching, "revolution/OS/OSContext.c"),
             RVLObject(NonMatching, "revolution/OS/OSError.c"),

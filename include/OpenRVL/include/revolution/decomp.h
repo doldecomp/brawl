@@ -9,8 +9,8 @@
 #define __CONCAT(x, y) x##y
 #define CONCAT(x, y) __CONCAT(x, y)
 
-// Compile without matching hacks.
-#ifdef __DECOMP_NON_MATCHING
+// Compile without matching hacks (always, for clangd and other non-MWCC tools).
+#if defined(__DECOMP_NON_MATCHING) || !defined(__MWERKS__)
 #define DECOMP_FORCEACTIVE(module, ...)
 #define DECOMP_FORCELITERAL(module, x)
 #define DECOMP_FORCEACTIVE_DTOR(module, cls)
