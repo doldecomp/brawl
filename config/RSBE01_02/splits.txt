@@ -648,6 +648,8 @@ revolution/SC/scapi_prdinfo.c:
 
 revolution/WENC/wenc.c:
 	.text       start:0x80210430 end:0x80210708
+	.rodata     start:0x8040D600 end:0x8040D640
+	.sdata2     start:0x805A3978 end:0x805A3980
 
 revolution/ARC/arc.c:
 	.text       start:0x80210708 end:0x80211080

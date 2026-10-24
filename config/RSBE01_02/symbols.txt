@@ -16571,6 +16571,7 @@ lbl_80409508 = .rodata:0x80409508; // type:object size:0xC data:4byte
 lbl_80409514 = .rodata:0x80409514; // type:object size:0xC data:4byte
 systemCmdFuncTable = .rodata:0x80409520; // type:object size:0x12C scope:local
 g_80409650 = .rodata:0x80409650; // type:object size:0xC scope:local align:8
+lbl_8040965C = .rodata:0x8040965C; // type:object size:0x4
 lbl_80409660 = .rodata:0x80409660; // type:object size:0x100
 lbl_80409760 = .rodata:0x80409760; // type:object size:0x10
 lbl_80409770 = .rodata:0x80409770; // type:object size:0x14 data:4byte

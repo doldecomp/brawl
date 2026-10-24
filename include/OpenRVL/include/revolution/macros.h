@@ -50,4 +50,19 @@
 #define __declspec(x)
 #endif
 
+// Codewarrior intrinsics, declared for clangd and other non-MWCC tools
+#ifndef __MWERKS__
+#ifdef __cplusplus
+extern "C" {
+#endif
+int __abs(int);
+long __labs(long);
+double __fabs(double);
+double __fnabs(double);
+unsigned int __cntlzw(unsigned int);
+#ifdef __cplusplus
+}
+#endif
+#endif
+
 #endif
