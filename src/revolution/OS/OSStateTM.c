@@ -38,7 +38,7 @@ static s32 __OSVIDimReplyHandler(s32 result, void* arg);
 static void __OSRegisterStateEvent(void);
 static void __OSDefaultResetCallback(void);
 static void __OSDefaultPowerCallback(void);
-static s32 __OSStateEventHandler(s32 result, void* arg);
+s32 __OSStateEventHandler(s32 result, void* arg);
 static void LockUp(void);
 
 OSStateCallback OSSetResetCallback(OSStateCallback callback) {
@@ -115,7 +115,7 @@ void __OSShutdownToSBY(void) {
     VI_HW_REGS[VI_DCR] = 0;
 
     // clang-format off
-#line 276
+#line 281
     OS_ASSERT(StmReady, "Error: The firmware doesn't support shutdown feature.\n");
     // clang-format on
 
@@ -131,7 +131,7 @@ void __OSHotReset(void) {
     VI_HW_REGS[VI_DCR] = 0;
 
     // clang-format off
-#line 340
+#line 345
     OS_ASSERT(StmReady, "Error: The firmware doesn't support reboot feature.\n");
     // clang-format on
 
@@ -249,7 +249,7 @@ static void __OSDefaultResetCallback(void) {}
 
 static void __OSDefaultPowerCallback(void) {}
 
-static s32 __OSStateEventHandler(s32 result, void* arg) {
+s32 __OSStateEventHandler(s32 result, void* arg) {
 #pragma unused(result)
 #pragma unused(arg)
 
@@ -259,7 +259,7 @@ static s32 __OSStateEventHandler(s32 result, void* arg) {
     OSStateCallback callback;
 
     // clang-format off
-#line 748
+#line 753
     OS_ASSERT(result == IPC_RESULT_OK, "Error on STM state event handler\n");
     // clang-format on
 
@@ -275,6 +275,7 @@ static s32 __OSStateEventHandler(s32 result, void* arg) {
             callback();
 
             OSRestoreInterrupts(enabled);
+            VIResetDimmingCount();
         }
         __OSRegisterStateEvent();
     }
