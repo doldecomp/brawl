@@ -26,6 +26,7 @@ void LCEnable(void);
 void LCDisable(void);
 void LCLoadBlocks(void* dst, const void* src, u32 blocks);
 void LCStoreBlocks(void* dst, const void* src, u32 blocks);
+u32 LCLoadData(void* dst, const void* src, u32 len);
 u32 LCStoreData(void* dst, const void* src, u32 len);
 u32 LCQueueLength(void);
 void LCQueueWait(u32 n);

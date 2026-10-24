@@ -108,6 +108,10 @@ static void __OSSwitchThread(OSThread* thread) {
     OSLoadContext(&thread->context);
 }
 
+BOOL OSIsThreadSuspended(OSThread* thread) {
+    return thread->suspend > 0 ? TRUE : FALSE;
+}
+
 BOOL OSIsThreadTerminated(OSThread* thread) {
     return thread->state == OS_THREAD_STATE_MORIBUND ||
                    thread->state == OS_THREAD_STATE_EXITED

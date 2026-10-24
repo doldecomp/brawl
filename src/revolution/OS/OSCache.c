@@ -334,6 +334,26 @@ asm void LCStoreBlocks(register void* dst, register const void* src,
 }
 #endif
 
+u32 LCLoadData(void* dst, const void* src, u32 len) {
+    u32 blocks = (len + 31) / 32;
+    u32 ret = (blocks + 127) / 128;
+
+    while (blocks > 0) {
+        if (blocks < 128) {
+            LCLoadBlocks(dst, src, blocks);
+            blocks = 0;
+        } else {
+            LCLoadBlocks(dst, src, 0);
+            blocks -= 128;
+
+            dst = (u8*)dst + 0x1000;
+            src = (u8*)src + 0x1000;
+        }
+    }
+
+    return ret;
+}
+
 u32 LCStoreData(void* dst, const void* src, u32 len) {
     u32 blocks = (len + 31) / 32;
     u32 ret = (blocks + 127) / 128;

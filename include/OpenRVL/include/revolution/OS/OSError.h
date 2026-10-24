@@ -1,5 +1,6 @@
 #ifndef RVL_SDK_OS_ERROR_H
 #define RVL_SDK_OS_ERROR_H
+#include <stdarg.h>
 #include <types.h>
 #ifdef __cplusplus
 extern "C" {
@@ -43,6 +44,7 @@ extern OSErrorHandler __OSErrorTable[OS_ERR_MAX];
 extern u32 __OSFpscrEnableBits;
 
 DECL_WEAK void OSReport(const char* msg, ...);
+void OSVReport(const char* msg, va_list list);
 DECL_WEAK void OSPanic(const char* file, int line, const char* msg, ...);
 
 OSErrorHandler OSSetErrorHandler(u16 error, OSErrorHandler handler);

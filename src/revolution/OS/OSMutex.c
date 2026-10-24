@@ -127,3 +127,53 @@ BOOL OSTryLockMutex(OSMutex* mutex) {
     OSRestoreInterrupts(enabled);
     return lock;
 }
+
+void OSInitCond(OSCond* cond) {
+    OSInitThreadQueue(&cond->queue);
+}
+
+void OSWaitCond(OSCond* cond, OSMutex* mutex) {
+    BOOL enabled = OSDisableInterrupts();
+    OSThread* currThread = OSGetCurrentThread();
+
+    if (mutex->thread == currThread) {
+        s32 lock = mutex->lock;
+        OSMutex* next;
+        OSMutex* prev;
+
+        mutex->lock = 0;
+
+        next = mutex->next;
+        prev = mutex->prev;
+
+        if (next == NULL) {
+            currThread->mutexQueue.tail = prev;
+        } else {
+            next->prev = prev;
+        }
+
+        if (prev == NULL) {
+            currThread->mutexQueue.head = next;
+        } else {
+            prev->next = next;
+        }
+
+        mutex->thread = NULL;
+        if (currThread->priority < currThread->base) {
+            currThread->priority = __OSGetEffectivePriority(currThread);
+        }
+
+        OSDisableScheduler();
+        OSWakeupThread(&mutex->queue);
+        OSEnableScheduler();
+        OSSleepThread(&cond->queue);
+        OSLockMutex(mutex);
+        mutex->lock = lock;
+    }
+
+    OSRestoreInterrupts(enabled);
+}
+
+void OSSignalCond(OSCond* cond) {
+    OSWakeupThread(&cond->queue);
+}

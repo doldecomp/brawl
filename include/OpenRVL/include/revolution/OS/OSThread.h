@@ -64,6 +64,7 @@ void OSSetCurrentThread(OSThread* thread);
 void OSInitMutexQueue(OSMutexQueue* queue);
 void OSInitThreadQueue(OSThreadQueue* queue);
 OSThread* OSGetCurrentThread(void);
+BOOL OSIsThreadSuspended(OSThread* thread);
 BOOL OSIsThreadTerminated(OSThread* thread);
 s32 OSDisableScheduler(void);
 s32 OSEnableScheduler(void);

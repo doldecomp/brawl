@@ -14,6 +14,10 @@ void OSReport(const char* msg, ...) {
     va_end(list);
 }
 
+void OSVReport(const char* msg, va_list list) {
+    vprintf(msg, list);
+}
+
 void OSPanic(const char* file, int line, const char* msg, ...) {
     u32 depth;
     u32* sp;

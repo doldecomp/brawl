@@ -363,12 +363,16 @@ revolution/OS/OSAudioSystem.c:
 
 revolution/OS/OSCache.c:
 	.text       start:0x801D76A8 end:0x801D7D78
+	.data       start:0x804672E8 end:0x80467520
 
 revolution/OS/OSContext.c:
 	.text       start:0x801D7D78 end:0x801D8600
 
 revolution/OS/OSError.c:
 	.text       start:0x801D8600 end:0x801D8D34
+	.data       start:0x80467700 end:0x80467A1C
+	.bss        start:0x804DD190 end:0x804DD1D4
+	.sdata      start:0x8059E9C0 end:0x8059E9C8
 
 revolution/OS/OSExec.c:
 	.text       start:0x801D8D34 end:0x801DB3C8
@@ -411,6 +415,9 @@ revolution/OS/OSSync.c:
 
 revolution/OS/OSThread.c:
 	.text       start:0x801E047C end:0x801E1B34
+	.bss        start:0x804DD558 end:0x804DDF50
+	.sdata      start:0x8059E9F0 end:0x8059E9F4
+	.sbss       start:0x805A06F0 end:0x805A06FC
 
 revolution/OS/OSTime.c:
 	.text       start:0x801E1B34 end:0x801E21E8
