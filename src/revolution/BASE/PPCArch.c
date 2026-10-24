@@ -1,6 +1,7 @@
 #include <revolution/BASE.h>
 #include <revolution/OS.h>
 
+#ifdef __MWERKS__
 asm u32 PPCMfmsr(void) {
     // clang-format off
     nofralloc
@@ -125,14 +126,17 @@ asm void PPCMtpmc4(register u32 val){
     blr
     // clang-format on
 }
+#endif
 
 u32 PPCMffpscr(void) {
     // clang-format off
     register u64 fpscr;
+#ifdef __MWERKS__
     asm {
         mffs f31
         stfd f31, fpscr
     }
+#endif
 
     return fpscr;
     // clang-format on
@@ -145,6 +149,7 @@ void PPCMtfpscr(register u32 val) {
         f32 data;
     } fpscr;
 
+#ifdef __MWERKS__
     asm {
         li r4, 0
         stw val, fpscr.data
@@ -152,9 +157,11 @@ void PPCMtfpscr(register u32 val) {
         lfd f31, fpscr.tmp
         mtfs f31
     }
+#endif
     // clang-format on
 }
 
+#ifdef __MWERKS__
 asm u32 PPCMfhid2(void) {
     // clang-format off
     nofralloc
@@ -187,11 +194,13 @@ asm void PPCMtwpar(register u32 val) {
     blr
     // clang-format on
 }
+#endif
 
 void PPCDisableSpeculation(void) {
     PPCMthid0(PPCMfhid0() | HID0_SPD);
 }
 
+#ifdef __MWERKS__
 asm void PPCSetFpNonIEEEMode(void) {
     // clang-format off
     nofralloc
@@ -199,21 +208,26 @@ asm void PPCSetFpNonIEEEMode(void) {
     blr
     // clang-format on
 }
+#endif
 
 void PPCMthid4(register u32 val) {
     if (val & HID4_H4A) {
         // clang-format off
+#ifdef __MWERKS__
         asm {
             mtspr 0x3F3, val
         }
+#endif
         // clang-format on
     } else {
         OSReport("H4A should not be cleared because of Broadway errata.\n");
         val |= HID4_H4A;
         // clang-format off
+#ifdef __MWERKS__
         asm {
             mtspr 0x3F3, val
         }
+#endif
         // clang-format on
     }
 }

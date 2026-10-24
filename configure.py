@@ -310,7 +310,7 @@ config.libs = [
         "cflags": cflags_rvl,
         "host": False,
         "objects": [
-            RVLObject(NonMatching, "revolution/BASE/PPCArch.c"),
+            RVLObject(Matching, "revolution/BASE/PPCArch.c"),
 
             RVLObject(NonMatching, "revolution/OS/OS.c"),
             RVLObject(NonMatching, "revolution/OS/OSAlarm.c"),
