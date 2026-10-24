@@ -28,10 +28,14 @@ extern "C" {
 #include <revolution/OS/OSMemory.h>
 #include <revolution/OS/OSMessage.h>
 #include <revolution/OS/OSMutex.h>
+#include <revolution/OS/OSNandbootInfo.h>
 #include <revolution/OS/OSNet.h>
 #include <revolution/OS/OSPlayRecord.h>
+#include <revolution/OS/OSPlayTime.h>
+#include <revolution/OS/OSReboot.h>
 #include <revolution/OS/OSReset.h>
 #include <revolution/OS/OSRtc.h>
+#include <revolution/OS/OSSemaphore.h>
 #include <revolution/OS/OSStateFlags.h>
 #include <revolution/OS/OSStateTM.h>
 #include <revolution/OS/OSSync.h>
