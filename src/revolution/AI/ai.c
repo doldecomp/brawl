@@ -3,7 +3,7 @@
 #include <revolution/OS.h>
 
 const char* __AIVersion =
-    "<< RVL_SDK - AI \trelease build: Nov 30 2006 03:26:11 (0x4199_60831) >>";
+    "<< RVL_SDK - AI \trelease build: May  8 2007 12:54:34 (0x4199_60831) >>";
 
 static AIDMACallback __AID_Callback;
 

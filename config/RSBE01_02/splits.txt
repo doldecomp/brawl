@@ -552,6 +552,9 @@ revolution/DVD/dvd_broadway.c:
 
 revolution/AI/ai.c:
 	.text       start:0x801FEBC0 end:0x801FF138
+	.data       start:0x80478050 end:0x80478098
+	.sdata      start:0x8059EB08 end:0x8059EB10
+	.sbss       start:0x805A09E0 end:0x805A0A20
 
 revolution/AX/AX.c:
 	.text       start:0x801FF138 end:0x801FF1FC
