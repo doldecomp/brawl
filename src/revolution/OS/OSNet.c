@@ -28,12 +28,15 @@ void __OSInitNet(void) {
         }
     }
 
-    // @bug Wrong prototype. Somebody forgot to include the header!!!
-    error = NWC24iSynchronizeRtcCounter();
-    if (error != 0) {
-        OSReport(
-            "Failed to synchronize time with network resource managers. %d\n",
-            error);
+    if (!__OSInIPL) {
+        // @bug Wrong prototype. Somebody forgot to include the header!!!
+        error = NWC24iSynchronizeRtcCounter(FALSE);
+        if (error != 0) {
+            OSReport(
+                "Failed to synchronize time with network resource managers. "
+                "%d\n",
+                error);
+        }
     }
 }
 
