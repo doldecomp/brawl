@@ -18,15 +18,15 @@ public:
 
 class soEventManager {
 public:
-    virtual s16 addUnit(soEventUnit*);
-    virtual void eraseUnit(u32);
-    virtual bool isNullUnit(u32);
-    virtual void eraseObserver(s16 id, s16 sendID);
-    virtual u32 getObserverCapacity(u32 index);
-    virtual u32 getObserverSize(u32 index);
-    virtual bool isExist(short);
-    virtual s16 getManageId();
-    virtual soEventUnit* getEventUnit(short);
+    virtual s16 addUnit(soEventUnit*); // 0x8
+    virtual void eraseUnit(u32); // 0xC
+    virtual bool isNullUnit(u32); // 0x10
+    virtual void eraseObserver(s16 id, s16 sendID); // 0x14
+    virtual u32 getObserverCapacity(u32 index); // 0x18
+    virtual u32 getObserverSize(u32 index); // 0x1C
+    virtual bool isExist(short); // 0x20
+    virtual s16 getManageId(); // 0x24
+    virtual soEventUnit* getEventUnit(short); // 0x28
 };
 
 class soEventSystem {
@@ -48,8 +48,8 @@ public:
         if (isValid())
             soEventSystem::getInstance()->getManager(m_managerID)->eraseUnit(m_eventID);
     }
-    virtual s16 addObserverSub(T*, s8) = 0;
-    virtual soInstanceManagerFullProperty<T*>* getObserverListSub() = 0;
+    virtual s16 addObserverSub(T&, s8) = 0;
+    virtual soInstanceManagerFullProperty<T*>* getObserverListSub() = 0; // 0x24
 
     soEventUnitWrapper(s16 mgrId, s16 p2) : m_managerID(mgrId), m_eventID(p2) {
         if (mgrId != -1) {
@@ -100,8 +100,8 @@ public:
 
     virtual ~soEventUnitImpl() { }
 
-    virtual s16 addObserverSub(T* obsvr, s8 p2) {
-        return m_observerListPtr->add(obsvr, -1, soAttributeFlag(), p2);
+    virtual s16 addObserverSub(T& obsvr, s8 p2) {
+        return m_observerListPtr->add(&obsvr, -1, soAttributeFlag(), p2);
     }
 
     virtual soInstanceManagerFullProperty<T*>* getObserverListSub() {

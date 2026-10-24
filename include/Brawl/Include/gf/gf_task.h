@@ -87,6 +87,7 @@ public:
     bool isAlive() const { return m_alive; }
     s32 getStatus() const { return m_status; }
     void setStatus(s32 st) { m_status = st; }
+    s32 getTaskId() const { return m_taskId; };
 
     gfTask(const char* name, Category category, int unk2, int unk3, bool unk4);
     virtual void processDefault();

@@ -11,7 +11,7 @@ public:
     virtual T& at(s32 index) = 0;
     virtual T& atIndex(s32 index) = 0;
     virtual s32 getId(s32 index) = 0;
-    virtual u32 size() const = 0;
+    virtual s32 size() const = 0;
     virtual bool isEmpty() const { return size() == 0; }
     virtual bool isContain(s32) const = 0;
 };
@@ -31,7 +31,7 @@ public:
     virtual T& at(s32 index);
     virtual T& atIndex(s32 index);
     virtual s32 getId(s32 index);
-    virtual u32 size() const;
+    virtual s32 size() const;
     virtual bool isContain(s32) const;
     virtual s32 add(T&, s32);
     virtual void erase(s32);
@@ -45,7 +45,7 @@ public:
     virtual T& at(s32 index);
     virtual T& atIndex(s32 index);
     virtual s32 getId(s32 index);
-    virtual u32 size() const;
+    virtual s32 size() const;
     virtual bool isEmpty() const;
     virtual bool isContain(s32) const;
 
@@ -111,7 +111,7 @@ public:
     virtual void getAttributeArray(soAttributeFlag mask, soArray<T*>& arr) { }
     virtual void getPriorityArray(soArray<T*>& arr) { }
     virtual bool isContain(s32) const { return false; }
-    virtual u32 size() const { return 0; }
+    virtual s32 size() const { return 0; }
     virtual void set(const T&, s32 index) { }
     virtual T& atIndex(s32 index) {
         static T NullElement;
@@ -136,7 +136,7 @@ public:
     virtual T& at(s32 index);
     virtual T& atIndex(s32 index);
     virtual s32 getId(s32 index);
-    virtual u32 size() const;
+    virtual s32 size() const;
     virtual bool isContain(s32) const;
     virtual void erase(s32);
     virtual void clear();
@@ -201,7 +201,7 @@ public:
         return m_arrayVector.at(idx).m_id;
     }
 
-    virtual u32 size() const {
+    virtual s32 size() const {
         return m_arrayVector.size();
     }
 

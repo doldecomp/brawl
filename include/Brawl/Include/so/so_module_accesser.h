@@ -202,12 +202,12 @@ public:
     soParamCustomizeModule* m_paramCustomizeModule;
     void* m_glowModule;
 };
-static_assert(sizeof(soModuleEnumeration) == 204, "Class is wrong size!");
+static_assert(sizeof(soModuleEnumeration) == 0xCC, "Class is wrong size!");
 
 class soModuleAccesser : private soNull, private soActivatable {
 public:
     StageObject* m_stageObject;
-    soModuleEnumeration m_moduleEnumeration;
+    soModuleEnumeration m_moduleEnumeration; // 0xC
     const soModuleEnumeration* m_enumerationStart; // +0xD8
 
     soModuleAccesser();

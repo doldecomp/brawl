@@ -25,35 +25,51 @@ public:
     // 0: getIntData
     // 1: getFloatData
     // 2: getAddressData
-    // 3: getBoolData?
-    // 4: getStringData?
-    // 5: getValueIndexData?
+    // 3: getBoolData
+    // 4: getStringData
+    // 5: getValueIndexData
     s32 getArgType() const {
-        if (m_isNull == 1) {
+        if (m_isNull == 1)
             return -1;
-        }
         return m_dataPtr->argType;
     }
 
     s32 getIntData() const {
-        if (m_isNull == 1) {
+        if (m_isNull == 1)
             return 0;
-        }
         return m_dataPtr->data;
     }
 
     float getFloatData() const {
-        if (m_isNull == 1) {
+        if (m_isNull == 1)
             return 0.0f;
-        }
         return m_dataPtr->data / 60000.0f;
     }
 
-    void* getAddressData() {
-        if (m_isNull == 1) {
+    bool getBoolData() const {
+        if (m_isNull == 1)
+            return false;
+        return m_dataPtr->data;
+    }
+
+    // UBFIX: assumes 32-bit pointer
+    void* getAddressData() const {
+        if (m_isNull == 1)
             return 0;
-        }
         return (void*) m_dataPtr->data;
+    }
+
+    // UBFIX: assumes 32-bit pointer
+    char* getStringData() const {
+        if (m_isNull == 1)
+            return 0;
+        return (char*) m_dataPtr->data;
+    }
+
+    u32 getValueIndexData() const {
+        if (m_isNull == 1)
+            return 0;
+        return m_dataPtr->data;
     }
 };
 

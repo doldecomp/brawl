@@ -165,7 +165,8 @@ public:
 
 class soLinkModuleImpl : public soLinkModule, public soAnimCmdEventObserver {
 public:
-    soLinkModuleImpl(short unitID) : soAnimCmdEventObserver(unitID) { }
+    // TODO: determine type of p2
+    soLinkModuleImpl(soModuleAccesser* modAccsr, void* p2);
     virtual ~soLinkModuleImpl();
     virtual void activate();
     virtual void deactivate();

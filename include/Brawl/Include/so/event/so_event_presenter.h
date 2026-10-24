@@ -11,13 +11,13 @@ class StageObject;
 
 template <typename T>
 class soEventObserver {
-    s16 addObserverPrivate(s32 manageId, T* obsvr, s8 p3) {
+    s16 addObserverPrivate(s32 manageId, T& obsvr, s8 p3) {
         soEventManager* evtMgr = soEventSystem::getInstance()->
                                                 getManager(manageId);
-        if (!evtMgr->getObserverCapacity(obsvr->m_unitID))
+        if (!evtMgr->getObserverCapacity(obsvr.m_unitID))
             return -1;
         soEventUnitWrapper<T>* evt = dynamic_cast<soEventUnitWrapper<T>*>(
-                                     evtMgr->getEventUnit(obsvr->m_unitID));
+                                     evtMgr->getEventUnit(obsvr.m_unitID));
         if (!evt)
             return -1;
         s16 res = evt->addObserverSub(obsvr, p3);
@@ -25,12 +25,14 @@ class soEventObserver {
     }
 
 public:
-    virtual void addObserver(s16 param1, s8 param2) { }
+    virtual void addObserver(s16 manageId, s8 param2) { }
     s16 m_manageID;
     s16 m_unitID;
     s16 m_sendID;
 
     s32 getObserverId() const { return m_sendID; }
+    s32 getUnitId() const { return m_unitID; }
+    s32 getManageId() const { return m_manageID; }
 
     soEventObserver(s16 unitID) {
         m_manageID = -1;
@@ -53,14 +55,19 @@ public:
         removeObserver(m_manageID);
     }
 
-    void addObserverSub(s32 manageId, T* obsvr, s8 p3) {
-        bool check4 = false;
-        bool check3 = false;
-        bool check2 = false;
-        bool check1 = false;
+    // TODO: fix regswaps when this gets inlined into addObserver
+    void addObserverSub(s32 manageId, T& obsvr, s8 p3) {
         s32 removeID;
-        s32 checkID = m_manageID;
+        bool check3;
+        bool check4;
+        bool check1;
+        bool check2;
+        check4 = false;
+        check3 = false;
+        check2 = false;
+        check1 = false;
 
+        s32 checkID = m_manageID;
         if (m_manageID >= 0 && m_unitID >= 0)
             check1 = true;
         if (check1 && m_sendID > -1)
@@ -88,8 +95,8 @@ public:
         }
     }
 
-    void initialize(s16 param1, s8 param2) {
-        addObserver(param1, param2);
+    void initialize(s16 manageId, s8 param2) {
+        addObserver(manageId, param2);
     }
 
     void setupObserver(s16 manageId) {
@@ -131,7 +138,7 @@ public:
                             sendId = -1;
                         }
                         else {
-                            sendId = eventUnit->addObserverSub(static_cast<T*>(this), -1);
+                            sendId = eventUnit->addObserverSub(static_cast<T&>(*this), -1);
                         }
                     }
                     else {
@@ -146,43 +153,70 @@ public:
         }
     }
 };
-static_assert(sizeof(soEventObserver<void>) == 0xC, "Class is wrong size!");
+static_assert(sizeof(soEventObserver<int>) == 0xC, "Class is wrong size!");
 
 template <class T>
 class soEventPresenter {
     static soInstanceManagerFullPropertyNull<T*> g_nullObserverList;
 
-    bool getObserverListHelper2() {
+    soInstanceManagerFullProperty<T*>* getObserverListHelper2() {
         soEventManager* mgr;
-        s16 uid = m_unitID;
+        soEventUnitWrapper<T>* evtUnitWrapper;
+        s16 uid;
+        uid = m_unitID;
         mgr = soEventSystem::getInstance()->getManager(m_manageID);
 
         if (mgr->getObserverCapacity(uid) == 0)
-            return false;
-        soEventUnitWrapper<T>* evtUnitWrapper =
+            return nullptr;
+        evtUnitWrapper =
             dynamic_cast<soEventUnitWrapper<T>* >(mgr->getEventUnit(uid));
-        if (!evtUnitWrapper)
-            return false;
-        m_obsrvrList = evtUnitWrapper->getObserverListSub();
-        return m_obsrvrList;
-    }
-
-    bool checkManageId() const {
-        const s16 mId = m_manageID;
-        return soEventSystem::getInstance()->getInstanceManager().isContain(mId);
+        return (!evtUnitWrapper) ? NULL : evtUnitWrapper->getObserverListSub();
     }
 
     bool getObserverListHelper() {
-        if (m_manageID <= -1 || !checkManageId())
+        s16 m = m_manageID;
+        if (m <= -1 || !soEventSystem::getInstance()->getInstanceManager().isContain(m))
             return false;
         if (soEventSystem::getInstance()->getManager(m_manageID)->getObserverCapacity(m_unitID) == 0) {
             m_obsrvrList = nullptr;
             return false;
         }
-        return getObserverListHelper2();
+        soInstanceManagerFullProperty<T*>* list = getObserverListHelper2();
+        m_obsrvrList = list;
+        return list;
+    }
+
+    // TODO: There are similarities between these setup helpers
+    // and the getObserverList helpers
+    soInstanceManagerFullProperty<T*>* setupHelper(s16 unitId) {
+        soEventManager* mgr = soEventSystem::getInstance()->getManager(m_manageID);
+        if (!mgr->getObserverCapacity(unitId))
+            return nullptr;
+        soEventUnitWrapper<T>* evtUnitWrapper =
+            dynamic_cast<soEventUnitWrapper<T>* >(mgr->getEventUnit(unitId));
+        return (!evtUnitWrapper) ? NULL : evtUnitWrapper->getObserverListSub();
+    }
+
+    void setupPresenter(s16 manageId) {
+        if (manageId > -1) {
+            if (soEventSystem::getInstance()->getInstanceManager().isContain(-1)) {
+                soEventManager* mgr = soEventSystem::getInstance()->getManager(m_manageID);
+                if (!mgr->getObserverCapacity(m_unitID))
+                    m_obsrvrList = nullptr;
+                else
+                    m_obsrvrList = setupHelper(m_unitID);
+            }
+        }
     }
 
 public:
+    soEventPresenter(s16 manageId) : m_manageID(manageId),
+                                     m_unitID(0),
+                                     m_obsrvrList(nullptr)
+    {
+        if (manageId > 0)
+            setupPresenter(manageId);
+    }
     virtual ~soEventPresenter() { }
 
     s16 m_manageID;
@@ -192,7 +226,7 @@ public:
     void setManageId(s16 id) {
         if (m_manageID != id) {
             m_manageID = id;
-            if (id > -1)
+            if (m_manageID > -1)
                 m_obsrvrList = nullptr;
         }
     }
