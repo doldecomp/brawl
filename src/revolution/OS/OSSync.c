@@ -8,6 +8,7 @@
 void __OSSystemCallVectorStart(void);
 void __OSSystemCallVectorEnd(void);
 
+#ifdef __MWERKS__
 static asm void SystemCallVector(void) {
     // clang-format off
     nofralloc
@@ -26,6 +27,9 @@ static asm void SystemCallVector(void) {
     nop
     // clang-format on
 }
+#else
+static void SystemCallVector(void) {}
+#endif
 
 void __OSInitSystemCall(void) {
     memcpy(OSPhysicalToCached(OS_PHYS_SYSCALL_INTR), __OSSystemCallVectorStart,

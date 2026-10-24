@@ -48,6 +48,7 @@ static void MEMIntrruptHandler(s16 intr, OSContext* ctx) {
     }
 }
 
+#ifdef __MWERKS__
 static asm void ConfigMEM1_24MB(void) {
     // clang-format off
     nofralloc
@@ -454,6 +455,17 @@ static asm void RealMode(register void* config) {
     rfi
     // clang-format on
 }
+#else
+static void ConfigMEM1_24MB(void) {}
+static void ConfigMEM1_48MB(void) {}
+static void ConfigMEM2_52MB(void) {}
+static void ConfigMEM2_56MB(void) {}
+static void ConfigMEM2_64MB(void) {}
+static void ConfigMEM2_112MB(void) {}
+static void ConfigMEM2_128MB(void) {}
+static void ConfigMEM_ES1_0(void) {}
+static void RealMode(void* config) {}
+#endif
 
 static void BATConfig(void) {
     u32 mem1sim;

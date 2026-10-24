@@ -20,6 +20,7 @@ static s32 YearDays[MONTH_MAX] = {0,   31,  59,  90,  120, 151,
 static s32 LeapYearDays[MONTH_MAX] = {0,   31,  60,  91,  121, 152,
                                       182, 213, 244, 274, 305, 335};
 
+#ifdef __MWERKS__
 asm s64 OSGetTime(void) {
     // clang-format off
     nofralloc
@@ -44,6 +45,7 @@ asm u32 OSGetTick(void){
     blr
     // clang-format on
 }
+#endif
 
 s64 __OSGetSystemTime(void) {
     BOOL enabled = OSDisableInterrupts();

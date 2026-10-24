@@ -26,6 +26,7 @@ DECL_SECTION(".init") static BOOL __get_debug_bba(void) {
 }
 
 void __start(void);
+#ifdef __MWERKS__
 DECL_SECTION(".init") DECL_WEAK asm void __start(void) {
     // clang-format off
     nofralloc
@@ -283,6 +284,7 @@ _after_init_metro_trk_bba:
     b exit // <- Will halt CPU
     // clang-format on
 }
+#endif
 
 DECL_SECTION(".init")
 static void __copy_rom_section(void* dst, const void* src, size_t size) {
@@ -303,6 +305,7 @@ static void __init_bss_section(void* dst, size_t size) {
     memset(dst, 0, size);
 }
 
+#ifdef __MWERKS__
 DECL_SECTION(".init") static asm void __init_registers(void) {
     // clang-format off
     nofralloc
@@ -347,6 +350,9 @@ DECL_SECTION(".init") static asm void __init_registers(void) {
     blr
     // clang-format on
 }
+#else
+DECL_SECTION(".init") static void __init_registers(void) {}
+#endif
 
 DECL_SECTION(".init") static void __init_data(void) {
     const RomSection* rs;

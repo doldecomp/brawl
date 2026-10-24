@@ -2,6 +2,7 @@
 #include <revolution/DB.h>
 #include <revolution/OS.h>
 
+#ifdef __MWERKS__
 asm void DCEnable(void) {
     // clang-format off
     nofralloc
@@ -265,6 +266,9 @@ do_load:
     blr
     // clang-format on
 }
+#else
+static void __LCEnable(void) {}
+#endif
 
 void LCEnable(void) {
     BOOL enabled = OSDisableInterrupts();
@@ -272,6 +276,7 @@ void LCEnable(void) {
     OSRestoreInterrupts(enabled);
 }
 
+#ifdef __MWERKS__
 asm void LCDisable(void) {
     // clang-format off
     nofralloc
@@ -327,6 +332,7 @@ asm void LCStoreBlocks(register void* dst, register const void* src,
     blr
     // clang-format on
 }
+#endif
 
 u32 LCStoreData(void* dst, const void* src, u32 len) {
     u32 blocks = (len + 31) / 32;
@@ -348,6 +354,7 @@ u32 LCStoreData(void* dst, const void* src, u32 len) {
     return ret;
 }
 
+#ifdef __MWERKS__
 asm u32 LCQueueLength(void) {
     // clang-format off
     nofralloc
@@ -371,6 +378,7 @@ asm void LCQueueWait(register u32 n) {
     blr
     // clang-format on
 }
+#endif
 
 static void L2Init(void) {
     u32 msr;

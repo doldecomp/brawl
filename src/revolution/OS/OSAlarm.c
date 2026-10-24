@@ -191,6 +191,7 @@ static void DecrementerExceptionCallback(u8 type, OSContext* ctx) {
     OSLoadContext(ctx);
 }
 
+#ifdef __MWERKS__
 static asm void DecrementerExceptionHandler(register u8 type,
                                             register OSContext* ctx) {
     // clang-format off
@@ -220,6 +221,9 @@ static asm void DecrementerExceptionHandler(register u8 type,
     b DecrementerExceptionCallback
     // clang-format on
 }
+#else
+static void DecrementerExceptionHandler(u8 type, OSContext* ctx) {}
+#endif
 
 void OSSetAlarmTag(OSAlarm* alarm, u32 tag) {
     alarm->tag = tag;

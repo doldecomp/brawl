@@ -2,6 +2,7 @@
 #include <revolution/DB.h>
 #include <revolution/OS.h>
 
+#ifdef __MWERKS__
 static asm void __OSLoadFPUContext(UNKWORD unused, register OSContext* ctx) {
     // clang-format off
     nofralloc
@@ -219,11 +220,16 @@ _not_current_fpu_ctx:
     blr
     // clang-format on
 }
+#else
+static void __OSLoadFPUContext(UNKWORD unused, OSContext* ctx) {}
+static void __OSSaveFPUContext(UNKWORD unused, UNKWORD unused1, OSContext* ctx) {}
+#endif
 
 OSContext* OSGetCurrentContext(void) {
     return OS_CURRENT_CONTEXT;
 }
 
+#ifdef __MWERKS__
 asm BOOL OSSaveContext(register OSContext* ctx) {
     // clang-format off
     nofralloc
@@ -405,6 +411,7 @@ asm void OSSwitchFiberEx(u32 r3, u32 r4, u32 r5, u32 r6, register void* func,
     blr
     // clang-format on
 }
+#endif
 
 void OSClearContext(OSContext* ctx) {
     ctx->mode = 0;
@@ -415,6 +422,7 @@ void OSClearContext(OSContext* ctx) {
     }
 }
 
+#ifdef __MWERKS__
 asm void OSInitContext(register OSContext* ctx, register void* _srr0,
                        register void* stack) {
     // clang-format off
@@ -475,6 +483,7 @@ asm void OSInitContext(register OSContext* ctx, register void* _srr0,
     b OSClearContext
     // clang-format on
 }
+#endif
 
 void OSDumpContext(const OSContext* ctx) {
     u32 i;
@@ -534,6 +543,7 @@ void OSDumpContext(const OSContext* ctx) {
     }
 }
 
+#ifdef __MWERKS__
 static asm void OSSwitchFPUContext(register u8 err, register OSContext* ctx) {
     // clang-format off
     nofralloc
@@ -583,6 +593,9 @@ _ctx_is_curr_fpu_ctx:
     rfi
     // clang-format on
 }
+#else
+static void OSSwitchFPUContext(u8 err, OSContext* ctx) {}
+#endif
 
 void __OSContextInit(void) {
     __OSSetExceptionHandler(OS_ERR_FP_UNAVAIL, OSSwitchFPUContext);

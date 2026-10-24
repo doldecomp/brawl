@@ -48,6 +48,7 @@ void __OSEVEnd(void);
 
 DECOMP_FORCEACTIVE(OS_c, __OSRebootParams);
 
+#ifdef __MWERKS__
 asm void __OSFPRInit(void) {
     // clang-format off
     nofralloc
@@ -135,6 +136,7 @@ paired_singles_disabled:
     blr
     // clang-format on
 }
+#endif
 
 static void DisableWriteGatherPipe(void) {
     PPCMthid2(PPCMfhid2() & ~HID2_WPE);
@@ -695,6 +697,7 @@ static void OSExceptionInit(void) {
     DBPrintf("Exceptions initialized...\n");
 }
 
+#ifdef __MWERKS__
 static asm void __OSDBIntegrator(void) {
     // clang-format off
     nofralloc
@@ -736,6 +739,10 @@ static asm void __OSDBJump(void){
     entry __OSDBJUMPEND
     // clang-format on
 }
+#else
+static void __OSDBIntegrator(void) {}
+static void __OSDBJump(void) {}
+#endif
 
 OSExceptionHandler
     __OSSetExceptionHandler(u8 type, OSExceptionHandler handler) {
@@ -748,6 +755,7 @@ OSExceptionHandler __OSGetExceptionHandler(u8 type) {
     return OSExceptionTable[type];
 }
 
+#ifdef __MWERKS__
 static asm void OSExceptionVector(void) {
     // clang-format off
     nofralloc
@@ -844,12 +852,16 @@ asm void OSDefaultExceptionHandler(u8 type, register OSContext* ctx) {
     b __OSUnhandledException
     // clang-format on
 }
+#else
+static void OSExceptionVector(void) {}
+#endif
 
 void __OSPSInit(void) {
     PPCMthid2(PPCMfhid2() | (1 << 31) | HID2_PSE);
     ICFlashInvalidate();
 
     // clang-format off
+#ifdef __MWERKS__
     asm {
         sync
         li r3, 0
@@ -862,6 +874,7 @@ void __OSPSInit(void) {
         mtgqr6 r3
         mtgqr7 r3
     }
+#endif
     // clang-format on
 }
 

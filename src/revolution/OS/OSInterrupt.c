@@ -16,6 +16,7 @@ static u32 InterruptPrioTable[] = {
 
 static void ExternalInterruptHandler(u8 type, OSContext* ctx);
 
+#ifdef __MWERKS__
 asm BOOL OSDisableInterrupts(void) {
     // clang-format off
     nofralloc
@@ -73,6 +74,7 @@ set_msr:
     blr
     // clang-format on
 }
+#endif
 
 OSInterruptHandler
     __OSSetInterruptHandler(OSInterruptType type, OSInterruptHandler handler) {
@@ -528,6 +530,7 @@ void __OSDispatchInterrupt(u8 intr, OSContext* ctx) {
     OSLoadContext(ctx);
 }
 
+#ifdef __MWERKS__
 static asm void ExternalInterruptHandler(register u8 type,
                                          register OSContext* ctx) {
     // clang-format off
@@ -557,3 +560,6 @@ static asm void ExternalInterruptHandler(register u8 type,
     b __OSDispatchInterrupt
     // clang-format on
 }
+#else
+static void ExternalInterruptHandler(u8 type, OSContext* ctx) {}
+#endif

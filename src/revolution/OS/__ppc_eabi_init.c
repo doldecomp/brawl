@@ -6,6 +6,7 @@ DECL_SECTION(".ctors$00") extern funcptr_t _ctors[];
 #pragma section ".dtors$00"
 DECL_SECTION(".dtors$00") extern funcptr_t _dtors[];
 
+#ifdef __MWERKS__
 asm void __init_hardware(void) {
     // clang-format off
     nofralloc
@@ -62,6 +63,7 @@ asm void __init_user(void) {
     blr
     // clang-format on
 }
+#endif
 
 void __init_cpp(void) {
     funcptr_t* ctor;
