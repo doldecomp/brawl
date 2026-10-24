@@ -58,6 +58,8 @@ s32 VIGetRetraceCount(void);
 VITvFormat VIGetTvFormat(void);
 VIScanMode VIGetScanMode(void);
 
+BOOL VIResetDimmingCount(void);
+
 #ifdef __cplusplus
 }
 #endif

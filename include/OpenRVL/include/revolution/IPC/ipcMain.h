@@ -20,6 +20,7 @@ inline void ACRWriteReg(u32 reg, u32 val) {
 }
 
 void IPCInit(void);
+void IPCReInit(void);
 u32 IPCReadReg(s32 index);
 void IPCWriteReg(s32 index, u32 value);
 void* IPCGetBufferHi(void);

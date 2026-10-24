@@ -81,6 +81,16 @@ typedef struct NANDStatus {
     u8 perm;     // at 0x7
 } NANDStatus;
 
+typedef struct NANDFileSystemStatus {
+    u32 blockSize;      // at 0x0
+    u32 freeBlocks;     // at 0x4
+    u32 occupiedBlocks; // at 0x8
+    u32 badBlocks;      // at 0xC
+    u32 reservedBlocks; // at 0x10
+    u32 freeInodes;     // at 0x14
+    u32 occupiedInodes; // at 0x18
+} NANDFileSystemStatus;
+
 typedef struct NANDFileInfo {
     s32 fd;                     // at 0x0
     s32 tempFd;                 // at 0x4
@@ -124,6 +134,7 @@ typedef struct NANDCommandBlock {
     u32 workBlocks;             // at 0xAC
     u32 workInodes;             // at 0xB0
     const char** dir;           // at 0xB4
+    BOOL simpleFlag;            // at 0xB8
 } NANDCommandBlock;
 
 typedef struct NANDBanner {
@@ -171,6 +182,7 @@ s32 NANDGetLengthAsync(NANDFileInfo* info, u32* lengthOut,
                        NANDAsyncCallback callback, NANDCommandBlock* block);
 
 s32 NANDGetStatus(const char* path, NANDStatus* status);
+s32 NANDSecretGetFileSystemStatus(NANDFileSystemStatus* status);
 s32 NANDPrivateGetStatusAsync(const char* path, NANDStatus* status,
                               NANDAsyncCallback callback,
                               NANDCommandBlock* block);

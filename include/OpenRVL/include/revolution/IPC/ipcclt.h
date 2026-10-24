@@ -117,6 +117,7 @@ typedef struct IPCRequestEx {
 } IPCRequestEx;
 
 s32 IPCCltInit(void);
+s32 IPCCltReInit(void);
 s32 IOS_OpenAsync(const char* path, IPCOpenMode mode, IPCAsyncCallback callback,
                   void* callbackArg);
 s32 IOS_Open(const char* path, IPCOpenMode mode);

@@ -43,6 +43,7 @@ typedef struct SCBtDeviceInfoArray {
 } SCBtDeviceInfoArray;
 
 u8 SCGetAspectRatio(void);
+s8 SCGetProductGameRegion(void);
 s8 SCGetDisplayOffsetH(void);
 u8 SCGetEuRgb60Mode(void);
 void SCGetIdleMode(SCIdleModeInfo* mode);

@@ -24,7 +24,7 @@ typedef enum {
     DVD_INTTYPE_SERR = (1 << 5), // Security error
     DVD_INTTYPE_VERR = (1 << 6), // Verify error
     DVD_INTTYPE_ARGS = (1 << 7), // Bad arguments
-} DVDLowIntType;
+} DVDLowIntFlag;
 
 // DICVR - DI Cover Register (via DVDLowGetCoverRegister)
 #define DVD_DICVR_CVR (1 << 0)
@@ -38,7 +38,12 @@ BOOL DVDLowReadDiskID(DVDDiskID* out, DVDLowCallback callback);
 BOOL DVDLowOpenPartition(u32 offset, const ESPTicket* ticket, u32 certsSize,
                          const void* certs, ESPTmd* tmd,
                          DVDLowCallback callback);
+BOOL DVDLowOpenPartitionWithTmdAndTicketView(u32 offset, const void* ticketView,
+                                             u32 tmdSize, const void* tmd,
+                                             u32 certsSize, const void* certs,
+                                             DVDLowCallback callback);
 BOOL DVDLowClosePartition(DVDLowCallback callback);
+BOOL DVDLowFinalize(void);
 BOOL DVDLowUnencryptedRead(void* dst, u32 size, u32 offset,
                            DVDLowCallback callback);
 BOOL DVDLowStopMotor(BOOL eject, BOOL kill, DVDLowCallback callback);

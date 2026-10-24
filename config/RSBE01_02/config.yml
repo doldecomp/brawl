@@ -3,8 +3,14 @@ object: sys/main.dol
 hash: a09cb9af20ae8356396374c27e31883d893f9ebe
 splits: config/RSBE01_02/splits.txt
 symbols: config/RSBE01_02/symbols.txt
+force_active: [OSLink] # Unreferenced in the DOL, but not stripped in the original link
 mw_comment_version: 14 # GC 3.0a5.2 linker
 quick_analysis: true # Faster reruns after full analysis
+
+block_relocations:
+# OSInit: arena fallback 0x80004000 is a constant, not __check_pad3
+- source: .text:0x801D5D94
+- source: .text:0x801D5E0C
 
 extract:
 - symbol: HomeBtnIcon
