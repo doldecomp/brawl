@@ -447,6 +447,7 @@ revolution/EXI/EXIUart.c:
 
 revolution/EXI/EXICommon.c:
 	.text       start:0x801E5DBC end:0x801E5F48
+	.sdata2     start:0x805A3750 end:0x805A3758
 
 revolution/SI/SIBios.c:
 	.text       start:0x801E5F48 end:0x801E74C8
@@ -698,6 +699,7 @@ revolution/KPAD/KPAD.c:
 
 revolution/EUART/euart.c:
 	.text       start:0x802284C4 end:0x80228834
+	.sbss       start:0x805A0CC0 end:0x805A0CD0
 
 revolution/USB/usb.c:
 	.text       start:0x80228834 end:0x80229960
