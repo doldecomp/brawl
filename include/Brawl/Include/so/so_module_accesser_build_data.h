@@ -28,7 +28,8 @@ public:
     // returns! TODO flag callers of this function, if any
     virtual s32* getTerritoryRect() const {
         s32 rect[4] = { 0, 0, 0, 0 };
-        return rect;
+        s32* result = rect;
+        return result;
     }
     virtual void* getTargetSearchParam() const { return nullptr; }
     virtual soIkData* getIkData() const { return nullptr; }

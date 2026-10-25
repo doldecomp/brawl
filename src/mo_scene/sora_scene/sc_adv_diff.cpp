@@ -15,10 +15,8 @@ void scAdvDiff::setModule() {
     setLoadModule("sora_adv_menu_difficulty.rel", false);
 }
 
-__declspec(section ".rodata") static muAdvDifficultyTaskParam g_TaskParam = { 2, 0, 1 };
-
 void scAdvDiff::start() {
-    muAdvDifficultyTaskParam param = g_TaskParam;
+    muAdvDifficultyTaskParam param = { 2, 0, 1 };
     m_task = muAdvDifficultyTask::create(&param);
     g_gfApplication->unkD0.endKeepScreen();
 }
