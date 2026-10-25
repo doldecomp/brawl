@@ -1769,7 +1769,7 @@ config.libs = [
 config.progress_categories = [
     # ProgressCategory("game", "Game Code"),
     # ProgressCategory("sdk", "SDK Code"),
-    ProgressCategory("rvl", "DOL › RVL SDK"),
+    ProgressCategory("rvl", "DOL > RVL SDK"),
 ]
 
 # One category per RVL SDK module, listed after "rvl" so they print as its breakdown
@@ -1782,7 +1782,7 @@ rvl_modules = sorted(
     }
 )
 config.progress_categories += [
-    ProgressCategory(f"rvl_{module}", f"DOL › RVL SDK › {module}")
+    ProgressCategory(f"rvl_{module}", f"DOL > RVL SDK > {module}")
     for module in rvl_modules
 ]
 config.progress_each_module = args.verbose
