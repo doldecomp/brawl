@@ -26,6 +26,10 @@ jobs:
     - name: Git config
       run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
+    # Fail early if symbols.txt changed without regenerating RSBE01.lst
+    - name: Check RSBE01.lst
+      run: python tools/generate_lst.py --check
+
     - name: Install uv
       uses: astral-sh/setup-uv@v7
       with:

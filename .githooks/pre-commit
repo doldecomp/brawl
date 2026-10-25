@@ -1,0 +1,20 @@
+#!/bin/sh
+# Regenerates include/RSBE01.lst when its inputs are staged.
+# Enable with: git config core.hooksPath .githooks
+
+git diff --cached --name-only --diff-filter=ACMRD |
+    grep -qE '(^|/)symbols\.txt$|^tools/lst_extras\.txt$|^tools/generate_lst\.py$|^config/RSBE01_02/config\.yml$' ||
+    exit 0
+
+python=$(command -v python3 || command -v python) || {
+    echo "pre-commit: python not found, can't regenerate include/RSBE01.lst" >&2
+    exit 1
+}
+
+# Generate from the staged inputs only, so unstaged edits don't leak into the commit
+tmp=$(mktemp -d) || exit 1
+trap 'rm -rf "$tmp"' EXIT
+git ls-files config tools/lst_extras.txt | git checkout-index --prefix="$tmp/" --stdin || exit 1
+
+"$python" tools/generate_lst.py --root "$tmp" -o include/RSBE01.lst || exit 1
+git add include/RSBE01.lst
