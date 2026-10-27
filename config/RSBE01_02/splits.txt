@@ -555,6 +555,8 @@ revolution/GX/GXFifo.c:
 
 revolution/GX/GXAttr.c:
 	.text       start:0x801EF280 end:0x801F04A4
+	.data       start:0x80475CB0 end:0x80475F28
+	.sdata      start:0x8059EA70 end:0x8059EA80
 
 revolution/GX/GXMisc.c:
 	.text       start:0x801F04A4 end:0x801F0E10
@@ -567,27 +569,36 @@ revolution/GX/GXFrameBuf.c:
 
 revolution/GX/GXLight.c:
 	.text       start:0x801F1FF0 end:0x801F270C
+	.data       start:0x80476270 end:0x80476290
+	.sdata2     start:0x805A37E8 end:0x805A3820
 
 revolution/GX/GXTexture.c:
 	.text       start:0x801F270C end:0x801F3750
 
 revolution/GX/GXBump.c:
 	.text       start:0x801F3750 end:0x801F3B9C
+	.sdata2     start:0x805A3858 end:0x805A3860
 
 revolution/GX/GXTev.c:
 	.text       start:0x801F3B9C end:0x801F421C
 
 revolution/GX/GXPixel.c:
 	.text       start:0x801F421C end:0x801F4980
+	.data       start:0x80476530 end:0x80476550
+	.sdata2     start:0x805A3860 end:0x805A38B0
 
 revolution/GX/GXDraw.c:
 	.text       start:0x801F4980 end:0x801F4D50
+	.bss        start:0x804DEDA8 end:0x804DF030
+	.sdata2     start:0x805A38B0 end:0x805A38D0
 
 revolution/GX/GXDisplayList.c:
 	.text       start:0x801F4D50 end:0x801F4F20
+	.bss        start:0x804DF030 end:0x804DF740
 
 revolution/GX/GXTransform.c:
 	.text       start:0x801F4F20 end:0x801F569C
+	.sdata2     start:0x805A38D0 end:0x805A38E8
 
 revolution/GX/GXPerf.c:
 	.text       start:0x801F569C end:0x801F5ED8
