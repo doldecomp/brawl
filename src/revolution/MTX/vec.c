@@ -1,5 +1,6 @@
 #include <revolution/MTX.h>
 
+#ifdef __MWERKS__
 asm void PSVECAdd(register const Vec* a, register const Vec* b,
                   register Vec* sum) {
     // clang-format off
@@ -197,6 +198,7 @@ asm void PSVECCrossProduct(register const Vec* a, register const Vec* b,
     blr
     // clang-format on
 }
+#endif
 
 void C_VECHalfAngle(register const Vec* a, register const Vec* b,
                     register Vec* half) {
@@ -221,6 +223,7 @@ void C_VECHalfAngle(register const Vec* a, register const Vec* b,
     }
 }
 
+#ifdef __MWERKS__
 f32 PSVECSquareDistance(register const Vec* a, register const Vec* b) {
     register f32 ayz, byz;
     register f32 axy, bxy;
@@ -248,3 +251,4 @@ f32 PSVECSquareDistance(register const Vec* a, register const Vec* b) {
 
     return dist;
 }
+#endif
