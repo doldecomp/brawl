@@ -528,18 +528,24 @@ revolution/VI/vi3in1.c:
 
 revolution/MTX/mtx.c:
 	.text       start:0x801EC158 end:0x801ECD70
+	.sdata      start:0x8059EA60 end:0x8059EA68
+	.sdata2     start:0x805A3758 end:0x805A3778
 
 revolution/MTX/mtxvec.c:
 	.text       start:0x801ECD70 end:0x801ECDC4
 
 revolution/MTX/mtx44.c:
 	.text       start:0x801ECDC4 end:0x801ECFE4
+	.sdata2     start:0x805A3778 end:0x805A3790
 
 revolution/MTX/vec.c:
 	.text       start:0x801ECFE4 end:0x801ED1EC
+	.sdata2     start:0x805A3790 end:0x805A37A0
 
 revolution/MTX/quat.c:
 	.text       start:0x801ED1EC end:0x801ED554
+	.rodata     start:0x8040D410 end:0x8040D420
+	.sdata2     start:0x805A37A0 end:0x805A37B0
 
 revolution/GX/GXInit.c:
 	.text       start:0x801ED554 end:0x801EE720

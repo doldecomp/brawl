@@ -358,11 +358,11 @@ config.libs = [
             RVLObject(NonMatching, "revolution/VI/i2c.c"),
             RVLObject(NonMatching, "revolution/VI/vi3in1.c"),
 
-            RVLObject(NonMatching, "revolution/MTX/mtx.c"),
-            RVLObject(NonMatching, "revolution/MTX/mtxvec.c"),
-            RVLObject(NonMatching, "revolution/MTX/mtx44.c"),
-            RVLObject(NonMatching, "revolution/MTX/vec.c"),
-            RVLObject(NonMatching, "revolution/MTX/quat.c"),
+            RVLObject(Matching, "revolution/MTX/mtx.c"),
+            RVLObject(Matching, "revolution/MTX/mtxvec.c"),
+            RVLObject(Matching, "revolution/MTX/mtx44.c"),
+            RVLObject(Matching, "revolution/MTX/vec.c"),
+            RVLObject(Matching, "revolution/MTX/quat.c"),
 
             RVLObject(NonMatching, "revolution/GX/GXInit.c"),
             RVLObject(NonMatching, "revolution/GX/GXFifo.c"),
