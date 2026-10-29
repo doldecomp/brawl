@@ -367,6 +367,8 @@ nw4r/ut/ut_FileStream.cpp:
 nw4r/ut/ut_DvdFileStream.cpp:
 	.text       start:0x8015CD54 end:0x8015D36C
 	.ctors      start:0x80406584 end:0x80406588
+	.data       start:0x804645A8 end:0x80464610
+	.sbss       start:0x805A0488 end:0x805A0490
 
 nw4r/ut/ut_DvdLockedFileStream.cpp:
 	.text       start:0x8015D36C end:0x8015D72C
@@ -398,6 +400,9 @@ nw4r/ut/ut_ResFont.cpp:
 
 nw4r/ut/ut_CharWriter.cpp:
 	.text       start:0x8015E8F4 end:0x8016017C
+	.bss        start:0x8049ED90 end:0x8049EDB0
+	.sbss       start:0x805A04A8 end:0x805A04B0
+	.sdata2     start:0x805A2BB8 end:0x805A2BD8
 
 nw4r/ut/ut_TextWriterBase.cpp:
 	.text       start:0x8016017C end:0x80162188
@@ -564,9 +569,13 @@ nw4r/lyt/lyt_bounding.cpp:
 
 nw4r/lyt/lyt_material.cpp:
 	.text       start:0x801880B0 end:0x8018AD5C
+	.data       start:0x80465938 end:0x804659A0
+	.sdata2     start:0x805A3128 end:0x805A3130
+	.sbss2      start:0x805A5130 end:0x805A5138
 
 nw4r/lyt/lyt_texMap.cpp:
 	.text       start:0x8018AD5C end:0x8018B05C
+	.sdata2     start:0x805A3130 end:0x805A3148
 
 nw4r/lyt/lyt_drawInfo.cpp:
 	.text       start:0x8018B05C end:0x8018B3B4
@@ -585,6 +594,7 @@ nw4r/lyt/lyt_resourceAccessor.cpp:
 
 nw4r/lyt/lyt_arcResourceAccessor.cpp:
 	.text       start:0x8018BF14 end:0x8018C114
+	.data       start:0x804659E8 end:0x80465A00
 
 nw4r/lyt/lyt_common.cpp:
 	.text       start:0x8018C114 end:0x8018CBF4
@@ -908,6 +918,8 @@ nw4r/snd/snd_SeqTrack.cpp:
 
 nw4r/snd/snd_Sound3DActor.cpp:
 	.text       start:0x801C5D08 end:0x801C60AC
+	.rodata     start:0x8040AFA8 end:0x8040AFC0
+	.data       start:0x80466AF0 end:0x80466B18
 
 nw4r/snd/snd_Sound3DListener.cpp:
 	.text       start:0x801C60AC end:0x801C60C0
@@ -1007,6 +1019,10 @@ nw4r/snd/snd_VoiceManager.cpp:
 
 nw4r/snd/snd_Util.cpp:
 	.text       start:0x801D3258 end:0x801D36BC
+	.rodata     start:0x8040AFC0 end:0x8040D410
+	.data       start:0x80466D50 end:0x80466D60
+	.sdata      start:0x8059E978 end:0x8059E980
+	.sdata2     start:0x805A3678 end:0x805A36C0
 
 nw4r/snd/snd_WaveFile.cpp:
 	.text       start:0x801D36BC end:0x801D38FC
