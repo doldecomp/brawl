@@ -10,6 +10,11 @@ Super Smash Bros. Brawl
 [Discord Badge]: https://img.shields.io/discord/727908905392275526?color=%237289DA&logo=discord&logoColor=%23FFFFFF
 [discord]: https://discord.gg/hKx3FJJgrV
 
+<!-- markdownlint-disable MD033 -->
+
+[<img src="https://decomp.dev/doldecomp/brawl.svg?w=512&h=256" width="512" height="256" alt="Visual decomp progress">][Progress]
+<!-- markdownlint-enable MD033 -->
+
 A work-in-progress decompilation of Super Smash Bros. Brawl.
 
 This repository does **not** contain any game assets or assembly whatsoever. An existing copy of the game is required.
@@ -21,7 +26,9 @@ Supported versions:
 - `RSBJ01_01`: Japan Rev 1
 - `RSBE01_01`: USA Rev 1
 -->
+
 - `RSBE01_02`: USA Rev 2
+
 <!--
 - `RSBP01_00`: PAL Rev 0
 - `RSBP01_01`: PAL Rev 1

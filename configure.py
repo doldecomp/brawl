@@ -250,6 +250,16 @@ cflags_rvl = [
     "-Iinclude/OpenRVL/include/stl",
 ]
 
+# NW4R flags
+cflags_nw4r = [
+    *cflags_base,
+    "-ipa file",
+    "-Iinclude/nw4r/include",
+    "-Iinclude/OpenRVL/include",
+    "-Iinclude/OpenRVL/include/revolution",
+    "-Iinclude/OpenRVL/include/stl",
+]
+
 # REL flags
 config.rel_strip_partial = True
 cflags_rel = [
@@ -288,6 +298,14 @@ def RVLObject(completed, name, **options):
     module = rvl_module(name)
     return Object(
         completed, name, progress_category=["rvl", f"rvl_{module}"], **options
+    )
+
+
+# NW4R object (nw4r/<module>/...), tracked under "nw4r" and its module
+def NW4RObject(completed, name, **options):
+    module = name.split("/")[1]
+    return Object(
+        completed, name, progress_category=["nw4r", f"nw4r_{module}"], **options
     )
 
 
@@ -641,6 +659,193 @@ config.libs = [
             RVLObject(NonMatching, "RVLFaceLib/RFL_DefaultDatabase.c"),
             RVLObject(NonMatching, "RVLFaceLib/RFL_DataUtility.c"),
             RVLObject(NonMatching, "RVLFaceLib/RFL_Format.c"),
+        ],
+    },
+    {
+        "lib": "NW4R",
+        "mw_version": config.linker_version,
+        "cflags": cflags_nw4r,
+        "host": False,
+        "objects": [
+            NW4RObject(NonMatching, "nw4r/ut/ut_list.cpp"),
+            NW4RObject(NonMatching, "nw4r/ut/ut_LinkList.cpp"),
+            NW4RObject(NonMatching, "nw4r/ut/ut_binaryFileFormat.cpp"),
+            NW4RObject(NonMatching, "nw4r/ut/ut_CharStrmReader.cpp"),
+            NW4RObject(NonMatching, "nw4r/ut/ut_TagProcessorBase.cpp"),
+            NW4RObject(NonMatching, "nw4r/ut/ut_IOStream.cpp"),
+            NW4RObject(NonMatching, "nw4r/ut/ut_FileStream.cpp"),
+            NW4RObject(NonMatching, "nw4r/ut/ut_DvdFileStream.cpp"),
+            NW4RObject(NonMatching, "nw4r/ut/ut_DvdLockedFileStream.cpp"),
+            NW4RObject(NonMatching, "nw4r/ut/ut_LockedCache.cpp"),
+            NW4RObject(NonMatching, "nw4r/ut/ut_Font.cpp"),
+            NW4RObject(NonMatching, "nw4r/ut/ut_RomFont.cpp"),
+            NW4RObject(NonMatching, "nw4r/ut/ut_ResFontBase.cpp"),
+            NW4RObject(NonMatching, "nw4r/ut/ut_ResFont.cpp"),
+            NW4RObject(NonMatching, "nw4r/ut/ut_CharWriter.cpp"),
+            NW4RObject(NonMatching, "nw4r/ut/ut_TextWriterBase.cpp"),
+            NW4RObject(NonMatching, "nw4r/math/math_arithmetic.cpp"),
+            NW4RObject(NonMatching, "nw4r/math/math_triangular.cpp"),
+            NW4RObject(NonMatching, "nw4r/math/math_types.cpp"),
+            NW4RObject(NonMatching, "nw4r/math/math_geometry.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/ef_draworder.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/ef_effect.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/ef_effectsystem.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/ef_emitter.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/ef_animcurve.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/ef_particle.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/ef_particlemanager.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/ef_resource.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/ef_util.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/ef_handle.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/ef_emitterform.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/ef_creationqueue.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/emform/ef_emform.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/emform/ef_point.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/emform/ef_line.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/emform/ef_disc.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/emform/ef_sphere.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/emform/ef_cylinder.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/emform/ef_torus.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/emform/ef_cube.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/drawstrategy/ef_drawstrategybuilder.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/drawstrategy/ef_drawstrategyimpl.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/drawstrategy/ef_drawbillboardstrategy.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/drawstrategy/ef_drawdirectionalstrategy.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/drawstrategy/ef_drawfreestrategy.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/drawstrategy/ef_drawlinestrategy.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/drawstrategy/ef_drawpointstrategy.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/drawstrategy/ef_drawstripestrategy.cpp"),
+            NW4RObject(NonMatching, "nw4r/ef/drawstrategy/ef_drawsmoothstripestrategy.cpp"),
+            NW4RObject(NonMatching, "nw4r/lyt/lyt_pane.cpp"),
+            NW4RObject(NonMatching, "nw4r/lyt/lyt_group.cpp"),
+            NW4RObject(NonMatching, "nw4r/lyt/lyt_layout.cpp"),
+            NW4RObject(NonMatching, "nw4r/lyt/lyt_picture.cpp"),
+            NW4RObject(NonMatching, "nw4r/lyt/lyt_textBox.cpp"),
+            NW4RObject(NonMatching, "nw4r/lyt/lyt_window.cpp"),
+            NW4RObject(NonMatching, "nw4r/lyt/lyt_bounding.cpp"),
+            NW4RObject(NonMatching, "nw4r/lyt/lyt_material.cpp"),
+            NW4RObject(NonMatching, "nw4r/lyt/lyt_texMap.cpp"),
+            NW4RObject(NonMatching, "nw4r/lyt/lyt_drawInfo.cpp"),
+            NW4RObject(NonMatching, "nw4r/lyt/lyt_animation.cpp"),
+            NW4RObject(NonMatching, "nw4r/lyt/lyt_resourceAccessor.cpp"),
+            NW4RObject(NonMatching, "nw4r/lyt/lyt_arcResourceAccessor.cpp"),
+            NW4RObject(NonMatching, "nw4r/lyt/lyt_common.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_rescommon.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_resdict.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_resfile.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_resmdl.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_resshp.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_restev.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_resmat.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_resvtx.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_restex.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_resnode.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_resanm.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_resanmvis.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_resanmclr.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_resanmtexpat.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_resanmtexsrt.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_resanmchr.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_reslightset.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_resanmamblight.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_resanmlight.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_resanmfog.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_resanmcamera.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_resanmscn.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/res/g3d_resanmshp.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_anmvis.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_anmclr.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_anmtexpat.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_anmtexsrt.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_anmchr.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_anmshp.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_anmscn.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_obj.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_anmobj.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/platform/g3d_gpu.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/platform/g3d_cpu.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_state.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_draw1mat1shp.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_calcview.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_dcc.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_workmem.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_calcworld.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_draw.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_camera.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_basic.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_maya.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_xsi.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_3dsmax.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_scnobj.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_scnroot.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_scnmdlsmpl.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_scnmdl.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_calcmaterial.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_init.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_scnproc.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_fog.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_light.cpp"),
+            NW4RObject(NonMatching, "nw4r/g3d/g3d_calcvtx.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_AxManager.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_AxVoice.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_AxVoiceManager.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_AxfxImpl.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_Bank.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_BankFile.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_BasicPlayer.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_BasicSound.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_Channel.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_DisposeCallbackManager.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_DvdSoundArchive.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_EnvGenerator.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_ExternalSoundPlayer.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_FrameHeap.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_FxDelay.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_FxReverbHi.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_InstancePool.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_Lfo.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_MemorySoundArchive.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_MidiSeqPlayer.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_MmlParser.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_MmlSeqTrack.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_MmlSeqTrackAllocator.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_NandSoundArchive.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_RemoteSpeaker.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_RemoteSpeakerManager.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_SeqFile.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_SeqPlayer.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_SeqSound.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_SeqSoundHandle.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_SeqTrack.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_Sound3DActor.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_Sound3DListener.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_Sound3DManager.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_SoundActor.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_SoundArchive.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_SoundArchiveFile.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_SoundArchiveLoader.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_SoundArchivePlayer.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_SoundHandle.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_SoundHeap.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_SoundPlayer.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_SoundStartable.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_SoundSystem.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_SoundThread.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_StrmChannel.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_StrmFile.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_StrmPlayer.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_StrmSound.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_Task.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_TaskManager.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_TaskThread.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_Voice.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_VoiceManager.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_Util.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_WaveFile.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_WaveSound.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_WsdFile.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_WsdPlayer.cpp"),
+            NW4RObject(NonMatching, "nw4r/snd/snd_adpcm.cpp"),
         ],
     },
     # The DOL
@@ -1787,9 +1992,26 @@ config.progress_categories += [
     ProgressCategory(f"rvl_{module}", f"DOL > RVL SDK > {module}")
     for module in rvl_modules
 ]
+
+# Same for NW4R
+config.progress_categories.append(ProgressCategory("nw4r", "DOL > NW4R"))
+nw4r_modules = sorted(
+    {
+        obj.name.split("/")[1]
+        for lib in config.libs
+        if lib["lib"] == "NW4R"
+        for obj in lib["objects"]
+    }
+)
+config.progress_categories += [
+    ProgressCategory(f"nw4r_{module}", f"DOL > NW4R > {module}")
+    for module in nw4r_modules
+]
 config.progress_each_module = args.verbose
-# Per-module RVL lines stay in report.json, but only print with --verbose
-config.print_progress_categories = True if args.verbose else ["dol", "modules", "rvl"]
+# Per-module RVL/NW4R lines stay in report.json, but only print with --verbose
+config.print_progress_categories = (
+    True if args.verbose else ["dol", "modules", "rvl", "nw4r"]
+)
 
 if args.mode == "configure":
     # Write build.ninja and objdiff.json
