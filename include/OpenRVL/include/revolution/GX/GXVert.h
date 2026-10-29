@@ -87,10 +87,22 @@ static inline void GXNormal3f32(f32 x, f32 y, f32 z) {
     WGPIPE.f = z;
 }
 
+static inline void GXNormal3u16(s16 x, s16 y, s16 z) {
+    WGPIPE.us = x;
+    WGPIPE.us = y;
+    WGPIPE.us = z;
+}
+
 static inline void GXNormal3s16(s16 x, s16 y, s16 z) {
     WGPIPE.s = x;
     WGPIPE.s = y;
     WGPIPE.s = z;
+}
+
+static inline void GXNormal3u8(u8 x, u8 y, u8 z) {
+    WGPIPE.uc = x;
+    WGPIPE.uc = y;
+    WGPIPE.uc = z;
 }
 
 static inline void GXNormal3s8(s8 x, s8 y, s8 z) {

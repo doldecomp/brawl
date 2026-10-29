@@ -113,7 +113,7 @@ void grTenganAshiba::updateMove(float deltaFrame) {
                 case 3:
                     fVar1 = m_speed - tenganData->yuka_fly_accel;
                     m_speed = fVar1;
-                    if (fabs(fVar1) > tenganData->yuka_fly_speed_max) {
+                    if (__fabs(fVar1) > tenganData->yuka_fly_speed_max) {
                         m_speed = tenganData->yuka_fly_speed_max * -1.0f;
                     }
                     if (m_isMovingUp == true) {

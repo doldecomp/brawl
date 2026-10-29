@@ -9,14 +9,16 @@
 extern "C" {
 #endif
 
+#define GX_PROJECTION_SZ 7
+
 typedef enum {
     GX_FIELD_EVEN,
     GX_FIELD_ODD,
 } GXInterlaceField;
 
 void GXSetProjection(const Mtx44 proj, GXProjectionType type);
-void GXSetProjectionv(const f32 proj[7]);
-void GXGetProjectionv(f32 proj[7]);
+void GXSetProjectionv(const f32 proj[GX_PROJECTION_SZ]);
+void GXGetProjectionv(f32 proj[GX_PROJECTION_SZ]);
 void GXLoadPosMtxImm(const Mtx mtx, u32 id);
 void GXLoadPosMtxIndx(u16 index, u32 id);
 void GXLoadNrmMtxImm(const Mtx mtx, u32 id);

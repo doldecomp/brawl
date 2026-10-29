@@ -432,39 +432,55 @@ nw4r/math/math_geometry.cpp:
 
 nw4r/ef/ef_draworder.cpp:
 	.text       start:0x801638D0 end:0x801639DC
+	.data       start:0x80465240 end:0x80465258
 
 nw4r/ef/ef_effect.cpp:
 	.text       start:0x801639DC end:0x80164738
+	.data       start:0x80465258 end:0x80465278
+	.sdata2     start:0x805A2C68 end:0x805A2C70
 
 nw4r/ef/ef_effectsystem.cpp:
 	.text       start:0x80164738 end:0x80164D20
 	.ctors      start:0x80406594 end:0x80406598
+	.bss        start:0x8049EDC8 end:0x804A3E40
+	.sdata      start:0x8059E870 end:0x8059E880
+	.sbss       start:0x805A04C0 end:0x805A04D0
 
 nw4r/ef/ef_emitter.cpp:
 	.text       start:0x80164D20 end:0x80166EFC
+	.data       start:0x804652C0 end:0x804652E8
+	.sdata2     start:0x805A2C70 end:0x805A2CA8
 
 nw4r/ef/ef_animcurve.cpp:
 	.text       start:0x80166EFC end:0x8016B680
 
 nw4r/ef/ef_particle.cpp:
 	.text       start:0x8016B680 end:0x8016C418
+	.data       start:0x804652E8 end:0x80465300
+	.sdata2     start:0x805A2CE0 end:0x805A2D28
 
 nw4r/ef/ef_particlemanager.cpp:
 	.text       start:0x8016C418 end:0x8016E4E8
 	.ctors      start:0x80406598 end:0x8040659C
+	.data       start:0x80465300 end:0x804653C0
+	.bss        start:0x804A3E40 end:0x804A3E70
+	.sdata2     start:0x805A2D28 end:0x805A2D60
 
 nw4r/ef/ef_resource.cpp:
 	.text       start:0x8016E4E8 end:0x8016F198
 	.ctors      start:0x8040659C end:0x804065A0
+	.bss        start:0x804A3E70 end:0x804A3E90
 
 nw4r/ef/ef_util.cpp:
 	.text       start:0x8016F198 end:0x8016FB7C
+	.sdata2     start:0x805A2D60 end:0x805A2D78
 
 nw4r/ef/ef_handle.cpp:
 	.text       start:0x8016FB7C end:0x8016FC34
 
 nw4r/ef/ef_emitterform.cpp:
 	.text       start:0x8016FC34 end:0x80170224
+	.sdata2     start:0x805A2D78 end:0x805A2DB0
 
 nw4r/ef/ef_creationqueue.cpp:
 	.text       start:0x80170224 end:0x801704DC
@@ -472,49 +488,76 @@ nw4r/ef/ef_creationqueue.cpp:
 nw4r/ef/emform/ef_emform.cpp:
 	.text       start:0x801704DC end:0x80170594
 	.ctors      start:0x804065A0 end:0x804065A4
+	.data       start:0x804653C0 end:0x80465468
+	.sbss       start:0x805A04D0 end:0x805A04F0
 
 nw4r/ef/emform/ef_point.cpp:
 	.text       start:0x80170594 end:0x801708E8
+	.sdata2     start:0x805A2DB0 end:0x805A2DE0
 
 nw4r/ef/emform/ef_line.cpp:
 	.text       start:0x801708E8 end:0x80170C84
+	.sdata2     start:0x805A2DE0 end:0x805A2E08
 
 nw4r/ef/emform/ef_disc.cpp:
 	.text       start:0x80170C84 end:0x801711AC
+	.sdata2     start:0x805A2E08 end:0x805A2E50
 
 nw4r/ef/emform/ef_sphere.cpp:
 	.text       start:0x801711AC end:0x80171AA0
+	.sdata2     start:0x805A2E50 end:0x805A2E98
 
 nw4r/ef/emform/ef_cylinder.cpp:
 	.text       start:0x80171AA0 end:0x80172254
+	.sdata2     start:0x805A2E98 end:0x805A2EE0
 
 nw4r/ef/emform/ef_torus.cpp:
 	.text       start:0x80172254 end:0x801728F4
+	.sdata2     start:0x805A2EE0 end:0x805A2F28
 
 nw4r/ef/emform/ef_cube.cpp:
 	.text       start:0x801728F4 end:0x80174434
+	.sdata2     start:0x805A2F28 end:0x805A2F60
 
 nw4r/ef/drawstrategy/ef_drawstrategybuilder.cpp:
 	.text       start:0x80174434 end:0x801747D8
+	.data       start:0x80465468 end:0x80465490
+	.bss        start:0x804A3E90 end:0x804A4408
+	.sbss       start:0x805A04F0 end:0x805A04F8
 
 nw4r/ef/drawstrategy/ef_drawstrategyimpl.cpp:
 	.text       start:0x801747D8 end:0x80176444
 	.ctors      start:0x804065A4 end:0x804065A8
+	.data       start:0x80465490 end:0x804654A8
+	.sdata2     start:0x805A2F60 end:0x805A2F90
 
 nw4r/ef/drawstrategy/ef_drawbillboardstrategy.cpp:
 	.text       start:0x80176444 end:0x801783F0
+	.data       start:0x804654A8 end:0x804654C8
+	.sdata      start:0x8059E880 end:0x8059E8A0
+	.sdata2     start:0x805A2F90 end:0x805A2FC0
 
 nw4r/ef/drawstrategy/ef_drawdirectionalstrategy.cpp:
 	.text       start:0x801783F0 end:0x8017A4A4
 
 nw4r/ef/drawstrategy/ef_drawfreestrategy.cpp:
 	.text       start:0x8017A4A4 end:0x8017AC30
+	.rodata     start:0x8040A838 end:0x8040A898
+	.data       start:0x80465500 end:0x80465518
+	.sdata      start:0x8059E8C0 end:0x8059E8C8
+	.sdata2     start:0x805A2FF0 end:0x805A3018
 
 nw4r/ef/drawstrategy/ef_drawlinestrategy.cpp:
 	.text       start:0x8017AC30 end:0x8017B10C
+	.data       start:0x80465518 end:0x80465530
+	.sdata      start:0x8059E8C8 end:0x8059E8D0
+	.sdata2     start:0x805A3018 end:0x805A3028
 
 nw4r/ef/drawstrategy/ef_drawpointstrategy.cpp:
 	.text       start:0x8017B10C end:0x8017B400
+	.data       start:0x80465530 end:0x80465548
+	.sdata      start:0x8059E8D0 end:0x8059E8D8
+	.sdata2     start:0x805A3028 end:0x805A3038
 
 nw4r/ef/drawstrategy/ef_drawstripestrategy.cpp:
 	.text       start:0x8017B400 end:0x8017E24C

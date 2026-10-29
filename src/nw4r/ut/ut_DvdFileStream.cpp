@@ -112,7 +112,7 @@ s32 DvdFileStream::Read(void* pDst, u32 size) {
 #if defined(VERSION_RSPE01_00)
     //! @bug Only in rev 0: error code will be interpreted as a negative size
     mFilePosition.Skip(result);
-#elif defined(VERSION_RSPE01_01)
+#else
     if (result > 0) {
         mFilePosition.Skip(result);
     }
