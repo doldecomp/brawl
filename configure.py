@@ -258,6 +258,7 @@ cflags_nw4r = [
     "-Iinclude/OpenRVL/include",
     "-Iinclude/OpenRVL/include/revolution",
     "-Iinclude/OpenRVL/include/stl",
+    "-Iinclude/utils/include",
 ]
 
 # REL flags
