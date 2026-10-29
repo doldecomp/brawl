@@ -7,7 +7,7 @@
 #include <mu/selchar/mu_selchar.h>
 #include <mu/selchar/mu_select_character_list.h>
 #include <mu/selchar/mu_select_character_name_entry.h>
-#include <nw4r/g3d/g3d_resfile.h>
+#include <nw4r/g3d/res/g3d_resfile.h>
 #include <mu/selchar/mu_selchar_hand.h>
 #include <gf/gf_pad_status.h>
 #include <gm/gm_lib.h>

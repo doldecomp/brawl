@@ -5,7 +5,7 @@
 #include <it/it_manager.h>
 #include <memory.h>
 #include <mt/mt_vector.h>
-#include <nw4r/g3d/g3d_resfile.h>
+#include <nw4r/g3d/res/g3d_resfile.h>
 #include <st/st_class_info.h>
 #include <st/st_melee.h>
 #include <types.h>

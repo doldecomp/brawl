@@ -148,12 +148,12 @@ void grTenganAshiba::updateCallBack(float frameDelta) {
     if (calcWorldCallBack != NULL) {
         nw4r::g3d::ScnMdl* scnMdl = this->m_sceneModels[0];
         if (scnMdl != NULL) {
-            if (scnMdl->m_calcWorldCallBack == NULL) {
+            if (scnMdl->GetScnMdlCallback() == NULL) {
                 calcWorldCallBack->m_index = 0;
                 calcWorldCallBack->m_nodeCallbackDatas[0].m_nodeIndex = this->m_nodeIndex;
-                scnMdl->m_calcWorldCallBack = calcWorldCallBack;
-                scnMdl->EnableScnMdlCallbackTiming(1);
-                scnMdl->m_nodeIndex = calcWorldCallBack->m_nodeCallbackDatas[0].m_nodeIndex;
+                scnMdl->SetScnMdlCallback(calcWorldCallBack);
+                scnMdl->EnableScnMdlCallbackTiming(nw4r::g3d::ScnObj::CALLBACK_TIMING_A);
+                scnMdl->SetScnMdlCallbackNodeID(calcWorldCallBack->m_nodeCallbackDatas[0].m_nodeIndex);
             }
             grNodeCallbackData* callbackData = calcWorldCallBack->m_nodeCallbackDatas;
             callbackData->m_pos.m_x = m_ashibaPos.m_x;

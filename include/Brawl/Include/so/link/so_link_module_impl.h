@@ -4,7 +4,7 @@
 #include <types.h>
 #include <mt/mt_matrix.h>
 #include <mt/mt_vector.h>
-#include <nw4r/g3d/g3d_resfile.h>
+#include <nw4r/g3d/res/g3d_resfile.h>
 #include <so/so_array.h>
 #include <so/anim/so_anim_cmd.h>
 #include <so/anim/so_anim_cmd_event_presenter.h>

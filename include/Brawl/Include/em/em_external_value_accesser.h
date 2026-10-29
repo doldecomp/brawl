@@ -3,7 +3,7 @@
 #include <StaticAssert.h>
 #include <em/enemy.h>
 #include <mt/mt_vector.h>
-#include <nw4r/g3d/g3d_resfile.h>
+#include <nw4r/g3d/res/g3d_resfile.h>
 #include <so/so_external_value_accesser.h>
 #include <types.h>
 

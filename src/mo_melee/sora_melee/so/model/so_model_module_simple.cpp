@@ -1,8 +1,8 @@
 #include <gf/gf_3d_scene.h>
 #include <mt/mt_matrix.h>
 #include <mt/mt_vector.h>
-#include <nw4r/g3d/g3d_resmdl.h>
-#include <nw4r/g3d/g3d_resnode.h>
+#include <nw4r/g3d/res/g3d_resmdl.h>
+#include <nw4r/g3d/res/g3d_resnode.h>
 #include <nw4r/g3d/g3d_scnmdlsmpl.h>
 #include <nw4r/g3d/g3d_scnmdl.h>
 #include <so/model/so_model_module_simple.h>
@@ -40,10 +40,10 @@ void soModelModuleSimple::resetLayerType(gfSceneRoot::LayerType lt) {
 
 int soModelModuleSimple::getNodeId(const char* nodeName) {
     if (getScnMdl()) {
-        nw4r::g3d::ResMdl resMdl = getScnMdl()->m_resMdl;
+        nw4r::g3d::ResMdl resMdl = getScnMdl()->GetResMdl();
         nw4r::g3d::ResNode nd = resMdl.GetResNode(nodeName);
         if (nd.IsValid()) {
-            return nd.IsValid() ? nd->m_nodeIndex : 0;
+            return nd.IsValid() ? nd.ptr()->id : 0;
         }
     }
     return -1;
@@ -51,19 +51,15 @@ int soModelModuleSimple::getNodeId(const char* nodeName) {
 
 const char* soModelModuleSimple::getNodeName(u32 p1) {
     if (getScnMdl()) {
-        nw4r::g3d::ResMdl resMdl = getScnMdl()->m_resMdl;
+        nw4r::g3d::ResMdl resMdl = getScnMdl()->GetResMdl();
         if (p1 >= resMdl.GetResNodeNumEntries()) {
             return nullptr;
         }
-        const nw4r::g3d::ResNodeData* nd = resMdl.GetResNode(p1).ptr();
-        if (!nd) {
+        nw4r::g3d::ResNode nd = resMdl.GetResNode(p1);
+        if (!nd.IsValid()) {
             goto end;
         }
-        if (nd->m_nodeNameStrOffset) {
-            return reinterpret_cast<const char*>(nd) +
-                nd->m_nodeNameStrOffset;
-        }
-        return nullptr;
+        return nd.GetName();
     }
 end:
     return nullptr;
@@ -108,7 +104,7 @@ bool soModelModuleSimple::isNode(u32 id) {
 }
 
 u32 soModelModuleSimple::getNodeNum() const {
-    nw4r::g3d::ResMdl resMdl = getScnMdl()->m_resMdl;
+    nw4r::g3d::ResMdl resMdl = getScnMdl()->GetResMdl();
     return resMdl.GetResNodeNumEntries();
 }
 
@@ -145,7 +141,7 @@ bool soModelModuleSimple::setOption(u32 option, u32 value) {
 
 bool soModelModuleSimple::getResMdl(nw4r::g3d::ResMdl* resMdl) {
     if (getScnMdl()) {
-        *resMdl = getScnMdl()->m_resMdl;
+        *resMdl = getScnMdl()->GetResMdl();
         return true;
     }
     return false;

@@ -1,7 +1,7 @@
 #pragma once
 #include <StaticAssert.h>
 #include <gf/gf_task.h>
-#include <nw4r/g3d/g3d_scngroup.h>
+#include <nw4r/g3d/g3d_scnobj.h>
 class MenuRoot : public gfTask {
 public:
     char spacer[0x08];

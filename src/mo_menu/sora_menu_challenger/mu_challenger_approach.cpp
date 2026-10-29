@@ -188,17 +188,17 @@ void muChallengerApproachTask::release() {
 }
 
 void muChallengerApproachTask::createData(gfArchive* archive) {
-    m_backgroundRes = archive->getData(Data_Type_Model, 0, 0xFFFE);
-    m_challengerRes = archive->getData(Data_Type_Model, 1, 0xFFFE);
+    m_backgroundRes = nw4r::g3d::ResFile(archive->getData(Data_Type_Model, 0, 0xFFFE));
+    m_challengerRes = nw4r::g3d::ResFile(archive->getData(Data_Type_Model, 1, 0xFFFE));
 
-    nw4r::g3d::ResFile::Init(&m_backgroundRes);
-    nw4r::g3d::ResFile::Init(&m_challengerRes);
+    m_backgroundRes.Init();
+    m_challengerRes.Init();
 
     m_menuRoot = MenuRoot::create("ChallengerTask", 0x10, "/menu/defaultcamera/CharacterSelect.brres");
 
     m_backgroundAnim = MuObject::create(&m_backgroundRes, "MenChallenger0000_TopN", 1, 0, Heaps::MenuInstance);
     m_challengerAnim = MuObject::create(&m_challengerRes, m_names[m_challengerIndex], 1, 0, Heaps::MenuInstance);
 
-    m_menuRoot->scene->Insert(m_menuRoot->scene->sceneItemsCount, m_backgroundAnim->m_scnMdl);
-    m_menuRoot->scene->Insert(m_menuRoot->scene->sceneItemsCount, m_challengerAnim->m_scnMdl);
+    m_menuRoot->scene->Insert(m_menuRoot->scene->Size(), m_backgroundAnim->m_scnMdl);
+    m_menuRoot->scene->Insert(m_menuRoot->scene->Size(), m_challengerAnim->m_scnMdl);
 }

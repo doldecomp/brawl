@@ -128,7 +128,7 @@ void soAnimChr::disableNode(u32 id) {
 }
 
 float soAnimChr::getEndFrame(nw4r::g3d::AnmObjChrRes* anmChrRes) const {
-    return (s32)anmChrRes->m_anmChrFile->m_animLength - 1.0f;
+    return anmChrRes->GetResAnm().GetNumFrame() - 1.0f;
 }
 
 void soAnimChr::rewind() {

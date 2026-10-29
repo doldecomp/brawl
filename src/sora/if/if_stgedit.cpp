@@ -3,8 +3,8 @@
 #include <gf/gf_pad_system.h>
 #include <if/if_stgedit.h>
 #include <mu/mu_object.h>
-#include <nw4r/g3d/g3d_resfile.h>
-#include <nw4r/g3d/g3d_scngroup.h>
+#include <nw4r/g3d/res/g3d_resfile.h>
+#include <nw4r/g3d/g3d_scnobj.h>
 #include <sr/sr_common.h>
 #include <types.h>
 
@@ -80,7 +80,7 @@ void IfStgedit::setVisible(bool vis) {
     m_visible = vis;
     m_scnGroup->Remove(m_modelNodes[0]->m_sceneModel);
     if (vis) {
-        m_scnGroup->Insert(m_scnGroup->sceneItemsCount, m_modelNodes[0]->m_sceneModel);
+        m_scnGroup->Insert(m_scnGroup->Size(), m_modelNodes[0]->m_sceneModel);
     }
 }
 
