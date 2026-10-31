@@ -138,6 +138,7 @@ public:
     Fighter* getSubFighter(int entryId);
     ftOwner* getOwner(int entryId);
     int getTeam(int entryId, bool unk2, bool unk3);
+    s32 getTeam2nd(s32 p1);
     Vec3f getFighterCenterPos(int entryId, int unk);
     float getFighterLr(int entryId, int unk);
     int getFighterOperationType(int entryId);

@@ -30,7 +30,8 @@ static_assert(sizeof(soTeamEventPresenter) == 0x10, "Class is the wrong size!");
 
 class soTeam : public soNullable {
 public:
-    virtual ~soTeam() = 0;
+    soTeam(bool isNull) : soNullable(isNull) { }
+    virtual ~soTeam() { }
     virtual s32 getNo() const = 0;
     virtual void setNo(s32 num) = 0;
     virtual s32 getIndirectNo() const = 0;
@@ -43,6 +44,7 @@ static_assert(sizeof(soTeam) == 8, "Class is the wrong size!");
 
 class soTeamNull : public soTeam {
 public:
+    soTeamNull() : soTeam(true) { }
     virtual ~soTeamNull() { }
     virtual s32 getNo() const { return -1; }
     virtual void setNo(s32 _num) { }
@@ -60,7 +62,7 @@ class soTeamImpl : public soTeam {
     s32 m_teamNo;
     s32 m_2nd;
 public:
-    soTeamImpl(s32 teamNo) : m_teamNo(teamNo), m_2nd(-1) { }
+    soTeamImpl(s32 teamNo) : soTeam(false), m_teamNo(teamNo), m_2nd(-1) { }
     virtual ~soTeamImpl() { }
     virtual s32 getNo() const { return m_teamNo; }
     virtual void setNo(s32 num) { m_teamNo = num; }
@@ -73,26 +75,33 @@ public:
 static_assert(sizeof(soTeamImpl) == 0x10, "Class is the wrong size!");
 
 class ftTeam : public soTeam {
+protected:
+    s32 m_entryId;
+    s32 m_teamNo;
+    s32 m_2nd;
 public:
-    virtual ~ftTeam();
+    ftTeam(s32 entryId);
+    virtual ~ftTeam() { }
     virtual s32 getNo() const;
     virtual void setNo(s32 num);
-    virtual s32 getIndirectNo() const;
-    virtual void setIndirectNo(s32 num);
+    virtual s32 getIndirectNo() const { return getNo(); }
+    virtual void setIndirectNo(s32 num) { }
     virtual s32 get2nd() const;
     virtual void set2nd(s32 p1);
     virtual void reset();
 };
-// TODO size assertion
+static_assert(sizeof(ftTeam) == 0x14, "Class is the wrong size!");
 
 class ftTeamIndirect : public ftTeam {
+    s32 m_indirectTeamNo;
 public:
-    virtual ~ftTeamIndirect();
+    ftTeamIndirect(s32 entryId) : ftTeam(entryId), m_indirectTeamNo(-1) { }
+    virtual ~ftTeamIndirect() { }
     virtual s32 getNo() const;
-    virtual s32 getIndirectNo() const;
-    virtual void setIndirectNo(s32 num);
+    virtual s32 getIndirectNo() const { return m_indirectTeamNo; }
+    virtual void setIndirectNo(s32 num) { m_indirectTeamNo = num; }
 };
-// TODO size assertion
+static_assert(sizeof(ftTeamIndirect) == 0x18, "Class is the wrong size!");
 
 class soTeamModule : public soNullable {
 public:
