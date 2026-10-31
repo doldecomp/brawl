@@ -12,7 +12,7 @@
 // Compile without matching hacks (always, for clangd and other non-MWCC tools).
 #if defined(__DECOMP_NON_MATCHING) || !defined(__MWERKS__)
 #define DECOMP_FORCEACTIVE(module, ...)
-#define DECOMP_FORCELITERAL(module, x)
+#define DECOMP_FORCELITERAL(module, ...)
 #define DECOMP_FORCEACTIVE_DTOR(module, cls)
 #define DECOMP_INLINE
 #define DECOMP_DONT_INLINE
