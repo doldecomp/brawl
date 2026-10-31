@@ -87,6 +87,10 @@ mo_melee/sora_melee/ft/ft_class_info.cpp:
 	.data       start:0x00029210 end:0x000292A0
 	.bss        start:0x00003040 end:0x00003138
 
+mo_melee/sora_melee/ft/ft_team.cpp:
+	.text       start:0x0014033C end:0x001404D4
+	.data       start:0x0002AB90 end:0x0002AC40
+
 mo_melee/sora_melee/ft/ft_extend_param_accesser.cpp:
 	.text       start:0x00149C70 end:0x00149E1C
 	.data       start:0x0002BC00 end:0x0002BCA0
