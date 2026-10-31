@@ -12,8 +12,6 @@ scSealDisp* scSealDisp::create() {
 
 void scSealDisp::setModule() { }
 
-static const muAdvSealTaskParam g_TaskParam = { 0x1000000, 0 };
-
 void scSealDisp::start() {
     const char* path;
     u32 size;
@@ -29,7 +27,7 @@ s32 scSealDisp::process() {
     switch (m_state) {
         case 0:
             if (m_loader->isLoaded()) {
-                muAdvSealTaskParam param = g_TaskParam;
+                muAdvSealTaskParam param = { 0x1000000, 0 };
                 m_task = muAdvSealTask::create(&param, m_archive);
                 m_state = 1;
             }
