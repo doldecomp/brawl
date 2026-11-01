@@ -264,8 +264,8 @@ static_assert(sizeof(gmItSwitch) == 0x10, "Class is wrong size!");
 
 class gmMeleeInitData {
 public:
-    GameMode m_gameMode : 6;
-    char _0x0_0 : 2;
+    u8 m_gameMode : 6;
+    u8 _0x0_0 : 2;
     GameRule m_gameRule : 3;
     u8 m_numPlayers : 3;
     u8 m_0x1_0 : 2;
@@ -302,8 +302,13 @@ public:
     bool m_0x7_2 : 1;
     bool m_0x7_1 : 1;
     bool m_isAmplifySongAttack : 1;
-    bool m_playeMode : 1;                        // 0x08
-    u8 m_eventId : 7;                          // 0x08
+    union {
+        u8 m_eventFlags;                       // 0x08
+        struct {
+            bool m_playeMode : 1;
+            u8 m_eventId : 7;
+        };
+    };
     u8 m_scoreToWin;                           // custom
     char _0xA[0x1];                            // 0x0A
     bool m_isTeams;                            // 0x0B
