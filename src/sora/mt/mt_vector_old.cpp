@@ -4,46 +4,25 @@
 #include <types.h>
 
 Vec3f* vlRotateFix(Vec3f* v, vlRotateAxis::Enum axis, float theta) {
-    float f3;
+    float rotX, rotY, rotZ;
     const float sinTheta = sinf(theta);
-    float f0;
     const float cosTheta = cosf(theta);
-    float f2;
-    float rotX;
-    float rotY;
-    float f1;
-    float rotZ;
     switch (axis) {
-        case vlRotateAxis::X: {
-            f3 = v->m_y * cosTheta;
-            f2 = v->m_z * sinTheta;
-            f1 = v->m_y * sinTheta;
-            f0 = v->m_z * cosTheta;
+        case vlRotateAxis::X:
             rotX = v->m_x;
-            rotY = f3 - f2;
-            rotZ = f1 + f0;
+            rotY = v->m_y * cosTheta - v->m_z * sinTheta;
+            rotZ = v->m_y * sinTheta + v->m_z * cosTheta;
             break;
-        }
-        case vlRotateAxis::Y: {
-            f0 = v->m_x * sinTheta;
-            f1 = v->m_z * cosTheta;
-            f2 = v->m_z * sinTheta;
-            f3 = v->m_x * cosTheta;
-            rotX = f3 + f2;
+        case vlRotateAxis::Y:
+            rotX = v->m_x * cosTheta + v->m_z * sinTheta;
             rotY = v->m_y;
-            rotZ = f1 - f0;
+            rotZ = v->m_z * cosTheta - v->m_x * sinTheta;
             break;
-        }
-        case vlRotateAxis::Z: {
-            f3 = v->m_x * cosTheta;
-            f2 = v->m_y * sinTheta;
-            f1 = v->m_x * sinTheta;
-            f0 = v->m_y * cosTheta;
-            rotX = f3 - f2;
-            rotY = f1 + f0;
+        case vlRotateAxis::Z:
+            rotX = v->m_x * cosTheta - v->m_y * sinTheta;
+            rotY = v->m_x * sinTheta + v->m_y * cosTheta;
             rotZ = v->m_z;
             break;
-        }
         default:
             break;
     }
