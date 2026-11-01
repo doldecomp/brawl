@@ -21,6 +21,7 @@
 #include <so/slow/so_slow_module_impl.h>
 #include <so/sound/so_sound_module_impl.h>
 #include <so/status/so_status_module_impl.h>
+#include <so/team/so_team_module_impl.h>
 #include <so/kinetic/so_kinetic_module_impl.h>
 #include <so/event/so_event_manage_module_impl.h>
 #include <so/work/so_work_manage_module_impl.h>
@@ -46,7 +47,7 @@ public:
         soPostureModule* postureModule,
         soGroundModule* groundModule,
         soSituationModule* situationModule,
-        void* teamModule,
+        soTeamModule* teamModule,
         soCollisionAttackModule* collisionAttackModule,
         soCollisionHitModule* collisionHitModule,
         soCollisionShieldModule* collisionShieldModule,
@@ -156,7 +157,7 @@ public:
     soPostureModule* m_postureModule;
     soGroundModule* m_groundModule;
     soSituationModule* m_situationModule;
-    void* m_teamModule;
+    soTeamModule* m_teamModule;
     soCollisionAttackModule* m_collisionAttackModule;
     soCollisionHitModule* m_collisionHitModule;
     soCollisionShieldModule* m_collisionShieldModule;
@@ -219,7 +220,7 @@ public:
         soPostureModule* postureModule,
         soGroundModule* groundModule,
         soSituationModule* situationModule,
-        void* teamModule,
+        soTeamModule* teamModule,
         soCollisionAttackModule* collisionAttackModule,
         soCollisionHitModule* collisionHitModule,
         soCollisionShieldModule* collisionShieldModule,
@@ -305,6 +306,11 @@ public:
     soSituationModule& getSituationModule() const
     {
         return *m_enumerationStart->m_situationModule;
+    }
+
+    soTeamModule& getTeamModule() const
+    {
+        return *m_enumerationStart->m_teamModule;
     }
 
     soCollisionAttackModule& getCollisionAttackModule() const

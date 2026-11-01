@@ -3,6 +3,7 @@
 #include <so/so_heap_module_impl.h>
 #include <so/status/so_status_event_presenter.h>
 #include <so/so_null.h>
+#include <so/team/so_team_module_impl.h>
 #include <StaticAssert.h>
 #include <so/status/so_status_module_impl.h>
 #include <ft/fighter.h>
@@ -57,6 +58,7 @@ public:
     soModelModuleBuilder<typename BC::ModelModuleBuildConfig> m_modelModuleBuilder;
 
     // TODO: add remaining ModuleBuilders
+    soTeamModuleBuilder<typename BC::TeamModuleBuildConfig> m_teamModuleBuilder; // 0x196C for ft_purin
     // Add getModule() member functions for each Builder
 
     u8 unkC44[0x8DF4];
@@ -74,6 +76,10 @@ public:
             fbd.getModelExtendNodeTable(),
             &g_soEventObserverRegistrationDescNull,
             fbd.getModelScale()
+        ),
+        m_teamModuleBuilder(
+            fbd.getTeam(),
+            &m_moduleAccsr
         ) {
     }
 
@@ -135,7 +141,7 @@ typedef soHeapModuleBuildConfig<soHeapModuleImpl> ftPurinHeapModuleBuildConfig;
 typedef soParamCustomizeModuleBuildConfig<ftParamCustomizeModuleImpl> ftPurinParamCustomizeModuleBuildConfig;
 typedef soResourceModuleBuildConfigDynamic<0, ftResourceIdAccesserImpl, soResourceModuleImpl> ftPurinResourceModuleBuildConfig;
 typedef soModelModuleBuildConfig<8, 3, soModelModuleImpl> ftPurinModelModuleBuildConfig;
-
+typedef soTeamModuleBuildConfig<ftTeam, soTeamModuleImpl> ftPurinTeamModuleBuildConfig;
 typedef ftAnimCmdModuleSubBuildConfig<288, 501> ftPurinAnimCmdModuleSubBuildConfig;
 
 class ftPurinBuildConfig {
@@ -146,6 +152,7 @@ public:
     typedef ftPurinResourceModuleBuildConfig ResourceModuleBuildConfig;
     typedef ftPurinAnimCmdModuleSubBuildConfig AnimCmdModuleSubBuildConfig;
     typedef ftPurinModelModuleBuildConfig ModelModuleBuildConfig;
+    typedef ftPurinTeamModuleBuildConfig TeamModuleBuildConfig;
 };
 
 class ftPurin : public ftFighterBuilder<ftPurinBuildConfig> {
@@ -180,5 +187,6 @@ void testBuilder() {
     ftPopoResourceIdAccesserImpl popoIdAccImpl(nullptr);
 }
 soInsideEventManageModuleBuilder<ftPurinInsideEventManageModuleBuildConfig, ftInsideEventManageModuleTypes> g_insideBuilder;
+soTeamModuleBuilder<ftPurinTeamModuleBuildConfig> g_teamModuleBuilder(3, nullptr);
 
 ftPurinExtendParamAccesser g_ftPurinExtendParamAccesser;

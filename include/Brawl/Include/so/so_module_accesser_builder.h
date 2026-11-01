@@ -1,9 +1,11 @@
 #pragma once
 
+#include <ft/fighter.h>
 #include <ft/ft_fighter_build_data.h>
 #include <so/event/so_event_presenter.h>
 #include <so/model/so_model_virtual_node.h>
 #include <so/resource/so_resource_module_impl.h>
+#include <so/team/so_team_module_impl.h>
 #include <types.h>
 
 class soModuleAccesser;
@@ -173,4 +175,51 @@ public:
             modelScale
         ) {
     }
+};
+
+////////////////////////////////////////
+// soTeamModuleBuilder
+////////////////////////////////////////
+
+template <typename T, typename M>
+class soTeamModuleBuildConfig {
+
+public:
+    typedef T TeamType;
+    typedef M TeamModuleType;
+};
+
+inline s32 getFighterEntryId(soModuleAccesser* accsr) {
+    return dynamic_cast<Fighter&>(accsr->getStageObject()).m_entryId;
+}
+
+template <typename BC>
+class soTeamModuleBuilder {
+    typename BC::TeamType m_teamObj;
+    typename BC::TeamType m_teamObj2;
+    typename BC::TeamModuleType m_teamModule;
+public:
+    static typename BC::ModuleType* getModule(soTeamModuleBuilder* b) {
+        return &b->m_teamModule;
+    }
+
+    soTeamModuleBuilder(s32 team, soModuleAccesser* accsr) :
+        m_teamObj(team),
+        m_teamObj2(team),
+        m_teamModule(&m_teamObj, &m_teamObj2, &m_teamObj, accsr, &g_soEventObserverRegistrationDescNull)
+    { }
+};
+
+template <typename M>
+class soTeamModuleBuilder<soTeamModuleBuildConfig<ftTeam, M> > {
+    u8 unk0[0x4]; // TODO: possibly, the team number is/was meant to be stored here
+    ftTeam m_teamObj;
+    ftTeamIndirect m_indirectTeamObj;
+    M m_teamModule;
+public:
+    soTeamModuleBuilder(s32 _team, soModuleAccesser* accsr) :
+        m_teamObj(getFighterEntryId(accsr)),
+        m_indirectTeamObj(getFighterEntryId(accsr)),
+        m_teamModule(&m_teamObj, &m_teamObj, &m_indirectTeamObj, accsr, &g_soEventObserverRegistrationDescNull)
+    { }
 };
