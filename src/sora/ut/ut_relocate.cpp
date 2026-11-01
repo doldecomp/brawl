@@ -43,10 +43,9 @@ utRelocate::utRelocate(u8* fileBuf, u32 fileSz) {
 utRelocate::~utRelocate() { }
 
 void* utRelocate::getPublicAddress(const char* symName) const {
-    const DATSymbol* sym;
     for (u32 i = 0; i < m_hdr.nSymbols; i++) {
-        sym = m_symtabStart;
-        if (!std::strcmp(m_strtabStart + sym[i].name, symName))
+        const DATSymbol* sym = m_symtabStart;
+        if (!std::strcmp(m_strtabStart + m_symtabStart[i].name, symName))
             return m_dataStart + sym[i].offset;
     }
     return nullptr;
@@ -74,14 +73,13 @@ void utRelocate::locateExtern(const char* externName, void* addr) {
     }
 }
 
-// NONMATCHING regswaps
 // Resolve all undefined references in this utRelocate against
 // the symbols defined in other
 void utRelocate::resolveReference(const utRelocate* other) {
     for (s32 i = 0; i < m_hdr.nImports; i++) {
         const char* importName = getImportName(i, m_hdr.nImports);
         if (importName) {
-            void* addr = reinterpret_cast<void*>(other->getPublicAddress(importName));
+            void* addr = other->getPublicAddress(importName);
             if (!addr)
                 OSReport("utRelocate: not found symbol! ->[%s] \n", importName);
             locateExtern(importName, addr);
