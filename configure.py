@@ -687,7 +687,7 @@ config.libs = [
             Object(Matching, "sora/mt/mt_prng_log.cpp"),
             Object(Matching, "sora/st/module.cpp"),
             Object(Matching, "sora/ut/ut_nw.cpp"),
-            Object(NonMatching, "sora/ut/ut_relocate.cpp"),
+            Object(Matching, "sora/ut/ut_relocate.cpp"),
             Object(Matching, "sora/ut/ut_list.cpp"),
             Object(Matching, "sora/ip/ip_human.cpp"),
             Object(NonMatching, "sora/ip/ip_network_producer.cpp"),
