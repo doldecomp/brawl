@@ -2,7 +2,7 @@
 
 #include <StaticAssert.h>
 #include <GX/GXTypes.h>
-#include <nw4r/g3d/g3d_resfile.h>
+#include <nw4r/g3d/res/g3d_resfile.h>
 #include <types.h>
 
 // TODO: Define these classes and decide which headers they should belong to

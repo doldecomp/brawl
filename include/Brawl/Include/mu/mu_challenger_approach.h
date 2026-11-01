@@ -3,7 +3,7 @@
 #include "gf/gf_archive.h"
 #include "mu/mu_menuroot.h"
 #include "mu/mu_object.h"
-#include "nw4r/g3d/g3d_resfile.h"
+#include "nw4r/g3d/res/g3d_resfile.h"
 #include <gf/gf_task.h>
 #include <memory.h>
 #include <types.h>

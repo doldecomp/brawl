@@ -3,7 +3,7 @@
 #include <StaticAssert.h>
 #include <mt/mt_vector.h>
 #include <types.h>
-#include <nw4r/g3d/g3d_resfile.h>
+#include <nw4r/g3d/res/g3d_resfile.h>
 #include <nw4r/g3d/g3d_scnmdlsmpl.h>
 
 class stPositions {

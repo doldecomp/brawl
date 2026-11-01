@@ -5,6 +5,9 @@
 extern "C" {
 #endif
 
+#define OS_MEM_KB_TO_B(kb) ((kb)*1024)
+#define OS_MEM_B_TO_KB(kb) ((kb) / 1024)
+
 #define OS_MEM_MB_TO_B(mb) ((mb)*1024 * 1024)
 #define OS_MEM_B_TO_MB(mb) ((mb) / 1024 / 1024)
 
