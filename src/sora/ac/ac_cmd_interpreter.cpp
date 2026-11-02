@@ -72,27 +72,40 @@ inline const acAnimCmd* acCmdInterpreter::updateCurrentCmd() {
     return &m_animCmd;
 }
 
-inline s32 acCmdInterpreter::getIdxOfStackData(const acCmdInterpreterStackData::Kind kind) const {
-    for (s32 i = m_stack->size() - 1; i >= 0; i--) {
-        if (m_stack->at(i).kind == kind) {
-            return i;
+static inline void getStackDataIndex(soArrayVector<acCmdInterpreterStackData, 8>* const& stack,
+                                    acCmdInterpreterStackData::Kind kind, s32& index) {
+    for (s32 i = stack->size() - 1; i >= 0; i--) {
+        if (stack->at(i).kind == kind) {
+            index = i;
+            return;
         }
     }
-    return -1;
+    index = -1;
+}
+
+inline s32 acCmdInterpreter::getIdxOfStackData(const acCmdInterpreterStackData::Kind kind) const {
+    s32 index;
+    getStackDataIndex(m_stack, kind, index);
+    return index;
 }
 
 // Pop the stack until its size is newSize
-inline void acCmdInterpreter::popStackToSize(const s32 newSize) {
-    s32 size = m_stack->size();
+static inline void popStackDataToSize(soArrayVector<acCmdInterpreterStackData, 8>* const& stack,
+                                     s32 newSize) {
+    s32 size = stack->size();
     if (newSize >= 0 && newSize < size) {
         if (newSize == size - 1) {
-            m_stack->pop();
+            stack->pop();
         } else {
-            for (s32 i = 0; i < size - newSize; i++) {
-                m_stack->pop();
+            for (s32 i = 0, count = size - newSize; i < count; i++) {
+                stack->pop();
             }
         }
     }
+}
+
+inline void acCmdInterpreter::popStackToSize(const s32 newSize) {
+    popStackDataToSize(m_stack, newSize);
 }
 
 inline void acCmdInterpreter::interpretOneCmd() {
@@ -728,10 +741,9 @@ void acCmdInterpreter::systemCmdFuncJump() {
     }
 }
 
-// Note: Equivalent to systemCmdFuncEnd, but generates slightly different asm
-// NONMATCHING: r30/r31 regswap
 void acCmdInterpreter::systemCmdFuncReturn() {
-    const s32 i = getIdxOfStackData(acCmdInterpreterStackData::ReturnAddress);
+    s32 i;
+    getStackDataIndex(m_stack, acCmdInterpreterStackData::ReturnAddress, i);
     if (i < 0) {
         m_currentCmd = 0;
         m_stack->clear();
@@ -741,7 +753,7 @@ void acCmdInterpreter::systemCmdFuncReturn() {
         if (returnAddr) {
             m_currentCmd = returnAddr;
         }
-        popStackToSize(i);
+        popStackDataToSize(m_stack, i);
     }
 }
 
@@ -966,4 +978,9 @@ void acCmdInterpreter::systemCmdFuncEnd() {
         }
         popStackToSize(i);
     }
+}
+
+// TODO: inferred deadstripped function to emit soNullableInterface RTTI
+void makeStack() {
+    soArrayVector<acCmdInterpreterStackData, 8> stack;
 }
