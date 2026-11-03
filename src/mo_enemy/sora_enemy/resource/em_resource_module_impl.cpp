@@ -2,7 +2,7 @@
 #include <em/em_info.h>
 #include <em/enemy.h>
 #include <em/resource/em_resource_module_impl.h>
-#include <nw4r/g3d/g3d_resfile.h>
+#include <nw4r/g3d/res/g3d_resfile.h>
 #include <so/resource/so_resource_id_accesser.h>
 #include <so/resource/so_resource_module_impl.h>
 #include <types.h>
