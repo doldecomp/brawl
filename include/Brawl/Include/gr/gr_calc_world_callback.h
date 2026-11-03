@@ -4,7 +4,7 @@
 #include <memory.h>
 #include <mt/mt_matrix.h>
 #include <mt/mt_vector.h>
-#include <nw4r/g3d/g3d_calcworldcallback.h>
+#include <nw4r/g3d/g3d_calcworld.h>
 #include <types.h>
 
 class grNodeCallbackData {
@@ -34,7 +34,7 @@ public:
 };
 static_assert(sizeof(grNodeCallbackData) == 128, "Class is wrong size!");
 
-class grCalcWorldCallBack : public nw4r::g3d::ICalcWorldCallBack {
+class grCalcWorldCallBack : public nw4r::g3d::ICalcWorldCallback {
 
 public:
     grNodeCallbackData* m_nodeCallbackDatas;
@@ -42,9 +42,12 @@ public:
     unsigned int m_index;
 
     virtual ~grCalcWorldCallBack();
-    virtual void ExecCallbackA(int* unk1, int unk2, int* unk3); // TODO
-    virtual void ExecCallbackB(int* unk1, int unk2, int* unk3); // TODO
-    virtual void ExecCallbackC();                               // TODO
+    virtual void ExecCallbackA(nw4r::g3d::ChrAnmResult* pResult, nw4r::g3d::ResMdl mdl,
+                               nw4r::g3d::FuncObjCalcWorld* pFuncObj);
+    virtual void ExecCallbackB(nw4r::g3d::WorldMtxManip* pManip, nw4r::g3d::ResMdl mdl,
+                               nw4r::g3d::FuncObjCalcWorld* pFuncObj);
+    virtual void ExecCallbackC(nw4r::math::MTX34* pMtxArray, nw4r::g3d::ResMdl mdl,
+                               nw4r::g3d::FuncObjCalcWorld* pFuncObj);
     virtual int initialize(bool unk1, HeapType heapType);
     virtual int clearAll();
 

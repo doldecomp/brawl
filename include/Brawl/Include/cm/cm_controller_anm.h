@@ -3,6 +3,7 @@
 #include <StaticAssert.h>
 #include <gf/gf_camera_controller.h>
 #include <nw4r/g3d/g3d_anmscn.h>
+#include <nw4r/g3d/res/g3d_resanmscn.h>
 #include <types.h>
 
 class cmAnimationController : public gfCameraController {

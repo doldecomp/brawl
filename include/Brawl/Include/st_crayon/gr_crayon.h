@@ -3,7 +3,7 @@
 #include <types.h>
 #include <gf/gf_model.h>
 #include <gr/gr_yakumono.h>
-#include <nw4r/g3d/g3d_resfile.h>
+#include <nw4r/g3d/res/g3d_resfile.h>
 #include <nw4r/g3d/g3d_scnmdl.h>
 
 class grCrayon : public grYakumono {
