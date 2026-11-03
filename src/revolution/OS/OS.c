@@ -899,9 +899,7 @@ void __OSPSInit(void) {
     PPCMthid2(PPCMfhid2() | (1 << 31) | HID2_PSE);
     ICFlashInvalidate();
 
-    // clang-format off
-#ifdef __MWERKS__
-    asm {
+    ASM (
         sync
         li r3, 0
         mtgqr0 r3
@@ -912,9 +910,7 @@ void __OSPSInit(void) {
         mtgqr5 r3
         mtgqr6 r3
         mtgqr7 r3
-    }
-#endif
-    // clang-format on
+    )
 }
 
 u32 __OSGetDIConfig(void) {
