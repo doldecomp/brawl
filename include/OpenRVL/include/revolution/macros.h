@@ -20,8 +20,13 @@
 
 #define ALIGN(x) __attribute__((aligned(x)))
 
+#ifdef __MWERKS__
 #define DECL_SECTION(x) __declspec(section x)
 #define DECL_WEAK __declspec(weak)
+#else
+#define DECL_SECTION(x) __attribute__((section(x)))
+#define DECL_WEAK __attribute__((weak))
+#endif
 
 #define DECLTYPE(x) __decltype__(x)
 

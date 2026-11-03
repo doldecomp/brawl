@@ -20,10 +20,11 @@ void __DBExceptionDestinationAux(void) {
     PPCHalt();
 }
 
+#ifdef __MWERKS__
 asm void __DBExceptionDestination(void){
     // clang-format off
     nofralloc
-    
+
     // Set up MMU
     mfmsr r3
     ori r3, r3, (MSR_IR | MSR_DR)
@@ -32,6 +33,7 @@ asm void __DBExceptionDestination(void){
     b __DBExceptionDestinationAux
     // clang-format on
 }
+#endif
 
 BOOL __DBIsExceptionMarked(u8 exc) {
     return __DBInterface->exceptionMask & (1 << exc);
