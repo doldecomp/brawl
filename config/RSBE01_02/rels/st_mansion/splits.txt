@@ -11,6 +11,26 @@ global_destructor_chain.c:
 	.dtors      start:0x00000000 end:0x00000008
 	.bss        start:0x00000000 end:0x00000004
 
+mo_stage/st_mansion/gr_mansion.cpp:
+	.text       start:0x00001670 end:0x00001A5C
+	.data       start:0x00000630 end:0x00000AE0
+	.rodata     start:0x00000040 end:0x00000044
+
+mo_stage/st_mansion/gr_mansion_area_up.cpp:
+	.text       start:0x0000A104 end:0x0000A590
+	.data       start:0x000024D8 end:0x00002738
+	.rodata     start:0x000000B8 end:0x000000CC
+
+mo_stage/st_mansion/gr_mansion_area_down.cpp:
+	.text       start:0x0000A590 end:0x0000AA78
+	.data       start:0x00002738 end:0x00002998
+	.rodata     start:0x000000D0 end:0x000000E4
+
+mo_stage/st_mansion/gr_mansion_area_break.cpp:
+	.text       start:0x0000AA78 end:0x0000AD50
+	.data       start:0x00002998 end:0x00002BE0
+	.rodata     start:0x000000E8 end:0x000000EC
+
 mo_stage/mo_stage.cpp:
 	.text       start:0x0000CC28 end:0x0000CCC4
 	.data       start:0x00003060 end:0x0000306D
