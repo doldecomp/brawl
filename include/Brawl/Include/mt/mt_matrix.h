@@ -58,3 +58,6 @@ public:
         MTX34(f00, f01, f02, f03, f10, f11, f12, f13, f20, f21, f22, f23) { }
 };
 static_assert(sizeof(Matrix) == 48, "Class is wrong size!");
+
+void mtQuatRotAxis(nw4r::math::QUAT* out, const Vec3f* axis, float angle);
+void mtQuatRotVec(const nw4r::math::QUAT* q, const Vec3f* v, Vec3f* out);

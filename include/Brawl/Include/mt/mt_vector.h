@@ -53,10 +53,8 @@ public:
         return *this;
     }
 
-    float lengthSq() {
-        float xSq = m_x * m_x;
-        float ySq = m_y * m_y;
-        return xSq + ySq;
+    float lengthSq() const {
+        return m_x * m_x + m_y * m_y;
     }
 
     float length() {
@@ -76,9 +74,10 @@ public:
     }
     
     void normalize();
-    void normalize(Vec2f* input);
+    void normalize(const Vec2f* input);
 
-    void rot(Vec2f *out, float rot);
+    void rot(Vec2f* out, float rot) const;
+    float angle(const Vec2f* v) const;
 
     static void copy(Vec2f& dest, const Vec2f& src) {
 #ifdef MATCHING
@@ -120,10 +119,43 @@ public:
         return (Vec2f*)this;
     }
 
-    Vec3f operator+(const Vec3f& v);
     Vec3f operator-(const Vec3f& v);
 
 #ifdef MATCHING
+    friend void Vec3fAdd(register Vec3f* pOut, register const Vec3f* lhs,
+                     register const Vec3f* rhs) {
+        register f32 fr0, fr1, fr2, fr3;
+
+        // clang-format off
+        asm {
+            psq_l  fr0, Vec3f.m_x(lhs),   0, 0
+            psq_l  fr1, Vec3f.m_x(rhs),   0, 0
+            psq_l  fr2, Vec3f.m_z(lhs),   1, 0
+            psq_l  fr3, Vec3f.m_z(rhs),   1, 0
+            ps_add fr0, fr0, fr1
+            ps_add fr2, fr2, fr3
+            psq_st fr0, Vec3f.m_x(pOut), 0, 0
+            psq_st fr2, Vec3f.m_z(pOut), 1, 0
+        }
+        // clang-format on
+    }
+
+    friend void Vec3fScale(register Vec3f* pOut, register const Vec3f* v,
+                       register f32 c) {
+        register f32 fr0, fr1, fr2, fr3;
+
+        // clang-format off
+        asm {
+            psq_l    fr0, Vec3f.m_x(v),    0, 0
+            psq_l    fr1, Vec3f.m_z(v),    1, 0
+            ps_muls0 fr2, fr0, c
+            ps_muls0 fr3, fr1, c
+            psq_st   fr2, Vec3f.m_x(pOut), 0, 0
+            psq_st   fr3, Vec3f.m_z(pOut), 1, 0
+        }
+        // clang-format on
+    }
+
     friend void Vec3fSub(register Vec3f* pOut, register const Vec3f* lhs,
                      register const Vec3f* rhs) {
         register f32 fr3, fr2, fr1, fr0;
@@ -142,6 +174,18 @@ public:
         // clang-format on
     }
 #else
+    friend void Vec3fAdd(Vec3f* pOut, const Vec3f* lhs, const Vec3f* rhs) {
+        pOut->m_x = lhs->m_x + rhs->m_x;
+        pOut->m_y = lhs->m_y + rhs->m_y;
+        pOut->m_z = lhs->m_z + rhs->m_z;
+    }
+
+    friend void Vec3fScale(Vec3f* pOut, const Vec3f* v, f32 c) {
+        pOut->m_x = v->m_x * c;
+        pOut->m_y = v->m_y * c;
+        pOut->m_z = v->m_z * c;
+    }
+
     friend void Vec3fSub(Vec3f* pOut, const Vec3f* lhs, const Vec3f* rhs) {
         pOut->m_x = lhs->m_x - rhs->m_x;
         pOut->m_y = lhs->m_y - rhs->m_y;
@@ -149,10 +193,22 @@ public:
     }
 #endif
 
-    Vec3f operator*(const float c);
+    Vec3f operator+(const Vec3f& v) const {
+        Vec3f res;
+        Vec3fAdd(&res, this, &v);
+        return res;
+    }
 
-    Vec3f operator/(const float c) {
-        return *this * (1 / c);
+    Vec3f operator*(const float c) const {
+        Vec3f res;
+        Vec3fScale(&res, this, c);
+        return res;
+    }
+
+    Vec3f operator/(const float c) const {
+        Vec3f res;
+        Vec3fScale(&res, this, 1 / c);
+        return res;
     }
 
     Vec3f& operator+=(const Vec3f& v) {
@@ -170,14 +226,21 @@ public:
         return *this;
     }
 
-    float lengthSq();
+    float lengthSq() const {
+        return m_x * m_x + m_y * m_y + m_z * m_z;
+    }
+
     float length();
     float distance(Vec3f* v) {
         Vec3f disp = *this - *v;
         return disp.length();
     }
     void normalize();
-    void normalize(Vec3f* input);
+    void normalize(const Vec3f* input);
+
+    void rot(const Vec3f* axis, float rot, Vec3f* out) const;
+    float angle(const Vec3f* v) const;
+    void slerp(const Vec3f* v, Vec3f* out, float t) const;
 };
 static_assert(sizeof(Vec3f) == 12, "Class is wrong size!");
 
