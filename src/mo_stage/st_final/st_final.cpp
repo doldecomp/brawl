@@ -3,7 +3,7 @@
 #include <gm/gm_lib.h>
 #include <memory.h>
 #include <mt/mt_prng.h>
-#include <nw4r/g3d/g3d_resfile.h>
+#include <nw4r/g3d/res/g3d_resfile.h>
 #include <snd/snd_id.h>
 #include <snd/snd_system.h>
 #include <st_final/gr_final.h>

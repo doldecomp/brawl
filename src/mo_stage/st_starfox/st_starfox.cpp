@@ -7,7 +7,7 @@
 #include <gr/gr_madein.h>
 #include <mt/mt_matrix.h>
 #include <mt/mt_vector.h>
-#include <nw4r/g3d/g3d_resfile.h>
+#include <nw4r/g3d/res/g3d_resfile.h>
 #include <snd/snd_id.h>
 #include <st/stage.h>
 #include <st/st_melee.h>
