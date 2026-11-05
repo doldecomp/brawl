@@ -9,6 +9,17 @@
 #define __CONCAT(x, y) x##y
 #define CONCAT(x, y) __CONCAT(x, y)
 
+// Inline assembly blocks: ASM( ... ) / ASM_VOLATILE( ... ).
+// Non-MWCC tools (clangd, Intellisense) can't parse PPC asm, so the block is
+// dropped entirely. The macro is variadic so commas between operands survive.
+#ifdef __MWERKS__
+#define ASM asm
+#define ASM_VOLATILE asm volatile
+#else
+#define ASM(...)
+#define ASM_VOLATILE(...)
+#endif
+
 // Compile without matching hacks (always, for clangd and other non-MWCC tools).
 #if defined(__DECOMP_NON_MATCHING) || !defined(__MWERKS__)
 #define DECOMP_FORCEACTIVE(module, ...)

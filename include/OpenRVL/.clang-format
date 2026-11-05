@@ -9,3 +9,5 @@ PointerAlignment: Left
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
 FixNamespaceComments: true
 AccessModifierOffset: -4
+# Leave the contents of these macro invocations untouched (inline PPC asm)
+WhitespaceSensitiveMacros: [ASM, ASM_VOLATILE]

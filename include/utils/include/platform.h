@@ -4,8 +4,6 @@
 
 #pragma once
 
-#ifdef __MWERKS__
-#define ASM asm
-#else
-#define ASM
-#endif
+// ASM( ... ) / ASM_VOLATILE( ... ) live in decomp.h, which every unit
+// already gets through <types.h>.
+#include <revolution/decomp.h>

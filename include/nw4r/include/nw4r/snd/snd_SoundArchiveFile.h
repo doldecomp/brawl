@@ -289,7 +289,7 @@ private:
         return ut::AddOffsetToPtr(pBase, offset);
     }
 
-public:
+private:
     SoundArchiveFile::Header mHeader;                      // at 0x0
     const SoundArchiveFile::Info* mInfo;                   // at 0x28
     const void* mStringBase;                               // at 0x2C
