@@ -711,7 +711,7 @@ config.libs = [
             Object(Matching, "sora/gr/collision/gr_collision_shape_rhombus.cpp", extra_cflags=["-RTTI off"]),
             Object(Matching, "sora/gr/collision/gr_collision_shape_circle.cpp", extra_cflags=["-RTTI off"]),
             Object(Matching, "sora/gr/gr_path.cpp"),
-            Object(NonMatching, "sora/ac/ac_cmd_interpreter.cpp"),
+            Object(Matching, "sora/ac/ac_cmd_interpreter.cpp"),
             Object(Matching, "sora/ac/ac_anim_cmd_impl.cpp"),
             Object(Matching, "sora/ac/ac_null.cpp"),
             Object(Matching, "sora/ft/ft_system.cpp"),

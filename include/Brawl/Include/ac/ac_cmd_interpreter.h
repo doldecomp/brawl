@@ -6,17 +6,6 @@
 #include <so/so_null.h>
 #include <types.h>
 
-// TODO: confirm whether this class is really needed
-class acCmdInterpreterBase {
-public:
-    virtual bool dispatchCmdIf(const acAnimCmd* cmd);
-    virtual s32 dispatchCmdSwitch(const acAnimCmd* cmd) const;
-    virtual void interpretNotSystemCmd();
-    virtual bool isBreakInterpret();
-    virtual bool isSleepStackData(s32 kind) const;
-    virtual bool isSkipEnd() const;
-};
-
 struct acCmdInterpreterStackData {
     // TODO: identify exact meaning of knd0 and knd7:
     // knd0: used for isBreakInterpret, Wait
@@ -44,22 +33,7 @@ struct acCmdInterpreterStackData {
     float floatData; // some data for wait time calculations
 };
 
-class acCmdInterpreter : private acCmdInterpreterBase {
-    float m_fixedTimeStep;
-    float m_lastTimeStep;
-    const acAnimCmdConv* m_currentCmd;
-    const acAnimCmdConv* m_copyCurrentCmd; // purpose unclear
-    acAnimCmdImpl m_animCmd; // usually kept in sync with m_currentCmd
-    soArrayVector<acCmdInterpreterStackData, 8>* m_stack;
-    float m_currentFrame;
-    float unk28;
-    float m_overshoot;
-    const s32 m_interpretMode:2; // -2 or -1 -> skip all commands, 0 -> use m_fixedTimeStep
-    s32 unk30Field2:3; // related to isSkipEnd
-    u8 m_dontAdvance;
-    u8 unk32; // appears to be unused
-    u8 m_reset;
-
+class acCmdInterpreter {
 public:
     acCmdInterpreter(soArrayVector<acCmdInterpreterStackData, 8>* stk,
         s32 mode, acAnimCmdConv* initCmd, const u8* resetMode, float fixedTimeStep);
@@ -84,12 +58,6 @@ public:
     void skipNextLoopGroup();
     void skipNextWhileGroup();
     const acAnimCmd* getCurrentCmd();
-    bool testCurrentCmd() const;
-    void advanceCurrentCmd();
-    const acAnimCmd* updateCurrentCmd();
-    s32 getIdxOfStackData(acCmdInterpreterStackData::Kind kind) const;
-    void interpretOneCmd();
-    void popStackToSize(s32 i);
     void systemCmdFuncWaitSub(float waitTime);
     void systemCmdFuncEnd();
     void systemCmdFuncWait();
@@ -116,5 +84,27 @@ public:
     void systemCmdFuncWhileOr();
     void systemCmdFuncEndWhile();
     void systemCmdFuncBreakSwitch();
+private:
+    bool testCurrentCmd() const;
+    void advanceCurrentCmd();
+    const acAnimCmd* updateCurrentCmd();
+    s32 getIdxOfStackData(acCmdInterpreterStackData::Kind kind) const;
+    void popStackToSize(s32 i);
+    void interpretOneCmd();
+
+    float m_fixedTimeStep;
+    float m_lastTimeStep;
+    const acAnimCmdConv* m_currentCmd;
+    const acAnimCmdConv* m_copyCurrentCmd; // purpose unclear
+    acAnimCmdImpl m_animCmd; // usually kept in sync with m_currentCmd
+    soArrayVector<acCmdInterpreterStackData, 8>* m_stack;
+    float m_currentFrame;
+    float unk28;
+    float m_overshoot;
+    const s32 m_interpretMode:2; // -2 or -1 -> skip all commands, 0 -> use m_fixedTimeStep
+    s32 unk30Field2:3; // related to isSkipEnd
+    u8 m_dontAdvance;
+    u8 unk32; // appears to be unused
+    u8 m_reset;
 };
 static_assert(sizeof(acCmdInterpreter) == 0x34, "Class is the wrong size!");

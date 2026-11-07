@@ -22,7 +22,7 @@ public:
     virtual bool isNull() const = 0;
 };
 
-class soNullable {
+class soNullable : private soNullableInterface {
 public:
     soNullable() { m_isNull = false; }
     soNullable(bool isNull) { m_isNull = isNull; }
