@@ -979,8 +979,3 @@ void acCmdInterpreter::systemCmdFuncEnd() {
         popStackToSize(i);
     }
 }
-
-// TODO: inferred deadstripped function to emit soNullableInterface RTTI
-void makeStack() {
-    soArrayVector<acCmdInterpreterStackData, 8> stack;
-}
