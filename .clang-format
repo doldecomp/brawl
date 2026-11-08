@@ -1,0 +1,3 @@
+---
+# Leave the contents of these macro invocations untouched (inline PPC asm)
+WhitespaceSensitiveMacros: [ASM, ASM_VOLATILE]
