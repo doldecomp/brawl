@@ -538,6 +538,7 @@ CC008000:WGPIPE
 80018de4:setGX__gfCameraManagerFV
 80019fa4:getManager__15gfCameraManagerFv
 80019a2c:calcProjection3Dto2D__8gfCameraFP5Vec3fP5Vec2f
+80018610:reset__8gfCameraFv
 
 // gfModule
 800264d8:create__8gfModuleFPvPvUl
@@ -550,6 +551,7 @@ CC008000:WGPIPE
 80026c78:setTempolaryLoadHeap__15gfModuleManagerFQ25Heaps8HeapType
 8002737c:destroy__15gfModuleManagerFPCc
 80027300:isLoaded__15gfModuleManagerFPCc
+800274D0:release__15gfModuleManagerFPCc
 
 // gfModuleHeader
 80026478:getTextSectionAddr__14gfModuleHeaderFv
@@ -559,21 +561,23 @@ CC008000:WGPIPE
 8002cfd0:create__14gfSceneManagerFv
 8002d018:getInstance__14gfSceneManagerFv
 8002d020:changeNextScene__14gfSceneManagerFv
-8002d160:registScene__14gfSceneManagerFv
-8002d180:registSequence__14gfSceneManagerFv
+8002d160:registScene__14gfSceneManagerFP7gfScene
+8002d180:registSequence__14gfSceneManagerFP10gfSequence
 8002d1a0:process__14gfSceneManagerFv
 8002d32c:postProcess__14gfSceneManagerFv
-8002d3f4:searchScene__14gfSceneManagerFPCc
-8002d474:searchSequence__14gfSceneManagerFv
-8002d4f4:startSequence__14gfSceneManagerFv
-8002d5ac:setNextScene__14gfSceneManagerFv
-8002d640:setNextSequence__14gfSceneManagerFv
-8002d6d4:setLoadModuleName__14gfSceneManagerFv
+8002d3f4:searchScene__14gfSceneManagerCFPCc
+8002d474:searchSequence__14gfSceneManagerCFPCc
+8002d4f4:startSequence__14gfSceneManagerFPCci
+8002d5ac:setNextScene__14gfSceneManagerFPCci
+8002d640:setNextSequence__14gfSceneManagerFPCci
+8002d6d4:setLoadModuleName__14gfSceneManagerFPCcPCcbb
 8002d73c:loadModule__14gfSceneManagerFv
+805A0060:g_gfSceneManager
 
 // gfSceneRoot
 8000d818:setCurrentFrame__11gfSceneRootFf
 8000d56c:removeResAnmScn__11gfSceneRootFv
+8000E708:resetLight__11gfSceneRootCFv
 
 // gfPadSystem
 80028c58:__ct__11gfPadSystemFv

@@ -6,7 +6,11 @@
 #define MAX_PLAYERS 7
 
 struct gmAppData {
-    char _0x0[0x30];
+    char _0x0[0x28];
+    bool unk28_b7 : 1;
+    bool unk28_b6 : 1;
+    bool unk28_b5 : 1;
+    char _0x29[7];
 };
 static_assert(sizeof(gmAppData) == 0x30, "Class is wrong size!");
 
