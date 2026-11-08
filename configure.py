@@ -1309,6 +1309,8 @@ config.libs = [
         "cflags": cflags_sora_enemy,
         "host": False,
         "objects": [
+            Object(Matching, "mo_enemy/sora_enemy/em_manager.cpp"),
+            Object(Matching, "mo_enemy/sora_enemy/em_archive.cpp"),
             Object(Matching, "mo_enemy/sora_enemy/em_info.cpp"),
             Object(Matching, "mo_enemy/sora_enemy/em_create.cpp"),
             Object(Matching, "mo_enemy/sora_enemy/resource/em_resource_module_impl.cpp"),

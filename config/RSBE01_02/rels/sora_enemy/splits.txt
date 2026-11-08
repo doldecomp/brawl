@@ -11,6 +11,14 @@ global_destructor_chain.c:
 	.dtors      start:0x00000000 end:0x00000008
 	.bss        start:0x00000000 end:0x00000004
 
+mo_enemy/sora_enemy/em_manager.cpp:
+	.text       start:0x0000C6B0 end:0x0000D8D4
+	.data       start:0x00001638 end:0x00001658
+	.bss        start:0x00000030 end:0x00000038
+
+mo_enemy/sora_enemy/em_archive.cpp:
+	.text       start:0x0000D8D4 end:0x0000DB8C
+
 mo_enemy/sora_enemy/em_info.cpp:
 	.text       start:0x0000DB8C end:0x0000F8B8
 	.ctors      start:0x00000004 end:0x00000008

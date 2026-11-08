@@ -267,6 +267,7 @@ CC008000:WGPIPE
 80073fe8:getBGMId__9sndSystemFv
 80073db0:playBGM__9sndSystemFiUlb
 80073d18:isSoundGroupLoaded__9sndSystemF10SndGroupID
+80073d08:isSoundGroupLoadFinished__9sndSystemCF10SndGroupID
 80075f1c:stopSE__9sndSystemFll
 80077da0:isPlay__9sndSystemFl
 80074dec:isPlaySEID__9sndSystemF5SndID
@@ -1264,6 +1265,7 @@ CC008000:WGPIPE
 27,1,0008CCFC:getWorkFlag__23soExternalValueAccesserFP11StageObjectUl
 27,1,0008CCC4:getWorkInt__23soExternalValueAccesserFP11StageObjectUl
 27,1,0008CB9C:getTeamOwnerId__23soExternalValueAccesserFP11StageObject
+27,1,0008CC68:getAreaIndexFromId__23soExternalValueAccesserFP11StageObjecti
 
 // ftExternalValueAccesser
 27,1,0014d4b8:getWeight__23ftExternalValueAccesserFP7Fighter
@@ -1582,21 +1584,38 @@ CC008000:WGPIPE
 41,1,0000C804:getInstance__9emManagerFv
 41,1,0000D20C:preloadArchive__9emManagerFP9gfArchiveP9gfArchiveP9gfArchiveP9gfArchive6emKindb
 41,1,0000C9D4:createEnemy__9emManagerFP8emCreate
-41,1,0000D6B8:getPreloadArchiveCountFromKind__9emManagerF6emKind
+41,1,0000D6B8:getPreloadArchiveCountFromKind__9emManagerCF6emKind
 41,1,0000CCE4:removeEnemyAll__9emManagerFv
 41,1,0000D528:removeArchiveAll__9emManagerFv
 41,1,0000cbd4:removeEnemy__9emManagerFi
-41,1,0000d0a8:isEnemyExist__9emManagerFi
+41,1,0000d0a8:isEnemyExist__9emManagerCFUl
 41,1,0000C7B4:remove__9emManagerFv
-41,1,0000CF18:getEnemyCount__9emManagerFv
-41,1,0000CF8C:getEnemyCountFromKind__9emManagerF6emKind
-41,1,0000d380:isCompArchive__9emManagerFi
-41,1,0000D42C:isCompArchiveAll__9emManagerFv
-41,1,0000CE84:getEnemyPtrFromId__9emManagerFi
+41,1,0000CF18:getEnemyCount__9emManagerCFv
+41,1,0000CF8C:getEnemyCountFromKind__9emManagerCF6emKind
+41,1,0000d380:isCompArchive__9emManagerCFi
+41,1,0000D42C:isCompArchiveAll__9emManagerCFv
+41,1,0000CE84:getEnemyPtrFromId__9emManagerCFi
 41,1,0000d4b8:removeArchive__9emManagerFi
-41,1,0000d828:getPreloadArchiveCreateIdFromKind__9emManagerF6emKind
-41,1,0000D5C4:getEntryPreloadArchivePtrFromId__9emManagerFi
-41,1,0000D770:getPreloadArchivePtrFromKind__9emManagerF6emKind
+41,1,0000d828:getPreloadArchiveCreateIdFromKind__9emManagerCF6emKind
+41,1,0000D5C4:getEntryPreloadArchivePtrFromId__9emManagerCFUl
+41,1,0000D770:getPreloadArchivePtrFromKind__9emManagerCF6emKind
+41,1,0000C810:__ct__9emManagerFUlPQ29emManager5EntryUlPQ29emManager5EntryUc
+41,1,0000C8D0:clear__Q29emManager5EntryFv
+41,1,0000C934:__dt__9emManagerFv
+41,1,0000CB10:isParent__9emManagerCFii
+41,1,0000CB58:clearParentCallback__9emManagerFii
+41,1,0000CC44:forEachEnemy__9emManagerFUlPFii_b
+41,1,0000CD5C:getEnemyEntry__9emManagerCFUl
+41,1,0000CD80:getEntryEnemyPtrFromId__9emManagerCFUl
+41,1,0000CE10:getEmptyEnemyEntryIndex__9emManagerCFv
+41,1,0000CECC:getEnemyPtr__9emManagerCFi
+41,1,0000CEF0:isEnemyCreatable__9emManagerCFv
+41,1,0000D044:getParentCreateIdFromId__9emManagerCFUl
+41,1,0000D108:getEnemyCreateIdFromAreaId__9emManagerCFi
+41,1,0000D1A4:set__Q29emManager5EntryFPv6emKindii
+41,1,0000D5A0:getPreloadArchiveEntry__9emManagerCFUl
+41,1,0000D644:getEmptyPreloadArchiveEntryIndex__9emManagerCFv
+41,6,00000030:g_emManager
 
 //gfFileIO
 8001bf0c:readFile__8gfFileIOFP15gfFileIORequest
@@ -2070,4 +2089,23 @@ CC008000:WGPIPE
 27,1,002A4FF8:preloadAssist__9itManagerF6itKindi
 27,1,00224B08:getDestroyBossParamCommon__5StageFUlii
 
+// Enemy
+41,1,00000070:create__5EnemyFUlP8emCreate
+41,1,00000108:start__5EnemyFP5EnemyP8emCreate
+41,1,00000188:remove__5EnemyFP5Enemy
 
+// emArchive
+41,1,0000D8D4:__ct__9emArchiveFP9gfArchiveP9gfArchiveP9gfArchiveP9gfArchive6emKind
+41,1,0000D9AC:__dt__9emArchiveFv
+41,1,0000DA00:isComp__9emArchiveCFv
+41,1,0000DAEC:remove__9emArchiveFv
+41,1,0000DB84:getWeaponResourceId__9emArchiveCFv
+
+// soArchiveDb
+27,1,0006FCF4:create__11soArchiveDbFUlUl
+27,1,0006FDE0:remove__11soArchiveDbFUl
+
+// utArchiveManager
+800455E0:addArchive__16utArchiveManagerFP9gfArchive
+80045DC0:isLoaded__16utArchiveManagerCFUlPUl
+80045E64:removeArchive__16utArchiveManagerFUl
