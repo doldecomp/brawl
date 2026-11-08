@@ -50,7 +50,7 @@ stEmblem::stEmblem() : stMelee("stEmblem", Stages::Emblem) {
     unk738 = NULL;
     m_isKemuriHigh = 1;
     m_lampEffTimer = 0.0;
-    unk744 = 0;
+    m_lampEffectIndex = 0;
     quakeSnd = -1;
     m_eventType = 0;
     unk800 = 0;
@@ -58,7 +58,6 @@ stEmblem::stEmblem() : stMelee("stEmblem", Stages::Emblem) {
     unk808 = 0.0;
     resetChangeScene();
 
-//    bool m_show_dogfight: 1;
     s32 ambientSnd;
     s32 unkSnd728;
     float rockTimer;
@@ -66,8 +65,6 @@ stEmblem::stEmblem() : stMelee("stEmblem", Stages::Emblem) {
     char padding[0xC];
     s32 quakeSnd;
     u8 m_eventType;
-//    StSeUtil::SeSeqInstance<2, 2> m_se_player;
-//    StSeUtil::SeSeqInstance<2, 2> m_se_player2;
 }
 
 stEmblem::~stEmblem() {
@@ -81,28 +78,31 @@ bool stEmblem::loading() {
 void stEmblem::createObj() {
     gmGlobalModeMelee* mode_melee = g_GameGlobal->m_modeMelee;
     if (mode_melee->m_meleeInitData.m_gameMode == 7u) {
-        //TODO: Fix m_eventId and m_playeMode
         if (mode_melee->m_meleeInitData.m_eventId == (s8)14) {
             m_eventType = 1;
         }
+#ifdef MATCHING
+        if (mode_melee->m_meleeInitData.m_eventId == (s8)40 && (mode_melee->m_meleeInitData.m_eventFlags & 0x80)) {
+#else
         if ((mode_melee->m_meleeInitData.m_eventId == (s8)40) and (mode_melee->m_meleeInitData.m_playeMode != false))
         {
+#endif
             m_eventType = 2;
         }
     }
     testStageParamInit(m_secondaryFileData, 0xA);
-    //testStageDataInit(m_fileData, 0x14, 0x38);
-    grMadein* stageElement;
+    grMadein* firstElement;
     for (s16 i = 0; i < 9; i++) {
-        stageElement = grMadein::create(i, "", "Tsunagi", Heaps::StageInstance);
-        if (stageElement) {
-            addGround(stageElement);
-            stageElement->startup(m_secondaryFileData,false,gfSceneRoot::Layer_Ground);
-            stageElement->setStageData(m_stageData);
-            stageElement->m_sceneModels[0]->SetPriorityDrawXlu(200);
-            stageElement->m_sceneModels[0]->SetPriorityDrawOpa(200);
+        firstElement = grMadein::create(i, "", "Tsunagi", Heaps::StageInstance);
+        if (firstElement) {
+            addGround(firstElement);
+            firstElement->startup(m_secondaryFileData,false,gfSceneRoot::Layer_Ground);
+            firstElement->setStageData(m_stageData);
+            firstElement->m_sceneModels[0]->SetPriorityDrawXlu(200);
+            firstElement->m_sceneModels[0]->SetPriorityDrawOpa(200);
         }
     }
+    grMadein* stageElement;
     for (u8 i = 0; i < 7; i++) {
         stageElement = grMadein::create(0, "", "NodeOnlyCollision", Heaps::StageInstance);
         if (stageElement) {
@@ -125,7 +125,6 @@ void stEmblem::createObj() {
     nw4r::g3d::ResFileData* scnData;
         scnData = static_cast<nw4r::g3d::ResFileData*>(m_secondaryFileData->getData(Data_Type_Scene, 0, 0xfffe));
         registScnAnim(scnData, 0);
-    //m_wind2ndTrigger->setAreaSleep(1);
     for (size_t i = 0; i < getGroundNum(); i++) {
         static_cast<grMadein*>(getGround(i))->initializeEntity();
     }
@@ -133,7 +132,6 @@ void stEmblem::createObj() {
         static_cast<grMadein*>(getGround(i+9))->startEntityAutoLoop();
         static_cast<grMadein*>(getGround(i+9))->setEnableCollisionStatus(false);
     }
-    //static_cast<grMadein*>(getGround(3))->startEntityAutoLoop();
     m_scene_ground_num[0] = 1;
     m_scene_ground_num[1] = 5;
     m_scene_ground_num[2] = 2;
@@ -191,22 +189,22 @@ grMadein* stEmblem::createSceneGround(s16 index) {
         stageElement->startup(unk1A8,false,gfSceneRoot::Layer_Ground);
         stageElement->setStageData(m_stageData);
         if (m_scene_num == 1 and index == 1) {
-            Vec3f leftPosTop;// = Vec3f(-30.0,40.0,0.0);
+            Vec3f leftPosTop;
             leftPosTop.m_x = -30.0;
             leftPosTop.m_y = 40.0;
             leftPosTop.m_z = 0.0;
-            Vec3f leftPosBot;// = Vec3f(-30.0,0.0,0.0);
+            Vec3f leftPosBot;
             leftPosBot.m_x = -30.0;
             leftPosBot.m_y = 0.0;
             leftPosBot.m_z = 0.0;
             stageElement->setHitPoint(8.0f,&leftPosTop,&leftPosBot,1,0);
         }
         if (m_scene_num == 1 and index == 3) {
-            Vec3f leftPosTop;// = Vec3f(50.0,40.0,0.0);
+            Vec3f leftPosTop;
             leftPosTop.m_x = 50.0;
             leftPosTop.m_y = 40.0;
             leftPosTop.m_z = 0.0;
-            Vec3f leftPosBot;// = Vec3f(50.0,00.0,0.0);
+            Vec3f leftPosBot;
             leftPosBot.m_x = 50.0;
             leftPosBot.m_y = 0.0;
             leftPosBot.m_z = 0.0;
@@ -255,17 +253,14 @@ void stEmblem::startScene() {
     }
     event2.start();
     setSceneCollision();
-    //m_curr_scene_effect.start();
     if (m_scene_num == 1) {
         m_scene_grounds[2]->endEntity();
         m_scene_grounds[4]->endEntity();
-        //m_scene_grounds[3]->endEntity();
         unk704[1] = 0;
         unk704[0] = 0;
         unk6fc[1] = 70;
         unk6fc[0] = 70;
     }
-    //m_unused = 0;
 }
 
 void stEmblem::moveGround(float param3,bool isStartHigh, Vec3f* pos) {
@@ -311,59 +306,55 @@ void stEmblem::updateScene(float deltaFrame) {
             if (unk1A8 == NULL) {
                 break;
             }
-                grMadein* scene_ground;
-                m_scene_grounds[4] = 0;
-                m_scene_grounds[3] = 0;
-                m_scene_grounds[2] = 0;
-                m_scene_grounds[1] = 0;
-                m_scene_grounds[0] = 0;
-                for (s32 i = 0; i < m_scene_ground_num[m_scene_num]; i++) {
-                    createSceneGround(i);
-                }
-                stageParamChange();
-                setSoundParameters(m_stageParam);
-                clearCameraParam();
-                initCameraParam();
-                nw4r::g3d::ResFile posData(m_secondaryFileData->getData(Data_Type_Model, m_scene_num+30, 0xfffe));
-                if (posData.ptr()) {
-                    nw4r::g3d::ResFile copyPosData = posData;
-                    m_stagePositions->loadPositionData(&copyPosData);
-                }
-                updateStagePositions();
-                stTrigger* wind2ndTrigger = m_wind2ndTrigger;
-                if (wind2ndTrigger) {
-                    if (m_scene_num == 0) {
-                        wind2ndTrigger->setAreaSleep(false);
-                    } else {
-                        wind2ndTrigger->setAreaSleep(true);
-                    }
-                }
-                u8 temp_i = (m_scene_num &0x7f) << 1;
-                m_pokeTrainerPosIndex = temp_i;
-                g_ftManager->notifyReplacePokeTrainer(temp_i);
-                unk800 = 0;
-                unk804 = 90.0;
-                startScene();
-                if (m_not_first_scene == true) {
-                    static_cast<grMadein*>(getGround(m_prev_scene_num*3+1))->endEntity();
-                    static_cast<grMadein*>(getGround(m_prev_scene_num*3+2))->startEntity();
-                    g_gfSceneRoot->removeResAnmScn();
-                    scn = (nw4r::g3d::ResFileData*)
-                        m_secondaryFileData->getData(Data_Type_Scene, m_prev_scene_num*3 + 2, 0xFFFE);
-                    registScnAnim(scn, 0);
-                    //static_cast<grMadein*>(getGround(1))->endEntity();
-                    //static_cast<grMadein*>(getGround(2))->startEntity();
-                    m_scene_lifecycle.setPhase(m_scene_lifecycle.getPhase() + 1);
-                    //playSeBasic(snd_se_stage_Starfox_warp_out, 0.0f);
-                    unk6f8 = 0.0;
+            grMadein* scene_ground;
+            m_scene_grounds[4] = 0;
+            m_scene_grounds[3] = 0;
+            m_scene_grounds[2] = 0;
+            m_scene_grounds[1] = 0;
+            m_scene_grounds[0] = 0;
+            for (s32 i = 0; i < m_scene_ground_num[m_scene_num]; i++) {
+                createSceneGround(i);
+            }
+            stageParamChange(m_scene_num);
+            setSoundParameters(m_stageParam);
+            clearCameraParam();
+            initCameraParam();
+            nw4r::g3d::ResFile posData(m_secondaryFileData->getData(Data_Type_Model, m_scene_num+30, 0xfffe));
+            if (posData.ptr()) {
+                nw4r::g3d::ResFile copyPosData = posData;
+                m_stagePositions->loadPositionData(&copyPosData);
+            }
+            updateStagePositions();
+            stTrigger* wind2ndTrigger = m_wind2ndTrigger;
+            if (wind2ndTrigger) {
+                if (m_scene_num == 0) {
+                    wind2ndTrigger->setAreaSleep(false);
                 } else {
-                    m_scene_lifecycle.setPhase(m_scene_lifecycle.getPhase() + 2);
-                    scn = (nw4r::g3d::ResFileData*)
-                        unk1A8->getData(Data_Type_Scene, 0, 0xFFFE);
-                    registScnAnim(scn, 0);
-                    m_curr_scene_effect.start();
-                    unk6f8 = 1.0;
-            //    }
+                    wind2ndTrigger->setAreaSleep(true);
+                }
+            }
+            u8 temp_i = (m_scene_num &0x7f) << 1;
+            m_pokeTrainerPosIndex = temp_i;
+            g_ftManager->notifyReplacePokeTrainer(temp_i);
+            unk800 = 0;
+            unk804 = 90.0;
+            startScene();
+            if (m_not_first_scene == true) {
+                static_cast<grMadein*>(getGround(m_prev_scene_num*3+1))->endEntity();
+                static_cast<grMadein*>(getGround(m_prev_scene_num*3+2))->startEntity();
+                g_gfSceneRoot->removeResAnmScn();
+                scn = (nw4r::g3d::ResFileData*)
+                    m_secondaryFileData->getData(Data_Type_Scene, m_prev_scene_num*3 + 2, 0xFFFE);
+                registScnAnim(scn, 0);
+                m_scene_lifecycle.setPhase(m_scene_lifecycle.getPhase() + 1);
+                unk6f8 = 0.0;
+            } else {
+                m_scene_lifecycle.setPhase(m_scene_lifecycle.getPhase() + 2);
+                scn = (nw4r::g3d::ResFileData*)
+                    unk1A8->getData(Data_Type_Scene, 0, 0xFFFE);
+                registScnAnim(scn, 0);
+                m_curr_scene_effect.start();
+                unk6f8 = 1.0;
             }
         case 1:
             Vec3f groundMovePos;
@@ -424,8 +415,6 @@ void stEmblem::updateScene(float deltaFrame) {
                     m_scene_grounds[1]->deleteHitPoint();
                     m_scene_grounds[3]->deleteHitPoint();
                 }
-                //static_cast<grMadein*>(getGround(0))->endEntity();
-                //static_cast<grMadein*>(getGround(1))->startEntityAutoLoop();
                 
             }
             break;
@@ -435,7 +424,6 @@ void stEmblem::updateScene(float deltaFrame) {
                 m_prev_scene_num = m_scene_num;
                 static_cast<grMadein*>(getGround(m_scene_num*3))->startEntity();
                 m_scene_lifecycle.setPhase(m_scene_lifecycle.getPhase() + 1);
-                //m_not_first_scene = true;      
                 g_gfSceneRoot->removeResAnmScn();
                 scn = (nw4r::g3d::ResFileData*)
                     m_secondaryFileData->getData(Data_Type_Scene, m_prev_scene_num*3, 0xFFFE);
@@ -486,20 +474,16 @@ void stEmblem::updateScene(float deltaFrame) {
                 quakeSnd = -1;
             }
             m_curr_scene_effect.end();
-            // TODO: figure out how to pass 1 to the destructors insead of -1
             if (unk734 != NULL) {
                 delete(unk734);
-                //unk734->~grCollision();
                 unk734 = NULL;
             }
             if (unk738 != NULL) {
                 delete(unk738);
-                //unk738->~grCollision();
                 unk738 = NULL;
             }
             s32 i = 0;
             s32 arrSz = sizeof(m_effects)/sizeof(m_effects[0]);
-            //u32* m_effects_ptr = reinterpret_cast<u32*>(this);
             for (i = 0; i < arrSz;i++) {
                 if (m_effects[i] != -1) {
                     g_ecMgr->killEffect(m_effects[i], 1, 1);
@@ -507,7 +491,6 @@ void stEmblem::updateScene(float deltaFrame) {
                 }
             }
             s32 j = 0;
-            //grMadein** m_scene_grounds_ptr = reinterpret_cast<grMadein**>(this);
             for (j = 0; j < m_scene_ground_num[m_scene_num]; j++) {
                 if (m_scene_grounds[j]) {
                     removeGround(m_scene_grounds[j]);
@@ -530,6 +513,10 @@ void stEmblem::updateScene(float deltaFrame) {
         default:
             break;
     }
+}
+
+static inline float randomFloat(float range) {
+    return range * randf();
 }
 
 void stEmblem::updateScene00(float deltaFrame) {
@@ -567,10 +554,9 @@ void stEmblem::updateScene00(float deltaFrame) {
             rand = 4;
         }
         unkSnd728 = playSeBasic((SndID)(rand + snd_se_stage_Emblem_touseki_01),unk720);
-        float fVar1 = (randf()*100.0f);
-        float fVar2 = 50.0f - fVar1;
-        unk724 = 0.0;
-        unk71C = fVar2 + 130.0f;
+        float offset = 50.0f - 100.0f * randf();
+        unk71C = 130.0f + offset;
+        unk724 = 0.0f;
     }
     unk720+=0.05f;
     if (unk720 >= 0.0f) {
@@ -587,25 +573,11 @@ void stEmblem::updateScene00(float deltaFrame) {
     }
 }
 
-char* const effectStrings[10] = {
-    "eff01",
-    "eff02",
-    "eff03",
-    "eff04",
-    "eff05",
-    "eff06",
-    "eff07",
-    "eff08",
-    "eff09",
-    "eff10"
-};
-
-const int statueGrounds[2] = {
-    1,3
-};
-
 void stEmblem::updateScene01(float deltaFrame) {
-    char* effectNames[10];
+    Vec3f groundPos;
+    Vec3f pos;
+    Vec3f quake;
+
     float fVar1 = unk808 - deltaFrame;
     unk808 = fVar1;
     if (fVar1 < 0.0f) {
@@ -617,21 +589,14 @@ void stEmblem::updateScene01(float deltaFrame) {
             m_effects[i] = -1;
             }
             m_lampEffTimer = 0.0;
-            unk744 = 0;
+            m_lampEffectIndex = 0;
             m_curr_scene_effect.setPhase(m_curr_scene_effect.getPhase() + 1);
             break;
         case 1:
-            //effectNames = &effectStrings[1];
-            effectNames[0] = effectStrings[0];
-            effectNames[1] = effectStrings[1];
-            effectNames[2] = effectStrings[2];
-            effectNames[3] = effectStrings[3];
-            effectNames[4] = effectStrings[4];
-            effectNames[5] = effectStrings[5];
-            effectNames[6] = effectStrings[6];
-            effectNames[7] = effectStrings[7];
-            effectNames[8] = effectStrings[8];
-            effectNames[9] = effectStrings[9];
+            const char* effectNames[10] = {
+                "eff01", "eff02", "eff03", "eff04", "eff05",
+                "eff06", "eff07", "eff08", "eff09", "eff10"
+            };
             if (m_lampEffTimer >= 10.0f) {
                 u32 rand = randi(3);
                 if (rand >= 2) {
@@ -640,59 +605,50 @@ void stEmblem::updateScene01(float deltaFrame) {
                 switch(rand) {
                     default:
                     case 0:
-                        m_effects[unk744] = g_ecMgr->setEffect(ef_ptc_stg_emblem_01_lamp_fire_a);
+                        m_effects[m_lampEffectIndex] = g_ecMgr->setEffect(ef_ptc_stg_emblem_01_lamp_fire_a);
                         break;
                     case 1:
-                        m_effects[unk744] = g_ecMgr->setEffect(ef_ptc_stg_emblem_01_lamp_fire_b);
+                        m_effects[m_lampEffectIndex] = g_ecMgr->setEffect(ef_ptc_stg_emblem_01_lamp_fire_b);
                         break;
                     case 2:
-                    //case 3:
-                        m_effects[unk744] = g_ecMgr->setEffect(ef_ptc_stg_emblem_01_lamp_fire_c);
+                        m_effects[m_lampEffectIndex] = g_ecMgr->setEffect(ef_ptc_stg_emblem_01_lamp_fire_c);
                         break;
                 }
                 rand = randi(3);
                 if (rand >= 2) {
                     rand = 2;
                 }
-                // TODO: load from 0x68c[unk744+5] 0x6A0[unk744]
                 switch(rand) {
                     default:
                     case 0:
-                        m_effects[unk744+5] = g_ecMgr->setEffect(ef_ptc_stg_emblem_01_lamp_fire_a);
+                        m_effects[static_cast<u32>(m_lampEffectIndex + 5)] = g_ecMgr->setEffect(ef_ptc_stg_emblem_01_lamp_fire_a);
                         break;
                     case 1:
-                        m_effects[unk744+5] = g_ecMgr->setEffect(ef_ptc_stg_emblem_01_lamp_fire_b);
+                        m_effects[static_cast<u32>(m_lampEffectIndex + 5)] = g_ecMgr->setEffect(ef_ptc_stg_emblem_01_lamp_fire_b);
                         break;
                     case 2:
-                        m_effects[unk744+5] = g_ecMgr->setEffect(ef_ptc_stg_emblem_01_lamp_fire_c);
+                        m_effects[static_cast<u32>(m_lampEffectIndex + 5)] = g_ecMgr->setEffect(ef_ptc_stg_emblem_01_lamp_fire_c);
                         break;
                 }
-                g_ecMgr->setParent(m_effects[unk744],m_scene_grounds[0]->m_sceneModels[0],effectNames[unk744],0);
-                //u32 temp1 = unk744 + 5;
-                g_ecMgr->setParent(m_effects[unk744],m_scene_grounds[0]->m_sceneModels[0],effectNames[unk744+5],0);
-                int iVar1 = unk744 + 1;
-                unk744 = iVar1;
-                if (iVar1 >= 5) {
+                g_ecMgr->setParent(m_effects[m_lampEffectIndex],m_scene_grounds[0]->m_sceneModels[0],effectNames[m_lampEffectIndex],0);
+                g_ecMgr->setParent(m_effects[static_cast<u32>(m_lampEffectIndex + 5)],m_scene_grounds[0]->m_sceneModels[0],effectNames[static_cast<u32>(m_lampEffectIndex + 5)],0);
+                m_lampEffectIndex++;
+                if (m_lampEffectIndex >= 5) {
                     m_curr_scene_effect.setPhase(m_curr_scene_effect.getPhase() + 1);
                 }
                 m_lampEffTimer = 0.0f;
             } else {
                 m_lampEffTimer += deltaFrame;
             }
-            //m_lampEffTimer = 0.0;
-            //unk744 = 0;
             break;
         default:
             break;
     }
-    int locald8[2];
-    locald8[0] = statueGrounds[0];
-    locald8[1] = statueGrounds[1];
-    //int iVar2 = 0
+    int statueGrounds[2] = {1, 3};
     for (int i = 0; i < 2; i++) {
         switch(unk704[i]) {
             case 0:
-                if (m_scene_grounds[locald8[i]]->isHit()) {
+                if (m_scene_grounds[statueGrounds[i]]->isHit()) {
                 if (unk808 == 0.0f) {
                     if (i == 0) {
                         m_effects[12] = g_ecMgr->setEffect(ef_ptc_stg_emblem_00_zou_damage_l);
@@ -703,8 +659,7 @@ void stEmblem::updateScene01(float deltaFrame) {
                     }
                     unk808 = 10.0f + (5.0f*randf());
                 }
-                    //m_scene_grounds[locald8[i]]
-                    int damage = m_scene_grounds[locald8[i]]->getLastDamageTaken();
+                    int damage = m_scene_grounds[statueGrounds[i]]->getLastDamageTaken();
                     int iVar = unk6fc[i] -= damage;
                     unk6fc[i] = iVar;
                     if (iVar < 0) {
@@ -712,9 +667,9 @@ void stEmblem::updateScene01(float deltaFrame) {
                     }
                     
                     if (unk6fc[i] == 0) {
-                        m_scene_grounds[locald8[i]]->endEntity();
+                        m_scene_grounds[statueGrounds[i]]->endEntity();
                         getGround(i+11)->setEnableCollisionStatus(false);
-                        m_scene_grounds[locald8[i]+1]->startEntity();
+                        m_scene_grounds[statueGrounds[i]+1]->startEntity();
                         unk704[i]++;
                         eventArray[i].end();
                         if (i == 0) {
@@ -724,7 +679,6 @@ void stEmblem::updateScene01(float deltaFrame) {
                             m_effects[10] = g_ecMgr->setEffect(ef_ptc_stg_emblem_00_zoucrash_r);
                             g_ecMgr->setParent(m_effects[10],m_scene_grounds[0]->m_sceneModels[0],"StgEmblem01ZouBClash",0);
                         }
-                        Vec3f quake;// = Vec3f(0.0,0.0,0.0);
                         quake.m_x = 0.0f;
                         quake.m_y = 0.0f;
                         quake.m_z = 0.0f;
@@ -737,32 +691,28 @@ void stEmblem::updateScene01(float deltaFrame) {
                 break;
             case 1:
                 if (i == 0) {
-                    //m_se_player.playFrame(m_scene_grounds[0]->getEntityFrame,0);
-                    m_se_player.playFrame(0, m_scene_grounds[locald8[i]+1]->getEntityFrame());
+                    m_se_player.playFrame(0, m_scene_grounds[statueGrounds[i]+1]->getEntityFrame());
                 } else {
-                    m_se_player2.playFrame(0, m_scene_grounds[locald8[i]+1]->getEntityFrame());
+                    m_se_player2.playFrame(0, m_scene_grounds[statueGrounds[i]+1]->getEntityFrame());
                 }
-                if(m_scene_grounds[locald8[i]+1]->isEndEntity() == true) {
-                    m_scene_grounds[locald8[i]+1]->endEntity();
+                if(m_scene_grounds[statueGrounds[i]+1]->isEndEntity() == true) {
+                    m_scene_grounds[statueGrounds[i]+1]->endEntity();
                     unk704[i]++;
                 }
             }
             if (eventArray[i].isEvent()) {
-                Vec3f groundPos;
-                float one = 1.0f;
-                float fVar1 = (one*randf());
+                float fVar1 = randomFloat(1.0f);
                 groundPos.m_x = (0.5f-fVar1);
-                fVar1 = (one*randf());
+                fVar1 = randomFloat(1.0f);
                 groundPos.m_y = (0.5f-fVar1);
-                fVar1 = (one*randf());
+                fVar1 = randomFloat(1.0f);
                 groundPos.m_z = (0.5f-fVar1);
-                m_scene_grounds[locald8[i+1]]->setPos(&groundPos);
+                m_scene_grounds[statueGrounds[i]]->setPos(&groundPos);
                 if (eventArray[i].isReadyEnd()) {
-                    Vec3f pos;
                     pos.m_x = 0.0f;
                     pos.m_y = 0.0f;
                     pos.m_z = 0.0f;
-                    m_scene_grounds[locald8[i+1]]->setPos(&pos);
+                    m_scene_grounds[statueGrounds[i]]->setPos(&pos);
                     eventArray[i].end();
                 }
         }
@@ -842,9 +792,6 @@ void stEmblem::update(float deltaFrame) {
     g_ecMgr->setDrawPrio(1);
     updateScene(deltaFrame);
     if (m_curr_scene_effect.isEvent() == 1u) {
-        //if (m_show_dogfight || m_scene_num != SCENE_SPACE) {
-        //    m_se_player.playFrame(m_scene_num, m_scene_grounds[0]->getEntityFrame());
-        //}
         switch (m_scene_num) {
             case 0:
                 updateScene00(deltaFrame);
@@ -866,7 +813,7 @@ void stEmblem::update(float deltaFrame) {
             event4.end();
         } else {
             if(event4.m_manualFramesLeft == 0.0f) {
-                Vec3f quake;// = Vec3f(0.0,0.0,0.0);
+                Vec3f quake;
                 quake.m_x = 0.0;
                 quake.m_y = 0.0;
                 quake.m_z = 0.0;
@@ -878,7 +825,6 @@ void stEmblem::update(float deltaFrame) {
             }
         }
     }
-//    static_cast<grGimmick*>(getGround(3))->setRot(&m_slope_rotate);
     if (m_eventType != 1 || m_scene_num != 2) {
         event2.update(deltaFrame);
     }
@@ -891,8 +837,9 @@ void stEmblem::update(float deltaFrame) {
     updateSE(deltaFrame);
 }
 
-inline float FSub(float param1, float param2) {
-    return param1 - param2;
+static inline float clampFloat(float value, float min, float max) {
+    value = nw4r::math::FSelect(value - min, value, min);
+    return nw4r::math::FSelect(value - max, max, value);
 }
 
 void stEmblem::updateSE(float deltaFrame) {
@@ -928,9 +875,7 @@ void stEmblem::updateSE(float deltaFrame) {
             return;
     }
     fVar1 = 1.0f - unk804/90.0f;
-    float fVar2;
-    fVar1 = nw4r::math::FSelect(FSub(fVar1,0.0f),fVar1,0.0f);
-    fVar2 = nw4r::math::FSelect(FSub(fVar1,1.0f),1.0f,fVar1);
+    float fVar2 = clampFloat(fVar1, 0.0f, 1.0f);
     if (fVar2 == 1.0f) {
         unk800++;
     }

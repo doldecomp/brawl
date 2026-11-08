@@ -909,7 +909,7 @@ CC008000:WGPIPE
 27,1,00222aa8:renderDebug__5StageFv
 27,1,00221d48:__dt__5StageFv
 27,1,00223140:testStageParamInit__5StageFP9gfArchivei
-27,1,00223320:stageParamChange__5StageF
+27,1,00223320:stageParamChange__5StageFi
 27,1,00223398:testStageDataInit__5StageFP9gfArchiveii
 27,1,00223A10:initSoundParameters__5StageFv
 27,1,00223B6C:setSoundParameters__5StageFP7stParam
