@@ -630,9 +630,29 @@ CC008000:WGPIPE
 27,1,00000F38:length__5Vec3fFv
 
 // Matrix
-8003ee18:getRotate__6MatrixFP5Vec3f
-8003eb48:rotY__6MatrixFf
 8003e35c:setIdentity__6MatrixFv
+8003E388:copy__6MatrixCFP6Matrix
+8003E3BC:mulVec__6MatrixCFPC5Vec3fP5Vec3f
+8003E418:mulPos__6MatrixCFPC5Vec3fP5Vec3f
+8003E46C:mulPos__6MatrixCFPC5Vec3fPf
+8003E4C0:setQuat__6MatrixFPCQ34nw4r4math4QUAT
+8003E5B4:normalize__6MatrixFv
+8003E6DC:getScale__6MatrixCFP5Vec3f
+8003E828:scale__6MatrixCFPC5Vec3fP6Matrix
+8003E87C:setRotX__6MatrixFf
+8003E918:setRotY__6MatrixFf
+8003E9B4:setRotZ__6MatrixFf
+8003EA50:rotXYZ__6MatrixFPC5Vec3f
+8003EA9C:rotX__6MatrixFf
+8003eb48:rotY__6MatrixFf
+8003EBF4:rotZ__6MatrixFf
+8003ECA0:setRotXYZ__6MatrixFfff
+8003ee18:getRotate__6MatrixCFP5Vec3f
+8003F03C:setTrans__6MatrixFfff
+8003F074:trans__6MatrixFfff
+8003F2AC:getSRT__6MatrixCFP5Vec3fP5Vec3fP5Vec3f
+8003F898:mtMtx44Transpose__FPCQ34nw4r4math5MTX44PQ34nw4r4math5MTX44
+8003F9A8:mtQuatMul__FPCQ34nw4r4math4QUATPCQ34nw4r4math4QUATPQ34nw4r4math4QUAT
 
 // mtCommon
 8003db08:mtSqrtf__Ff

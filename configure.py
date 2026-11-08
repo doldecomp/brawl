@@ -888,6 +888,8 @@ config.libs = [
             Object(Matching, "sora/gf/gf_resource_loader.cpp"),
             Object(Matching, "sora/mt/mt_vector.cpp"),
             Object(Matching, "sora/mt/mt_vector_old.cpp"),
+            Object(Matching, "sora/mt/mt_matrix.cpp"),
+            Object(Matching, "sora/mt/mt_quat.cpp"),
             Object(Matching, "sora/mt/mt_prng.cpp", extra_cflags=["-RTTI off"]),
             Object(Matching, "sora/mt/mt_trig.cpp"),
             Object(Matching, "sora/mt/mt_prng_log.cpp"),
