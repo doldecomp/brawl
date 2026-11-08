@@ -137,6 +137,10 @@ sora/gf/gf_monitor.cpp:
 sora/gf/gf_resource_loader.cpp:
 	.text       start:0x8003D864 end:0x8003DB08
 
+sora/mt/mt_common.cpp:
+	.text       start:0x8003DB08 end:0x8003DBA8
+	.sdata2     start:0x805A16F8 end:0x805A1708
+
 sora/mt/mt_vector.cpp:
 	.text       start:0x8003DBA8 end:0x8003E244
 	.sdata2     start:0x805A1708 end:0x805A1728
