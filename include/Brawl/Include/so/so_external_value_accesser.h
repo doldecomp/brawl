@@ -13,6 +13,7 @@ public:
     static float getLr(StageObject* stageObject);
     static SituationKind getSituationKind(StageObject* stageObject);
     static int getStatusKind(StageObject* stageObject);
+    static int getAreaIndexFromId(StageObject* stageObject, int id);
     static bool getWorkFlag(StageObject* stageObject, u32);
     static int getWorkInt(StageObject* stageObject, u32);
     static soModuleAccesser* getModuleAccesser(StageObject* stageObject);

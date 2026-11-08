@@ -42,6 +42,10 @@ public:
     };
 
     emAIModuleImpl& getAIModule() { return m_aiModule; }
+    EnemyKind getEnemyKind() const { return m_enemyKind; }
+    static Enemy* create(u32 createId, emCreate* create);
+    static void start(Enemy* enemy, emCreate* create);
+    static void remove(Enemy* enemy);
     Vec3f getCenterPos();
     s32 getNameMsgId();
     nw4r::g3d::ResFileData* getFaceTexPtr(u32 p1);
