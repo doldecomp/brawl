@@ -51,6 +51,7 @@ public:
     void destroy(const char* moduleName);
     void loadModuleRequestOnImage(const char* moduleName, HeapType heapType, gfModuleHeader* moduleHeader, int* nodeSize);
     bool isLoaded(const char* moduleName);
+    void release(const char* moduleName);
     static void loadModuleRequest(LoadRequestResult*, gfModuleManager*, const char* moduleName, HeapType heapType, bool, bool);
 
     static gfModuleManager* getInstance();
