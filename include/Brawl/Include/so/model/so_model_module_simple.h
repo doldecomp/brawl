@@ -5,7 +5,7 @@
 #include <mt/mt_vector.h>
 #include <gf/gf_3d_scene.h>
 #include <so/resource/so_resource_module_impl.h>
-#include <nw4r/g3d/g3d_resfile.h>
+#include <nw4r/g3d/res/g3d_resfile.h>
 #include <nw4r/g3d/g3d_scnmdlsmpl.h>
 #include <nw4r/g3d/g3d_scnmdl.h>
 #include <nw4r/math/math_types.h>

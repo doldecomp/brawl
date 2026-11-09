@@ -1,5 +1,5 @@
 #include <gf/gf_archive.h>
-#include <nw4r/g3d/g3d_resfile.h>
+#include <nw4r/g3d/res/g3d_resfile.h>
 #include <so/so_archive_db.h>
 #include <so/resource/so_resource_module_impl.h>
 #include <so/resource/so_resource_id_accesser.h>
@@ -39,7 +39,7 @@ nw4r::g3d::ResFile soResourceModuleImpl::getTexFile(u16 fileIndex, u32 texResId)
         u32 arcId = m_resourceIdAccesser->getTexArchiveId();
         u32 grpNo = getGroupNo(2);
         utArchiveManager* arcManager = soArchiveDb::getManager(m_managerID);
-        return arcManager->getResFileFromId(texResId, Data_Type_Tex, fileIndex, (u8)grpNo, arcId);
+        return nw4r::g3d::ResFile(arcManager->getResFileFromId(texResId, Data_Type_Tex, fileIndex, (u8)grpNo, arcId));
     }
     return nw4r::g3d::ResFile();
 }
@@ -52,7 +52,7 @@ nw4r::g3d::ResFile soResourceModuleImpl::getMdlFile(u16 fileIndex, u32 mdlResId)
         u32 arcId = m_resourceIdAccesser->getMdlArchiveId();
         u32 grpNo = getGroupNo(1);
         utArchiveManager* arcManager = soArchiveDb::getManager(m_managerID);
-        return arcManager->getResFileFromId(mdlResId, Data_Type_Model, fileIndex, (u8)grpNo, arcId);
+        return nw4r::g3d::ResFile(arcManager->getResFileFromId(mdlResId, Data_Type_Model, fileIndex, (u8)grpNo, arcId));
     }
     return nw4r::g3d::ResFile();
 }
@@ -68,7 +68,7 @@ nw4r::g3d::ResFile soResourceModuleImpl::getAnmFile(u16 fileIndex, u32 anmResId,
     if (anmResId != 0xFFFF) {
         p3 = getGroupNo(3);
         utArchiveManager* arcManager = soArchiveDb::getManager(m_managerID);
-        return arcManager->getResFileFromId(anmResId, Data_Type_Anim, fileIndex, (u8)p3, arcId);
+        return nw4r::g3d::ResFile(arcManager->getResFileFromId(anmResId, Data_Type_Anim, fileIndex, (u8)p3, arcId));
     }
     return nw4r::g3d::ResFile();
 }
@@ -84,7 +84,7 @@ nw4r::g3d::ResFile soResourceModuleImpl::getBinFile(u32 binResId, u16 fileIndex,
     if (r31 != 0xFFFF) {
         r31 = getGroupNo(0);
         utArchiveManager* arcManager = soArchiveDb::getManager(m_managerID);
-        return arcManager->getResFileFromId(binResId, Data_Type_Misc, fileIndex, (u8)r31, archiveId);
+        return nw4r::g3d::ResFile(arcManager->getResFileFromId(binResId, Data_Type_Misc, fileIndex, (u8)r31, archiveId));
     }
     return nw4r::g3d::ResFile();
 }
