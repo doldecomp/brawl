@@ -10,7 +10,7 @@
 #include <mt/mt_matrix.h>
 #include <mt/mt_spline.h>
 #include <mt/mt_vector.h>
-#include <nw4r/g3d/g3d_resfile.h>
+#include <nw4r/g3d/res/g3d_resfile.h>
 #include <nw4r/math/math_arithmetic.h>
 #include <snd/snd_id.h>
 #include <snd/snd_system.h>

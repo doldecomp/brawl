@@ -142,7 +142,7 @@ void grTenganFloor::setMotion(u8 animId, bool shouldLoop, u32 unk3, float* frame
         return;
     
     // get scene model data
-    nw4r::g3d::ResMdl model = sceneMdl->m_resMdl;
+    nw4r::g3d::ResMdl model = sceneMdl->GetResMdl();
 
     if (!model.IsValid())
         return;

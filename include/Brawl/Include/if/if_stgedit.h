@@ -3,8 +3,8 @@
 #include <StaticAssert.h>
 #include <if/if_stgedit.h>
 #include <mu/mu_object.h>
-#include <nw4r/g3d/g3d_resfile.h>
-#include <nw4r/g3d/g3d_scngroup.h>
+#include <nw4r/g3d/res/g3d_resfile.h>
+#include <nw4r/g3d/g3d_scnobj.h>
 #include <sr/sr_common.h>
 #include <types.h>
 

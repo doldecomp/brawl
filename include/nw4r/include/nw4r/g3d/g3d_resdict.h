@@ -1,22 +1,4 @@
 #pragma once
 
-#include <StaticAssert.h>
-#include <types.h>
-
-namespace nw4r {
-    namespace g3d {
-        struct ResDicData {
-            u32 size;
-            u32 numData;
-            struct ResDicNodeData {
-                u16 ref;
-                u16 flag;
-                u16 idxLeft;
-                u16 idxRight;
-                s32 ofsString;
-                s32 ofsData;
-            } data[1];
-        };
-
-    }
-}
+// Legacy path kept for compatibility; the contents now live in <nw4r/g3d/res/g3d_resdict.h>.
+#include <nw4r/g3d/res/g3d_resdict.h>
