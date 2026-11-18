@@ -164,6 +164,7 @@ CC008000:WGPIPE
 // math
 804009e0:sin
 804004d8:cos
+80400b34:asin
 80400b38:atan2
 802a0bcc:fabsf
 804005ac:floor
@@ -206,6 +207,7 @@ CC008000:WGPIPE
 8018e4f0:HasResAnmTexSrt__Q34nw4r3g3d7ResFileFv
 8018e53c:HasResAnmShp__Q34nw4r3g3d7ResFileFv
 8018e588:HasResAnmScn__Q34nw4r3g3d7ResFileFv
+801970ec:GetResAnmLightByRefNumber__Q34nw4r3g3d9ResAnmScnCFUl
 
 // NW4R
 8018ee4c:GetResNodeNumEntries__Q34nw4r3g3d6ResMdlFv
@@ -217,13 +219,17 @@ CC008000:WGPIPE
 8018eda4:GetResNode__Q34nw4r3g3d6ResMdlCFi
 8018edf8:GetResNode__Q34nw4r3g3d6ResMdlCFUl
 8018ed10:GetResNode__Q34nw4r3g3d6ResMdlCFPCc
-801afaac:EnableScnMdlCallbackTiming__Q34nw4r3g3d12ScnMdlSimpleFUl
+801afaac:EnableScnMdlCallbackTiming__Q34nw4r3g3d12ScnMdlSimpleFQ44nw4r3g3d6ScnObj6Timing
 801af9f4:UpdateFrame__Q34nw4r3g3d12ScnMdlSimpleFv
 80192f70:SetTranslate__Q34nw4r3g3d7ResNodeFfff
 80190c2c:GetTexObj__Q34nw4r3g3d9ResTexObjF11_GXTexMapID
 80191018:SetMapMode__Q34nw4r3g3d9ResTexSrtFUlUlii
 801AAFF0:SetPriorityDrawOpa__Q34nw4r3g3d6ScnObjFi
 801AB014:SetPriorityDrawXlu__Q34nw4r3g3d6ScnObjFi
+8019d9e4:PlayPolicy_Onetime__Q24nw4r3g3dFfff
+8019d9ec:PlayPolicy_Loop__Q24nw4r3g3dFfff
+801ed008:PSVECNormalize
+801ed0b0:PSVECCrossProduct
 
 // GameGlobal
 8004e5cc:getGlobalRecordMenuDatap__10GameGlobalFv
@@ -621,7 +627,7 @@ CC008000:WGPIPE
 8003dc64:rot__5Vec2fFP5Vec2ff
 
 // Vec3f
-8003de70:normalize__5Vec3fFP5Vec3f
+8003de70:normalize__5Vec3fFPC5Vec3f
 8003dee0:normalize__5Vec3fFP5Vec3fP5Vec3f
 27,1,00000E30:__mi__5Vec3fFRC5Vec3f
 27,1,00000EF8:__pl__5Vec3fFRC5Vec3f
@@ -1079,6 +1085,7 @@ CC008000:WGPIPE
 27,1,0026DD00:getScale__9grGimmickFv
 27,1,0026DCBC:setScale__9grGimmickFP5Vec3f
 27,1,0026DCE4:setScale__9grGimmickFfff
+27,1,0026DD40:setMatrix__9grGimmickFP6Matrix
 27,1,0026B34C:createAttachMotionPath__9grGimmickFP23grGimmickMotionPathInfoP13stTriggerDataPCc
 27,1,0026DA8C:createSimpleEffectData__9grGimmickFPQ29grGimmick16SimpleEffectDataiPCc
 27,1,0026CB94:createIsValidTrigger__9grGimmickFP13stTriggerData
@@ -1203,6 +1210,7 @@ CC008000:WGPIPE
 27,1,0027928C:startEntityAutoLoop__8grMadeinFv
 27,1,00279590:setMotion__8grMadeinFUl
 27,1,00279968:setMotionDetails__8grMadeinFUlUlUlUlUl
+27,1,00278720:createAttackPoint__8grMadeinFv
 27,1,0027855C:deleteHitPoint__8grMadeinFv
 27,1,00278C30:deleteAttackPoint__8grMadeinFv
 27,1,00279044:endEntity__8grMadeinFv
@@ -1655,7 +1663,24 @@ CC008000:WGPIPE
 8004D9DC:getLanguage__10GameGlobalFv
 
 // G3dObj
+804661e0:__vt__Q34nw4r3g3d6G3dObj
 8019d8d8:Destroy__Q34nw4r3g3d6G3dObjFv
+
+// G3dCamera
+801a76c4:SetPosition__Q34nw4r3g3d6CameraFfff
+801a7750:SetPosture__Q34nw4r3g3d6CameraFRCQ44nw4r3g3d6Camera11PostureInfo
+801a7a5c:SetOrtho__Q34nw4r3g3d6CameraFffffff
+
+// ScnObj
+804662b8:__vt__Q34nw4r3g3d6ScnObj
+
+// ScnGroup
+80466278:__vt__Q34nw4r3g3d8ScnGroup
+
+// ScnRoot
+80466320:__vt__Q34nw4r3g3d7ScnRoot
+801ad064:__dt__Q34nw4r3g3d7ScnRootFv
+801ac554:GetCamera__Q34nw4r3g3d7ScnRootFi
 
 // ScnMdl
 801b4af4:Construct__Q34nw4r3g3d6ScnMdlFPviiPv
