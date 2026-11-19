@@ -4486,6 +4486,7 @@ CC008000:WGPIPE
 804005AC:floor
 804009E0:sin
 80400B30:acos
+80400B34:asin
 80400B38:atan2
 80400D98:TRKNubMainLoop
 80400E90:TRKDestructEvent
@@ -4596,6 +4597,10 @@ CC008000:WGPIPE
 80462C48:__vt__15stDataContainer
 80462C78:__vt__20stDataMultiContainer
 80462CC0:HomeBtnIcon
+804661D8:__vt__Q34nw4r3g3d6G3dObj
+80466270:__vt__Q34nw4r3g3d8ScnGroup
+804662B0:__vt__Q34nw4r3g3d6ScnObj
+80466318:__vt__Q34nw4r3g3d7ScnRoot
 80493E60:__files
 804947A0:gTRKRestoreFlags
 80494810:gDBCommTable
@@ -6508,6 +6513,7 @@ CC008000:WGPIPE
 27,1,26DCBC: setScale__9grGimmickFP5Vec3f
 27,1,26DCE4: setScale__9grGimmickFfff
 27,1,26DD00: getScale__9grGimmickFv
+27,1,26DD40: setMatrix__9grGimmickFP6Matrix
 27,1,26DE2C: renderDebug__9grGimmickFv
 27,1,26E13C: create__19grGimmickMotionPathFiPCcPCc
 27,1,26E1C8: __ct__19grGimmickMotionPathFPCcPCc
@@ -6576,6 +6582,7 @@ CC008000:WGPIPE
 27,1,27855C: deleteHitPoint__8grMadeinFv
 27,1,278584: setAttack__8grMadeinFfP5Vec3f
 27,1,278618: createAttackPointNormal__8grMadeinFP21soCollisionAttackData
+27,1,278720: createAttackPoint__8grMadeinFv
 27,1,278C30: deleteAttackPoint__8grMadeinFv
 27,1,278C54: update__8grMadeinFf
 27,1,278DC4: setTgtNode__8grMadeinFPCc
