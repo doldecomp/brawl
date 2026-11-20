@@ -337,7 +337,7 @@ modules:
   hash: fb2ff7f1b949ee36289fc8433a6becc83c9ecb68
   splits: config/RSBE01_02/rels/st_emblem/splits.txt
   symbols: config/RSBE01_02/rels/st_emblem/symbols.txt
-  force_active: [HomeBtnIcon]
+  force_active: [create__8stEmblemFv, HomeBtnIcon]
 - object: files/module/st_madein.rel
   hash: 8e6034b5a04ea2716eefa2af44f09042371fd994
   splits: config/RSBE01_02/rels/st_madein/splits.txt

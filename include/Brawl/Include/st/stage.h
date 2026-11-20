@@ -192,7 +192,7 @@ public:
     void testStageParamInit(gfArchive* archive, int fileIndex);
     void testCollDataInit(gfArchive* archive, grCollData* collData, u32 index);
     void setCollision(grCollision* coll);
-    void stageParamChange();
+    bool stageParamChange(int sceneNum);
     void testStageDataInit(gfArchive* archive, int fileIndex, int unk2);
     void initSoundParameters();
     void setSoundParameters(stParam* stpm);

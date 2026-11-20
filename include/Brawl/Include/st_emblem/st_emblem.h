@@ -49,7 +49,7 @@ class stEmblem : public stMelee {
     grCollision* unk738;
     u8 m_isKemuriHigh;
     float m_lampEffTimer;
-    u32 unk744;
+    s32 m_lampEffectIndex;
     s32 quakeSnd;
     u8 m_eventType;
     StSeUtil::SeSeqInstance<2, 2> m_se_player;
@@ -57,11 +57,6 @@ class stEmblem : public stMelee {
     u8 unk800;
     float unk804;
     float unk808;
-    //s32 m_great_fox_engine_se;
-    //snd3DGenerator m_great_fox_sndgen;
-    //snd3DGenerator m_pleiades_sndgen;
-    //Vec3f m_slope_rotate;
-    //u8 m_corneria_phase;
 
     static const int SCENE_ASTEROID = 0;
     static const int SCENE_BATTLESHIP = 1;
@@ -117,6 +112,4 @@ SndID data_loc_11A0[] = {
 
 static const size_t SndSeqTable1Size = sizeof(data_loc_0)/sizeof(data_loc_0[0]);
 static const size_t SndSeqTable2Size = sizeof(data_loc_40)/sizeof(data_loc_40[0]);
-//static const size_t SndSeqTable3Size = sizeof(data_loc_980)/sizeof(data_loc_980[0]);
-//static const size_t SndSeqTable4Size = sizeof(data_loc_9C0)/sizeof(data_loc_9C0[0]);
 static const size_t SndIDTableSize = sizeof(data_loc_11A0)/sizeof(data_loc_11A0[0]);

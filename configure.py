@@ -1745,7 +1745,7 @@ config.libs = [
         "cflags": cflags_rel,
         "host": False,
         "objects": [
-			Object(NonMatching, "mo_stage/st_emblem/st_emblem.cpp"),
+			Object(Matching, "mo_stage/st_emblem/st_emblem.cpp"),
             ],
     },
     {
