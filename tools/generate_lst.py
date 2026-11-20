@@ -130,9 +130,9 @@ def generate(root: Path) -> str:
             if sec not in sections:
                 sys.exit(f"error: {name} in {module} is in {sec}, which its splits.txt doesn't declare")
             groups.setdefault(sec, set()).add((addr, name))
-        for sec in sorted(groups, key=sections.__getitem__):
-            lines += ["", f"// {module} {sec}"]
-            lines += [f"{modules[module]},{sections[sec]},{a:X}: {n}" for a, n in sorted(groups[sec])]
+        for i, sec in enumerate(sorted(groups, key=sections.__getitem__)):
+            lines += ["", f"// {module}", f"// {sec}"] if i == 0 else ["", f"// {sec}"]
+            lines += [f"{modules[module]},{sections[sec]},{a:X}:{n}" for a, n in sorted(groups[sec])]
             generated.update((n, (modules[module], sections[sec], a)) for a, n in groups[sec])
 
     check_extras(extras_lines, generated)
