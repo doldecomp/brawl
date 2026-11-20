@@ -15,17 +15,34 @@ public:
     }
 
     void setIdentity();
-    void setSRT(const Vec3f& p1, const Vec3f& p2, const Vec3f& p3);
+    void copy(Matrix* outMatrix) const;
+    void mulVec(const Vec3f* vec, Vec3f* outVec) const;
+    void mulPos(const Vec3f* pos, Vec3f* outVec) const;
+    void mulPos(const Vec3f* pos, float* outVec) const;
+    void setQuat(const nw4r::math::QUAT* quat);
+    void normalize();
+    void getScale(Vec3f* outScale) const;
+    void scale(const Vec3f* scale, Matrix* outMatrix) const;
+    void setRotX(float angle);
+    void setRotY(float angle);
+    void setRotZ(float angle);
+    void rotXYZ(const Vec3f* rot);
+    void rotX(float angle);
     void rotY(float angle);
+    void rotZ(float angle);
+    void setRotXYZ(float x, float y, float z);
+    void getRotate(Vec3f* outRot) const;
+    void setTrans(float x, float y, float z);
+    void trans(float x, float y, float z);
+    void setSRT(const Vec3f& scale, const Vec3f& rot, const Vec3f& trans);
+    void getSRT(Vec3f* outScale, Vec3f* outRot, Vec3f* outTrans) const;
     inline void rotY(float angle, Matrix* outMatrix) {
         *outMatrix = *this;
         outMatrix->rotY(angle);
 
     }
     void mul(const Matrix* mulMatrix, Matrix* outMatrix) const;
-    void mulPos(const Vec3f* pos, Vec3f* outVec);
     void inverse(Matrix* outMatrix) const;
-    void getRotate(Vec3f* outRot);
 
     inline void getPosition(Vec3f* outPos) {
         outPos->m_x = this->m[0][3];
@@ -59,5 +76,7 @@ public:
 };
 static_assert(sizeof(Matrix) == 48, "Class is wrong size!");
 
+void mtMtx44Transpose(const nw4r::math::MTX44* mtx, nw4r::math::MTX44* outMtx);
 void mtQuatRotAxis(nw4r::math::QUAT* out, const Vec3f* axis, float angle);
+void mtQuatMul(const nw4r::math::QUAT* q1, const nw4r::math::QUAT* q2, nw4r::math::QUAT* out);
 void mtQuatRotVec(const nw4r::math::QUAT* q, const Vec3f* v, Vec3f* out);
