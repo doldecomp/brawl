@@ -3,7 +3,7 @@
 # Enable with: git config core.hooksPath .githooks
 
 git diff --cached --name-only --diff-filter=ACMRD |
-    grep -qE '(^|/)symbols\.txt$|^tools/lst_extras\.txt$|^tools/generate_lst\.py$|^config/RSBE01_02/config\.yml$' ||
+    grep -qE '(^|/)(symbols|splits)\.txt$|^tools/lst_extras\.txt$|^tools/generate_lst\.py$|^config/RSBE01_02/config\.yml$' ||
     exit 0
 
 python=$(command -v python3 || command -v python) || {

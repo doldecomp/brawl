@@ -5076,7 +5076,7 @@ CC008000:WGPIPE
 17,3,0: _dtors
 
 // sora_menu_sel_char_access .data
-17,5,60: HomeBtnIcon
+17,4,60: HomeBtnIcon
 
 // sora_menu_rule .text
 18,1,9638: _prolog
@@ -5177,10 +5177,10 @@ CC008000:WGPIPE
 23,3,0: _dtors
 
 // sora_menu_challenger .data
-23,5,22C: __vt__24muChallengerApproachTask
-23,5,2B8: __RTTI__24muChallengerApproachTask
-23,5,2C8: __RTTI__6gfTask
-23,5,2E0: HomeBtnIcon
+23,4,22C: __vt__24muChallengerApproachTask
+23,4,2B8: __RTTI__24muChallengerApproachTask
+23,4,2C8: __RTTI__6gfTask
+23,4,2E0: HomeBtnIcon
 
 // sora_menu_title .text
 24,1,3478: _prolog
@@ -6884,7 +6884,7 @@ CC008000:WGPIPE
 30,3,0: _dtors
 
 // sora_adv_menu_sel_char .data
-30,5,20: HomeBtnIcon
+30,4,20: HomeBtnIcon
 
 // sora_adv_menu_sel_map .text
 31,1,3814: _prolog
@@ -6958,7 +6958,7 @@ CC008000:WGPIPE
 35,3,0: _dtors
 
 // sora_adv_menu_save_load .data
-35,5,20: HomeBtnIcon
+35,4,20: HomeBtnIcon
 
 // sora_adv_menu_seal .text
 36,1,0: _prolog
@@ -6972,7 +6972,7 @@ CC008000:WGPIPE
 36,3,0: _dtors
 
 // sora_adv_menu_seal .data
-36,5,20: HomeBtnIcon
+36,4,20: HomeBtnIcon
 
 // sora_adv_menu_ending .text
 37,1,1864: _prolog
@@ -7014,7 +7014,7 @@ CC008000:WGPIPE
 39,3,0: _dtors
 
 // sora_adv_menu_save_point .data
-39,5,20: HomeBtnIcon
+39,4,20: HomeBtnIcon
 
 // sora_adv_stage .text
 40,1,0: __register_global_object

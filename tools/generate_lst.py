@@ -16,7 +16,8 @@ Hand-written entries that symbols.txt can't express (hardware registers,
 aliases, mod-specific signatures) live in tools/lst_extras.txt. An extras
 entry whose name the symbols.txt files already produce is an error. REL
 module ids are taken from the order of the modules in config.yml (1-based),
-which matches the ids in the .rel headers.
+which matches the ids in the .rel headers. REL section indices are the
+1-based positions in the Sections: header of each REL's splits.txt.
 """
 
 import argparse
@@ -37,13 +38,11 @@ CONFIG = Path("config") / "RSBE01_02"
 EXTRAS = Path("tools") / "lst_extras.txt"
 CONFIG_YML = CONFIG / "config.yml"
 
-# REL section index as used by RSBE01.lst
-LST_SECTIONS = {".text": 1, ".ctors": 2, ".dtors": 3, ".rodata": 4, ".data": 5, ".bss": 6}
-
 # Regexes
 SYM_LINE = re.compile(r"^(\S+) = (\.?\w+):0x([0-9A-Fa-f]+); // type:(\w+)(?: size:0x[0-9A-Fa-f]+)?(?: scope:(\w+))?")
 AUTO_NAME = re.compile(r"^(fn|lbl|gap|jumptable|FUN|dtor)_\w+$")
 REL_ID = re.compile(r"^- object: \S*?([^/\s]+)\.rel\s*$", re.M)
+SECTION_DECL = re.compile(r"^\t(\.\w+)\s+type:", re.M)
 LST_ENTRY = re.compile(r"^(?:([0-9A-Fa-f]{8})|(\d+),(\d+),([0-9A-Fa-f]+)):\s?(\S+)$")
 
 HEADER = [
@@ -54,6 +53,12 @@ HEADER = [
 
 def load_modules(root: Path) -> Dict[str, int]:
     names = REL_ID.findall((root / CONFIG_YML).read_text())
+    return {name: i for i, name in enumerate(names, 1)}
+
+
+def rel_sections(path: Path) -> Dict[str, int]:
+    """Map each section in a splits.txt Sections: header to its REL index."""
+    names = SECTION_DECL.findall(path.read_text())
     return {name: i for i, name in enumerate(names, 1)}
 
 
@@ -119,15 +124,16 @@ def generate(root: Path) -> str:
         module = path.parent.name
         if module not in modules:
             sys.exit(f"error: {module} is not listed under modules in {CONFIG_YML.name}")
+        sections = rel_sections(path.parent / "splits.txt")
         groups: Dict[str, set] = {}
         for sec, addr, name in read_symbols(path):
-            if sec not in LST_SECTIONS:
-                continue  # extab/extabindex etc. aren't addressable by section index
+            if sec not in sections:
+                sys.exit(f"error: {name} in {module} is in {sec}, which its splits.txt doesn't declare")
             groups.setdefault(sec, set()).add((addr, name))
-        for sec in sorted(groups, key=LST_SECTIONS.__getitem__):
+        for sec in sorted(groups, key=sections.__getitem__):
             lines += ["", f"// {module} {sec}"]
-            lines += [f"{modules[module]},{LST_SECTIONS[sec]},{a:X}: {n}" for a, n in sorted(groups[sec])]
-            generated.update((n, (modules[module], LST_SECTIONS[sec], a)) for a, n in groups[sec])
+            lines += [f"{modules[module]},{sections[sec]},{a:X}: {n}" for a, n in sorted(groups[sec])]
+            generated.update((n, (modules[module], sections[sec], a)) for a, n in groups[sec])
 
     check_extras(extras_lines, generated)
     return "\n".join(lines) + "\n"
