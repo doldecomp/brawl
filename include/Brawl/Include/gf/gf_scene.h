@@ -28,6 +28,16 @@ static_assert(sizeof(gfSequence) == 8, "Class is wrong size!");
 
 class gfSceneManager {
 public:
+    struct LoadModuleInfo {
+        const char* m_moduleName;
+        const char* m_sceneName;
+        bool unk8;
+        u8 m_status;
+
+        LoadModuleInfo() : m_moduleName(nullptr), m_sceneName(nullptr), unk8(false), m_status(0) { }
+    };
+    static_assert(sizeof(LoadModuleInfo) == 0xC, "Class is wrong size!");
+
     gfScene* m_prevScene;
     gfScene* m_currentScene;
     gfScene* m_nextScene;
@@ -38,13 +48,34 @@ public:
     gfSequence* m_sequences[50];
     int m_sceneCount;
     int m_sequenceCount;
-    char _spacer3[8];
+    bool unk278_b7 : 1;
+    bool unk278_b6 : 1;
+    gfScene* m_exitScene;
     int m_memoryLayout; // 0x280
     int unk1;
     int processStep;
-    char _spacer4[148];
+    int m_sequenceStep;
+    LoadModuleInfo m_loadModules[11]; // 0x290
+    int m_loadState;                  // 0x314
+    int m_loadIndex;
+    int unk31c;
 
-    gfScene* searchScene(const char* sceneName);
+    gfSceneManager();
+    static gfSceneManager* create();
+    void changeNextScene();
+    int registScene(gfScene* scene);
+    int registSequence(gfSequence* sequence);
+    int process();
+    int postProcess();
+    gfScene* searchScene(const char* sceneName) const;
+    gfSequence* searchSequence(const char* sequenceName) const;
+    void startSequence(const char* sequenceName, int p2);
+    void setNextScene(const char* sceneName, int memoryLayout);
+    void setNextSequence(const char* sequenceName, int p2);
+    int setLoadModuleName(const char* moduleName, const char* sceneName, bool p3, bool p4);
+    bool loadModule();
     static gfSceneManager* getInstance();
 };
 static_assert(sizeof(gfSceneManager) == 800, "Class is wrong size!");
+
+extern gfSceneManager* g_gfSceneManager;

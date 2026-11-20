@@ -79,6 +79,7 @@ public:
     virtual void renderDebug();
     virtual ~gfSceneRoot();
 
+    void resetLight() const;
     void setCurrentFrame(float);
     void removeResAnmScn();
     nw4r::g3d::LightObj* getLightObj(u8 p1);
