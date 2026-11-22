@@ -1,0 +1,41 @@
+// Entries symbols.txt can't hold; prepended by tools/generate_lst.py
+
+// Hardware
+CC008000:WGPIPE
+// CD006C00:AI_HW_REGS
+// CC005000:DSP_HW_REGS
+// CD000000:IPC_HW_REGS
+
+// Aliases
+8000443C:__memfill
+8000443C:memset__FPvUcUl
+80004338:memcpy__FPvPvUl
+8000C8AC:__nwa__FUl
+801E1A80:OSSleepTicks__FUlUl
+802A0BCC:fabsf
+80151098:SOAlloc
+801510C4:SOFree
+803F0640:strlen__FPc
+803FA280:strcpy__FPcPCc
+803FA340:strncpy__6StringF6StringPCcUl
+803FA384:strcat__FPcPc
+803FA3B0:strncat__FPcPc
+803FA3FC:strcmp__FPCcPCc
+803FA518:strncmp__FPcPc
+803FA558:strchr__FPcPc
+803FA588:strrchr__FPcPc
+803FA5D0:strcspn__FPcPc
+803FA674:strtok__FPcPc
+803FA798:strstr__FPcPc
+803FC704:atoi__FPCc
+803FCB50:itoa__FiPci
+
+// Modding
+27,5,73648:g_commonSndGroupOverrideName
+27,5,736B0:g_commonSndGroupHeapLevels
+27,1,224AF4:getItemPac__5StageFPP9gfArchivePP9gfArchive6itKindiPP9gfArchivePP21itCustomizerInterface
+27,1,224B08:getDestroyBossParamCommon__5StageFUlii
+
+// Unverified: offsets past the end of sora_melee .data
+27,5,A6068:g_soGeneralTermCache
+27,5,A8B0C:g_soGeneralTermManager
