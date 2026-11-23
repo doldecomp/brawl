@@ -1,5 +1,6 @@
 #include <revolution/MTX.h>
 
+#ifdef __MWERKS__
 asm void PSMTXMultVec(register const Mtx mtx, register const Vec* vec,
                       register Vec* out) {
     // clang-format off
@@ -44,3 +45,4 @@ asm void PSMTXMultVec(register const Mtx mtx, register const Vec* vec,
     blr
     // clang-format on
 }
+#endif
